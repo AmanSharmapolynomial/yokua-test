@@ -1,0 +1,50 @@
+.header__logo{
+    display: flex;
+    flex-direction: column;
+ }
+
+ .header-container{
+     padding: 0.8rem 1.2rem;
+     background-color: var(--bgColor2);
+ }
+
+ .header__logo{
+     line-height: 1.2;
+ }
+ .logo__name{
+     font-weight: 500;
+ }
+ .logo__tagline{
+    font-size: 0.7rem;
+    color: var(--textColor3)
+ }
+ .header__title{
+     text-align: center;
+     font-weight: 500;
+     font-size: 1.4rem;
+     margin: 0.2rem 0;
+     margin-top: 1.3rem;
+ }
+
+ @media(min-width: 800px){
+    .header-container{
+        display: flex;
+        align-items: center;
+        /* justify-content: center; */
+        background-color: var(--bgColor3);
+        position: relative;
+
+    }
+    .header__title{
+        margin: 0;
+     margin-top: 0.5rem;
+
+        width: 96%;
+        position: absolute;
+        text-align: center;
+    }
+}
+
+
+
+

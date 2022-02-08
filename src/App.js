@@ -1,13 +1,12 @@
-import React from "react";
+import React from 'react'
+import AuthScreen from './screens/Auth Screen'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Yokogowa FCP Project</h1>
-      </header>
+      <AuthScreen />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
