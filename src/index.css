@@ -22,3 +22,8 @@ body {
   --bgColor2: rgb(235, 235, 235);
   --bgColor3: rgb(255, 255, 255);
 }
+.non_header_content{
+  margin-top: 8rem;
+  max-width: 1500px;
+margin-inline: auto;
+}

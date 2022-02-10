@@ -10,13 +10,12 @@ import ChangePassword from '../../components/Forgot Password/ChangePassword'
 const AuthScreen = () => {
   return (
     <>
-      <Header />
       <div className="container forgot">
         {/* <SignIn />
         <InfoComponent /> */}
         {/* <SignUp /> */}
         {/* <Forgot /> */}
-        <ChangePassword />
+        {/* <ChangePassword /> */}
       </div>
     </>
   )

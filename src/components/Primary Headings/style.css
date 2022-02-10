@@ -1,0 +1,14 @@
+.heading-container{
+    height: 18rem;
+    margin: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    background-color: var(--bgColor2);
+}
+
+.heading-container > h1 {
+    font-size: 2.3rem;
+    font-weight: 500;
+    padding: 3rem 2.6rem;
+}
