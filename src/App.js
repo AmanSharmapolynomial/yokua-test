@@ -9,9 +9,9 @@ function App() {
     <div className="App">
       <Header />
       <div className="non_header_content">
-        {/* <AuthScreen /> */}
+        <AuthScreen />
         {/* <AdminScreen /> */}
-        <ProfileSettingScreen />
+        {/* <ProfileSettingScreen /> */}
       </div>
     </div>
   )
