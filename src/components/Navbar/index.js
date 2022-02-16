@@ -32,6 +32,10 @@ const Navbar = () => {
           <li>
             <a>Contact</a>
           </li>
+          <li className="border-left border-right">
+            <a>Admin Management</a>
+            <i class="fa-solid fa-caret-down " />
+          </li>
         </ul>
         <div className="searchBar">
           <i class="fa-solid fa-magnifying-glass" />

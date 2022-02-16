@@ -10,7 +10,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-
 }
 
 :root{
@@ -27,3 +26,5 @@ body {
   max-width: 1500px;
 margin-inline: auto;
 }
+
+

@@ -6,6 +6,7 @@ import SignIn from '../../components/Sign In'
 import SignUp from '../../components/Sign Up'
 import Forgot from '../../components/Forgot Password/Forgot'
 import ChangePassword from '../../components/Forgot Password/ChangePassword'
+import { Navigate } from 'react-router'
 
 const AuthScreen = () => {
   return (
@@ -13,9 +14,9 @@ const AuthScreen = () => {
       <div className="container forgot">
         {/* <SignIn />
         <InfoComponent /> */}
-        {/* <SignUp /> */}
+        <SignUp />
         {/* <Forgot /> */}
-        {/* <ChangePassword /> */}
+        {/* <ChangePassword />/ */}
       </div>
     </>
   )

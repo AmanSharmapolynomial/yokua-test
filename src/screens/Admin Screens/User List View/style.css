@@ -1,0 +1,70 @@
+.user-list-view-table{
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 5px;
+    
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+    box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+
+    z-index: 0;
+    margin: 1rem
+}
+
+.lnndaO{
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+
+.add_row{
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    cursor: pointer;
+    height: 50px;
+}
+
+.add_row > i {
+    background-color: black;
+    color: white;
+    height: 21px;
+    width: 13px;    
+    display: flex;
+    align-items: center;       
+    justify-content: center;
+    border-radius: 100%;       
+    margin-right: 0.4rem;
+}
+
+.edit-icons > i{
+    cursor: pointer;
+}
+.edit-icons > i:hover{
+    opacity: 80%;
+}
+
+.filter-actions{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1rem;
+    align-items: center;
+}
+
+.filter-icons{
+    width: 30%;
+    max-width: 15rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-icons > i{
+    margin: 0 2rem;
+}
+
+.filter-actions > .filter-checkbox{
+    margin: 0 1rem;
+}
+
+
+#dropdown:checked + label{
+    display: none;
+}
