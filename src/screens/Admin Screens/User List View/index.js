@@ -9,12 +9,11 @@ import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 
 const UserListView = () => {
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
-
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
+  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
   // refs
 
@@ -171,7 +170,7 @@ const UserListView = () => {
     <>
       <div className="user-list-view">
         {openModal && <UserDetailsModal change={changeModal} saveAndExit={saveAndExitModal} />}
-        <SecondaryHeading />
+        <SecondaryHeading title={'User list view'} />
         {/* Filters and Actions */}
         <div className="filter-actions">
           <div className="filter-icons">
