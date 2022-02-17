@@ -5,10 +5,7 @@ import './style.css'
 const Header = () => {
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
-  const [loggedIn, setLoggedIn] = useState(false)
-  useEffect(() => {
-    console.log(userDetails)
-  }, [])
+
   return (
     <div className="header">
       <div className="header_max-width">
@@ -20,7 +17,7 @@ const Header = () => {
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
         </div>
-        {loggedIn && <Navbar />}
+        {userDetails[0]?.data.access_token && <Navbar />}
       </div>
     </div>
   )

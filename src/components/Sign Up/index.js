@@ -1,58 +1,96 @@
-import React, { useRef } from 'react'
+import { useStoreActions, useStoreState } from 'easy-peasy'
+import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router'
 import './style.css'
 
 const SignUp = () => {
-  const firstNameRef = useRef()
-  const lastNameRef = useRef()
-  const companyEmailRef = useRef()
-  const passwordRef = useRef()
-  const confirmPasswordRef = useRef()
-  const companyRef = useRef()
+  // navigate
+  const navigate = useNavigate()
+
+  // fetch state
+  const userDetails = useStoreState(state => state.userDetails)
+  if (userDetails[0]?.data?.access_token) {
+    navigate('/profile')
+  }
+  const config = {
+    // Authorization: `Bearer ${userDetails[0]?.data.access_token}`,
+    Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ1MDk3MDcyLCJpYXQiOjE2NDUwOTUyNzIsImp0aSI6ImJmOTFjYmQyNzQ2YzQyZGZiYTY3NzNjNjFlNmI2NzM4IiwiZW1haWwiOiJhZG1pbkBlbWFpbC5jb20ifQ.8v_4qizArODP2RAcAH-Dv0yhVltaplmyeJIY0obg9Bg`,
+  }
+
+  // states
+  const [companyEmail, setCompanyEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [company, setCompany] = useState('')
+
+  // actions import
+  const fetchRegister = useStoreActions(actions => actions.fetchRegister)
+
+  // fill data from form
+  const registerDetails = {
+    first_name: firstName,
+    last_name: lastName,
+    email: companyEmail,
+    password1: password,
+    password2: confirmPassword,
+  }
+
+  // use actions
+  const register = e => {
+    e.preventDefault()
+    if (password.includes('.') && password.length > 8 && password == confirmPassword) {
+      fetchRegister(registerDetails, config)
+      console.log(registerDetails)
+    } else {
+      console.log('error in password')
+    }
+  }
+
+  console.log(userDetails)
+
   return (
     <>
       <div className="signIn-container">
         <h3 className="container__heading">Create a New Account</h3>
-        <form type="submit">
+        <form type="submit" onSubmit={register}>
           <input
             type="text"
+            required={true}
+            onChange={e => setFirstName(e.target.value)}
             className="input-field input-field__email"
-            name="first-name"
-            ref={firstNameRef}
             placeholder="First Name"
           />
           <input
             type="text"
             className="input-field input-field__password"
-            name="last-name"
-            ref={lastNameRef}
+            onChange={e => setLastName(e.target.value)}
             placeholder="Last Name"
           />
           <input
-            type="text"
+            type="email"
+            required={true}
             className="input-field input-field__email"
-            name="company-email"
-            ref={companyEmailRef}
+            onChange={e => setCompanyEmail(e.target.value)}
             placeholder="Company Email"
           />
           <input
-            type="text"
+            type="password"
             className="input-field input-field__password"
-            name="password"
-            ref={passwordRef}
+            onChange={e => setPassword(e.target.value)}
+            required={true}
             placeholder="Password"
           />
           <input
-            type="text"
+            type="password"
             className="input-field input-field__password"
-            name="confirm-password"
-            ref={confirmPasswordRef}
+            onChange={e => setConfirmPassword(e.target.value)}
             placeholder="Confirm Password"
           />
           <input
             type="text"
             className="input-field input-field__email"
-            name="company"
-            ref={companyRef}
             placeholder="Company(representative of yokogawa)"
           />
           <div className="checkbox">

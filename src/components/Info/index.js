@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './style.css'
 
 const InfoComponent = () => {
@@ -13,9 +14,9 @@ const InfoComponent = () => {
 
         <p className="info__text">
           If you do not have an account yet, please <br />
-          <a href="#" className="register-link">
+          <Link to="/auth/register" className="register-link">
             register on the right.
-          </a>
+          </Link>
         </p>
       </div>
     </>

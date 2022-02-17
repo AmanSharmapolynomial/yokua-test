@@ -1,29 +1,40 @@
 import { useStoreActions, useStoreState } from 'easy-peasy'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import { Navigate } from 'react-router'
+import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import './style.css'
 
 const SignIn = () => {
-  // refs
-  const emailRef = useRef()
-  const passwordRef = useRef()
+  // states
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  // navigate
+  const navigate = useNavigate()
 
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
-  console.log(userDetails)
 
   // actions import
   const fetchLogin = useStoreActions(actions => actions.fetchLogin)
 
   // fill data from form
   const loginDetails = {
-    email: 'admin@email.com',
-    password: 'Password.01',
+    email: email,
+    password: password,
   }
 
   // use actions
   const login = e => {
     e.preventDefault()
-    fetchLogin(loginDetails)
+    if (loginDetails.email && loginDetails.password) {
+      fetchLogin(loginDetails)
+      // setLoggedIn(true)
+    }
+  }
+  if (userDetails[0]?.data.access_token) {
+    navigate('/profile')
   }
 
   return (
@@ -32,26 +43,24 @@ const SignIn = () => {
         <h3 className="container__heading">Sign In with E-mail</h3>
         <form type="submit" onSubmit={login}>
           <input
-            type="text"
+            type="email"
+            onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
-            name="email"
-            ref={emailRef}
             placeholder="Email"
           />
+
           <input
             type="text"
+            onChange={e => setPassword(e.target.value)}
             className="input-field input-field__password"
-            name="password"
-            ref={passwordRef}
             placeholder="Password"
           />
-
           <button type="submit" className="submit-btn">
             Sign In
           </button>
-          <a href="#" className="forgot-link">
+          <Link to="/auth/forgot" className="forgot-link">
             Forgot your password?
-          </a>
+          </Link>
         </form>
       </div>
     </>
