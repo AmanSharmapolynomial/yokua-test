@@ -162,7 +162,6 @@ const UserListView = () => {
   }
 
   const saveAndExitModal = () => {
-    console.log('data saved and exited')
     setOpenModal(false)
   }
 

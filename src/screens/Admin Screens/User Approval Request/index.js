@@ -221,7 +221,6 @@ const UserApprovalScreen = () => {
   }
 
   const saveAndExitModal = () => {
-    console.log('data saved and exited')
     setOpenModal(false)
   }
   return (

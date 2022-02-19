@@ -24,7 +24,6 @@ function App() {
     let location = useLocation()
 
     if (!userDetails[0]?.data) {
-      console.log('first')
       return <Navigate to="/auth/login" state={{ from: location }} replace />
     }
 

@@ -10,7 +10,6 @@ const model = {
         'https://yokogawa-flow-center.herokuapp.com/auth/login/',
         payload
       )
-      console.log(data)
       actions.registerUser(data)
     } catch (error) {
       actions.registerUser({ error })

@@ -16,7 +16,6 @@ const SignIn = () => {
 
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
-  console.log(userDetails[0])
 
   // actions import
   const fetchLogin = useStoreActions(actions => actions.fetchLogin)

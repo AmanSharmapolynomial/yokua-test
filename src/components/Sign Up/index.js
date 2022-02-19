@@ -42,13 +42,10 @@ const SignUp = () => {
     e.preventDefault()
     if (password.includes('.') && password.length > 8 && password == confirmPassword) {
       fetchRegister(registerDetails, config)
-      console.log(registerDetails)
     } else {
       console.log('error in password')
     }
   }
-
-  console.log(userDetails)
 
   return (
     <>
