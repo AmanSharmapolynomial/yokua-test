@@ -9,12 +9,8 @@ const SignUp = () => {
 
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
-  if (userDetails[0]?.data?.access_token) {
-    navigate('/profile')
-  }
   const config = {
-    // Authorization: `Bearer ${userDetails[0]?.data.access_token}`,
-    Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ1MDk3MDcyLCJpYXQiOjE2NDUwOTUyNzIsImp0aSI6ImJmOTFjYmQyNzQ2YzQyZGZiYTY3NzNjNjFlNmI2NzM4IiwiZW1haWwiOiJhZG1pbkBlbWFpbC5jb20ifQ.8v_4qizArODP2RAcAH-Dv0yhVltaplmyeJIY0obg9Bg`,
+    Authorization: `Bearer ${userDetails[0]?.data?.access_token}`,
   }
 
   // states
