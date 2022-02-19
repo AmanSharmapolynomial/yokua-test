@@ -9,6 +9,7 @@ const SignUp = () => {
 
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
+  const registeredUser = useStoreState(state => state.registeredUser)
   const config = {
     Authorization: `Bearer ${userDetails[0]?.data?.access_token}`,
   }
@@ -21,8 +22,20 @@ const SignUp = () => {
   const [lastName, setLastName] = useState('')
   const [company, setCompany] = useState('')
 
+  const [actionLabel, setActionLabel] = useState('User Created')
+
   // actions import
   const fetchRegister = useStoreActions(actions => actions.fetchRegister)
+  const alertRef = useRef()
+
+  // if () {
+  //   alertRef.current.style.opacity = 1
+  //   setTimeout(() => {
+  //     alertRef.current.style.opacity = 0
+  //   }, 5000)
+  // }
+
+  console.log(registeredUser[registeredUser.length - 1])
 
   // fill data from form
   const registerDetails = {
@@ -38,8 +51,14 @@ const SignUp = () => {
     e.preventDefault()
     if (password.includes('.') && password.length > 8 && password == confirmPassword) {
       fetchRegister(registerDetails, config)
+      console.log('first')
     } else {
-      console.log('error in password')
+      setActionLabel('Check your Password')
+      alertRef.current.style.display = 'block'
+
+      setTimeout(() => {
+        alertRef.current.style.display = 'none'
+      }, 5000)
     }
   }
 
@@ -81,6 +100,9 @@ const SignUp = () => {
             onChange={e => setConfirmPassword(e.target.value)}
             placeholder="Confirm Password"
           />
+          <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
+            {actionLabel}{' '}
+          </span>
           <input
             type="text"
             className="input-field input-field__email"

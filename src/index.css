@@ -28,3 +28,10 @@ margin-inline: auto;
 }
 
 
+.alert-under-input{
+  display: none;
+  color: red;
+  font-size: 0.5rem;
+  text-align: left;
+  width: 100%;
+}

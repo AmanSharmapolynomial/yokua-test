@@ -32,6 +32,7 @@ const SignIn = () => {
   const login = e => {
     e.preventDefault()
     if (loginDetails.email && loginDetails.password) {
+      console.log(loginDetails)
       fetchLogin(loginDetails)
     }
   }
