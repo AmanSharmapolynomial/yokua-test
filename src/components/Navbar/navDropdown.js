@@ -2,27 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './style.css'
 
-const Dropdown = ({ value, data }) => {
+const NavDropdown = ({ data, icon, renderDropdown }) => {
   const [showRoleDropdown, setShowRoleDropdown] = useState(false)
+
+  useEffect(() => {
+    setShowRoleDropdown(renderDropdown)
+  }, [renderDropdown])
 
   return (
     <div className="role-dropdown">
-      <div className="has-dropdown" onClick={() => setShowRoleDropdown(!showRoleDropdown)}>
-        {value} <i className="fa-solid fa-sort-down " />
-      </div>
-
       <div
         className="role-dropdown dropdown"
         style={{
           display: showRoleDropdown ? 'flex' : 'none',
         }}
       >
-        {data.map(element => (
-          <span className="dropdown-element">{showRoleDropdown ? element : ''}</span>
-        ))}
+        {renderDropdown &&
+          data.map(element => (
+            <Link to={element.url}>
+              <span className="dropdown-element">{element.name}</span>
+            </Link>
+          ))}
       </div>
     </div>
   )
 }
 
-export default Dropdown
+export default NavDropdown

@@ -5,8 +5,16 @@ const model = {
   userDetails: [],
   // thunks
   fetchLogin: thunk(async (actions, payload) => {
-    const data = await axios.post('https://yokogawa-flow-center.herokuapp.com/auth/login/', payload)
-    actions.registerUser(data)
+    try {
+      const data = await axios.post(
+        'https://yokogawa-flow-center.herokuapp.com/auth/login/',
+        payload
+      )
+      console.log(data)
+      actions.registerUser(data)
+    } catch (error) {
+      actions.registerUser({ error })
+    }
   }),
 
   fetchRegister: thunk(async (actions, payload, config) => {

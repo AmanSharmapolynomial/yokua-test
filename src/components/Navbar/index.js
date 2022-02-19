@@ -1,14 +1,19 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import Dropdown from '../Dropdown'
+import NavDropdown from './navDropdown'
 import './style.css'
 
 const Navbar = () => {
+  const [renderDropdown, setRenderDropdown] = useState(false)
+
   const searchNavRef = useRef()
   return (
     <>
       <div className="nav">
         <ul>
           <li>
-            <a>Home</a>
+            <Link to="/auth/register">Home</Link>
           </li>
           <li>
             <a>News</a>
@@ -32,9 +37,28 @@ const Navbar = () => {
           <li>
             <a>Contact</a>
           </li>
-          <li className="border-left border-right">
+          <li
+            className="border-left border-right"
+            onClick={() => {
+              setRenderDropdown(!renderDropdown)
+            }}
+            style={{
+              position: 'relative',
+              cursor: 'pointer',
+            }}
+          >
             <a>Admin Management</a>
             <i class="fa-solid fa-caret-down " />
+            <NavDropdown
+              data={[
+                { name: 'User Management', url: '/admin/user/list-view' },
+                { name: 'Event Management', url: '/admin/user/list-view' },
+                { name: 'User Request', url: '/admin/user/approval-request' },
+              ]}
+              style={{ position: 'absolute' }}
+              icon={true}
+              renderDropdown={renderDropdown}
+            />
           </li>
         </ul>
         <div className="searchBar">

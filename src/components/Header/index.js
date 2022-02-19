@@ -17,7 +17,7 @@ const Header = () => {
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
         </div>
-        {userDetails[0]?.data.access_token && <Navbar />}
+        {userDetails[0]?.data?.access_token && <Navbar />}
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import { Navigate } from 'react-router'
 import { Route } from 'react-router'
 import { Routes } from 'react-router'
 import { Outlet } from 'react-router'
+import { useNavigate } from 'react-router'
 
 const AuthScreen = () => {
   return (

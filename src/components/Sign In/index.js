@@ -1,5 +1,6 @@
 import { useStoreActions, useStoreState } from 'easy-peasy'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 import { Navigate } from 'react-router'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -15,6 +16,7 @@ const SignIn = () => {
 
   // fetch state
   const userDetails = useStoreState(state => state.userDetails)
+  console.log(userDetails[0])
 
   // actions import
   const fetchLogin = useStoreActions(actions => actions.fetchLogin)
@@ -25,16 +27,27 @@ const SignIn = () => {
     password: password,
   }
 
+  let location = useLocation()
+
   // use actions
   const login = e => {
     e.preventDefault()
     if (loginDetails.email && loginDetails.password) {
       fetchLogin(loginDetails)
-      // setLoggedIn(true)
     }
   }
-  if (userDetails[0]?.data.access_token) {
-    navigate('/profile')
+
+  if (userDetails[0]?.data) {
+    navigate(location.state?.from?.pathname)
+  }
+
+  const alertRef = useRef()
+  if (userDetails[0]?.error) {
+    alertRef.current.style.display = 'block'
+
+    setTimeout(() => {
+      alertRef.current.style.display = 'none'
+    }, 3000)
   }
 
   return (
@@ -55,6 +68,9 @@ const SignIn = () => {
             className="input-field input-field__password"
             placeholder="Password"
           />
+          <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
+            Incorrect Password
+          </span>
           <button type="submit" className="submit-btn">
             Sign In
           </button>

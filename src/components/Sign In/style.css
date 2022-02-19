@@ -20,6 +20,8 @@ box-shadow: 0px 0px 11px -1px rgba(168,168,168,1);
 
 }
 
+
+
 h3{
     font-weight: 500;
 
@@ -43,6 +45,14 @@ form{
     font-family: Poppins;
     border: 0.5px solid rgb(56, 56, 56);
     border-radius: 3px;
+}
+
+.alert-under-input{
+    display: none;
+    color: red;
+    font-size: 0.5rem;
+    text-align: left;
+    width: 100%;
 }
 
 .submit-btn{

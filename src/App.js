@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import Header from './components/Header'
 import AdminScreen from './screens/Admin Screens/User List View'
 import AuthScreen from './screens/Auth Screen'
@@ -16,17 +16,19 @@ import Forgot from './components/Forgot Password/Forgot'
 import ChnagePassword from './components/Forgot Password/ChangePassword'
 import { useStoreState } from 'easy-peasy'
 import { useLocation } from 'react-router'
+import HomeScreen from './screens/Home Screen'
 
 function App() {
-  const RequireAuth = () => {
+  const RequireAuth = ({ children }) => {
     const userDetails = useStoreState(state => state.userDetails)
     let location = useLocation()
 
-    if (!userDetails[0]) {
+    if (!userDetails[0]?.data) {
+      console.log('first')
       return <Navigate to="/auth/login" state={{ from: location }} replace />
     }
 
-    return <></>
+    return children
   }
 
   // fetch state
@@ -43,7 +45,7 @@ function App() {
               path="/"
               element={
                 <RequireAuth>
-                  <p>You're logged In</p>
+                  <Navigate to="/auth/register" />
                 </RequireAuth>
               }
             />

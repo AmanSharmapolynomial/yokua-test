@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rimraf build && react-scripts build && yarn replace-sw",
+    "build": "rimraf build && react-scripts build",
     "test": "react-scripts test",
     "lint": "lint-staged",
     "eject": "react-scripts eject",
