@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../../components/Header'
 import PrimaryHeading from '../../../components/Primary Headings'
 import SecondaryHeading from '../../../components/Secondary Heading'
@@ -7,6 +7,7 @@ import './style.css'
 import { Select } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 
 const UserListView = () => {
   // states
@@ -14,6 +15,35 @@ const UserListView = () => {
   const [openModal, setOpenModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+
+  // data from backedn to be stored here
+  const [backendData, setBackendData] = useState([])
+  const [dataToChange, setDataToChange] = useState()
+
+  // fetch state
+  const userList = useStoreState(state => state.userList)
+  const userDetails = useStoreState(state => state.userDetails)
+
+  console.log(userDetails)
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userDetails[0].data?.access_token}`,
+    },
+  }
+
+  // actions import
+  const fetchUserList = useStoreActions(actions => actions.fetchUserList)
+  useEffect(() => {
+    const payload = {
+      pmk_admin: false,
+      content_manager: true,
+      user: true,
+      filter: 'active',
+    }
+    console.log(config)
+    fetchUserList(payload, config)
+  }, [userDetails])
+  console.log(userList)
 
   // refs
 
@@ -52,14 +82,71 @@ const UserListView = () => {
     },
   ]
 
-  const contentRow = [
-    // while mapping the actual data use index of the array as id to style the rows in customRowStyles[]
+  // setBackendData([
+  //   {
+  //     first_name: 'Azhar',
+  //     last_name: 'Malik',
+  //     email: 'azhar@polynomial.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'Prakhar',
+  //     last_name: 'Kaushik',
+  //     email: 'prakhar.k@polynomial.ao',
+  //     role: 'PMK Administrator',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'naggu',
+  //     last_name: 'gfc',
+  //     email: 'n.k@gx.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  // ])
+  let tempArr = [
     {
-      id: '1',
-      name: 'Yogesh Rajputh',
-      role: <Dropdown value={'PMK Administrator'} data={dropdownData} />,
-      companyEmail: 'yogeshrajput@yokogawa.com',
-      status: 'Inactive',
+      first_name: 'Azhar',
+      last_name: 'Malik',
+      email: 'azhar@polynomial.ai',
+      role: 'User',
+      status: 'active',
+      company_name: '',
+    },
+    {
+      first_name: 'Prakhar',
+      last_name: 'Kaushik',
+      email: 'prakhar.k@polynomial.ao',
+      role: 'PMK Administrator',
+      status: 'active',
+      company_name: '',
+    },
+    {
+      first_name: 'naggu',
+      last_name: 'gfc',
+      email: 'n.k@gx.ai',
+      role: 'User',
+      status: 'active',
+      company_name: '',
+    },
+  ]
+  useEffect(() => {
+    setBackendData(tempArr)
+  }, [])
+
+  const contentRow = []
+
+  backendData.map((data, index) => {
+    contentRow.push({
+      name: data.first_name + ' ' + data.last_name,
+      id: index,
+      role: <Dropdown value={data.role} data={dropdownData} />,
+      companyEmail: data.email,
+      status: data.status,
       contact: '8854636363',
       edit: (
         <div className="edit-icons">
@@ -69,69 +156,15 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('Edit')
               setOpenModal(true)
+              setDataToChange(index)
             }}
           />
           <i className="fa-solid fa-trash" />
         </div>
       ),
-    },
-    {
-      id: '2',
-      name: 'Yogesh Rajputh',
-      role: <Dropdown value={'PMK Administrator'} data={dropdownData} />,
-      companyEmail: 'yogeshrajput@yokogawa.com',
-      status: 'Inactive',
-      contact: '8854636363',
-      edit: (
-        <div className="edit-icons">
-          <i className="fa-solid fa-pen-to-square" data={dropdownData} />
-          <i className="fa-solid fa-trash" />
-        </div>
-      ),
-    },
-    {
-      id: '3',
-      name: 'Yogesh Rajputh',
-      role: <Dropdown value={'PMK Administrator'} data={dropdownData} />,
-      companyEmail: 'yogeshrajput@yokogawa.com',
-      status: 'Inactive',
-      contact: '8854636363',
-      edit: (
-        <div className="edit-icons">
-          <i className="fa-solid fa-pen-to-square" />
-          <i className="fa-solid fa-trash" />
-        </div>
-      ),
-    },
-    {
-      id: '4',
-      name: 'Yogesh Rajputh',
-      role: <Dropdown value={'PMK Administrator'} data={dropdownData} />,
-      companyEmail: 'yogeshrajput@yokogawa.com',
-      status: 'Inactive',
-      contact: '8854636363',
-      edit: (
-        <div className="edit-icons">
-          <i className="fa-solid fa-pen-to-square" />
-          <i className="fa-solid fa-trash" />
-        </div>
-      ),
-    },
-    {
-      id: '5',
-      name: 'Yogesh Rajputh',
-      role: <Dropdown value={'PMK Administrator'} data={dropdownData} />,
-      companyEmail: 'yogeshrajput@yokogawa.com',
-      status: 'Inactive',
-      contact: '8854636363',
-      edit: (
-        <div className="edit-icons">
-          <i className="fa-solid fa-pen-to-square" />
-          <i className="fa-solid fa-trash" />
-        </div>
-      ),
-    },
-  ]
+    })
+  })
+  console.log(dataToChange)
 
   const conditionalRowStyles = [
     {
@@ -168,7 +201,13 @@ const UserListView = () => {
   return (
     <>
       <div className="user-list-view">
-        {openModal && <UserDetailsModal change={changeModal} saveAndExit={saveAndExitModal} />}
+        {openModal && (
+          <UserDetailsModal
+            data={backendData[dataToChange]}
+            change={changeModal}
+            saveAndExit={saveAndExitModal}
+          />
+        )}
         <SecondaryHeading title={'User list view'} />
         {/* Filters and Actions */}
         <div className="filter-actions">
