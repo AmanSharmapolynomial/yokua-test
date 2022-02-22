@@ -5,7 +5,7 @@ import { Navigate } from 'react-router'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import './style.css'
-
+import { login } from './../../services/auth.service'
 const SignIn = () => {
   // states
   const [email, setEmail] = useState('')
@@ -14,11 +14,8 @@ const SignIn = () => {
   // navigate
   const navigate = useNavigate()
 
-  // fetch state
-  const userDetails = useStoreState(state => state.userDetails)
-
   // actions import
-  const fetchLogin = useStoreActions(actions => actions.fetchLogin)
+  const setUser = useStoreActions(actions => actions.setUser)
 
   // fill data from form
   const loginDetails = {
@@ -29,32 +26,34 @@ const SignIn = () => {
   let location = useLocation()
 
   // use actions
-  const login = e => {
+  const SignIn = async e => {
+    console.log(e)
     e.preventDefault()
     if (loginDetails.email && loginDetails.password) {
-      console.log(loginDetails)
-      fetchLogin(loginDetails)
+      const logindata = await login(loginDetails)
+      setUser(logindata)
+      navigate(location.state?.from?.pathname ?? '/')
     }
   }
 
-  if (userDetails[0]?.data) {
-    navigate(location.state?.from?.pathname)
-  }
+  // if (userDetails[0]?.data) {
+  //   navigate(location.state?.from?.pathname)
+  // }
 
   const alertRef = useRef()
-  if (userDetails[0]?.error) {
-    alertRef.current.style.display = 'block'
+  // if (userDetails[0]?.error) {
+  //   alertRef.current.style.display = 'block'
 
-    setTimeout(() => {
-      alertRef.current.style.display = 'none'
-    }, 3000)
-  }
+  //   setTimeout(() => {
+  //     alertRef.current.style.display = 'none'
+  //   }, 3000)
+  // }
 
   return (
     <>
       <div className="signIn-container">
         <h3 className="container__heading">Sign In with E-mail</h3>
-        <form type="submit" onSubmit={login}>
+        <form type="submit" onSubmit={SignIn}>
           <input
             type="email"
             onChange={e => setEmail(e.target.value)}

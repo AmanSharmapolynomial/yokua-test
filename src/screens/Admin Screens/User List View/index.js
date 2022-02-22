@@ -8,42 +8,30 @@ import { Select } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import { useStoreActions, useStoreState } from 'easy-peasy'
-
+import { fetchUserList } from './../../../services/users.service'
+import API from '../../../utils/api'
 const UserListView = () => {
   // states
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
-  const [changeModal, setChangeModal] = useState('')
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  // const [showFilterDropdown, setShowFilterDropdown] = useState(false)
+  // const [openModal, setOpenModal] = useState(false)
+  // const [changeModal, setChangeModal] = useState('')
+  // const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
-  // data from backedn to be stored here
-  const [backendData, setBackendData] = useState([])
-  const [dataToChange, setDataToChange] = useState()
-
-  // fetch state
-  const userList = useStoreState(state => state.userList)
-  const userDetails = useStoreState(state => state.userDetails)
-
-  console.log(userDetails)
-  const config = {
-    headers: {
-      Authorization: `Bearer ${userDetails[0].data?.access_token}`,
-    },
-  }
-
+  // // data from backedn to be stored here
+  // const [backendData, setBackendData] = useState([])
+  // const [dataToChange, setDataToChange] = useState()
   // actions import
-  const fetchUserList = useStoreActions(actions => actions.fetchUserList)
-  useEffect(() => {
+  useEffect(async () => {
     const payload = {
       pmk_admin: false,
       content_manager: true,
       user: true,
       filter: 'active',
     }
-    console.log(config)
-    fetchUserList(payload, config)
-  }, [userDetails])
-  console.log(userList)
+    console.log('fetchUserList')
+    const data = await API.get('admin/list_users/', payload)
+    console.log(data)
+  }, [])
 
   // refs
 
@@ -138,8 +126,6 @@ const UserListView = () => {
     setBackendData(tempArr)
   }, [])
 
-  const contentRow = []
-
   backendData.map((data, index) => {
     contentRow.push({
       name: data.first_name + ' ' + data.last_name,
@@ -164,7 +150,6 @@ const UserListView = () => {
       ),
     })
   })
-  console.log(dataToChange)
 
   const conditionalRowStyles = [
     {
@@ -199,71 +184,67 @@ const UserListView = () => {
   }
 
   return (
-    <>
-      <div className="user-list-view">
-        {openModal && (
-          <UserDetailsModal
-            data={backendData[dataToChange]}
-            change={changeModal}
-            saveAndExit={saveAndExitModal}
-          />
-        )}
-        <SecondaryHeading title={'User list view'} />
-        {/* Filters and Actions */}
-        <div className="filter-actions">
-          <div className="filter-icons">
-            <i
-              className="fa-solid fa-filter has-dropdown"
-              onClick={() => {
-                setShowFilterDropdown(!showFilterDropdown)
-              }}
-            />
-            <div
-              className="filter-dropdown dropdown"
-              style={{
-                display: showFilterDropdown ? 'flex' : 'none',
-              }}
-            >
-              <span className="dropdown-element">Active</span>
-              <span className="dropdown-element">Inactive</span>
-              <span className="dropdown-element">Internal User</span>
-              <span className="dropdown-element">External User</span>
-            </div>
-            <i className="fa-solid fa-trash" />
-          </div>
-          <div className="filter-actions">
-            <div className="filter-checkbox">
-              <input type="checkbox" value={'PMK Administrator'} /> PMK Administrator
-            </div>
-            <div className="filter-checkbox">
-              <input type="checkbox" value={'Content Manager'} /> Content Manager
-            </div>
-            <div className="filter-checkbox">
-              <input type="checkbox" value={'User'} /> User
-            </div>
-          </div>
-        </div>
-        <div className="user-list-view-table">
-          <DataTable
-            columns={columns}
-            data={contentRow}
-            selectableRows
-            customStyles={customStyles}
-            conditionalRowStyles={conditionalRowStyles}
-          />
-          {/* Add Row Option */}
-          <div
-            className="add_row"
+    <div className="user-list-view">
+      {openModal && (
+        <UserDetailsModal
+          data={backendData[dataToChange]}
+          change={changeModal}
+          saveAndExit={saveAndExitModal}
+        />
+      )}
+      <SecondaryHeading title={'User list view'} />
+      <div className="filter-actions">
+        <div className="filter-icons">
+          <i
+            className="fa-solid fa-filter has-dropdown"
             onClick={() => {
-              setChangeModal('Add')
-              setOpenModal(true)
+              setShowFilterDropdown(!showFilterDropdown)
+            }}
+          />
+          <div
+            className="filter-dropdown dropdown"
+            style={{
+              display: showFilterDropdown ? 'flex' : 'none',
             }}
           >
-            <i className="fa-solid fa-plus" /> Add
+            <span className="dropdown-element">Active</span>
+            <span className="dropdown-element">Inactive</span>
+            <span className="dropdown-element">Internal User</span>
+            <span className="dropdown-element">External User</span>
+          </div>
+          <i className="fa-solid fa-trash" />
+        </div>
+        <div className="filter-actions">
+          <div className="filter-checkbox">
+            <input type="checkbox" value={'PMK Administrator'} /> PMK Administrator
+          </div>
+          <div className="filter-checkbox">
+            <input type="checkbox" value={'Content Manager'} /> Content Manager
+          </div>
+          <div className="filter-checkbox">
+            <input type="checkbox" value={'User'} /> User
           </div>
         </div>
       </div>
-    </>
+      <div className="user-list-view-table">
+        <DataTable
+          columns={columns}
+          data={contentRow}
+          selectableRows
+          customStyles={customStyles}
+          conditionalRowStyles={conditionalRowStyles}
+        />
+        <div
+          className="add_row"
+          onClick={() => {
+            setChangeModal('Add')
+            setOpenModal(true)
+          }}
+        >
+          <i className="fa-solid fa-plus" /> Add
+        </div>
+      </div>
+    </div>
   )
 }
 

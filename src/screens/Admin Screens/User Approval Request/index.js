@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './style.css'
 
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
@@ -6,11 +6,17 @@ import SecondaryHeading from '../../../components/Secondary Heading'
 import Dropdown from '../../../components/Dropdown'
 import DataTable from 'react-data-table-component'
 import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
+import API from '../../../utils/api'
 
 const UserApprovalScreen = () => {
   const [openModal, setOpenModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  useEffect(async () => {
+    console.log('fetchUserList')
+    const data = await API.get('admin/user_approval')
+    console.log(data)
+  }, [])
 
   // refs
 

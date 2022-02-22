@@ -4,7 +4,7 @@ import Navbar from '../Navbar'
 import './style.css'
 const Header = () => {
   // fetch state
-  const userDetails = useStoreState(state => state.userDetails)
+  // const userDetails = useStoreState(state => state.userDetails)
 
   return (
     <div className="header">
@@ -17,7 +17,7 @@ const Header = () => {
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
         </div>
-        {userDetails[0]?.data?.access_token && <Navbar />}
+        {/* {userDetails[0]?.data?.access_token && <Navbar />} */}
       </div>
     </div>
   )
