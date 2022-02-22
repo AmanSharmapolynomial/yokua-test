@@ -16,7 +16,7 @@ import ChnagePassword from '../components/Forgot Password/ChangePassword'
 import { useStoreState } from 'easy-peasy'
 import { useLocation } from 'react-router'
 import HomeScreen from '../screens/Home Screen'
-import PrivateRoute from './../PrivateRoute'
+import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
 const Rout = () => {
   return (
