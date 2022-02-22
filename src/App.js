@@ -8,9 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="non_header_content relative">
-        <Routing />
-      </div>
+      <Routing />
     </div>
   )
 }

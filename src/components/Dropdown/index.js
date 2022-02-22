@@ -17,8 +17,10 @@ const Dropdown = ({ value, data }) => {
           display: showRoleDropdown ? 'flex' : 'none',
         }}
       >
-        {data.map(element => (
-          <span className="dropdown-element">{showRoleDropdown ? element : ''}</span>
+        {data.map((element, index) => (
+          <span key={index} className="dropdown-element">
+            {showRoleDropdown ? element : ''}
+          </span>
         ))}
       </div>
     </div>

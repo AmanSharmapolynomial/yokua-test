@@ -9,6 +9,7 @@
 
 .filter-dropdown{
     margin: 1rem 3.6rem;
+
 }
 .role-dropdown{
     left: 100px;
@@ -16,7 +17,7 @@
 .dropdown{
     position: absolute;
     flex-direction: column;
-    z-index: 1000;
+    z-index: 10000000;
     background-color: white;
     padding: 1rem;
     width: max-content;
@@ -26,6 +27,7 @@
 }
 .dropdown-element{
     cursor: pointer;
+
     margin: 0.3rem 0;
     font-size: 0.8rem;
 }

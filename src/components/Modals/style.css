@@ -43,6 +43,11 @@ input:focus, select:focus{
     cursor: pointer;
 }
 
+.modal-content{
+    display: flex;
+    flex-direction: column;
+}
+
 
 
 .modal-content{

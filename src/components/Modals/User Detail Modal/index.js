@@ -23,9 +23,11 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
 
   console.log(data)
   useEffect(() => {
-    emailRef.current.value = data.email
-    roleRef.current.value = data.role
-    nameRef.current.value = data.first_name + ' ' + data.last_name
+    if (data) {
+      emailRef.current.value = data.email
+      roleRef.current.value = data.role
+      nameRef.current.value = data.first_name + ' ' + data.last_name
+    }
     // contactRef.current.value = data.contact
     // emailRef.current.value = data.email
     // emailRef.current.value = data.email

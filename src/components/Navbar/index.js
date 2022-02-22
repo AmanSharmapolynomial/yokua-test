@@ -20,7 +20,7 @@ const Navbar = () => {
           </li>
           <li className="border-left border-right">
             <a>Product Lines</a>
-            <i class="fa-solid fa-caret-down " />
+            <i className="fa-solid fa-caret-down " />
           </li>
 
           <li className="border-right">
@@ -48,7 +48,7 @@ const Navbar = () => {
             }}
           >
             <a>Admin Management</a>
-            <i class="fa-solid fa-caret-down " />
+            <i className="fa-solid fa-caret-down " />
             <NavDropdown
               data={[
                 { name: 'User Management', url: '/admin/user/list-view' },
@@ -62,7 +62,7 @@ const Navbar = () => {
           </li>
         </ul>
         <div className="searchBar">
-          <i class="fa-solid fa-magnifying-glass" />
+          <i className="fa-solid fa-magnifying-glass" />
           <input
             ref={searchNavRef}
             type="text"

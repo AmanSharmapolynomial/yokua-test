@@ -21,61 +21,56 @@ const Routing = () => {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Navigate to="/auth/register" />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/auth/login"
-          element={
-            <AuthLayout>
-              <SignIn />
-              <InfoComponent />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/auth/register"
-          element={
-            <AuthLayout>
-              <SignUp />
-            </AuthLayout>
-          }
-        />
-        <Route path="/auth/forgot-password" element={<Forgot />} />
-        <Route path="/auth/reset-password" element={<ChnagePassword />} />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <AdminScreens />
-            </PrivateRoute>
-          }
-        >
-          <Route path="user/list-view" element={<UserListView />} />
+      <div className="non_header_content relative">
+        <Routes>
           <Route
-            path="user/approval-request"
+            path="/"
             element={
               <PrivateRoute>
-                <UserApprovalScreen />
+                <Navigate to="/auth/register" />
               </PrivateRoute>
             }
           />
-        </Route>
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <ProfileSettingScreen />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/auth/login"
+            element={
+              <AuthLayout>
+                <SignIn />
+                <InfoComponent />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/auth/register"
+            element={
+              <AuthLayout>
+                <SignUp />
+              </AuthLayout>
+            }
+          />
+          <Route path="/auth/forgot-password" element={<Forgot />} />
+          <Route path="/auth/reset-password" element={<ChnagePassword />} />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminScreens />
+              </PrivateRoute>
+            }
+          >
+            <Route path="user/list-view" element={<UserListView />} />
+            <Route
+              path="user/approval-request"
+              element={
+                <PrivateRoute>
+                  <UserApprovalScreen />
+                </PrivateRoute>
+              }
+            />
+          </Route>
+          <Route path="/profile" element={<ProfileSettingScreen />} />
+        </Routes>
+      </div>
     </Router>
   )
 }
