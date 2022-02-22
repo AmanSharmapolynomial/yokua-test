@@ -12,14 +12,14 @@ import { fetchUserList } from './../../../services/users.service'
 import API from '../../../utils/api'
 const UserListView = () => {
   // states
-  // const [showFilterDropdown, setShowFilterDropdown] = useState(false)
-  // const [openModal, setOpenModal] = useState(false)
-  // const [changeModal, setChangeModal] = useState('')
-  // const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [changeModal, setChangeModal] = useState('')
+  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
   // // data from backedn to be stored here
-  // const [backendData, setBackendData] = useState([])
-  // const [dataToChange, setDataToChange] = useState()
+  const [backendData, setBackendData] = useState([])
+  const [dataToChange, setDataToChange] = useState()
   // actions import
   useEffect(async () => {
     const payload = {
@@ -34,6 +34,8 @@ const UserListView = () => {
   }, [])
 
   // refs
+
+  const contentRow = []
 
   const columns = [
     {

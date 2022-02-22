@@ -20,6 +20,7 @@ import AuthLayout from '../layouts/AuthLayout'
 const Routing = () => {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route
           path="/"
