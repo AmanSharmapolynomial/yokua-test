@@ -4,11 +4,10 @@ import { setToken, getRefreshToken, getToken } from '../utils/token'
 // auth/login/
 export const login = catchAsync(async payload => {
   const {
-    data: { user, access_token, refresh_token },
+    data: { user, access_token },
   } = await API.post('auth/login/', payload)
-  setToken(access_token, refresh_token)
-  console.log({ user, access_token, refresh_token })
-  API.defaults.headers.common.Authorization = `Bearer ${token}`
+  setToken(access_token)
+  console.log({ user, access_token })
   return user
 })
 

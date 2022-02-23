@@ -1,5 +1,4 @@
 import React, { Children } from 'react'
-import Header from '../components/Header'
 import AdminScreen from '../screens/Admin Screens/User List View'
 import ProfileSettingScreen from '../screens/Profile Setting'
 import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom'
@@ -20,57 +19,48 @@ import AuthLayout from '../layouts/AuthLayout'
 const Routing = () => {
   return (
     <Router>
-      <Header />
-      <div className="non_header_content relative">
-        <Routes>
+      <Routes>
+        <Route path="/auth" element={<AuthLayout />}>
           <Route
-            path="/"
+            path="login"
             element={
-              <PrivateRoute>
-                <Navigate to="/auth/register" />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/auth/login"
-            element={
-              <AuthLayout>
+              <React.Fragment>
                 <SignIn />
                 <InfoComponent />
-              </AuthLayout>
+              </React.Fragment>
             }
           />
           <Route
-            path="/auth/register"
+            path="register"
             element={
               <AuthLayout>
                 <SignUp />
               </AuthLayout>
             }
           />
-          <Route path="/auth/forgot-password" element={<Forgot />} />
-          <Route path="/auth/reset-password" element={<ChnagePassword />} />
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute>
-                <AdminScreens />
-              </PrivateRoute>
-            }
-          >
-            <Route path="user/list-view" element={<UserListView />} />
-            <Route
-              path="user/approval-request"
-              element={
-                <PrivateRoute>
-                  <UserApprovalScreen />
-                </PrivateRoute>
-              }
-            />
-          </Route>
-          <Route path="/profile" element={<ProfileSettingScreen />} />
-        </Routes>
-      </div>
+          <Route path="forgot-password" element={<Forgot />} />
+          <Route path="reset-password" element={<ChnagePassword />} />
+        </Route>
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <AdminScreens />
+            </PrivateRoute>
+          }
+        >
+          <Route path="user/list-view" element={<UserListView />} />
+          <Route path="user/approval-request" element={<UserApprovalScreen />} />
+          <Route path="profile" element={<ProfileSettingScreen />} />
+        </Route>
+        <Route
+          element={
+            <PrivateRoute>
+              <Navigate to="/auth/login" />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </Router>
   )
 }

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import './style.css'
 import { login } from './../../services/auth.service'
+import { toast } from 'react-toastify'
 const SignIn = () => {
   // states
   const [email, setEmail] = useState('')
@@ -27,12 +28,15 @@ const SignIn = () => {
 
   // use actions
   const SignIn = async e => {
-    console.log(e)
     e.preventDefault()
     if (loginDetails.email && loginDetails.password) {
       const logindata = await login(loginDetails)
-      setUser(logindata)
-      navigate(location.state?.from?.pathname ?? '/')
+      console.log(logindata)
+      if (logindata) {
+        setUser(logindata)
+        toast.success('Login Successful')
+        navigate('/admin/user/list-view')
+      }
     }
   }
 
