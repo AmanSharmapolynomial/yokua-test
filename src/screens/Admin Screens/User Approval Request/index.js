@@ -8,20 +8,20 @@ import DataTable from 'react-data-table-component'
 import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
 import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
+import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
+  const [openDomainModal, setOpenDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const [rejectMsg, setRejectMsg] = useState()
+  const [rejectionData, setRejectionData] = useState()
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const [selectedDULRowsState, setSelectedDULRowsState] = useState([])
 
-  // useEffect(async () => {
-  //   console.log('fetchUserList')
-  //   const data = await API.get('admin/user_approval')
-  //   console.log(data)
-  // }, [])
+  // /admin/user_approval
 
   // refs
   const backendData = [
@@ -77,9 +77,57 @@ const UserApprovalScreen = () => {
   const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
   const [domainList, setDoaminList] = useState([])
 
-  useEffect(() => {
+  const [reloadTable, setReloadTable] = useState(false)
+
+  // useEffect(async () => {
+  //   var contentRowData = []
+  //   listuserdata.data.map((data, index) => {
+  //     contentRowData.push({
+  //       name: data.first_name + ' ' + data.last_name,
+  //       id: index,
+  //       role: (
+  //         <Dropdown
+  //           value={data.role}
+  //           data={dropdownData}
+  //           addOrEditUser={addOrEditUser}
+  //           userData={data}
+  //         />
+  //       ),
+  //       companyEmail: data.email,
+  //       status: data.status,
+  //       contact: '8854636363',
+  //       edit: (
+  //         <div className="edit-icons" key={index}>
+  //           <i
+  //             className="fa-solid fa-pen-to-square"
+  //             data={dropdownData}
+  //             onClick={() => {
+  //               setChangeModal('Edit')
+  //               setOpenModal(true)
+  //               setDataToChange(index)
+  //             }}
+  //           />
+  //           <i
+  //             className="fa-solid fa-trash"
+  //             onClick={() => {
+  //               // delete single user
+  //               deleteSingleUser(data.email)
+  //               setReloadTable(!reloadTable)
+  //             }}
+  //           />
+  //         </div>
+  //       ),
+  //     })
+  //   })
+  //   setBackendData(listuserdata.data)
+  //   setContentRow(contentRowData)
+  // }, [])
+
+  useEffect(async () => {
+    const listUserApprovalData = await API.get('admin/user_approval')
+
     const tempArr = []
-    backendData.map((data, index) => {
+    listUserApprovalData.data.map((data, index) => {
       tempArr.push({
         id: index,
         name: data.name,
@@ -93,10 +141,13 @@ const UserApprovalScreen = () => {
               <i
                 className="fa-solid fa-xmark reject"
                 onClick={() => {
-                  rejectSingleRequest({
-                    email_id: data.email_id,
+                  const sendData = {
+                    email: data.email_id,
                     status: 'deactivate',
-                  })
+                  }
+                  setRejectionData(sendData)
+                  setChangeModal('Rejected')
+                  setOpenARModal(true)
                 }}
               />
             </div>
@@ -104,10 +155,7 @@ const UserApprovalScreen = () => {
               <i
                 className="fa-solid fa-check"
                 onClick={() => {
-                  acceptSingleRequest({
-                    email_id: data.email_id,
-                    status: 'activate',
-                  })
+                  acceptSingleRequest(data.email_id)
                 }}
               />
             </div>
@@ -115,8 +163,9 @@ const UserApprovalScreen = () => {
         ),
       })
     })
+    const listDULdata = await API.get('admin/list_whitelisted_domain/2')
     const tempDULArr = []
-    backendDULData.map((data, index) => {
+    listDULdata.data.map((data, index) => {
       tempDULArr.push({
         id: index,
         name: data.name,
@@ -126,14 +175,15 @@ const UserApprovalScreen = () => {
         status: data.status,
       })
     })
+    const listDomains = await API.get('admin/list_whitelisted_domain')
     const tempDL = []
-    backendDomainData.map(data => {
+    listDomains.data.map(data => {
       tempDL.push(data)
     })
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
-  }, [])
+  }, [reloadTable])
 
   const columnsApprovalTable = [
     {
@@ -223,48 +273,88 @@ const UserApprovalScreen = () => {
 
   const saveAndExitModal = () => {
     setOpenARModal(false)
+    setOpenDomainModal(false)
   }
 
-  const deleteAllDUL = () => {
+  const deleteAllDUL = async () => {
     const dataArray = []
     selectedDULRowsState.map(row => {
-      let rowDataObj = {}
-      rowDataObj['email_id'] = row.email
-      dataArray.push(rowDataObj)
+      dataArray.push(row.companyEmail)
     })
     // send this data or call the api here to delete all selected DULs
-    if (dataArray.length > 0) {
-      console.log('delete')
+    if (selectedDULRowsState.length > 0) {
+      const payload = {
+        email: dataArray,
+      }
+      // not working issue from the backend - tell them to make api accept an email Array
+      const afterDeleteMsg = await API.post('admin/delete_user', payload)
+      console.log(afterDeleteMsg)
+      setReloadTable(!reloadTable)
     } else return
   }
 
-  const acceptAllRequest = () => {
+  const acceptAllRequest = async () => {
     const dataArray = []
     selectedRowsState.map(row => {
-      let rowDataObj = {}
-      rowDataObj['email_id'] = row.email
-      rowDataObj['status'] = 'activate'
-      dataArray.push(rowDataObj)
+      dataArray.push(row.email)
     })
     // send this data or call the api here to accept all request
-    if (dataArray.length > 0) {
-      console.log('accept all selected request')
+    if (selectedRowsActionUA.length > 0) {
+      const payload = {
+        email_id: dataArray[0],
+        status: 'activate',
+        msg: 'Accepted Your Request',
+      }
+      // server is giving internal error
+      const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+      console.log(afterAcceptMsg)
     } else return
   }
 
-  const acceptSingleRequest = data => {
+  const acceptSingleRequest = async data => {
     // call accept req api here
+    const payload = {
+      email_id: [data],
+      status: 'activate',
+      msg: 'Accepted Your Request',
+    }
+    // server is giving internal error
+    const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+    console.log(afterAcceptMsg)
     setChangeModal('Accepted')
     setOpenARModal(true)
     console.log('accepted', data)
   }
 
-  const [rejectMsg, setRejectMsg] = useState()
-  const rejectSingleRequest = data => {
-    setChangeModal('Rejected')
-    setOpenARModal(true)
-    console.log('rejected', data)
-    // call reject request api here if(msg.length > 0)
+  const deleteDomain = async data => {
+    // admin/delete_whitelisted_domain
+    const payload = {
+      domain_id: [data.id],
+      delete_associated_users: data.associated_users,
+    }
+    const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
+    console.log(afterDeleteMsg.data)
+  }
+
+  const createDomain = domain => {
+    const payload = {
+      domain_name: domain,
+    }
+    const afterCreateMsg = API.post('admin/add_domain', payload)
+    console.log(afterCreateMsg)
+  }
+
+  const rejectSingleRequest = async data => {
+    if (rejectMsg) {
+      const payload = {
+        email_id: [data.email],
+        status: data.status,
+        msg: rejectMsg,
+      }
+      // server is giving internal error
+      const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
+      console.log(afterRejectMsg.data)
+    }
   }
 
   const selectedRowsActionDUL = ({ selectedRows }) => {
@@ -284,7 +374,13 @@ const UserApprovalScreen = () => {
           change={changeModal}
           saveAndExit={saveAndExitModal}
           setRejectMsg={setRejectMsg}
+          rejectSingleRequest={rejectSingleRequest}
+          rejectionData={rejectionData}
         />
+      )}
+
+      {openDomainModal && (
+        <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
       )}
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
@@ -320,11 +416,31 @@ const UserApprovalScreen = () => {
                 <div className="listed-domain" key={index}>
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  <i className="fa-solid fa-trash" />
+                  <i
+                    className="fa-solid fa-trash"
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                      // admin/delete_whitelisted_domain
+                      const sendData = {
+                        id: data.id,
+                        associated_users: 'true',
+                      }
+                      deleteDomain(sendData)
+                    }}
+                  />
                 </div>
               ))}
             </div>
-            <button className="btn create-domain-btn">Create new domain</button>
+            <button
+              className="btn create-domain-btn"
+              onClick={() => {
+                setOpenDomainModal(true)
+              }}
+            >
+              Create new domain
+            </button>
           </div>
           <div className="domain-user-table-content">
             <div className="user-list-view-table">

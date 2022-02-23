@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 
-const AcceptRejectModal = ({ change, saveAndExit, setRejectMsg }) => {
+const AcceptRejectModal = ({
+  change,
+  saveAndExit,
+  setRejectMsg,
+  rejectionData,
+  rejectSingleRequest,
+}) => {
   const [msg, setMsg] = useState(null)
   if (change == 'Accepted') {
     setTimeout(() => {
@@ -35,6 +41,7 @@ const AcceptRejectModal = ({ change, saveAndExit, setRejectMsg }) => {
                 className="action-link btn"
                 onClick={() => {
                   setRejectMsg(msg)
+                  rejectSingleRequest(rejectionData)
                   saveAndExit()
                 }}
               >

@@ -33,21 +33,9 @@ const UserListView = () => {
   const [backendData, setBackendData] = useState([])
   const [dataToChange, setDataToChange] = useState()
 
-  // actions import
-  // useEffect(async () => {
-  //   const payload = {
-  //     pmk_admin: false,
-  //     content_manager: true,
-  //     user: true,
-  //     filter: 'active',
-  //   }
-  //   console.log('fetchUserList')
-  //   const data = await API.get('admin/list_users/', payload)
-  //   console.log(data)
-  // }, [])
-
   // refs
   let [contentRow, setContentRow] = useState([])
+  const [reloadTable, setReloadTable] = useState(false)
 
   const columns = [
     {
@@ -84,56 +72,6 @@ const UserListView = () => {
     },
   ]
 
-  // const backendData = [
-  //   {
-  //     first_name: 'Azhar',
-  //     last_name: 'Malik',
-  //     email: 'azhar@polynomial.ai',
-  //     role: 'User',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  //   {
-  //     first_name: 'Prakhar',
-  //     last_name: 'Kaushik',
-  //     email: 'prakhar.k@polynomial.ao',
-  //     role: 'PMK Administrator',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  //   {
-  //     first_name: 'naggu',
-  //     last_name: 'gfc',
-  //     email: 'n.k@gx.ai',
-  //     role: 'User',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  //   {
-  //     first_name: 'Azhar',
-  //     last_name: 'Malik',
-  //     email: 'azhar@polynomial.ai',
-  //     role: 'User',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  //   {
-  //     first_name: 'Prakhar',
-  //     last_name: 'Kaushik',
-  //     email: 'prakhar.k@polynomial.ao',
-  //     role: 'PMK Administrator',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  //   {
-  //     first_name: 'naggu',
-  //     last_name: 'gfc',
-  //     email: 'n.k@gx.ai',
-  //     role: 'User',
-  //     status: 'active',
-  //     company_name: '',
-  //   },
-  // ]
   useEffect(async () => {
     const payload = {
       pmk_admin: false,
@@ -147,12 +85,19 @@ const UserListView = () => {
       contentRowData.push({
         name: data.first_name + ' ' + data.last_name,
         id: index,
-        role: <Dropdown value={data.role} data={dropdownData} />,
+        role: (
+          <Dropdown
+            value={data.role}
+            data={dropdownData}
+            addOrEditUser={addOrEditUser}
+            userData={data}
+          />
+        ),
         companyEmail: data.email,
         status: data.status,
         contact: '8854636363',
         edit: (
-          <div className="edit-icons">
+          <div className="edit-icons" key={index}>
             <i
               className="fa-solid fa-pen-to-square"
               data={dropdownData}
@@ -162,16 +107,21 @@ const UserListView = () => {
                 setDataToChange(index)
               }}
             />
-            <i className="fa-solid fa-trash" />
+            <i
+              className="fa-solid fa-trash"
+              onClick={() => {
+                // delete single user
+                deleteSingleUser(data.email)
+                setReloadTable(!reloadTable)
+              }}
+            />
           </div>
         ),
       })
     })
     setBackendData(listuserdata.data)
     setContentRow(contentRowData)
-  }, [])
-
-  // console.log(filterCheckbox)
+  }, [reloadTable, openModal])
 
   const conditionalRowStyles = [
     {
@@ -203,8 +153,14 @@ const UserListView = () => {
 
   // Useful Functions to manage Users from Table
 
-  const saveAndExitModal = () => {
-    setOpenModal(false)
+  const saveAndExitModal = data => {
+    console.log(data)
+    if (data?.email && data) {
+      addOrEditUser(data)
+      setOpenModal(false)
+    } else {
+      setOpenModal(false)
+    }
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
@@ -213,10 +169,54 @@ const UserListView = () => {
     setSelectedRowsState(selectedRows)
   }
 
-  const deleteUser = () => {
+  const deleteUser = async () => {
     // write delete user api call here
-    console.log('delete Selected Users', selectedRowsState)
+    if (selectedRowsState.length > 0) {
+      const deleteUserEmails = []
+      console.log(selectedRowsState)
+      selectedRowsState.map((row, index) => {
+        deleteUserEmails.push(row.companyEmail)
+      })
+      const payload = {
+        email: 'n.k@gx.ai',
+      }
+      console.log(payload)
+      const afterDeleteMsg = await API.post('admin/delete_user', payload)
+      console.log(afterDeleteMsg)
+    }
+    console.log('deleted Selected Users', selectedRowsState)
   }
+
+  const deleteSingleUser = async userEmail => {
+    const payload = {
+      email: userEmail,
+    }
+    const afterDeleteMsg = await API.post('admin/delete_user', payload)
+    console.log(afterDeleteMsg)
+  }
+
+  const addOrEditUser = async data => {
+    const payload = {
+      email_id: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      role: data.role,
+      password: 'Password.01',
+    }
+    if (payload.email_id != '') {
+      const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
+      console.log(afterAddOrDeleteMsg.data)
+    } else {
+      console.log('enter email')
+    }
+    setReloadTable(!reloadTable)
+  }
+
+  // admin/delete_whitelisted_domain
+  // {
+  //   "domain_id" : [1],
+  //   "delete_associated_users" : true
+  // }
 
   // filters
   const filterTable = (filterValue, field) => {
@@ -293,6 +293,7 @@ const UserListView = () => {
     <div className="user-list-view">
       {openModal && (
         <UserDetailsModal
+          DetailsModal
           data={backendData[dataToChange]}
           change={changeModal}
           saveAndExit={saveAndExitModal}
