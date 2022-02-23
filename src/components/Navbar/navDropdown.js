@@ -18,8 +18,8 @@ const NavDropdown = ({ data, icon, renderDropdown }) => {
         }}
       >
         {renderDropdown &&
-          data.map(element => (
-            <Link to={element.url}>
+          data.map((element, index) => (
+            <Link to={element.url} key={index}>
               <span className="dropdown-element">{element.name}</span>
             </Link>
           ))}

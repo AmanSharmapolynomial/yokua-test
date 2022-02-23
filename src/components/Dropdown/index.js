@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './style.css'
 
-const Dropdown = ({ value, data }) => {
+const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   const [showRoleDropdown, setShowRoleDropdown] = useState(false)
 
   return (
@@ -18,7 +18,20 @@ const Dropdown = ({ value, data }) => {
         }}
       >
         {data.map((element, index) => (
-          <span key={index} className="dropdown-element">
+          <span
+            key={index}
+            className="dropdown-element"
+            onClick={() => {
+              const payload = {
+                email: userData.email,
+                firstName: userData.first_name,
+                lastName: userData.last_name,
+                role: element,
+              }
+              addOrEditUser(payload)
+              setShowRoleDropdown(false)
+            }}
+          >
             {showRoleDropdown ? element : ''}
           </span>
         ))}
