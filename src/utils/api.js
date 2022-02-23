@@ -7,7 +7,11 @@ API.interceptors.request.use(
   config => {
     const token = getToken()
     // console.log(token)
-    config.headers.Authorization = `Bearer ${token}`
+
+    if (token) {
+      // API.defaults.headers.common.Authorization =
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   error => {
