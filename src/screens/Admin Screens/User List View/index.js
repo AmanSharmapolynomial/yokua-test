@@ -30,7 +30,7 @@ const UserListView = () => {
   const filterFromCheckbox3Ref = useRef()
 
   // // data from backedn to be stored here
-  // const [backendData, setBackendData] = useState([])
+  const [backendData, setBackendData] = useState([])
   const [dataToChange, setDataToChange] = useState()
 
   // actions import
@@ -84,59 +84,67 @@ const UserListView = () => {
     },
   ]
 
-  const backendData = [
-    {
-      first_name: 'Azhar',
-      last_name: 'Malik',
-      email: 'azhar@polynomial.ai',
-      role: 'User',
-      status: 'active',
-      company_name: '',
-    },
-    {
-      first_name: 'Prakhar',
-      last_name: 'Kaushik',
-      email: 'prakhar.k@polynomial.ao',
-      role: 'PMK Administrator',
-      status: 'active',
-      company_name: '',
-    },
-    {
-      first_name: 'naggu',
-      last_name: 'gfc',
-      email: 'n.k@gx.ai',
-      role: 'User',
-      status: 'active',
-      company_name: '',
-    },
-    {
-      first_name: 'Azhar',
-      last_name: 'Malik',
-      email: 'azhar@polynomial.ai',
-      role: 'User',
-      status: 'active',
-      company_name: '',
-    },
-    {
-      first_name: 'Prakhar',
-      last_name: 'Kaushik',
-      email: 'prakhar.k@polynomial.ao',
-      role: 'PMK Administrator',
-      status: 'active',
-      company_name: '',
-    },
-    {
-      first_name: 'naggu',
-      last_name: 'gfc',
-      email: 'n.k@gx.ai',
-      role: 'User',
-      status: 'active',
-      company_name: '',
-    },
-  ]
-  useEffect(() => {
-    backendData.map((data, index) => {
-      contentRow.push({
+  // const backendData = [
+  //   {
+  //     first_name: 'Azhar',
+  //     last_name: 'Malik',
+  //     email: 'azhar@polynomial.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'Prakhar',
+  //     last_name: 'Kaushik',
+  //     email: 'prakhar.k@polynomial.ao',
+  //     role: 'PMK Administrator',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'naggu',
+  //     last_name: 'gfc',
+  //     email: 'n.k@gx.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'Azhar',
+  //     last_name: 'Malik',
+  //     email: 'azhar@polynomial.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'Prakhar',
+  //     last_name: 'Kaushik',
+  //     email: 'prakhar.k@polynomial.ao',
+  //     role: 'PMK Administrator',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  //   {
+  //     first_name: 'naggu',
+  //     last_name: 'gfc',
+  //     email: 'n.k@gx.ai',
+  //     role: 'User',
+  //     status: 'active',
+  //     company_name: '',
+  //   },
+  // ]
+  useEffect(async () => {
+    const payload = {
+      pmk_admin: false,
+      content_manager: true,
+      user: true,
+      filter: 'active',
+    }
+    const listuserdata = await API.post('admin/list_users', payload)
+    var contentRowData = []
+    listuserdata.data.map((data, index) => {
+      contentRowData.push({
         name: data.first_name + ' ' + data.last_name,
         id: index,
         role: <Dropdown value={data.role} data={dropdownData} />,
@@ -159,6 +167,8 @@ const UserListView = () => {
         ),
       })
     })
+    setBackendData(listuserdata.data)
+    setContentRow(contentRowData)
   }, [])
 
   // console.log(filterCheckbox)

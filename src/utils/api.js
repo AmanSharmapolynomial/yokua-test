@@ -2,11 +2,19 @@ import { create } from 'axios'
 import { getToken } from './token'
 
 const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
-const token = getToken()
-if (token) {
-  API.defaults.headers.common.Authorization = `Bearer ${token}`
-}
-// API.interceptors.response.use(null, e => {
+
+API.interceptors.request.use(
+  config => {
+    const token = getToken()
+    // console.log(token)
+    config.headers.Authorization = `Bearer ${token}`
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+// .interceptors.request.use(null, e => {
 //   //   if (!window.navigator.onLine) {
 //   //     toast.warning(
 //   //       "Looks like you're offline, please check your internet connection. Click on me to try refreshing the page",
@@ -19,9 +27,12 @@ if (token) {
 //   //     return null
 //   //   }
 
-//   if ((e.response.status > 400 && e.response.status !== 401) || e.code === 'ECONNABORTED') {
-//     throw new Error(e)
+//   if (token) {
+//     API.defaults.headers.common.Authorization =
 //   }
+//   // if ((e.response.status > 400 && e.response.status !== 401) || e.code === 'ECONNABORTED') {
+//   //   throw new Error(e)
+//   // }
 //   return e
 // })
 
