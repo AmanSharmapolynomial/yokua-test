@@ -5,14 +5,17 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { createStore, StoreProvider } from 'easy-peasy'
 import model from './model'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const store = createStore(model)
 
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider store={store}>
-      <App />
-    </StoreProvider>
+    <Router>
+      <StoreProvider store={store}>
+        <App />
+      </StoreProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 )

@@ -1,3 +1,6 @@
+.user-approval-screen{
+    width: 100%;
+}
 .edit-icons{
     display: flex;
     flex-direction: row;

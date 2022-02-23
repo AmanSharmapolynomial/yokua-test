@@ -1,4 +1,4 @@
-import React, { Children } from 'react'
+import React, { Children, useEffect, useState } from 'react'
 import AdminScreen from '../screens/Admin Screens/User List View'
 import ProfileSettingScreen from '../screens/Profile Setting'
 import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom'
@@ -16,47 +16,51 @@ import { useLocation } from 'react-router'
 import HomeScreen from '../screens/Home Screen'
 import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
+import Header from '../components/Header'
+
 const Routing = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/auth" element={<AuthLayout />}>
+    <React.Fragment>
+      <div className="non_header_content relative">
+        <Routes>
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route
+              path="login"
+              element={
+                <React.Fragment>
+                  <SignIn />
+                  <InfoComponent />
+                </React.Fragment>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <AuthLayout>
+                  <SignUp />
+                </AuthLayout>
+              }
+            />
+            <Route path="forgot-password" element={<Forgot />} />
+            <Route path="reset-password" element={<ChnagePassword />} />
+          </Route>
           <Route
-            path="login"
+            path="/admin"
             element={
-              <React.Fragment>
-                <SignIn />
-                <InfoComponent />
-              </React.Fragment>
+              <PrivateRoute>
+                <AdminScreens />
+              </PrivateRoute>
             }
-          />
-          <Route
-            path="register"
-            element={
-              <AuthLayout>
-                <SignUp />
-              </AuthLayout>
-            }
-          />
-          <Route path="forgot-password" element={<Forgot />} />
-          <Route path="reset-password" element={<ChnagePassword />} />
-        </Route>
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <AdminScreens />
-            </PrivateRoute>
-          }
-        >
-          <Route path="user/list-view" element={<UserListView />} />
-          <Route path="user/approval-request" element={<UserApprovalScreen />} />
-          <Route path="profile" element={<ProfileSettingScreen />} />
-          <Route path="*" element={<Navigate to="/user/list-view" />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/admin/user/list-view" />} />
-      </Routes>
-    </Router>
+          >
+            <Route path="user/list-view" element={<UserListView />} />
+            <Route path="user/approval-request" element={<UserApprovalScreen />} />
+            <Route path="profile" element={<ProfileSettingScreen />} />
+            <Route path="*" element={<Navigate to="/user/list-view" />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/admin/user/list-view" />} />
+        </Routes>
+      </div>
+    </React.Fragment>
   )
 }
 

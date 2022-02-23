@@ -212,12 +212,6 @@ const UserListView = () => {
     setReloadTable(!reloadTable)
   }
 
-  // admin/delete_whitelisted_domain
-  // {
-  //   "domain_id" : [1],
-  //   "delete_associated_users" : true
-  // }
-
   // filters
   const filterTable = (filterValue, field) => {
     console.log(filterValue.toLowerCase(), field)

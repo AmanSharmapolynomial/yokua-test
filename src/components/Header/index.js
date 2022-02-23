@@ -2,7 +2,7 @@ import { useStoreState } from 'easy-peasy'
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar'
 import './style.css'
-const Header = () => {
+const Header = ({ isLogedIn }) => {
   // fetch state
   // const userDetails = useStoreState(state => state.userDetails)
 
@@ -17,7 +17,7 @@ const Header = () => {
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
         </div>
-        <Navbar />
+        {<Navbar />}
         {/* {userDetails[0]?.data?.access_token && <Navbar />} */}
       </div>
     </div>

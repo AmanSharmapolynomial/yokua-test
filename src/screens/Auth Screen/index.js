@@ -17,6 +17,7 @@ const AuthScreen = () => {
   // if (path == '/auth') {
   //   return <Navigate to="/auth/login" replace />
   // }
+
   return (
     <>
       <div className="container forgot">

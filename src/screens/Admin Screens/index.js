@@ -11,9 +11,7 @@ const AdminScreens = () => {
   return (
     <React.Fragment>
       <Header />
-      <div className="non_header_content relative">
-        <Outlet />
-      </div>
+      <Outlet />
     </React.Fragment>
   )
 }
