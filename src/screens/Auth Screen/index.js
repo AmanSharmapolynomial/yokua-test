@@ -13,10 +13,10 @@ import { useLocation, Navigate } from 'react-router'
 
 const AuthScreen = () => {
   console.log(navigate)
-  const { path } = useLocation()
-  if (path == 'auth') {
-    return <Navigate to="/auth/login" replace />
-  }
+  // const { path } = useLocation()
+  // if (path == '/auth') {
+  //   return <Navigate to="/auth/login" replace />
+  // }
   return (
     <>
       <div className="container forgot">

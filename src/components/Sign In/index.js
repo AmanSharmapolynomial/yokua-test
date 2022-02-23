@@ -11,6 +11,7 @@ const SignIn = () => {
   // states
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isLoading, setLoading] = useState(false)
 
   // navigate
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ const SignIn = () => {
 
   // use actions
   const SignIn = async e => {
+    setLoading(true)
     e.preventDefault()
     if (loginDetails.email && loginDetails.password) {
       const logindata = await login(loginDetails)
@@ -38,6 +40,7 @@ const SignIn = () => {
         navigate('/admin/user/list-view')
       }
     }
+    setLoading(false)
   }
 
   // if (userDetails[0]?.data) {
@@ -60,13 +63,15 @@ const SignIn = () => {
         <form type="submit" onSubmit={SignIn}>
           <input
             type="email"
+            name="email"
             onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
             placeholder="Email"
           />
 
           <input
-            type="text"
+            name="password"
+            type="password"
             onChange={e => setPassword(e.target.value)}
             className="input-field input-field__password"
             placeholder="Password"
