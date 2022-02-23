@@ -33,14 +33,7 @@ const Routing = () => {
                 </React.Fragment>
               }
             />
-            <Route
-              path="register"
-              element={
-                <AuthLayout>
-                  <SignUp />
-                </AuthLayout>
-              }
-            />
+            <Route path="register" element={<SignUp />} />
             <Route path="forgot-password" element={<Forgot />} />
             <Route path="reset-password" element={<ChnagePassword />} />
           </Route>

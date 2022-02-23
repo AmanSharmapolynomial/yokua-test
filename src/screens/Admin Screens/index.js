@@ -8,6 +8,7 @@ const AdminScreens = () => {
   if (pathname == '/admin') {
     return <Navigate to="/admin/login" replace />
   }
+
   return (
     <React.Fragment>
       <Header />
