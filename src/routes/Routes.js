@@ -52,14 +52,9 @@ const Routing = () => {
           <Route path="user/list-view" element={<UserListView />} />
           <Route path="user/approval-request" element={<UserApprovalScreen />} />
           <Route path="profile" element={<ProfileSettingScreen />} />
+          <Route path="*" element={<Navigate to="/user/list-view" />} />
         </Route>
-        <Route
-          element={
-            <PrivateRoute>
-              <Navigate to="/auth/login" />
-            </PrivateRoute>
-          }
-        />
+        <Route path="*" element={<Navigate to="/admin/user/list-view" />} />
       </Routes>
     </Router>
   )
