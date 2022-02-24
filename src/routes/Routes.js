@@ -23,7 +23,15 @@ const Routing = () => {
     <React.Fragment>
       <div className="non_header_content relative">
         <Routes>
-          <Route path="/auth" element={<AuthLayout />}>
+          <Route
+            path="/auth"
+            element={
+              <React.Fragment>
+                <Header />
+                <AuthLayout />
+              </React.Fragment>
+            }
+          >
             <Route
               path="login"
               element={

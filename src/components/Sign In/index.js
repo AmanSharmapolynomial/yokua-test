@@ -82,7 +82,7 @@ const SignIn = () => {
           <button type="submit" className="submit-btn">
             Sign In
           </button>
-          <Link to="/auth/forgot" className="forgot-link">
+          <Link to="/auth/forgot-password" className="forgot-link">
             Forgot your password?
           </Link>
         </form>

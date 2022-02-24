@@ -1,8 +1,9 @@
 import { useStoreActions, useStoreState } from 'easy-peasy'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import './style.css'
 import { registerUser } from './../../services/auth.service'
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
   // navigate
@@ -23,7 +24,7 @@ const SignUp = () => {
   const [lastName, setLastName] = useState('')
   const [company, setCompany] = useState('')
 
-  const [actionLabel, setActionLabel] = useState('User Created')
+  const [actionLabel, setActionLabel] = useState('')
 
   // actions import
   // const fetchRegister = useStoreActions(actions => actions.fetchRegister)
@@ -48,20 +49,10 @@ const SignUp = () => {
   }
 
   // use actions
-  const register = e => {
+
+  const register = async e => {
     e.preventDefault()
-
     registerUser(registerDetails)
-
-    // if (password.includes('.') && password.length > 8 && password == confirmPassword) {
-    // } else {
-    //   setActionLabel('Check your Password')
-    //   alertRef.current.style.display = 'block'
-
-    //   setTimeout(() => {
-    //     alertRef.current.style.display = 'none'
-    //   }, 5000)
-    // }
   }
 
   return (

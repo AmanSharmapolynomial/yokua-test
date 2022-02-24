@@ -30,8 +30,17 @@ API.interceptors.response.use(null, e => {
   }
   console.log(e.response)
   if (e.response.status === 400) {
-    e.response.data.message.forEach(message => {
+    e.response.data.message?.forEach(message => {
       toast.error(message)
+    })
+    e.response.data.email?.forEach(email => {
+      toast.error(email)
+    })
+    e.response.data.password1?.forEach(password1 => {
+      toast.error(password1)
+    })
+    e.response.data.password2?.forEach(password2 => {
+      toast.error(email)
     })
   }
   // window.location.href = '/offline.html'

@@ -10,6 +10,7 @@ import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { fetchUserList } from './../../../services/users.service'
 import API from '../../../utils/api'
+import { toast } from 'react-toastify'
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
@@ -192,6 +193,7 @@ const UserListView = () => {
       email: userEmail,
     }
     const afterDeleteMsg = await API.post('admin/delete_user', payload)
+    toast.success(afterDeleteMsg.data.message)
     console.log(afterDeleteMsg)
   }
 
@@ -205,16 +207,15 @@ const UserListView = () => {
     }
     if (payload.email_id != '') {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
-      console.log(afterAddOrDeleteMsg.data)
+      toast.success(afterAddOrDeleteMsg.data.message)
     } else {
-      console.log('enter email')
+      toast.error('enter email')
     }
     setReloadTable(!reloadTable)
   }
 
   // filters
   const filterTable = (filterValue, field) => {
-    console.log(filterValue.toLowerCase(), field)
     const newRow = []
     backendData.map((data, index) => {
       if (data[field].toLowerCase() == filterValue.toLowerCase()) {

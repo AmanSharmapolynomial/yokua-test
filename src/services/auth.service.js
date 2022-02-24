@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import API from '../utils/api'
 import catchAsync from '../utils/catchAsync'
 import { setToken, getRefreshToken, getToken } from '../utils/token'
@@ -14,5 +15,8 @@ export const login = catchAsync(async payload => {
 // auth/register/
 export const registerUser = catchAsync(async payload => {
   const data = await API.post(`/auth/registration/`, payload)
+  if (data.status == 200) {
+    toast.success(data.data.message)
+  }
   return data
 })

@@ -9,7 +9,7 @@ const AuthLayout = ({ children }) => {
   }
   const { pathname } = useLocation()
   if (pathname == '/auth') {
-    return <Navigate to="/auth/login" replace />
+    return <Navigate to="/auth/login" />
   }
   return (
     <React.Fragment>
