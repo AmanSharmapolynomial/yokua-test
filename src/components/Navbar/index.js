@@ -4,7 +4,7 @@ import Dropdown from '../Dropdown'
 import NavDropdown from './navDropdown'
 import './style.css'
 
-const Navbar = () => {
+const Navbar = ({ isAdmin }) => {
   const [renderDropdown, setRenderDropdown] = useState(false)
 
   const searchNavRef = useRef()
@@ -37,29 +37,31 @@ const Navbar = () => {
           <li>
             <a>Contact</a>
           </li>
-          <li
-            className="border-left border-right"
-            onClick={() => {
-              setRenderDropdown(!renderDropdown)
-            }}
-            style={{
-              position: 'relative',
-              cursor: 'pointer',
-            }}
-          >
-            <a>Admin Management</a>
-            <i className="fa-solid fa-caret-down " />
-            <NavDropdown
-              data={[
-                { name: 'User Management', url: '/admin/user/list-view' },
-                { name: 'Event Management', url: '/admin/user/list-view' },
-                { name: 'User Request', url: '/admin/user/approval-request' },
-              ]}
-              style={{ position: 'absolute' }}
-              icon={true}
-              renderDropdown={renderDropdown}
-            />
-          </li>
+          {isAdmin && (
+            <li
+              className="border-left border-right"
+              onClick={() => {
+                setRenderDropdown(!renderDropdown)
+              }}
+              style={{
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+            >
+              <a>Admin Management</a>
+              <i className="fa-solid fa-caret-down " />
+              <NavDropdown
+                data={[
+                  { name: 'User Management', url: '/admin/user/list-view' },
+                  { name: 'Event Management', url: '/admin/user/list-view' },
+                  { name: 'User Request', url: '/admin/user/approval-request' },
+                ]}
+                style={{ position: 'absolute' }}
+                icon={true}
+                renderDropdown={renderDropdown}
+              />
+            </li>
+          )}
         </ul>
         <div className="searchBar">
           <i className="fa-solid fa-magnifying-glass" />

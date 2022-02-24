@@ -90,3 +90,18 @@
 .domain-text{
     width: 6rem;
 }
+
+@media(max-width: 800px){
+    .domain-user-table-content{
+        min-width: 100px !important;
+        width: 100%;
+    }
+    .domain-list-content{
+        width: 100%;
+        min-width: 100px !important;
+    }
+    .listed-domain{
+        min-width: 100px;
+        font-size: 0.8rem;
+    }
+}

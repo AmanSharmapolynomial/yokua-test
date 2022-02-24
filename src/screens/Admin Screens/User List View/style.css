@@ -27,7 +27,9 @@
     cursor: pointer;
     height: 50px;
 }
-
+.mgt{
+    margin-top: 2rem !important;
+}
 .add_row > i {
     background-color: black;
     color: white;
@@ -52,6 +54,7 @@
     justify-content: space-between;
     margin: 0 1rem;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .filter-icons{

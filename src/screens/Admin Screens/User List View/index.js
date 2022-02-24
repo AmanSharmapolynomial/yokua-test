@@ -352,7 +352,7 @@ const UserListView = () => {
             onClick={() => deleteUser()}
           />
         </div>
-        <div className="filter-actions">
+        <div className="filter-actions mgt">
           <div className="filter-checkbox">
             <input
               type="checkbox"
@@ -361,7 +361,7 @@ const UserListView = () => {
               onChange={e => {
                 filterFromCheckbox(e.target.checked, e.target.value)
               }}
-            />{' '}
+            />
             PMK Administrator
           </div>
           <div className="filter-checkbox">

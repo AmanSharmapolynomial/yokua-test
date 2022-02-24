@@ -11,7 +11,7 @@ const AdminScreens = () => {
 
   return (
     <React.Fragment>
-      <Header isLogedIn={true} />
+      <Header isLogedIn={true} isAdmin={true} />
       <Outlet />
     </React.Fragment>
   )

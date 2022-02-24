@@ -79,7 +79,7 @@ const SignIn = () => {
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             Incorrect Password
           </span>
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="submit-btn" disabled={isLoading}>
             Sign In
           </button>
           <Link to="/auth/forgot-password" className="forgot-link">

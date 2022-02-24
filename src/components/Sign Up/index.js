@@ -25,6 +25,7 @@ const SignUp = () => {
   const [company, setCompany] = useState('')
 
   const [actionLabel, setActionLabel] = useState('')
+  const [isLoading, setLoading] = useState(false)
 
   // actions import
   // const fetchRegister = useStoreActions(actions => actions.fetchRegister)
@@ -51,8 +52,10 @@ const SignUp = () => {
   // use actions
 
   const register = async e => {
+    setLoading(true)
     e.preventDefault()
     registerUser(registerDetails)
+    setLoading(false)
   }
 
   return (
@@ -105,7 +108,7 @@ const SignUp = () => {
           <span className="checkbox-text">Accept the term and conditions</span>
         </div>
 
-        <button type="submit" className="submit-btn" onClick={register}>
+        <button type="submit" className="submit-btn" onClick={register} disabled={isLoading}>
           Register
         </button>
       </form>

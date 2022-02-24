@@ -9,6 +9,7 @@ import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
 import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
+import { toast } from 'react-toastify'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
@@ -17,6 +18,7 @@ const UserApprovalScreen = () => {
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
   const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
+  const [isLoading, setLoading] = useState(false)
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const [selectedDULRowsState, setSelectedDULRowsState] = useState([])
@@ -24,104 +26,12 @@ const UserApprovalScreen = () => {
   // /admin/user_approval
 
   // refs
-  const backendData = [
-    {
-      name: 'Prakhar Kaushik',
-      date: '2022-02-20',
-      email_id: 'prakhar.k@polynomial.ao',
-      company: '',
-      request_for: 'New User Registeration',
-      type: 'notification',
-    },
-  ]
-
-  const backendDomainData = [
-    {
-      id: 1,
-      domain: 'www.yokogawa.com',
-      count: 3,
-    },
-    {
-      id: 2,
-      domain: 'www.polynomial.ai',
-      count: 2,
-    },
-    {
-      id: 3,
-      domain: 'UNK',
-      count: 1,
-    },
-    {
-      id: 4,
-      domain: 'xyz.com',
-      count: 0,
-    },
-  ]
-
-  const backendDULData = [
-    {
-      name: 'Prakhar Kaushik',
-      email_id: 'prakhar.k@polynomial.ao',
-      role: 'PMK Administrator',
-      status: 'active',
-    },
-    {
-      name: 'Prakhar Kaushik',
-      email_id: 'prakhar.k@polynomial.ai',
-      role: 'PMK Administrator',
-      status: 'active',
-    },
-  ]
 
   const [contentRowApprovalTable, setContentRowApprovalTable] = useState([])
   const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
   const [domainList, setDoaminList] = useState([])
 
   const [reloadTable, setReloadTable] = useState(false)
-
-  // useEffect(async () => {
-  //   var contentRowData = []
-  //   listuserdata.data.map((data, index) => {
-  //     contentRowData.push({
-  //       name: data.first_name + ' ' + data.last_name,
-  //       id: index,
-  //       role: (
-  //         <Dropdown
-  //           value={data.role}
-  //           data={dropdownData}
-  //           addOrEditUser={addOrEditUser}
-  //           userData={data}
-  //         />
-  //       ),
-  //       companyEmail: data.email,
-  //       status: data.status,
-  //       contact: '8854636363',
-  //       edit: (
-  //         <div className="edit-icons" key={index}>
-  //           <i
-  //             className="fa-solid fa-pen-to-square"
-  //             data={dropdownData}
-  //             onClick={() => {
-  //               setChangeModal('Edit')
-  //               setOpenModal(true)
-  //               setDataToChange(index)
-  //             }}
-  //           />
-  //           <i
-  //             className="fa-solid fa-trash"
-  //             onClick={() => {
-  //               // delete single user
-  //               deleteSingleUser(data.email)
-  //               setReloadTable(!reloadTable)
-  //             }}
-  //           />
-  //         </div>
-  //       ),
-  //     })
-  //   })
-  //   setBackendData(listuserdata.data)
-  //   setContentRow(contentRowData)
-  // }, [])
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
@@ -183,7 +93,7 @@ const UserApprovalScreen = () => {
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
-  }, [reloadTable])
+  }, [reloadTable, domainList])
 
   const columnsApprovalTable = [
     {
@@ -283,6 +193,7 @@ const UserApprovalScreen = () => {
     })
     // send this data or call the api here to delete all selected DULs
     if (selectedDULRowsState.length > 0) {
+      setLoading(true)
       const payload = {
         email: dataArray,
       }
@@ -290,6 +201,7 @@ const UserApprovalScreen = () => {
       const afterDeleteMsg = await API.post('admin/delete_user', payload)
       console.log(afterDeleteMsg)
       setReloadTable(!reloadTable)
+      setLoading(false)
     } else return
   }
 
@@ -333,7 +245,7 @@ const UserApprovalScreen = () => {
       delete_associated_users: data.associated_users,
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
-    console.log(afterDeleteMsg.data)
+    toast.success(afterDeleteMsg.data.message)
   }
 
   const createDomain = domain => {
@@ -456,6 +368,7 @@ const UserApprovalScreen = () => {
             <div className="btn-container">
               <button
                 className="action-btn btn"
+                disabled={isLoading}
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
                     deleteAllDUL()
