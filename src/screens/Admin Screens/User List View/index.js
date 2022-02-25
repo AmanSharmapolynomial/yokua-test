@@ -48,9 +48,8 @@ const UserListView = () => {
       minWidth: '10rem',
     },
     {
-      name: 'Role',
+      name: 'Permission Level',
       selector: row => row.role,
-      sortable: true,
     },
     {
       name: 'Company Email id',

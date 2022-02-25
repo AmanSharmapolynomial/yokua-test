@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 import '../style.css'
 
 const UserDetailsModal = ({ change, data, saveAndExit }) => {
@@ -13,6 +14,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   let stateRef = useRef()
   let pincodeRef = useRef()
   let alertRef = useRef()
+  let companyRef = useRef()
 
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
@@ -23,6 +25,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   const [address2, setAddress2] = useState('')
   const [state, setState] = useState('')
   const [pincode, setPincode] = useState('')
+  const [company, setCompany] = useState('')
 
   useEffect(() => {
     if (data && change == 'Edit') {
@@ -34,6 +37,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
       setLastName(data.last_name)
       setEmail(data.email)
       setRole(data.role)
+      setCompany(data.company)
     }
     setRole('User')
   }, [])
@@ -54,8 +58,14 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 lastName: lastName,
                 role: role,
               }
-              console.log(saveData)
-              saveAndExit(saveData)
+              if (saveData.firstName.length >= 5 && saveData.lastName.length >= 5) {
+                if (saveData.email.includes('@') && saveData.email.includes('.')) {
+                  console.log(saveData)
+                  saveAndExit(saveData)
+                } else toast.warning('Improper Email Format')
+              } else {
+                toast.warning('First & Last Name should be 5-50 chars')
+              }
             } else {
               alertRef.current.style.display = 'block'
               setTimeout(() => {
@@ -71,7 +81,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             document.body.style.overflow = 'scroll'
           }}
         />
-        <h3 className="modal-heading">{change} User Details</h3>
+        <h3 className="modal-heading">{change} User</h3>
         <div className="modal-content flex-row">
           <div className="user-img">
             <img src="/logo512.png" />
@@ -112,9 +122,9 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label">Role</label>
+              <label className="input-label">Permission Level</label>
               <select
-                className="input-text"
+                className="input-text select-role"
                 ref={roleRef}
                 onChange={e => {
                   setRole(e.target.value)
@@ -124,8 +134,21 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 <option>Content Manager</option>
                 <option>PMK Administrator</option>
               </select>
+              {/* <i className="fa-solid fa-caret-down drop-icon" /> */}
             </div>
             <div className="input-field-container">
+              <label className="input-label">Company</label>
+              <input
+                className="input-text"
+                type="text"
+                ref={companyRef}
+                onChange={e => {
+                  setCompany(e.target.value)
+                }}
+              />
+            </div>
+
+            {/* <div className="input-field-container">
               <label className="input-label">Contact No</label>
               <input
                 className="input-text"
@@ -176,7 +199,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
             <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
               Check Details
             </span>

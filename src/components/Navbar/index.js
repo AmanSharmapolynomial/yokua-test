@@ -68,7 +68,7 @@ const Navbar = ({ isAdmin }) => {
           <input
             ref={searchNavRef}
             type="text"
-            placeholder="What are you lookin for?"
+            placeholder="What are you looking for?"
             className="search_input"
           ></input>
         </div>

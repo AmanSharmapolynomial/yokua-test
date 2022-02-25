@@ -5,7 +5,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">Add New Domain</h3>
+        <h3 className="modal-heading">Create New Domain</h3>
         <div className="modal-content domain-modal">
           <div className="info-text">
             <input
