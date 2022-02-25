@@ -45,32 +45,35 @@ const UserApprovalScreen = () => {
         email: data.email_id,
         company: data.company,
         requestFor: data.request_for,
-        edit: (
-          <div className="edit-icons">
-            <div className="icon reject">
-              <i
-                className="fa-solid fa-xmark reject"
-                onClick={() => {
-                  const sendData = {
-                    email: data.email_id,
-                    status: 'deactivate',
-                  }
-                  setRejectionData(sendData)
-                  setChangeModal('Rejected')
-                  setOpenARModal(true)
-                }}
-              />
+        edit:
+          data.request_for == 'E-mail Id change' ? (
+            <div className="edit-icons">
+              <div className="icon reject">
+                <i
+                  className="fa-solid fa-xmark reject"
+                  onClick={() => {
+                    const sendData = {
+                      email: data.email_id,
+                      status: 'deactivate',
+                    }
+                    setRejectionData(sendData)
+                    setChangeModal('Rejected')
+                    setOpenARModal(true)
+                  }}
+                />
+              </div>
+              <div className="icon accept">
+                <i
+                  className="fa-solid fa-check"
+                  onClick={() => {
+                    acceptSingleRequest(data.email_id)
+                  }}
+                />
+              </div>
             </div>
-            <div className="icon accept">
-              <i
-                className="fa-solid fa-check"
-                onClick={() => {
-                  acceptSingleRequest(data.email_id)
-                }}
-              />
-            </div>
-          </div>
-        ),
+          ) : (
+            ''
+          ),
       })
     })
     const listDULdata = await API.get('admin/list_whitelisted_domain/2')
