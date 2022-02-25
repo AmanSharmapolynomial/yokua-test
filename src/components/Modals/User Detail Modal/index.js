@@ -68,10 +68,11 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
           className="fa-solid fa-remove save-icon"
           onClick={() => {
             saveAndExit()
+            document.body.style.overflow = 'scroll'
           }}
         />
         <h3 className="modal-heading">{change} User Details</h3>
-        <div className="modal-content">
+        <div className="modal-content flex-row">
           <div className="user-img">
             <img src="/logo512.png" />
           </div>

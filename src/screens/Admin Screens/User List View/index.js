@@ -108,6 +108,9 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+                document.body.style.overflow = 'hidden'
                 setDataToChange(index)
               }}
             />

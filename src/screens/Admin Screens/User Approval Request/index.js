@@ -46,14 +46,17 @@ const UserApprovalScreen = () => {
         company: data.company,
         requestFor: data.request_for,
         edit:
-          data.request_for.includes('email') &&
-          data.request_for.includes('email') &&
-          data.request_for.includes('change') ? (
+          data.request_for.toLowerCase().includes('email') &&
+          data.request_for.toLowerCase().includes('email') &&
+          data.request_for.toLowerCase().includes('change') ? (
             <div className="edit-icons">
               <div className="icon reject">
                 <i
                   className="fa-solid fa-xmark reject"
                   onClick={() => {
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
+                    document.body.style.overflow = 'hidden'
                     const sendData = {
                       email: data.email_id,
                       status: 'deactivate',
@@ -68,6 +71,9 @@ const UserApprovalScreen = () => {
                 <i
                   className="fa-solid fa-check"
                   onClick={() => {
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
+                    document.body.style.overflow = 'hidden'
                     acceptSingleRequest(data.email_id)
                   }}
                 />
@@ -188,6 +194,7 @@ const UserApprovalScreen = () => {
   const saveAndExitModal = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
+    document.body.style.overflow = 'scroll'
   }
 
   const deleteAllDUL = async () => {
@@ -353,6 +360,9 @@ const UserApprovalScreen = () => {
             <button
               className="btn create-domain-btn"
               onClick={() => {
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+                document.body.style.overflow = 'hidden'
                 setOpenDomainModal(true)
               }}
             >

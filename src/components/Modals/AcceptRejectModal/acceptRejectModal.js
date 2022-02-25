@@ -11,26 +11,28 @@ const AcceptRejectModal = ({
   if (change == 'Accepted') {
     setTimeout(() => {
       saveAndExit()
+      document.body.style.overflow = 'scroll'
     }, 3000)
   }
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
         <h3 className="modal-heading">Request {change}</h3>
-        <div className="modal-content">
+        <div className="modal-content domain-modal">
           {change == 'Rejected' && (
             <div className="info-text">
               <input
                 type="text"
+                className="domain-input"
                 placeholder="Reason to reject"
                 onChange={e => setMsg(e.target.value)}
               />
             </div>
           )}
           {change == 'Rejected' ? (
-            <div className="cta-links">
+            <div className="domain-modal-cta">
               <button
-                className="action-link btn"
+                className="cancel-domain btn"
                 onClick={() => {
                   saveAndExit()
                 }}
@@ -38,7 +40,7 @@ const AcceptRejectModal = ({
                 Cancel
               </button>
               <button
-                className="action-link btn"
+                className="btn"
                 onClick={() => {
                   setRejectMsg(msg)
                   rejectSingleRequest(rejectionData)

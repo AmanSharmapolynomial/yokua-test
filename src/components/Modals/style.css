@@ -49,6 +49,9 @@ input:focus, select:focus{
     flex-direction: column;
 }
 
+.flex-row{
+    flex-direction: row !important;
+}
 
 
 .modal-content{
