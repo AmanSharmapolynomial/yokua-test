@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import './style.css'
 import { registerUser } from './../../services/auth.service'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 const SignUp = () => {
   // navigate
@@ -52,16 +53,33 @@ const SignUp = () => {
   // use actions
 
   const register = async e => {
-    setLoading(true)
     e.preventDefault()
-    registerUser(registerDetails)
-    setLoading(false)
+
+    if (password.length < 8) {
+      setActionLabel('Password must contain 8-16 characters, one special and numeric value')
+      setTimeout(() => {
+        alertRef.current.style.display = 'none'
+      }, 3000)
+      alertRef.current.style.display = 'block'
+    } else {
+      setLoading(true)
+      registerUser(registerDetails)
+      setLoading(false)
+    }
   }
 
   return (
     <div className="signIn-container">
-      <h3 className="container__heading">Create a New Account</h3>
-      <form type="submit">
+      <div className="container-head">
+        <i
+          className="fa-solid fa-arrow-left back-arrow-btn"
+          onClick={() => {
+            navigate('/auth/login')
+          }}
+        />
+        <h3 className="container__heading">Create a New Account</h3>
+      </div>
+      <form type="submit" onSubmit={register}>
         <input
           type="text"
           required={true}
@@ -71,6 +89,7 @@ const SignUp = () => {
         />
         <input
           type="text"
+          required={true}
           className="input-field input-field__password"
           onChange={e => setLastName(e.target.value)}
           placeholder="Last Name"
@@ -78,6 +97,9 @@ const SignUp = () => {
         <input
           type="email"
           required={true}
+          style={{
+            textTransform: 'lowercase',
+          }}
           className="input-field input-field__email"
           onChange={e => setCompanyEmail(e.target.value)}
           placeholder="Company Email"
@@ -91,12 +113,13 @@ const SignUp = () => {
         />
         <input
           type="password"
+          required={true}
           className="input-field input-field__password"
           onChange={e => setConfirmPassword(e.target.value)}
           placeholder="Confirm Password"
         />
         <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
-          {actionLabel}{' '}
+          {actionLabel}
         </span>
         <input
           type="text"
@@ -108,15 +131,15 @@ const SignUp = () => {
           <span className="checkbox-text">Accept the term and conditions</span>
         </div>
 
-        <button type="submit" className="submit-btn" onClick={register} disabled={isLoading}>
-          Register
+        <button type="submit" className="submit-btn" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Register'}
         </button>
       </form>
       <div className="terms">
         By signing up, you agree with the
-        <a href="#" className="terms-link">
+        <Link to="/auth/terms-privacy" className="terms-link">
           Terms of Service and Privacy Policy
-        </a>
+        </Link>
       </div>
     </div>
   )

@@ -15,8 +15,9 @@ body {
 :root{
   --textColor1: #000;
   --textColor2: rgb(42, 42, 42);
-  --textColor3: rgb(129, 129, 129);
+  --textColor3: rgb(189, 189, 189);
   --textColor4: rgb(211, 211, 211);
+  --textColor5: rgb(255, 255, 255);
   --bgColor1: rgb(24, 24, 24);
   --bgColor2: #004F9B;
   --bgColor3: rgb(255, 255, 255);

@@ -64,6 +64,10 @@ const SignIn = () => {
           <input
             type="email"
             name="email"
+            required={true}
+            style={{
+              textTransform: 'lowercase',
+            }}
             onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
             placeholder="Email"
@@ -72,6 +76,7 @@ const SignIn = () => {
           <input
             name="password"
             type="password"
+            required={true}
             onChange={e => setPassword(e.target.value)}
             className="input-field input-field__password"
             placeholder="Password"
@@ -80,7 +85,7 @@ const SignIn = () => {
             Incorrect Password
           </span>
           <button type="submit" className="submit-btn" disabled={isLoading}>
-            Sign In
+            {isLoading ? 'Loading...' : 'Sign In'}
           </button>
           <Link to="/auth/forgot-password" className="forgot-link">
             Forgot your password?

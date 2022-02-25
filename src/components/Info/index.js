@@ -15,7 +15,7 @@ const InfoComponent = () => {
         <p className="info__text">
           If you do not have an account yet, please <br />
           <Link to="/auth/register" className="register-link">
-            register on the right.
+            click here to register.
           </Link>
         </p>
       </div>

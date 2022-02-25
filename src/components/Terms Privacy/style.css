@@ -1,0 +1,23 @@
+.terms-privacy-container{
+    max-width: 100rem;
+    min-width: 10rem;
+    width: 60vw;
+    height: 24rem !important;
+}
+
+.container-head > i {
+    position: absolute;
+    right: 17px;
+  
+    cursor: pointer;
+}
+@media(max-width: 800px){
+    .terms-privacy-container{
+        margin-top: 2rem;
+        width: 80vw !important;
+    }
+    .privacy-heading{
+        width: 11rem;
+        font-size: 0.8rem !important;
+    }
+}

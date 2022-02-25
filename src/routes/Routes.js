@@ -17,6 +17,7 @@ import HomeScreen from '../screens/Home Screen'
 import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
 import Header from '../components/Header'
+import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 
 const Routing = () => {
   return (
@@ -44,6 +45,7 @@ const Routing = () => {
             <Route path="register" element={<SignUp />} />
             <Route path="forgot-password" element={<Forgot />} />
             <Route path="reset-password" element={<ChnagePassword />} />
+            <Route path="terms-privacy" element={<TermsPolicy />} />
           </Route>
           <Route
             path="/admin"

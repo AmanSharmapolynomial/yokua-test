@@ -156,9 +156,7 @@ const UserApprovalScreen = () => {
   const conditionalRowStyles = [
     {
       when: row => row.id % 2 == 0,
-      style: {
-        backgroundColor: 'var(--bgColor2)',
-      },
+      style: {},
     },
   ]
   const customStyles = {
@@ -169,13 +167,14 @@ const UserApprovalScreen = () => {
       style: {
         paddingLeft: '8px', // override the cell padding for head cells
         paddingRight: '8px',
+        backgroundColor: 'var(--bgColor2)',
+        color: 'white',
       },
     },
     cells: {
       style: {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
-        color: 'var(--textColor3)',
         fontSize: '0.8rem',
       },
     },

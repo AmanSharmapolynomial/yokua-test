@@ -102,6 +102,9 @@ const UserListView = () => {
             <i
               className="fa-solid fa-pen-to-square"
               data={dropdownData}
+              style={{
+                color: 'var(--bgColor2)',
+              }}
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
@@ -110,6 +113,9 @@ const UserListView = () => {
             />
             <i
               className="fa-solid fa-trash"
+              style={{
+                color: '#CD2727',
+              }}
               onClick={() => {
                 // delete single user
                 deleteSingleUser(data.email)
@@ -127,9 +133,7 @@ const UserListView = () => {
   const conditionalRowStyles = [
     {
       when: row => row.id % 2 != 0,
-      style: {
-        backgroundColor: 'var(--bgColor2)',
-      },
+      style: {},
     },
   ]
   const customStyles = {
@@ -140,13 +144,15 @@ const UserListView = () => {
       style: {
         paddingLeft: '8px', // override the cell padding for head cells
         paddingRight: '8px',
+        backgroundColor: 'var(--bgColor2)',
+        color: 'white',
       },
     },
     cells: {
       style: {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
-        color: 'var(--textColor3)',
+
         fontSize: '0.8rem',
       },
     },
@@ -405,7 +411,13 @@ const UserListView = () => {
             setOpenModal(true)
           }}
         >
-          <i className="fa-solid fa-plus" /> Add
+          <i
+            className="fa-solid fa-plus"
+            style={{
+              backgroundColor: 'var(--bgColor2)',
+            }}
+          />{' '}
+          Add
         </div>
       </div>
     </div>
