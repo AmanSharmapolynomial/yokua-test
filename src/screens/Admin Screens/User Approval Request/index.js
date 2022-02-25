@@ -18,7 +18,6 @@ const UserApprovalScreen = () => {
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
   const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
-  const [isLoading, setLoading] = useState(false)
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const [selectedDULRowsState, setSelectedDULRowsState] = useState([])
@@ -32,6 +31,7 @@ const UserApprovalScreen = () => {
   const [domainList, setDoaminList] = useState([])
 
   const [reloadTable, setReloadTable] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
@@ -204,7 +204,6 @@ const UserApprovalScreen = () => {
     })
     // send this data or call the api here to delete all selected DULs
     if (selectedDULRowsState.length > 0) {
-      setLoading(true)
       const payload = {
         email: dataArray,
       }
@@ -212,7 +211,6 @@ const UserApprovalScreen = () => {
       const afterDeleteMsg = await API.post('admin/delete_user', payload)
       console.log(afterDeleteMsg)
       setReloadTable(!reloadTable)
-      setLoading(false)
     } else return
   }
 
@@ -320,14 +318,27 @@ const UserApprovalScreen = () => {
           </button>
         </div>
         <div className="user-list-view-table aprroval-table">
-          <DataTable
-            columns={columnsApprovalTable}
-            data={contentRowApprovalTable}
-            selectableRows
-            customStyles={customStyles}
-            conditionalRowStyles={conditionalRowStyles}
-            onSelectedRowsChange={selectedRowsActionUA}
-          />
+          {isLoading ? (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '5rem 0',
+              }}
+            >
+              Loading...
+            </div>
+          ) : (
+            <DataTable
+              columns={columnsApprovalTable}
+              data={contentRowApprovalTable}
+              selectableRows
+              customStyles={customStyles}
+              conditionalRowStyles={conditionalRowStyles}
+              onSelectedRowsChange={selectedRowsActionUA}
+            />
+          )}
         </div>
       </div>
       <div className="domain-user-list">
@@ -371,19 +382,31 @@ const UserApprovalScreen = () => {
           </div>
           <div className="domain-user-table-content">
             <div className="user-list-view-table">
-              <DataTable
-                columns={columnsDomainUserListTable}
-                data={contentRowDomainUserListTable}
-                selectableRows
-                customStyles={customStyles}
-                conditionalRowStyles={conditionalRowStyles}
-                onSelectedRowsChange={selectedRowsActionDUL}
-              />
+              {isLoading ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '5rem 0',
+                  }}
+                >
+                  Loading...
+                </div>
+              ) : (
+                <DataTable
+                  columns={columnsDomainUserListTable}
+                  data={contentRowDomainUserListTable}
+                  selectableRows
+                  customStyles={customStyles}
+                  conditionalRowStyles={conditionalRowStyles}
+                  onSelectedRowsChange={selectedRowsActionDUL}
+                />
+              )}
             </div>
             <div className="btn-container">
               <button
                 className="action-btn btn"
-                disabled={isLoading}
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
                     deleteAllDUL()

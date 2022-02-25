@@ -38,6 +38,8 @@ const UserListView = () => {
   let [contentRow, setContentRow] = useState([])
   const [reloadTable, setReloadTable] = useState(false)
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const columns = [
     {
       name: 'Name',
@@ -74,6 +76,7 @@ const UserListView = () => {
   ]
 
   useEffect(async () => {
+    setIsLoading(true)
     const payload = {
       pmk_admin: false,
       content_manager: true,
@@ -131,6 +134,7 @@ const UserListView = () => {
     })
     setBackendData(listuserdata.data)
     setContentRow(contentRowData)
+    setIsLoading(false)
   }, [reloadTable, openModal])
 
   const conditionalRowStyles = [
@@ -398,14 +402,27 @@ const UserListView = () => {
         </div>
       </div>
       <div className="user-list-view-table">
-        <DataTable
-          columns={columns}
-          data={contentRow}
-          selectableRows
-          customStyles={customStyles}
-          conditionalRowStyles={conditionalRowStyles}
-          onSelectedRowsChange={selectedRowsAction}
-        />
+        {isLoading ? (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '5rem 0',
+            }}
+          >
+            Loading...
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={contentRow}
+            selectableRows
+            customStyles={customStyles}
+            conditionalRowStyles={conditionalRowStyles}
+            onSelectedRowsChange={selectedRowsAction}
+          />
+        )}
 
         <div
           className="add_row"
