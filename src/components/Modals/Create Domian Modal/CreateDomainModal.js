@@ -5,34 +5,40 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <i
-          className="fa-solid fa-circle-xmark"
-          onClick={() => {
-            saveAndExit()
-          }}
-        />
-        <h3 className="modal-heading">Add New Domnai</h3>
-        <div className="modal-content">
+        <h3 className="modal-heading">Add New Domain</h3>
+        <div className="modal-content domain-modal">
           <div className="info-text">
             <input
               type="text"
+              className="domain-input"
+              placeholder="Name"
               onChange={e => {
                 setDomain(e.target.value)
               }}
             />
           </div>
-          <button
-            className="action-link"
-            onClick={() => {
-              if (domain) {
-                addDomain(domain)
+          <div className="domain-modal-cta">
+            <button
+              className="btn "
+              onClick={() => {
+                if (domain) {
+                  addDomain(domain)
 
+                  saveAndExit()
+                }
+              }}
+            >
+              Confirm
+            </button>
+            <button
+              className="btn cancel-domain"
+              onClick={() => {
                 saveAndExit()
-              }
-            }}
-          >
-            Add Domain
-          </button>
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

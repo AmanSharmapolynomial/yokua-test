@@ -46,7 +46,9 @@ const UserApprovalScreen = () => {
         company: data.company,
         requestFor: data.request_for,
         edit:
-          data.request_for == 'E-mail Id change' ? (
+          data.request_for.includes('email') &&
+          data.request_for.includes('email') &&
+          data.request_for.includes('change') ? (
             <div className="edit-icons">
               <div className="icon reject">
                 <i

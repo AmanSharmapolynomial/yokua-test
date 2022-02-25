@@ -21,6 +21,7 @@ body {
   --bgColor1: rgb(24, 24, 24);
   --bgColor2: #004F9B;
   --bgColor3: rgb(255, 255, 255);
+  --bgColor4: rgb(174, 174, 174);
 }
 .non_header_content{
   margin-top: 8rem;
