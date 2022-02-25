@@ -334,6 +334,7 @@ const UserApprovalScreen = () => {
                     className="fa-solid fa-trash"
                     style={{
                       cursor: 'pointer',
+                      color: '#CD2727',
                     }}
                     onClick={() => {
                       // admin/delete_whitelisted_domain

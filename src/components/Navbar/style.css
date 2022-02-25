@@ -10,7 +10,7 @@ ul{
     display: flex;
     border: 1px solid;
     margin: 0.5rem 1rem;
-    
+    background-color: white;
     align-items: center;
     justify-content: center;
     max-width: 60rem;
@@ -41,7 +41,7 @@ i{
 
 .search_input{
     border: 1px solid black;
-    background: none;
+    background: white;
 
 
     width: 80%;
@@ -68,7 +68,7 @@ position: absolute;
 top: 5.3px;
 left: 8px;
 }
-@media(max-width: 800px){
+@media(max-width: 970px){
     .nav{
         display: none;
     }
