@@ -62,9 +62,13 @@ const SignUp = () => {
       }, 3000)
       alertRef.current.style.display = 'block'
     } else {
-      setLoading(true)
-      registerUser(registerDetails)
-      setLoading(false)
+      if (password != confirmPassword) {
+        toast.error('Password and Confirm Password should be same')
+      } else {
+        setLoading(true)
+        registerUser(registerDetails)
+        setLoading(false)
+      }
     }
   }
 
