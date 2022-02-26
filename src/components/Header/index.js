@@ -11,9 +11,9 @@ const Header = ({ isLogedIn, isAdmin }) => {
     <div
       className="header"
       style={{
-        height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '10vh',
+        height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '6vh',
         maxHeight: '10rem',
-        minHeight: width > 820 ? '9rem' : '5rem',
+        minHeight: isLogedIn ? (width > 820 ? '9rem' : '5rem') : '5rem',
       }}
     >
       <div className="header_max-width">

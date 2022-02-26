@@ -37,8 +37,8 @@ const Routing = () => {
               path="login"
               element={
                 <React.Fragment>
-                  <SignIn />
                   <InfoComponent />
+                  <SignIn />
                 </React.Fragment>
               }
             />
