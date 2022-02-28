@@ -32,6 +32,7 @@ const UserApprovalScreen = () => {
 
   const [reloadTable, setReloadTable] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [DULfilter, setDULfilter] = useState('')
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
@@ -87,14 +88,28 @@ const UserApprovalScreen = () => {
     const listDULdata = await API.get('admin/list_whitelisted_domain/2')
     const tempDULArr = []
     listDULdata.data.map((data, index) => {
-      tempDULArr.push({
-        id: index,
-        name: data.name,
-        role: data.role,
-        companyEmail: data.email_id,
-        company: 'Yokogawa',
-        status: data.status,
-      })
+      const domain = data.email_id.split('@')[1]
+      if (DULfilter.length > 0) {
+        if (domain == DULfilter && DULfilter != 'undefined.undefined') {
+          tempDULArr.push({
+            id: index,
+            name: data.name,
+            role: data.role,
+            companyEmail: data.email_id,
+            company: 'Yokogawa',
+            status: data.status,
+          })
+        }
+      } else {
+        tempDULArr.push({
+          id: index,
+          name: data.name,
+          role: data.role,
+          companyEmail: data.email_id,
+          company: 'Yokogawa',
+          status: data.status,
+        })
+      }
     })
     const listDomains = await API.get('admin/list_whitelisted_domain')
     const tempDL = []
@@ -347,7 +362,13 @@ const UserApprovalScreen = () => {
           <div className="domain-list-content">
             <div className="domain-list">
               {domainList.map((data, index) => (
-                <div className="listed-domain" key={index}>
+                <div
+                  className="listed-domain"
+                  key={index}
+                  onClick={() => {
+                    setDULfilter(data.domain.split('.')[1] + '.' + data.domain.split('.')[2])
+                  }}
+                >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
                   <i

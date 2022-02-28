@@ -167,7 +167,6 @@ const UserListView = () => {
   // Useful Functions to manage Users from Table
 
   const saveAndExitModal = data => {
-    console.log(data)
     if (data?.email && data) {
       addOrEditUser(data)
       setOpenModal(false)
@@ -191,7 +190,7 @@ const UserListView = () => {
         deleteUserEmails.push(row.companyEmail)
       })
       const payload = {
-        email: 'n.k@gx.ai',
+        email: deleteUserEmails,
       }
       console.log(payload)
       const afterDeleteMsg = await API.post('admin/delete_user', payload)
@@ -206,7 +205,6 @@ const UserListView = () => {
     }
     const afterDeleteMsg = await API.post('admin/delete_user', payload)
     toast.success(afterDeleteMsg.data.message)
-    console.log(afterDeleteMsg)
   }
 
   const addOrEditUser = async data => {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const CreateNewDomain = ({ saveAndExit, addDomain }) => {
-  const [domain, setDomain] = useState()
+  const [domain, setDomain] = useState('')
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
@@ -19,12 +20,15 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
           </div>
           <div className="domain-modal-cta">
             <button
-              className="btn "
+              className="btn"
               onClick={() => {
                 if (domain) {
-                  addDomain(domain)
-
-                  saveAndExit()
+                  if (domain.includes('.')) {
+                    addDomain(domain)
+                    saveAndExit()
+                  } else {
+                    toast.error('Enter Domain in format - yourdomain.xyz')
+                  }
                 }
               }}
             >

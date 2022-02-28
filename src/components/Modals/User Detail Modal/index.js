@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import '../style.css'
+import validator from 'validator'
 
 const UserDetailsModal = ({ change, data, saveAndExit }) => {
   // refs
@@ -59,14 +60,19 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 role: role,
               }
               if (saveData.firstName.length >= 5 && saveData.lastName.length >= 5) {
-                if (saveData.email.includes('@') && saveData.email.includes('.')) {
-                  console.log(saveData)
-                  saveAndExit(saveData)
-                } else toast.warning('Improper Email Format')
+                if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                  if (validator.isEmail(saveData.email)) {
+                    console.log(saveData)
+                    saveAndExit(saveData)
+                  } else toast.warning('Improper Email Format')
+                } else {
+                  toast.warning('First & Last Name should only contain letters')
+                }
               } else {
                 toast.warning('First & Last Name should be 5-50 chars')
               }
             } else {
+              toast.warning('Check Details')
               alertRef.current.style.display = 'block'
               setTimeout(() => {
                 alertRef.current.style.display = 'none'
