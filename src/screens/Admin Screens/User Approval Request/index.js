@@ -30,7 +30,7 @@ const UserApprovalScreen = () => {
   const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
   const [domainList, setDoaminList] = useState([])
 
-  const [reloadTable, setReloadTable] = useState(false)
+  const [reloadTable, setReloadTable] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [DULfilter, setDULfilter] = useState('')
 
@@ -116,10 +116,13 @@ const UserApprovalScreen = () => {
     listDomains.data.map(data => {
       tempDL.push(data)
     })
+
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
-  }, [reloadTable, domainList])
+  }, [reloadTable])
+
+  useEffect(async () => {}, [])
 
   const columnsApprovalTable = [
     {
@@ -244,6 +247,7 @@ const UserApprovalScreen = () => {
       // server is giving internal error
       const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterAcceptMsg)
+      setReloadTable(!reloadTable)
     } else return
   }
 
@@ -270,6 +274,7 @@ const UserApprovalScreen = () => {
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
     toast.success(afterDeleteMsg.data.message)
+    setReloadTable(!reloadTable)
   }
 
   const createDomain = domain => {
@@ -278,6 +283,7 @@ const UserApprovalScreen = () => {
     }
     const afterCreateMsg = API.post('admin/add_domain', payload)
     console.log(afterCreateMsg)
+    setReloadTable(!reloadTable)
   }
 
   const rejectSingleRequest = async data => {
@@ -290,6 +296,7 @@ const UserApprovalScreen = () => {
       // server is giving internal error
       const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterRejectMsg.data)
+      setReloadTable(!reloadTable)
     }
   }
 

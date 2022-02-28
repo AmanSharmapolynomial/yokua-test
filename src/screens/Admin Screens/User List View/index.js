@@ -16,16 +16,16 @@ const UserListView = () => {
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
-  const [filter, setFilter] = useState(null)
-  const [filterCheckbox, setFilterCheckbox] = useState('')
+  const [filterCheckboxPMK, setFilterCheckboxPMK] = useState(true)
+  const [filterCheckboxCM, setFilterCheckboxCM] = useState(true)
+  const [filterCheckboxUser, setFilterCheckboxUser] = useState(true)
+  const [filterActive, setFilterActive] = useState('')
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
-  const filter3Ref = useRef()
-  const filter4Ref = useRef()
   const filterFromCheckbox1Ref = useRef()
   const filterFromCheckbox2Ref = useRef()
   const filterFromCheckbox3Ref = useRef()
@@ -74,16 +74,22 @@ const UserListView = () => {
     },
   ]
 
+  useEffect(() => {
+    filterFromCheckbox1Ref.current.checked = true
+    filterFromCheckbox2Ref.current.checked = true
+    filterFromCheckbox3Ref.current.checked = true
+  }, [])
+
   useEffect(async () => {
     setIsLoading(true)
     const payload = {
-      pmk_admin: false,
-      content_manager: true,
-      user: true,
-      filter: 'active',
+      pmk_admin: filterCheckboxPMK,
+      content_manager: filterCheckboxCM,
+      user: filterCheckboxUser,
+      filter: filterActive,
     }
     const listuserdata = await API.post('admin/list_users', payload)
-    var contentRowData = []
+    const contentRowData = []
     listuserdata.data.map((data, index) => {
       contentRowData.push({
         name: data.first_name + ' ' + data.last_name,
@@ -134,7 +140,7 @@ const UserListView = () => {
     setBackendData(listuserdata.data)
     setContentRow(contentRowData)
     setIsLoading(false)
-  }, [reloadTable, openModal])
+  }, [reloadTable, filterActive])
 
   const conditionalRowStyles = [
     {
@@ -225,74 +231,11 @@ const UserListView = () => {
   }
 
   // filters
-  const filterTable = (filterValue, field) => {
-    const newRow = []
-    backendData.map((data, index) => {
-      if (data[field].toLowerCase() == filterValue.toLowerCase()) {
-        newRow.push({
-          name: data.first_name + ' ' + data.last_name,
-          id: index,
-          role: <Dropdown value={data.role} data={dropdownData} />,
-          companyEmail: data.email,
-          status: data.status,
-          contact: '8854636363',
-          edit: (
-            <div className="edit-icons">
-              <i
-                className="fa-solid fa-pen-to-square"
-                data={dropdownData}
-                onClick={() => {
-                  setChangeModal('Edit')
-                  setOpenModal(true)
-                  setDataToChange(index)
-                }}
-              />
-              <i className="fa-solid fa-trash" />
-            </div>
-          ),
-        })
-      }
-    })
-    setContentRow(newRow)
+  const filterTable = value => {
+    setFilterActive(value)
   }
 
-  const filterFromCheckbox = (checked, value) => {
-    if (checked) {
-      setFilterCheckbox(value)
-      filterTable(value, 'role')
-    } else {
-      const newRow = []
-      backendData.map((data, index) => {
-        newRow.push({
-          name: data.first_name + ' ' + data.last_name,
-          id: index,
-          role: <Dropdown value={data.role} data={dropdownData} />,
-          companyEmail: data.email,
-          status: data.status,
-          contact: '8854636363',
-          edit: (
-            <div className="edit-icons">
-              <i
-                className="fa-solid fa-pen-to-square"
-                data={dropdownData}
-                onClick={() => {
-                  setChangeModal('Edit')
-                  setOpenModal(true)
-                  setDataToChange(index)
-                }}
-              />
-              <i className="fa-solid fa-trash" />
-            </div>
-          ),
-        })
-      })
-      setContentRow(newRow)
-    }
-  }
-
-  const filterFromStatus = value => {
-    filterTable(value, 'status')
-  }
+  const filterFromCheckbox = (checked, value) => {}
 
   return (
     <div className="user-list-view">
@@ -323,7 +266,14 @@ const UserListView = () => {
               className="dropdown-element"
               ref={filter1Ref}
               onClick={() => {
-                filterFromStatus(filter1Ref.current.innerText)
+                if (filterActive == 'active') {
+                  filterTable('')
+                  filter1Ref.current.style.fontWeight = '300'
+                } else {
+                  filterTable('active')
+                  filter1Ref.current.style.fontWeight = 'bold'
+                  filter2Ref.current.style.fontWeight = '300'
+                }
               }}
             >
               Active
@@ -332,34 +282,26 @@ const UserListView = () => {
               className="dropdown-element"
               ref={filter2Ref}
               onClick={() => {
-                filterFromStatus(filter2Ref.current.innerText)
+                if (filterActive == 'inactive') {
+                  filterTable('')
+                  filter2Ref.current.style.fontWeight = '300'
+                } else {
+                  filterTable('inactive')
+                  filter2Ref.current.style.fontWeight = 'bold'
+                  filter1Ref.current.style.fontWeight = '300'
+                }
               }}
             >
               Inactive
-            </span>
-            <span
-              className="dropdown-element"
-              ref={filter3Ref}
-              onClick={() => {
-                filterFromStatus(filter3Ref.current.innerText)
-              }}
-            >
-              Internal User
-            </span>
-            <span
-              className="dropdown-element"
-              ref={filter4Ref}
-              onClick={() => {
-                filterFromStatus(filter4Ref.current.innerText)
-              }}
-            >
-              External User
             </span>
           </div>
           <i
             className="fa-solid fa-trash"
             style={{ cursor: 'pointer' }}
-            onClick={() => deleteUser()}
+            onClick={() => {
+              deleteUser()
+              setReloadTable(!reloadTable)
+            }}
           />
         </div>
         <div className="filter-actions mgt">
@@ -370,6 +312,13 @@ const UserListView = () => {
               value="PMK Administrator"
               onChange={e => {
                 filterFromCheckbox(e.target.checked, e.target.value)
+                if (e.target.checked) {
+                  setFilterCheckboxPMK(true)
+                  setReloadTable(!reloadTable)
+                } else {
+                  setFilterCheckboxPMK(false)
+                  setReloadTable(!reloadTable)
+                }
               }}
             />
             PMK Administrator
@@ -380,7 +329,13 @@ const UserListView = () => {
               ref={filterFromCheckbox2Ref}
               value="Content Manager"
               onChange={e => {
-                filterFromCheckbox(e.target.checked, e.target.value)
+                if (e.target.checked) {
+                  setFilterCheckboxCM(true)
+                  setReloadTable(!reloadTable)
+                } else {
+                  setFilterCheckboxCM(false)
+                  setReloadTable(!reloadTable)
+                }
               }}
             />
             Content Manager
@@ -391,7 +346,13 @@ const UserListView = () => {
               ref={filterFromCheckbox3Ref}
               value="User"
               onChange={e => {
-                filterFromCheckbox(e.target.checked, e.target.value)
+                if (e.target.checked) {
+                  setFilterCheckboxUser(true)
+                  setReloadTable(!reloadTable)
+                } else {
+                  setFilterCheckboxUser(false)
+                  setReloadTable(!reloadTable)
+                }
               }}
             />{' '}
             User
