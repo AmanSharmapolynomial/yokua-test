@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useDetectClickOutside } from 'react-detect-click-outside'
 import { Link } from 'react-router-dom'
 import './style.css'
 
 const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   const [showRoleDropdown, setShowRoleDropdown] = useState(false)
+  const closeDropdown = () => {
+    setShowRoleDropdown(false)
+  }
+  const ref = useDetectClickOutside({ onTriggered: closeDropdown })
 
   return (
-    <div className="role-dropdown">
+    <div className="role-dropdown" ref={ref}>
       <div className="has-dropdown" onClick={() => setShowRoleDropdown(!showRoleDropdown)}>
         {value} <i className="fa-solid fa-sort-down " />
       </div>
