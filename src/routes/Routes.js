@@ -18,8 +18,11 @@ import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
 import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
+import { getUserRoles } from '../utils/token'
 
 const Routing = () => {
+  // get User Login Info
+
   return (
     <React.Fragment>
       <div className="non_header_content relative">
@@ -56,7 +59,20 @@ const Routing = () => {
             }
           >
             <Route path="user/list-view" element={<UserListView />} />
-            <Route path="user/approval-request" element={<UserApprovalScreen />} />
+
+            <Route
+              path="user/approval-request"
+              element={
+                <React.Fragment>
+                  {getUserRoles() == 'PMK Administrator' ? (
+                    <UserApprovalScreen />
+                  ) : (
+                    <Navigate to="/admin/user/list-view" />
+                  )}
+                </React.Fragment>
+              }
+            />
+
             <Route path="profile" element={<ProfileSettingScreen />} />
             <Route path="*" element={<Navigate to="/user/list-view" />} />
           </Route>

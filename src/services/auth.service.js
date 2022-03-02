@@ -1,13 +1,15 @@
 import { toast } from 'react-toastify'
 import API from '../utils/api'
 import catchAsync from '../utils/catchAsync'
-import { setToken, getRefreshToken, getToken } from '../utils/token'
+import { setToken, getRefreshToken, getToken, setUserRole } from '../utils/token'
+
 // auth/login/
 export const login = catchAsync(async payload => {
   const {
     data: { user, access_token },
   } = await API.post('auth/login/', payload)
   setToken(access_token)
+  setUserRole(user.role)
   console.log({ user, access_token })
   return user
 })

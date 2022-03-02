@@ -11,6 +11,8 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 import { fetchUserList } from './../../../services/users.service'
 import API from '../../../utils/api'
 import { toast } from 'react-toastify'
+import SearchTable from '../../../components/SearchTable'
+import { getUserRoles } from '../../../utils/token'
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
@@ -89,7 +91,6 @@ const UserListView = () => {
       filter: filterActive,
     }
     const listuserdata = await API.post('admin/list_users', payload)
-    console.log(listuserdata)
     const contentRowData = []
     listuserdata.data.map((data, index) => {
       contentRowData.push({
@@ -122,7 +123,7 @@ const UserListView = () => {
         companyEmail: data.email,
         status: data.status,
         company: data.company_name,
-        edit: (
+        edit: getUserRoles() == 'PMK Administrator' && (
           <div className="edit-icons" key={index}>
             <i
               className="fa-solid fa-pen-to-square"
@@ -253,8 +254,6 @@ const UserListView = () => {
     setFilterActive(value)
   }
 
-  const filterFromCheckbox = (checked, value) => {}
-
   return (
     <div className="user-list-view">
       {openModal && (
@@ -265,7 +264,9 @@ const UserListView = () => {
           saveAndExit={saveAndExitModal}
         />
       )}
+
       <SecondaryHeading title={'User list view'} />
+      {getUserRoles() == 'PMK Content Manager' && <SearchTable />}
       <div className="filter-actions">
         <div className="filter-icons">
           <i
@@ -313,14 +314,16 @@ const UserListView = () => {
               Inactive
             </span>
           </div>
-          <i
-            className="fa-solid fa-trash"
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              deleteUser()
-              setReloadTable(!reloadTable)
-            }}
-          />
+          {getUserRoles() == 'PMK Administrator' && (
+            <i
+              className="fa-solid fa-trash"
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                deleteUser()
+                setReloadTable(!reloadTable)
+              }}
+            />
+          )}
         </div>
         <div className="filter-actions mgt">
           <div className="filter-checkbox">
@@ -400,21 +403,23 @@ const UserListView = () => {
           />
         )}
 
-        <div
-          className="add_row"
-          onClick={() => {
-            setChangeModal('Add')
-            setOpenModal(true)
-          }}
-        >
-          <i
-            className="fa-solid fa-plus"
-            style={{
-              backgroundColor: 'var(--bgColor2)',
+        {getUserRoles() == 'PMK Administrator' && (
+          <div
+            className="add_row"
+            onClick={() => {
+              setChangeModal('Add')
+              setOpenModal(true)
             }}
-          />{' '}
-          Add
-        </div>
+          >
+            <i
+              className="fa-solid fa-plus"
+              style={{
+                backgroundColor: 'var(--bgColor2)',
+              }}
+            />{' '}
+            Add
+          </div>
+        )}
       </div>
     </div>
   )

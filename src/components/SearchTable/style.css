@@ -1,9 +1,18 @@
 .search_list{
     border: 1px solid black;
     background: var(--bgColor2);
-    width: 80%;
+    width: 30%;
+    margin: 1rem;
     min-width: 14rem;
     padding: 0.5rem 1.5rem;
     font-family: Poppins;
     color: black;
+}
+
+.user-list-search > input{
+    color: white;
+}
+
+.user-list-search > input::placeholder{
+    color: white;
 }

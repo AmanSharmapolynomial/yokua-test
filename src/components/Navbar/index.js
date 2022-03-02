@@ -1,11 +1,21 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getUserRoles } from '../../utils/token'
 import Dropdown from '../Dropdown'
 import NavDropdown from './navDropdown'
 import './style.css'
 
 const Navbar = ({ isAdmin }) => {
   const [renderDropdown, setRenderDropdown] = useState(false)
+
+  const navDropdownAdminData = [
+    { name: 'User Management', url: '/admin/user/list-view' },
+    { name: 'Event Management', url: '/admin/user/list-view' },
+  ]
+
+  if (getUserRoles() == 'PMK Administrator') {
+    navDropdownAdminData.push({ name: 'User Request', url: '/admin/user/approval-request' })
+  }
 
   const searchNavRef = useRef()
   return (
@@ -51,11 +61,7 @@ const Navbar = ({ isAdmin }) => {
               <a>Admin Management</a>
               <i className="fa-solid fa-caret-down " />
               <NavDropdown
-                data={[
-                  { name: 'User Management', url: '/admin/user/list-view' },
-                  { name: 'Event Management', url: '/admin/user/list-view' },
-                  { name: 'User Request', url: '/admin/user/approval-request' },
-                ]}
+                data={navDropdownAdminData}
                 style={{ position: 'absolute' }}
                 icon={true}
                 renderDropdown={renderDropdown}

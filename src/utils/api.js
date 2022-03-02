@@ -28,11 +28,14 @@ API.interceptors.response.use(null, e => {
     removeToken()
     window.location.href = '/auth/login'
   }
-  console.log(e.response)
-  if (e.response.status === 400) {
+
+  toast.error(e.response.data?.message)
+
+  if (e.response.status == 400) {
     e.response.data.message?.forEach(message => {
       toast.error(message)
     })
+
     e.response.data.email?.forEach(email => {
       toast.error(email)
     })

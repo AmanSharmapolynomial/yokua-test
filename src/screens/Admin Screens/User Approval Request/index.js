@@ -10,14 +10,18 @@ import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
 import { toast } from 'react-toastify'
+import { useStoreState } from 'easy-peasy'
+import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
   const [openDomainModal, setOpenDomainModal] = useState(false)
+  const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
   const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
+  const [deleteDomainData, setDeleteDomainData] = useState()
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const [selectedDULRowsState, setSelectedDULRowsState] = useState([])
@@ -32,7 +36,7 @@ const UserApprovalScreen = () => {
 
   const [reloadTable, setReloadTable] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const [DULfilter, setDULfilter] = useState('')
+  const [DULfilter, setDULfilter] = useState(1)
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
@@ -85,31 +89,17 @@ const UserApprovalScreen = () => {
           ),
       })
     })
-    const listDULdata = await API.get('admin/list_whitelisted_domain/2')
+    const listDULdata = await API.get(`admin/list_whitelisted_domain/${DULfilter}`)
     const tempDULArr = []
     listDULdata.data.map((data, index) => {
-      const domain = data.email_id.split('@')[1]
-      if (DULfilter.length > 0) {
-        if (domain == DULfilter && DULfilter != 'undefined.undefined') {
-          tempDULArr.push({
-            id: index,
-            name: data.name,
-            role: data.role,
-            companyEmail: data.email_id,
-            company: 'Yokogawa',
-            status: data.status,
-          })
-        }
-      } else {
-        tempDULArr.push({
-          id: index,
-          name: data.name,
-          role: data.role,
-          companyEmail: data.email_id,
-          company: 'Yokogawa',
-          status: data.status,
-        })
-      }
+      tempDULArr.push({
+        id: index,
+        name: data.name,
+        role: data.role,
+        companyEmail: data.email_id,
+        company: 'Yokogawa',
+        status: data.status,
+      })
     })
     const listDomains = await API.get('admin/list_whitelisted_domain')
     const tempDL = []
@@ -120,9 +110,7 @@ const UserApprovalScreen = () => {
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
-  }, [reloadTable])
-
-  useEffect(async () => {}, [])
+  }, [reloadTable, DULfilter])
 
   const columnsApprovalTable = [
     {
@@ -212,6 +200,7 @@ const UserApprovalScreen = () => {
   const saveAndExitModal = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
+    setOpenDeleteDomainModal(false)
     document.body.style.overflow = 'scroll'
   }
 
@@ -325,6 +314,14 @@ const UserApprovalScreen = () => {
       {openDomainModal && (
         <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
       )}
+
+      {openDeleteDomainModal && (
+        <DeleteDomainModal
+          saveAndExit={saveAndExitModal}
+          deleteDomain={deleteDomain}
+          data={deleteDomainData}
+        />
+      )}
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
         <div className="btn-container">
@@ -367,13 +364,22 @@ const UserApprovalScreen = () => {
         <h3>Domain User List</h3>
         <div className="domain-user-list-content">
           <div className="domain-list-content">
-            <div className="domain-list">
+            <div
+              className="domain-list"
+              style={{
+                maxHeight: '27rem',
+                overflow: 'scroll',
+              }}
+            >
               {domainList.map((data, index) => (
                 <div
                   className="listed-domain"
+                  style={{
+                    backgroundColor: DULfilter == data.id ? 'var(--bgColor4)' : 'white',
+                  }}
                   key={index}
                   onClick={() => {
-                    setDULfilter(data.domain.split('.')[1] + '.' + data.domain.split('.')[2])
+                    setDULfilter(data.id)
                   }}
                 >
                   <span className="domain-text">{data.domain}</span>
@@ -388,9 +394,14 @@ const UserApprovalScreen = () => {
                       // admin/delete_whitelisted_domain
                       const sendData = {
                         id: data.id,
+                        name: data.domain,
                         associated_users: 'true',
                       }
-                      deleteDomain(sendData)
+                      document.body.scrollTop = 0
+                      document.documentElement.scrollTop = 0
+                      document.body.style.overflow = 'hidden'
+                      setDeleteDomainData(sendData)
+                      setOpenDeleteDomainModal(true)
                     }}
                   />
                 </div>
