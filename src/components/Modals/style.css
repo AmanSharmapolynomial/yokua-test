@@ -34,14 +34,16 @@ input:focus, select:focus{
     -moz-box-shadow: 0px 0px 11px -1px rgba(168,168,168,1);
     box-shadow: 0px 0px 11px -1px rgba(168,168,168,1);
 }
-/* .select-role{
+
+.select-icon{
     position: relative;
 }
 .drop-icon{
     position: absolute;
-    right: 50px;
-
-} */
+    right: 10px;
+    margin-top: 0.3rem;
+    color: var(--bgColor2);
+}
 .save-icon{
     position: absolute;
     right: 0;
