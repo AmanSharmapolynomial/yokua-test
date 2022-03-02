@@ -64,11 +64,12 @@ const Routing = () => {
               path="user/approval-request"
               element={
                 <React.Fragment>
-                  {getUserRoles() == 'PMK Administrator' ? (
+                  {/* {getUserRoles() == 'PMK Administrator' ? (
                     <UserApprovalScreen />
                   ) : (
                     <Navigate to="/admin/user/list-view" />
-                  )}
+                  )} */}
+                  <UserApprovalScreen />
                 </React.Fragment>
               }
             />
