@@ -44,5 +44,5 @@ body {
 
 .fSQziN{
   height: 50vh;
-  overflow-y: visible !important;
+  overflow-y: scroll !important;
 }
