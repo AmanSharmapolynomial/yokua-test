@@ -22,7 +22,7 @@ const UserListView = () => {
   const [filterActive, setFilterActive] = useState('')
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
@@ -44,7 +44,6 @@ const UserListView = () => {
     {
       name: 'Name',
       selector: row => row.name,
-      sortable: true,
       minWidth: '10rem',
     },
     {
@@ -58,15 +57,16 @@ const UserListView = () => {
       minWidth: '15rem',
     },
     {
+      name: 'Company',
+      selector: row => row.company,
+      width: '130px',
+    },
+    {
       name: 'Status',
       selector: row => row.status,
       sortable: true,
     },
-    {
-      name: 'Contact',
-      selector: row => row.contact,
-      width: '130px',
-    },
+
     {
       name: '',
       selector: row => row.edit,
@@ -89,10 +89,27 @@ const UserListView = () => {
       filter: filterActive,
     }
     const listuserdata = await API.post('admin/list_users', payload)
+    console.log(listuserdata)
     const contentRowData = []
     listuserdata.data.map((data, index) => {
       contentRowData.push({
-        name: data.first_name + ' ' + data.last_name,
+        name: (
+          <span
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              setChangeModal('View')
+              setOpenModal(true)
+              document.body.scrollTop = 0
+              document.documentElement.scrollTop = 0
+              document.body.style.overflow = 'hidden'
+              setDataToChange(index)
+            }}
+          >
+            {data.first_name + ' ' + data.last_name}
+          </span>
+        ),
         id: index,
         role: (
           <Dropdown
@@ -104,7 +121,7 @@ const UserListView = () => {
         ),
         companyEmail: data.email,
         status: data.status,
-        contact: '8854636363',
+        company: data.company_name,
         edit: (
           <div className="edit-icons" key={index}>
             <i
@@ -219,7 +236,8 @@ const UserListView = () => {
       first_name: data.firstName,
       last_name: data.lastName,
       role: data.role,
-      password: 'Password.01',
+      password: data.password,
+      company_name: data.company_name,
     }
     if (payload.email_id != '') {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
@@ -338,7 +356,7 @@ const UserListView = () => {
                 }
               }}
             />
-            Content Manager
+            PMK Content Manager
           </div>
           <div className="filter-checkbox">
             <input

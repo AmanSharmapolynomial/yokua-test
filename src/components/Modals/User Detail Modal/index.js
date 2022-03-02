@@ -16,77 +16,43 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   let pincodeRef = useRef()
   let alertRef = useRef()
   let companyRef = useRef()
+  let passwordRef = useRef()
 
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [lastName, setLastName] = useState('')
   const [role, setRole] = useState('')
-  const [contact, setContact] = useState('')
-  const [address1, setAddress1] = useState('')
-  const [address2, setAddress2] = useState('')
-  const [state, setState] = useState('')
-  const [pincode, setPincode] = useState('')
   const [company, setCompany] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
-    if (data && change == 'Edit') {
+    setRole('User')
+    if ((data && change == 'Edit') || change == 'View') {
       emailRef.current.value = data.email
       firstNameRef.current.value = data.first_name
       lastNameRef.current.value = data.last_name
       roleRef.current.value = data.role
+      companyRef.current.value = data.company_name
+      setEmail(data.email)
       setFirstName(data.first_name)
       setLastName(data.last_name)
-      setEmail(data.email)
       setRole(data.role)
-      setCompany(data.company)
+      setCompany(data.company_name)
     }
-    setRole('User')
   }, [])
 
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <i
-          className="fa-solid fa-floppy-disk save-icon"
-          style={{
-            marginRight: '3rem',
-          }}
-          onClick={() => {
-            if (email != '' && email && firstName && lastName) {
-              const saveData = {
-                email: email,
-                firstName: firstName,
-                lastName: lastName,
-                role: role,
-              }
-              if (saveData.firstName.length >= 5 && saveData.lastName.length >= 5) {
-                if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
-                  if (validator.isEmail(saveData.email)) {
-                    console.log(saveData)
-                    saveAndExit(saveData)
-                  } else toast.warning('Improper Email Format')
-                } else {
-                  toast.warning('First & Last Name should only contain letters')
-                }
-              } else {
-                toast.warning('First & Last Name should be 5-50 chars')
-              }
-            } else {
-              toast.warning('Check Details')
-              alertRef.current.style.display = 'block'
-              setTimeout(() => {
-                alertRef.current.style.display = 'none'
-              }, 3000)
-            }
-          }}
-        />
-        <i
-          className="fa-solid fa-remove save-icon"
-          onClick={() => {
-            saveAndExit()
-            document.body.style.overflow = 'scroll'
-          }}
-        />
+        {change == 'View' && (
+          <i
+            className="fa-solid fa-remove save-icon"
+            onClick={() => {
+              saveAndExit()
+              document.body.style.overflow = 'scroll'
+            }}
+          />
+        )}
         <h3 className="modal-heading">{change} User</h3>
         <div className="modal-content flex-row">
           <div className="user-img">
@@ -116,6 +82,21 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               />
             </div>
             <div className="input-field-container">
+              <label className="input-label">Permission Level</label>
+              <select
+                className="input-text select-role"
+                ref={roleRef}
+                onChange={e => {
+                  setRole(e.target.value)
+                }}
+              >
+                <option>User</option>
+                <option>PMK Content Manager</option>
+                <option>PMK Administrator</option>
+              </select>
+              {/* <i className="fa-solid fa-caret-down drop-icon" /> */}
+            </div>
+            <div className="input-field-container">
               <label className="input-label">E-mail id</label>
               <input
                 className="input-text"
@@ -126,22 +107,18 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 }}
               />
             </div>
-
             <div className="input-field-container">
-              <label className="input-label">Permission Level</label>
-              <select
-                className="input-text select-role"
-                ref={roleRef}
+              <label className="input-label">Password</label>
+              <input
+                className="input-text"
+                type="password"
+                ref={passwordRef}
                 onChange={e => {
-                  setRole(e.target.value)
+                  setPassword(e.target.value)
                 }}
-              >
-                <option>User</option>
-                <option>Content Manager</option>
-                <option>PMK Administrator</option>
-              </select>
-              {/* <i className="fa-solid fa-caret-down drop-icon" /> */}
+              />
             </div>
+
             <div className="input-field-container">
               <label className="input-label">Company</label>
               <input
@@ -211,6 +188,54 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             </span>
           </div>
         </div>
+        {change != 'View' && (
+          <div className="domain-modal-cta">
+            <button
+              className="cancel-domain btn"
+              onClick={() => {
+                saveAndExit()
+                document.body.style.overflow = 'scroll'
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn"
+              onClick={() => {
+                if (email != '' && email && firstName && lastName) {
+                  const saveData = {
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    role: role,
+                    company_name: company,
+                    password: password,
+                  }
+                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
+                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                      if (validator.isEmail(saveData.email)) {
+                        console.log(saveData)
+                        saveAndExit(saveData)
+                      } else toast.warning('Improper Email Format')
+                    } else {
+                      toast.warning('First & Last Name should only contain letters')
+                    }
+                  } else {
+                    toast.warning('First & Last Name should be 5-50 chars')
+                  }
+                } else {
+                  toast.warning('Check Details')
+                  alertRef.current.style.display = 'block'
+                  setTimeout(() => {
+                    alertRef.current.style.display = 'none'
+                  }, 3000)
+                }
+              }}
+            >
+              Save
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

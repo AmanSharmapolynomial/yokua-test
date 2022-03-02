@@ -20,7 +20,7 @@ input:focus, select:focus{
     opacity: 100%;
     color: black;
     width: 100%;
-    
+    padding: 1rem 0;
     max-width: 40rem;
     min-width: 20rem;
     margin: 2rem;
