@@ -40,7 +40,7 @@ const UserApprovalScreen = () => {
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
-
+    setIsLoading(true)
     const tempArr = []
     listUserApprovalData.data.map((data, index) => {
       tempArr.push({
@@ -89,6 +89,7 @@ const UserApprovalScreen = () => {
           ),
       })
     })
+
     const listDULdata = await API.get(`admin/list_whitelisted_domain/${DULfilter}`)
     const tempDULArr = []
     listDULdata.data.map((data, index) => {
@@ -101,6 +102,7 @@ const UserApprovalScreen = () => {
         status: data.status,
       })
     })
+
     const listDomains = await API.get('admin/list_whitelisted_domain')
     const tempDL = []
     listDomains.data.map(data => {
@@ -110,6 +112,7 @@ const UserApprovalScreen = () => {
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
+    setIsLoading(false)
   }, [reloadTable, DULfilter])
 
   const columnsApprovalTable = [
