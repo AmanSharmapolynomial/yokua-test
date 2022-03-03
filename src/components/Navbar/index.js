@@ -45,7 +45,7 @@ const Navbar = ({ isAdmin }) => {
             <a>Data History</a>
           </li>
           <li>
-            <a>Contact</a>
+            <Link to="/admin/profile">Profile Setting</Link>
           </li>
           {isAdmin && (
             <li

@@ -7,7 +7,11 @@
 box-shadow: 0px -1px 5px 0.1px rgba(186,186,186,1);
 width: 80%;
 border-radius: 4px;
+max-width: 50rem;
+}
 
+.profile-setting-container{
+    width: 100%;
 }
 
 .profile-setting__info{
@@ -65,6 +69,8 @@ margin: 1rem 1.5rem;
     -webkit-box-shadow: 0px -1px 5px 0.1px rgba(186,186,186,1);
     -moz-box-shadow: 0px -1px 5px 0.1px rgba(186,186,186,1);
     box-shadow: 0px -1px 5px 0.1px rgba(186,186,186,1);
+    background-color: var(--bgColor2);
+    color: var(--textColor5);
 }
 
 .edit_input > input{
@@ -82,7 +88,8 @@ margin: 1rem 1.5rem;
 }
 
 .edit{
-    color: var(--textColor3)
+    color: var(--textColor3);
+    cursor: pointer;
 }
 
 .profile-setting__sales-news{
@@ -104,7 +111,7 @@ margin: 0.8rem 0;
 }
 
 .sales-news_background{
-    background-color: var(--bgColor2);
+    background-color: var(--textColor5);
     margin-top: -0.9rem;
     padding-top: 1.3rem;
 }

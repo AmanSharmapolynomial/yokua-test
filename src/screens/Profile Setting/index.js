@@ -1,64 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
 import PrimaryHeading from '../../components/Primary Headings/index'
+import API from '../../utils/api'
+import { getUserRoles, removeToken, removeUserRole } from '../../utils/token'
+import { toast } from 'react-toastify'
 
 const ProfileSettingScreen = () => {
-  const backendData = {
-    basic_profile: {
-      full_name: 'Michal',
-      email: 'tech@yokogawa.com',
-    },
-    news_letter: [
-      {
-        id: 1,
-        news_letter_title: 'Receive all news via E-Mail',
-        subscribed: true,
-      },
-      {
-        id: 2,
-        news_letter_title: 'Flowmeter News',
-        subscribed: false,
-      },
-      {
-        id: 3,
-        news_letter_title: 'FlowConfigurator news',
-        subscribed: true,
-      },
-    ],
-    future_trainings: [
-      {
-        id: 0,
-        training_topic: 'Flow Focus Training',
-        date: '5 May - 8 May 2022',
-        cancellation_date: '1 May 2022',
-        address: 'Rota Yokogawa',
-      },
-    ],
-    participated_trainings: [
-      {
-        id: 0,
-        training_name: 'Flow Focus Training 2020',
-        date: '5 May - 8 May 2022',
-      },
-    ],
-  }
-
   const [profileData, setProfileData] = useState({})
   const [name, setName] = useState()
   const nameRef = useRef()
   const [email, setEmail] = useState()
   const emailRef = useRef()
   const [address, setAddress] = useState()
+  const [password, setPassword] = useState()
+  const [passwordRetype, setPasswordRetype] = useState()
+  const [disabledInputName, setDisabledInputName] = useState(true)
+  const [disabledInputEmail, setDisabledInputEmail] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+  const [disabledInputAddress, setDisabledInputAddress] = useState(true)
+  const [disabledInputPassword, setDisabledInputPassword] = useState(true)
+  const [disabledInputPasswordRetype, setDisabledInputPasswordRetype] = useState(true)
+
   const addressRef = useRef()
 
   const [checkedIds, setCheckedIds] = useState([])
   // const checkBoxRef = useRef()
 
-  useEffect(() => {
-    setProfileData(backendData)
+  useEffect(async () => {
+    // call profile data
+    setIsLoading(true)
+    const backendData = await API.get('/auth/profile_settings/')
+    console.log(backendData)
+    setProfileData(backendData.data)
+    setIsLoading(false)
   }, [])
 
   useEffect(() => {
+    setName(profileData.basic_profile?.full_name)
+    setEmail(profileData.basic_profile?.email)
+    setAddress(profileData.basic_profile?.email)
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
     addressRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
@@ -73,7 +53,7 @@ const ProfileSettingScreen = () => {
   return (
     <>
       <div className="profile-setting-container">
-        <PrimaryHeading />
+        <PrimaryHeading title={'Profile settings'} />
         <div className="profile-setting">
           <div className="profile-setting__info">
             <div>
@@ -98,34 +78,52 @@ const ProfileSettingScreen = () => {
                 <i className="fa-solid fa-user" />
                 <input
                   type="text"
+                  disabled={disabledInputName}
                   ref={nameRef}
                   onChange={e => {
                     setName(e.target.value)
                   }}
                 />
-                <i className="fa-solid fa-pen-to-square edit"></i>
+                <i
+                  className="fa-solid fa-pen-to-square edit"
+                  onClick={() => {
+                    setDisabledInputName(!disabledInputName)
+                  }}
+                ></i>
               </div>
               <div className="edit_input">
                 <i className="fa-solid fa-envelope" />
                 <input
-                  type="text"
+                  type="email"
+                  disabled={disabledInputEmail}
                   ref={emailRef}
                   onChange={e => {
                     setEmail(e.target.value)
                   }}
                 />
-                <i className="fa-solid fa-pen-to-square edit"></i>
+                <i
+                  className="fa-solid fa-pen-to-square edit"
+                  onClick={() => {
+                    setDisabledInputEmail(!disabledInputEmail)
+                  }}
+                ></i>
               </div>
               <div className="edit_input">
                 <i className="fa-solid fa-house-chimney" />
                 <input
                   type="text"
+                  disabled={disabledInputAddress}
                   ref={addressRef}
                   onChange={e => {
                     setAddress(e.target.value)
                   }}
                 />
-                <i className="fa-solid fa-pen-to-square edit"></i>
+                <i
+                  className="fa-solid fa-pen-to-square edit"
+                  onClick={() => {
+                    setDisabledInputAddress(!disabledInputAddress)
+                  }}
+                ></i>
               </div>
             </div>
           </div>
@@ -135,56 +133,147 @@ const ProfileSettingScreen = () => {
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 <i className="fa-solid fa-unlock" />
-                <input type="text" placeholder="Enter New Password" />
-                <i className="fa-solid fa-pen-to-square edit" />
+                <input
+                  type="password"
+                  disabled={disabledInputPassword}
+                  onChange={e => {
+                    setPassword(e.target.value)
+                  }}
+                  placeholder="Enter New Password"
+                />
+                <i
+                  className="fa-solid fa-pen-to-square edit"
+                  onClick={() => {
+                    setDisabledInputPassword(!disabledInputPassword)
+                  }}
+                />
               </div>
               <div className="edit_input">
                 <i className="fa-solid fa-unlock" />
-                <input type="text" placeholder="Retype New Password" />
-                <i className="fa-solid fa-pen-to-square edit" />
+                <input
+                  type="password"
+                  disabled={disabledInputPasswordRetype}
+                  onChange={e => {
+                    setPasswordRetype(e.target.value)
+                  }}
+                  placeholder="Retype New Password"
+                />
+                <i
+                  className="fa-solid fa-pen-to-square edit"
+                  onClick={() => {
+                    setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
+                  }}
+                />
               </div>
             </div>
           </div>
           <div className="profile-setting__basic-profile profile-setting__box">
             <h1 className="profile-setting__heading">SALES NEWS BY ROTA YOKOGAWA</h1>
             <div className="sales-news_background">
-              <div className="profile-setting__sales-news ">
-                {profileData.news_letter?.map((info, index) => (
-                  <div
-                    className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}
-                    key={index}
-                  >
-                    <input
-                      type="checkbox"
-                      id={index}
-                      checked={info.subscribed}
-                      // make proper system for checking and unchcking acc to backedn
-                      onChange={e => {
-                        console.log(e.target.checked)
-                        if (e.target.checked) {
-                          if (!checkedIds.includes(index + 1)) {
-                            checkedIds.push(index + 1)
-                          }
-                        } else {
-                          if (checkedIds.includes(index + 1)) {
-                            const ind = checkedIds.indexOf(index + 1)
-                            if (ind > -1) {
-                              checkedIds.splice(ind, 1)
+              {isLoading ? (
+                <span>Loading...</span>
+              ) : (
+                <div className="profile-setting__sales-news ">
+                  {profileData.news_letter?.map((info, index) => (
+                    <div
+                      className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}
+                      key={index}
+                    >
+                      <input
+                        type="checkbox"
+                        id={index}
+                        checked={info.subscribed}
+                        // make proper system for checking and unchcking acc to backedn
+                        onChange={e => {
+                          console.log(e.target.checked)
+                          if (e.target.checked) {
+                            if (!checkedIds.includes(index + 1)) {
+                              checkedIds.push(index + 1)
+                            }
+                          } else {
+                            if (checkedIds.includes(index + 1)) {
+                              const ind = checkedIds.indexOf(index + 1)
+                              if (ind > -1) {
+                                checkedIds.splice(ind, 1)
+                              }
                             }
                           }
-                        }
-                      }}
-                    />
-                    <label for="check1">{info.news_letter_title}</label>
-                  </div>
-                ))}
-              </div>
+                        }}
+                      />
+                      <label for="check1">{info.news_letter_title}</label>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           <div className="save-btns">
-            <button className="delete-btn">Delete Account</button>
-            <button>Save Changes</button>
+            <button
+              className="delete-btn"
+              onClick={async () => {
+                if (password && passwordRetype) {
+                  if (password == passwordRetype) {
+                    // delete user APi Call and the logout
+                    const payloadDeleteAccount = {
+                      email: email,
+                    }
+                    ///admin/delete_user
+                    const afterDeleteMsg = await API.post(
+                      '/admin/delete_user',
+                      payloadDeleteAccount
+                    )
+                    console.log(afterDeleteMsg)
+                    removeToken()
+                    removeUserRole()
+                    window.location.reload()
+                  } else {
+                    toast.error('Password and Retype Password Do not Match')
+                  }
+                } else {
+                  toast.error('Enter Password to Delete this Account')
+                }
+              }}
+            >
+              Delete Account
+            </button>
+            <button
+              style={{ color: 'white' }}
+              onClick={async () => {
+                if (password && passwordRetype) {
+                  if (password == passwordRetype) {
+                    const payloadUser = {
+                      email_id: email,
+                      first_name: name.split(' ')[0],
+                      last_name: name.split(' ')[1],
+                      role: getUserRoles(),
+                      password: password,
+                    }
+                    const afterUpdateMsg = await API.post('/admin/upsert_user', payloadUser)
+                    toast.success(afterUpdateMsg.data.message)
+
+                    // call for passsword change /auth/password/change/
+                    const payloadPassword = {
+                      new_password1: password,
+                      new_password2: passwordRetype,
+                    }
+                    console.log(payloadPassword)
+                    const afterPassChangeMsg = await API.post(
+                      '/auth/password/change/',
+                      payloadPassword
+                    )
+                  } else {
+                    toast.error('Password and Retype Password Do not Match')
+                  }
+                } else {
+                  toast.error('Enter Password to Chnage Details')
+                }
+
+                // call for event changes
+              }}
+            >
+              Save Changes
+            </button>
           </div>
 
           <div className="events_trainings">
@@ -192,39 +281,47 @@ const ProfileSettingScreen = () => {
               <h1 className="profile-setting__heading event_training_heading">
                 You are registered for the following events & trainings
               </h1>
-              <div className="profile-setting__basic-profile-edit">
-                {profileData.future_trainings?.map((training, index) => (
-                  <div className="edit_training" key={index}>
-                    <i className="fa-solid fa-calendar-check" />
-                    <div className="training_text">
-                      <span>{training.training_topic}</span>
-                      <span>{training.date}</span>
-                      <span>Latest cancellation date {training.cancellation_date}</span>
-                      <span>{training.address}</span>
-                    </div>
+              {isLoading ? (
+                <span>Loading...</span>
+              ) : (
+                <div className="profile-setting__basic-profile-edit">
+                  {profileData.future_trainings?.map((training, index) => (
+                    <div className="edit_training" key={index}>
+                      <i className="fa-solid fa-calendar-check" />
+                      <div className="training_text">
+                        <span>{training.training_topic}</span>
+                        <span>{training.date}</span>
+                        <span>Latest cancellation date {training.cancellation_date}</span>
+                        <span>{training.address}</span>
+                      </div>
 
-                    <i className="fa-solid fa-pen-to-square edit" />
-                  </div>
-                ))}
-              </div>
+                      <i className="fa-solid fa-pen-to-square edit" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="profile-setting__basic-profile profile-setting__box last_events">
               <h1 className="profile-setting__heading event_training_heading">
                 Last participated event
               </h1>
-              <div className="profile-setting__basic-profile-edit">
-                {profileData.participated_trainings?.map((training, index) => (
-                  <div className="edit_training" key={index}>
-                    <i className="fa-solid fa-calendar-check" />
-                    <div className="training_text">
-                      <span>{training.training_name}</span>
-                      <span>{training.date}</span>
-                    </div>
+              {isLoading ? (
+                <span>Loading...</span>
+              ) : (
+                <div className="profile-setting__basic-profile-edit">
+                  {profileData.participated_trainings?.map((training, index) => (
+                    <div className="edit_training" key={index}>
+                      <i className="fa-solid fa-calendar-check" />
+                      <div className="training_text">
+                        <span>{training.training_name}</span>
+                        <span>{training.date}</span>
+                      </div>
 
-                    <i className="fa-solid fa-pen-to-square edit" />
-                  </div>
-                ))}
-              </div>
+                      <i className="fa-solid fa-pen-to-square edit" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
