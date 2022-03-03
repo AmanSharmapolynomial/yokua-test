@@ -199,6 +199,7 @@ const UserListView = () => {
     } else {
       setOpenModal(false)
     }
+    document.body.style.overflow = 'scroll'
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
@@ -409,6 +410,9 @@ const UserListView = () => {
           <div
             className="add_row"
             onClick={() => {
+              document.body.scrollTop = 0
+              document.documentElement.scrollTop = 0
+              document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)
             }}

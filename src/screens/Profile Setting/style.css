@@ -12,6 +12,7 @@ max-width: 50rem;
 
 .profile-setting-container{
     width: 100%;
+    margin-top: 2rem;
 }
 
 .profile-setting__info{

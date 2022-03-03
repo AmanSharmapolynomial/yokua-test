@@ -14,7 +14,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   let address2Ref = useRef()
   let stateRef = useRef()
   let pincodeRef = useRef()
-  let alertRef = useRef()
+
   let companyRef = useRef()
   let passwordRef = useRef()
 
@@ -24,8 +24,14 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   const [role, setRole] = useState('')
   const [company, setCompany] = useState('')
   const [password, setPassword] = useState('')
+  const [disabledInput, setDisabledInput] = useState(false)
 
   useEffect(() => {
+    if (change == 'View') {
+      setDisabledInput(true)
+    } else {
+      setDisabledInput(false)
+    }
     setRole('User')
     if ((data && change == 'Edit') || change == 'View') {
       emailRef.current.value = data.email
@@ -62,6 +68,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <div className="input-field-container">
               <label className="input-label">First Name</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="text"
                 ref={firstNameRef}
@@ -73,6 +80,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <div className="input-field-container">
               <label className="input-label">Last Name</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="text"
                 ref={lastNameRef}
@@ -85,6 +93,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               <label className="input-label">Permission Level</label>
               <div className="select-icon">
                 <select
+                  disabled={disabledInput}
                   className="input-text select-role"
                   ref={roleRef}
                   onChange={e => {
@@ -101,6 +110,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <div className="input-field-container">
               <label className="input-label">E-mail id</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="email"
                 ref={emailRef}
@@ -112,6 +122,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <div className="input-field-container">
               <label className="input-label">Password</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="password"
                 ref={passwordRef}
@@ -124,6 +135,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <div className="input-field-container">
               <label className="input-label">Company</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="text"
                 ref={companyRef}
@@ -136,6 +148,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             {/* <div className="input-field-container">
               <label className="input-label">Contact No</label>
               <input
+                disabled={disabledInput}
                 className="input-text"
                 type="tel"
                 ref={contactRef}
@@ -148,6 +161,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               <label className="input-label address">Address</label>
               <div className="address-inputs">
                 <input
+                  disabled={disabledInput}
                   className="input-text"
                   type="text"
                   ref={address1Ref}
@@ -156,6 +170,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                   }}
                 />
                 <input
+                  disabled={disabledInput}
                   className="input-text"
                   type="text"
                   ref={address2Ref}
@@ -165,6 +180,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 />
                 <div className="state-and-code">
                   <input
+                    disabled={disabledInput}
                     className="input-text"
                     type="text"
                     placeholder="State"
@@ -174,6 +190,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                     }}
                   />
                   <input
+                    disabled={disabledInput}
                     className="input-text"
                     type="text"
                     placeholder="PIN Code"
@@ -185,9 +202,6 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 </div>
               </div>
             </div> */}
-            <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
-              Check Details
-            </span>
           </div>
         </div>
         {change != 'View' && (
@@ -196,7 +210,6 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               className="cancel-domain btn"
               onClick={() => {
                 saveAndExit()
-                document.body.style.overflow = 'scroll'
               }}
             >
               Cancel
@@ -204,33 +217,60 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <button
               className="btn"
               onClick={() => {
-                if (email != '' && email && firstName && lastName) {
-                  const saveData = {
-                    email: email,
-                    firstName: firstName,
-                    lastName: lastName,
-                    role: role,
-                    company_name: company,
-                    password: password,
-                  }
-                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
-                      if (validator.isEmail(saveData.email)) {
-                        console.log(saveData)
-                        saveAndExit(saveData)
-                      } else toast.warning('Improper Email Format')
+                if (password && password != '') {
+                  if (email != '' && email && firstName && lastName) {
+                    const saveData = {
+                      email: email,
+                      firstName: firstName,
+                      lastName: lastName,
+                      role: role,
+                      company_name: company,
+                      password: password,
+                    }
+                    if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
+                      if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                        if (validator.isEmail(saveData.email)) {
+                          saveAndExit(saveData)
+                        } else toast.warning('Improper Email Format')
+                      } else {
+                        toast.error('First & Last Name should only contain letters')
+                      }
                     } else {
-                      toast.warning('First & Last Name should only contain letters')
+                      toast.error('First & Last Name should be 5-50 chars')
                     }
                   } else {
-                    toast.warning('First & Last Name should be 5-50 chars')
+                    toast.error('Fill all Mandatory Fields')
+
+                    if (!lastNameRef.current.value) {
+                      lastNameRef.current.style.borderColor = 'red'
+                    }
+                    if (!firstNameRef.current.value) {
+                      firstNameRef.current.style.borderColor = 'red'
+                    }
+                    if (!emailRef.current.value) {
+                      emailRef.current.style.borderColor = 'red'
+                    }
+                    if (!passwordRef.current.value) {
+                      passwordRef.current.style.borderColor = 'red'
+                    }
+                    if (!companyRef.current.value) {
+                      companyRef.current.style.borderColor = 'red'
+                    }
+
+                    setTimeout(() => {
+                      lastNameRef.current.style.borderColor = 'black'
+
+                      firstNameRef.current.style.borderColor = 'black'
+
+                      emailRef.current.style.borderColor = 'black'
+
+                      passwordRef.current.style.borderColor = 'black'
+
+                      companyRef.current.style.borderColor = 'black'
+                    }, 5000)
                   }
                 } else {
-                  toast.warning('Check Details')
-                  alertRef.current.style.display = 'block'
-                  setTimeout(() => {
-                    alertRef.current.style.display = 'none'
-                  }, 3000)
+                  toast.error('Please Enter Password to Change Details')
                 }
               }}
             >
