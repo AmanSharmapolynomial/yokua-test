@@ -13,7 +13,7 @@ const Navbar = ({ isAdmin }) => {
     { name: 'Event Management', url: '/admin/user/list-view' },
   ]
 
-  if (getUserRoles() == 'PMK Administrator') {
+  if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
     navDropdownAdminData.push({ name: 'User Request', url: '/admin/user/approval-request' })
   }
 

@@ -91,6 +91,7 @@ const UserListView = () => {
       filter: filterActive,
     }
     const listuserdata = await API.post('admin/list_users', payload)
+
     const contentRowData = []
     listuserdata.data.map((data, index) => {
       contentRowData.push({
@@ -123,7 +124,8 @@ const UserListView = () => {
         companyEmail: data.email,
         status: data.status,
         company: data.company_name,
-        edit: getUserRoles() == 'PMK Administrator' && (
+        edit: (getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'Technical Administrator') && (
           <div className="edit-icons" key={index}>
             <i
               className="fa-solid fa-pen-to-square"
@@ -266,7 +268,7 @@ const UserListView = () => {
       )}
 
       <SecondaryHeading title={'User list view'} />
-      {getUserRoles() == 'PMK Content Manager' && <SearchTable />}
+
       <div className="filter-actions">
         <div className="filter-icons">
           <i
@@ -403,7 +405,7 @@ const UserListView = () => {
           />
         )}
 
-        {getUserRoles() == 'PMK Administrator' && (
+        {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
           <div
             className="add_row"
             onClick={() => {
