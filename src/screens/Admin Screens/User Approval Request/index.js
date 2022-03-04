@@ -282,7 +282,7 @@ const UserApprovalScreen = () => {
     if (rejectMsg) {
       const payload = {
         email_id: [data.email],
-        status: data.status,
+        status: changeModal == 'Accepted' ? 'activate' : 'deactivate',
         msg: rejectMsg,
       }
       // server is giving internal error

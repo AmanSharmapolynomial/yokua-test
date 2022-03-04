@@ -24,7 +24,9 @@ const ProfileSettingScreen = () => {
   const addressRef = useRef()
 
   const [checkedIds, setCheckedIds] = useState([])
+
   // const checkBoxRef = useRef()
+  console.log(checkedIds)
 
   useEffect(async () => {
     // call profile data
@@ -36,9 +38,6 @@ const ProfileSettingScreen = () => {
   }, [])
 
   useEffect(() => {
-    setName(profileData.basic_profile?.full_name)
-    setEmail(profileData.basic_profile?.email)
-    setAddress(profileData.basic_profile?.email)
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
     addressRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
@@ -86,6 +85,9 @@ const ProfileSettingScreen = () => {
                 />
                 <i
                   className="fa-solid fa-pen-to-square edit"
+                  style={{
+                    color: disabledInputName ? 'var(--bgColor2)' : 'grey',
+                  }}
                   onClick={() => {
                     setDisabledInputName(!disabledInputName)
                   }}
@@ -103,6 +105,9 @@ const ProfileSettingScreen = () => {
                 />
                 <i
                   className="fa-solid fa-pen-to-square edit"
+                  style={{
+                    color: disabledInputEmail ? 'var(--bgColor2)' : 'grey',
+                  }}
                   onClick={() => {
                     setDisabledInputEmail(!disabledInputEmail)
                   }}
@@ -120,6 +125,9 @@ const ProfileSettingScreen = () => {
                 />
                 <i
                   className="fa-solid fa-pen-to-square edit"
+                  style={{
+                    color: disabledInputAddress ? 'var(--bgColor2)' : 'grey',
+                  }}
                   onClick={() => {
                     setDisabledInputAddress(!disabledInputAddress)
                   }}
@@ -143,6 +151,9 @@ const ProfileSettingScreen = () => {
                 />
                 <i
                   className="fa-solid fa-pen-to-square edit"
+                  style={{
+                    color: disabledInputPassword ? 'var(--bgColor2)' : 'grey',
+                  }}
                   onClick={() => {
                     setDisabledInputPassword(!disabledInputPassword)
                   }}
@@ -160,6 +171,9 @@ const ProfileSettingScreen = () => {
                 />
                 <i
                   className="fa-solid fa-pen-to-square edit"
+                  style={{
+                    color: disabledInputPasswordRetype ? 'var(--bgColor2)' : 'grey',
+                  }}
                   onClick={() => {
                     setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
                   }}
@@ -240,18 +254,31 @@ const ProfileSettingScreen = () => {
             <button
               style={{ color: 'white' }}
               onClick={async () => {
+                if (name && name != '') {
+                  const payloadName = {
+                    full_name: name,
+                  }
+
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
+                  toast.success(afterUpdateMsg.data.message)
+                }
+                if (email && email != '') {
+                  const payloadEmail = {
+                    email: email,
+                  }
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
+                  toast.success(afterUpdateMsg.data.message)
+                }
+                if (address && address != '') {
+                  // const payloadAddress = {
+                  //   address: address,
+                  // }
+                  // const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
+                  // toast.success(afterUpdateMsg.data.message)
+                }
+
                 if (password && passwordRetype) {
                   if (password == passwordRetype) {
-                    const payloadUser = {
-                      email_id: email,
-                      first_name: name.split(' ')[0],
-                      last_name: name.split(' ')[1],
-                      role: getUserRoles(),
-                      password: password,
-                    }
-                    const afterUpdateMsg = await API.post('/admin/upsert_user', payloadUser)
-                    toast.success(afterUpdateMsg.data.message)
-
                     // call for passsword change /auth/password/change/
                     const payloadPassword = {
                       new_password1: password,
@@ -265,8 +292,6 @@ const ProfileSettingScreen = () => {
                   } else {
                     toast.error('Password and Retype Password Do not Match')
                   }
-                } else {
-                  toast.error('Enter Password to Chnage Details')
                 }
 
                 // call for event changes
