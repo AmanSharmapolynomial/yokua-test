@@ -335,7 +335,6 @@ const UserListView = () => {
               ref={filterFromCheckbox1Ref}
               value="PMK Administrator"
               onChange={e => {
-                filterFromCheckbox(e.target.checked, e.target.value)
                 if (e.target.checked) {
                   setFilterCheckboxPMK(true)
                   setReloadTable(!reloadTable)
