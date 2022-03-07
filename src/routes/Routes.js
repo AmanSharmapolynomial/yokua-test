@@ -18,13 +18,15 @@ import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
 import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
-import { getUserRoles } from '../utils/token'
+import { getToken, getUserRoles } from '../utils/token'
+import NewsScreen from '../screens/News Screen/NewsScreen'
 
 const Routing = () => {
   // get User Login Info
 
   return (
     <React.Fragment>
+      <Header isLogedIn={getToken()} isAdmin={true} />
       <div className="non_header_content relative">
         <Routes>
           <Route
@@ -77,6 +79,7 @@ const Routing = () => {
             <Route path="profile" element={<ProfileSettingScreen />} />
             <Route path="*" element={<Navigate to="/user/list-view" />} />
           </Route>
+          <Route path="news" element={<NewsScreen />} />
           <Route path="*" element={<Navigate to="/admin/user/list-view" />} />
         </Routes>
       </div>

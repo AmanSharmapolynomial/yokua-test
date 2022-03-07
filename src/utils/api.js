@@ -6,7 +6,6 @@ const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
 API.interceptors.request.use(
   config => {
     const token = getToken()
-    // console.log(token)
 
     if (token) {
       // API.defaults.headers.common.Authorization =
@@ -22,6 +21,8 @@ API.interceptors.response.use(null, e => {
   // if ((e.response.status > 400 && e.response.status !== 401) || e.code === 'ECONNABORTED') {
   //   throw new Error(e)
   // }
+
+  console.log(e.response)
 
   if (e.response.status === 401) {
     // alert('Please login again')

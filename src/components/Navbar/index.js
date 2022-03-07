@@ -26,7 +26,7 @@ const Navbar = ({ isAdmin }) => {
             <Link to="/auth/register">Home</Link>
           </li>
           <li>
-            <a>News</a>
+            <Link to="/news">News</Link>
           </li>
           <li className="border-left border-right">
             <a>Product Lines</a>
