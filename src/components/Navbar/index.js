@@ -23,7 +23,7 @@ const Navbar = ({ isAdmin }) => {
       <div className="nav">
         <ul>
           <li>
-            <Link to="/auth/register">Home</Link>
+            <a>Home</a>
           </li>
           <li>
             <Link to="/news">News</Link>
@@ -45,9 +45,9 @@ const Navbar = ({ isAdmin }) => {
             <a>Data History</a>
           </li>
           <li>
-            <Link to="/admin/profile">Profile Setting</Link>
+            <Link to="/profile">Profile Setting</Link>
           </li>
-          {isAdmin && (
+          {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
             <li
               className="border-left border-right"
               onClick={() => {
@@ -67,6 +67,8 @@ const Navbar = ({ isAdmin }) => {
                 renderDropdown={renderDropdown}
               />
             </li>
+          ) : (
+            ''
           )}
         </ul>
         <div className="searchBar">

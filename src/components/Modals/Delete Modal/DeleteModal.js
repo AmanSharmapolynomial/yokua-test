@@ -32,9 +32,8 @@ const DeleteModal = ({ req, saveAndExit, runDelete, title, data }) => {
             <button
               className="btn"
               onClick={() => {
-                runDelete([data])
-
-                // saveAndExit()
+                runDelete(data)
+                saveAndExit()
               }}
             >
               Confirm

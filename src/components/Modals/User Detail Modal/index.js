@@ -270,7 +270,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                     }, 5000)
                   }
                 } else {
-                  toast.error('Please Enter Password to Change Details')
+                  toast.error('Fill all Mandatory Fields')
                 }
               }}
             >

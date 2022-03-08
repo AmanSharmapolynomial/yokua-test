@@ -25,7 +25,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd }) =
   const [readState, setReadState] = useState(true)
 
   const [deleteModal, setDeleteModal] = useState(false)
-  const [deleteNewsArr, setDeleteNewsArr] = useState()
+  const [deleteNewsArr, setDeleteNewsArr] = useState([])
 
   useEffect(() => {
     if (changeType == 'Add' && data == undefined) {
@@ -205,7 +205,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd }) =
                         sub_category_id: subCategoryID,
                         description: newsDesc,
                       },
-                      file: fileInput ? fileInput : '',
+                      //   file: fileInput ? fileInput : '',
                     }
 
                     // call the upsert News API here

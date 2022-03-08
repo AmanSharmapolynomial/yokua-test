@@ -136,7 +136,8 @@ margin: 0.8rem 0;
 }
 
 .delete-btn{
-    background-color: var(--bgColor4) !important;
+    background-color: var(--bgColor5) !important;
+    color: var(--bgColor2);
 
 }
 .btn_and_box{

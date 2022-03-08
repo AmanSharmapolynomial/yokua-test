@@ -13,6 +13,7 @@ import API from '../../../utils/api'
 import { toast } from 'react-toastify'
 import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
+import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
@@ -41,6 +42,8 @@ const UserListView = () => {
   const [reloadTable, setReloadTable] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
+  const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
+  const [deleteEmail, setDeleteEmail] = useState('')
 
   const columns = [
     {
@@ -149,8 +152,8 @@ const UserListView = () => {
               }}
               onClick={() => {
                 // delete single user
-                deleteSingleUser(data.email)
-                setReloadTable(!reloadTable)
+                setDeleteEmail(data.email)
+                setOpenBasicDeleteModal(true)
               }}
             />
           </div>
@@ -199,6 +202,7 @@ const UserListView = () => {
     } else {
       setOpenModal(false)
     }
+    setOpenBasicDeleteModal(false)
     document.body.style.overflow = 'scroll'
   }
 
@@ -232,6 +236,7 @@ const UserListView = () => {
     }
     const afterDeleteMsg = await API.post('admin/delete_user', payload)
     toast.success(afterDeleteMsg.data.message)
+    setReloadTable(!reloadTable)
   }
 
   const addOrEditUser = async data => {
@@ -247,7 +252,7 @@ const UserListView = () => {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
-      toast.error('enter email')
+      toast.error('Enter email')
     }
     setReloadTable(!reloadTable)
   }
@@ -259,6 +264,15 @@ const UserListView = () => {
 
   return (
     <div className="user-list-view">
+      {openBasicDeleteModal && (
+        <DeleteModal
+          title={'Are you sure want to delete this user?'}
+          runDelete={deleteSingleUser}
+          saveAndExit={saveAndExitModal}
+          data={deleteEmail}
+          req={'User'}
+        />
+      )}
       {openModal && (
         <UserDetailsModal
           DetailsModal

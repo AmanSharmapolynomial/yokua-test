@@ -40,6 +40,7 @@ const UserApprovalScreen = () => {
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
+    console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
     listUserApprovalData.data.map((data, index) => {
@@ -51,9 +52,7 @@ const UserApprovalScreen = () => {
         company: data.company,
         requestFor: data.request_for,
         edit:
-          data.request_for.toLowerCase().includes('email') &&
-          data.request_for.toLowerCase().includes('email') &&
-          data.request_for.toLowerCase().includes('change') ? (
+          data.type == 'approval' ? (
             <div className="edit-icons">
               <div className="icon reject">
                 <i
@@ -80,6 +79,8 @@ const UserApprovalScreen = () => {
                     document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
                     acceptSingleRequest(data.email_id)
+                    setChangeModal('Accepted')
+                    setOpenARModal(true)
                   }}
                 />
               </div>
@@ -113,7 +114,7 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter])
+  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal])
 
   const columnsApprovalTable = [
     {
@@ -232,10 +233,11 @@ const UserApprovalScreen = () => {
     // send this data or call the api here to accept all request
     if (selectedRowsActionUA.length > 0) {
       const payload = {
-        email_id: dataArray[0],
+        email_id: dataArray,
         status: 'activate',
         msg: 'Accepted Your Request',
       }
+      console.log(payload)
       // server is giving internal error
       const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterAcceptMsg)
@@ -250,6 +252,7 @@ const UserApprovalScreen = () => {
       status: 'activate',
       msg: 'Accepted Your Request',
     }
+    console.log(payload)
     // server is giving internal error
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)

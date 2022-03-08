@@ -4,6 +4,8 @@ import PrimaryHeading from '../../components/Primary Headings/index'
 import API from '../../utils/api'
 import { getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
+import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
+import validator from 'validator'
 
 const ProfileSettingScreen = () => {
   const [profileData, setProfileData] = useState({})
@@ -20,6 +22,11 @@ const ProfileSettingScreen = () => {
   const [disabledInputAddress, setDisabledInputAddress] = useState(true)
   const [disabledInputPassword, setDisabledInputPassword] = useState(true)
   const [disabledInputPasswordRetype, setDisabledInputPasswordRetype] = useState(true)
+
+  const [editMode1, setEditMode1] = useState(false)
+  const [editMode2, setEditMode2] = useState(false)
+
+  const [openSimpleDeleteModal, setOpenSimpleDeleteModal] = useState(false)
 
   const addressRef = useRef()
 
@@ -49,8 +56,36 @@ const ProfileSettingScreen = () => {
     })
   }, [profileData])
 
+  const saveAndExit = () => {
+    setOpenSimpleDeleteModal(false)
+    document.body.style.overflow = 'scroll'
+  }
+
+  const runDeleteAccount = async email => {
+    const payloadDeleteAccount = {
+      email: email,
+    }
+    // /admin/delete_user
+    const afterDeleteMsg = await API.post('/admin/delete_user', payloadDeleteAccount)
+    console.log(afterDeleteMsg)
+    removeToken()
+    removeUserRole()
+    window.location.reload()
+  }
+
+  console.log(name)
+
   return (
     <>
+      {openSimpleDeleteModal && (
+        <DeleteModal
+          req={'Account'}
+          saveAndExit={saveAndExit}
+          title={'Are you sure want to delete this Account?'}
+          runDelete={runDeleteAccount}
+          data={profileData.basic_profile?.email}
+        />
+      )}
       <div className="profile-setting-container">
         <PrimaryHeading title={'Profile settings'} />
         <div className="profile-setting">
@@ -80,18 +115,23 @@ const ProfileSettingScreen = () => {
                   disabled={disabledInputName}
                   ref={nameRef}
                   onChange={e => {
+                    setEditMode1(true)
                     setName(e.target.value)
                   }}
                 />
-                <i
-                  className="fa-solid fa-pen-to-square edit"
-                  style={{
-                    color: disabledInputName ? 'var(--bgColor2)' : 'grey',
-                  }}
-                  onClick={() => {
-                    setDisabledInputName(!disabledInputName)
-                  }}
-                ></i>
+                {getUserRoles() == 'Technical Administrator' ? (
+                  <></>
+                ) : (
+                  <i
+                    className="fa-solid fa-pen-to-square edit"
+                    style={{
+                      color: disabledInputName ? 'var(--bgColor2)' : 'grey',
+                    }}
+                    onClick={() => {
+                      setDisabledInputName(!disabledInputName)
+                    }}
+                  ></i>
+                )}
               </div>
               <div className="edit_input">
                 <i className="fa-solid fa-envelope" />
@@ -100,18 +140,23 @@ const ProfileSettingScreen = () => {
                   disabled={disabledInputEmail}
                   ref={emailRef}
                   onChange={e => {
+                    setEditMode2(true)
                     setEmail(e.target.value)
                   }}
                 />
-                <i
-                  className="fa-solid fa-pen-to-square edit"
-                  style={{
-                    color: disabledInputEmail ? 'var(--bgColor2)' : 'grey',
-                  }}
-                  onClick={() => {
-                    setDisabledInputEmail(!disabledInputEmail)
-                  }}
-                ></i>
+                {getUserRoles() == 'Technical Administrator' ? (
+                  <></>
+                ) : (
+                  <i
+                    className="fa-solid fa-pen-to-square edit"
+                    style={{
+                      color: disabledInputEmail ? 'var(--bgColor2)' : 'grey',
+                    }}
+                    onClick={() => {
+                      setDisabledInputEmail(!disabledInputEmail)
+                    }}
+                  ></i>
+                )}
               </div>
               <div className="edit_input">
                 <i className="fa-solid fa-house-chimney" />
@@ -123,15 +168,19 @@ const ProfileSettingScreen = () => {
                     setAddress(e.target.value)
                   }}
                 />
-                <i
-                  className="fa-solid fa-pen-to-square edit"
-                  style={{
-                    color: disabledInputAddress ? 'var(--bgColor2)' : 'grey',
-                  }}
-                  onClick={() => {
-                    setDisabledInputAddress(!disabledInputAddress)
-                  }}
-                ></i>
+                {getUserRoles() == 'Technical Administrator' ? (
+                  <></>
+                ) : (
+                  <i
+                    className="fa-solid fa-pen-to-square edit"
+                    style={{
+                      color: disabledInputAddress ? 'var(--bgColor2)' : 'grey',
+                    }}
+                    onClick={() => {
+                      setDisabledInputAddress(!disabledInputAddress)
+                    }}
+                  ></i>
+                )}
               </div>
             </div>
           </div>
@@ -223,51 +272,64 @@ const ProfileSettingScreen = () => {
           </div>
 
           <div className="save-btns">
+            {getUserRoles() == 'Technical Administrator' ? (
+              <></>
+            ) : (
+              <button
+                className="delete-btn"
+                style={{
+                  cursor: 'pointer',
+                }}
+                onClick={async () => {
+                  // delete user APi Call and the logout
+                  document.body.scrollTop = 0
+                  document.documentElement.scrollTop = 0
+                  document.body.style.overflow = 'hidden'
+                  setOpenSimpleDeleteModal(true)
+                }}
+              >
+                Delete Account
+              </button>
+            )}
+
             <button
-              className="delete-btn"
-              onClick={async () => {
-                if (password && passwordRetype) {
-                  if (password == passwordRetype) {
-                    // delete user APi Call and the logout
-                    const payloadDeleteAccount = {
-                      email: email,
-                    }
-                    ///admin/delete_user
-                    const afterDeleteMsg = await API.post(
-                      '/admin/delete_user',
-                      payloadDeleteAccount
-                    )
-                    console.log(afterDeleteMsg)
-                    removeToken()
-                    removeUserRole()
-                    window.location.reload()
-                  } else {
-                    toast.error('Password and Retype Password Do not Match')
-                  }
-                } else {
-                  toast.error('Enter Password to Delete this Account')
-                }
-              }}
-            >
-              Delete Account
-            </button>
-            <button
+              className="btn"
               style={{ color: 'white' }}
               onClick={async () => {
-                if (name && name != '') {
-                  const payloadName = {
-                    full_name: name,
-                  }
+                if (
+                  name &&
+                  validator.isAlpha(name.split(' ')[0]) &&
+                  validator.isAlpha(name.split(' ')[1]) &&
+                  name.length >= 5
+                ) {
+                  if (name && name != '') {
+                    const payloadName = {
+                      full_name: name,
+                    }
 
-                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
-                  toast.success(afterUpdateMsg.data.message)
-                }
-                if (email && email != '') {
-                  const payloadEmail = {
-                    email: email,
+                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
+                    toast.success(afterUpdateMsg.data.message)
                   }
-                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
-                  toast.success(afterUpdateMsg.data.message)
+                } else {
+                  if (editMode1) {
+                    toast.error(
+                      'Name should be atleast 5 letters and must contain only letters A-Z or a-z'
+                    )
+                  }
+                }
+                if (email && validator.isEmail(email)) {
+                  if (email && email != '') {
+                    const payloadEmail = {
+                      email,
+                    }
+                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
+                    console.log(afterUpdateMsg.data.message)
+                    toast.success(afterUpdateMsg.data.message)
+                  }
+                } else {
+                  if (editMode2) {
+                    toast.error('Please enter email in proper format - abc@xyz.com')
+                  }
                 }
                 if (address && address != '') {
                   // const payloadAddress = {
@@ -289,8 +351,9 @@ const ProfileSettingScreen = () => {
                       '/auth/password/change/',
                       payloadPassword
                     )
+                    toast.success(afterPassChangeMsg.data.detail)
                   } else {
-                    toast.error('Password and Retype Password Do not Match')
+                    toast.error('Password and retype password do not match')
                   }
                 }
 
