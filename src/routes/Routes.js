@@ -79,7 +79,7 @@ const Routing = () => {
           </Route>
           <Route path="news" element={<NewsScreen />} />
           <Route path="profile" element={<ProfileSettingScreen />} />
-          <Route path="*" element={<Navigate to="/profile" />} />
+          {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
 
           {/* {(getUserRoles() == 'Technical Administrator') |
           (getUserRoles() == 'PMK Administrator') ? (
