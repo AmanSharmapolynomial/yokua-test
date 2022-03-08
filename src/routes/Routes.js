@@ -75,16 +75,18 @@ const Routing = () => {
                 </React.Fragment>
               }
             />
+            <Route path="*" element={<Navigate to="/profile" />} />
           </Route>
           <Route path="news" element={<NewsScreen />} />
           <Route path="profile" element={<ProfileSettingScreen />} />
+          <Route path="*" element={<Navigate to="/profile" />} />
+
           {/* {(getUserRoles() == 'Technical Administrator') |
           (getUserRoles() == 'PMK Administrator') ? (
             <Route path="*" element={<Navigate to="/user/list-view" />} />
           ) : (
             <Route path="*" element={<Navigate to="/profile" />} />
           )} */}
-          <Route path="*" element={<Navigate to="/profile" />} />
         </Routes>
       </div>
     </React.Fragment>
