@@ -78,22 +78,8 @@ const Routing = () => {
             />
           </Route>
           {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
-          <Route
-            path="news"
-            element={
-              <PrivateRoute>
-                <NewsScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="profile"
-            element={
-              <PrivateRoute>
-                <ProfileSettingScreen />
-              </PrivateRoute>
-            }
-          />
+          <Route path="news" element={<NewsScreen />} />
+          <Route path="profile" element={<ProfileSettingScreen />} />
           {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
 
           {/* {(getUserRoles() == 'Technical Administrator') |
