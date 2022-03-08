@@ -75,7 +75,7 @@ const Routing = () => {
                 </React.Fragment>
               }
             />
-            <Route path="*" element={<Navigate to="/profile" />} />
+            {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
           </Route>
           <Route path="news" element={<NewsScreen />} />
           <Route path="profile" element={<ProfileSettingScreen />} />
