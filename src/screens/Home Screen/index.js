@@ -1,16 +1,11 @@
 import React from 'react'
+import { Navigate } from 'react-router'
+import { Outlet } from 'react-router'
 
 const HomeScreen = () => {
   return (
     <div>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
-      <h1>HOme Screen</h1>
+      <Navigate to="/auth/login" />
     </div>
   )
 }

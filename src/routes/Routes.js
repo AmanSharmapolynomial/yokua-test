@@ -29,6 +29,7 @@ const Routing = () => {
       <Header isLogedIn={getToken()} isAdmin={true} />
       <div className="non_header_content relative">
         <Routes>
+          <Route path="/" element={<HomeScreen />} />
           <Route
             path="/auth"
             element={
