@@ -26,6 +26,7 @@ const NewsScreen = () => {
       category_id: parseInt(categoryFilter),
       sub_category_id: parseInt(subCategoryFilter),
       archived: archivedFilter,
+      page_index: 2,
     }
 
     const getAllNews = await API.post('news/', payload)

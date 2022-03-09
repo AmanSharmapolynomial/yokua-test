@@ -118,10 +118,11 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
+      page_index: 3,
     }
     const listuserdata = await API.post('admin/list_users', payload)
-    console.log(listuserdata.data)
-    let sortedArray = listuserdata.data.sort(function (a, b) {
+    console.log(listuserdata)
+    let sortedArray = listuserdata.data.page_data.sort(function (a, b) {
       if (sortMethod == 'A to Z') {
         return a.first_name.localeCompare(b.first_name)
       }

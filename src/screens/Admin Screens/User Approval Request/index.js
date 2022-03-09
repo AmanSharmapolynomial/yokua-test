@@ -40,7 +40,7 @@ const UserApprovalScreen = () => {
 
   useEffect(async () => {
     const listUserApprovalData = await API.get('admin/user_approval')
-    console.log(listUserApprovalData)
+
     setIsLoading(true)
     const tempArr = []
     listUserApprovalData.data.map((data, index) => {
@@ -91,9 +91,13 @@ const UserApprovalScreen = () => {
       })
     })
 
-    const listDULdata = await API.get(`admin/list_whitelisted_domain/${DULfilter}`)
+    const payloadDUL = {
+      page_index: 1,
+    }
+
+    const listDULdata = await API.post(`admin/list_whitelisted_domain/${DULfilter}`, payloadDUL)
     const tempDULArr = []
-    listDULdata.data.map((data, index) => {
+    listDULdata.data.page_data.map((data, index) => {
       tempDULArr.push({
         id: index,
         name: data.name,
