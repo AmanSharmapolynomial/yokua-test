@@ -14,7 +14,6 @@ function App() {
 
   return (
     <div className="App">
-      <Header isLogedIn={getToken()} isAdmin={true} />
       <Routing />
       <ToastContainer />
     </div>

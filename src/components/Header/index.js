@@ -46,21 +46,23 @@ const Header = ({ isLogedIn, isAdmin }) => {
             />
           )}
           {isLogedIn && renderPhoneNav && <PhoneNav />}
-          <button
-            className="logout-btn"
-            style={{
-              padding: '0.2rem 0.5rem',
-              cursor: 'pointer',
-              zIndex: '1000',
-            }}
-            onClick={() => {
-              removeToken()
-              removeUserRole()
-              navigate('/auth/login')
-            }}
-          >
-            Logout
-          </button>
+          {isLogedIn && (
+            <button
+              className="logout-btn"
+              style={{
+                padding: '0.2rem 0.5rem',
+                cursor: 'pointer',
+                zIndex: '1000',
+              }}
+              onClick={() => {
+                removeToken()
+                removeUserRole()
+                navigate('/auth/login')
+              }}
+            >
+              Logout
+            </button>
+          )}
         </div>
         {isLogedIn && <Navbar isAdmin={isAdmin} />}
       </div>
