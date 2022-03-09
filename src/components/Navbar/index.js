@@ -29,7 +29,7 @@ const Navbar = ({ isAdmin }) => {
             <a>News</a>
           </li>
           <li className="border-left border-right">
-            <a>Product Lines</a>
+            <Link to="/admin/products">Product Lines</Link>
             <i className="fa-solid fa-caret-down " />
           </li>
 

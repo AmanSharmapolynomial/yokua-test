@@ -19,6 +19,11 @@ import AuthLayout from '../layouts/AuthLayout'
 import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getUserRoles } from '../utils/token'
+import ProductList from '../screens/Admin Screens/Product Lines/Product List'
+import SubProductList from '../screens/Admin Screens/Product Lines/Sub Products'
+import ProductDetail from '../screens/Admin Screens/Product Lines/Product Detail'
+import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
+import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
 
 const Routing = () => {
   // get User Login Info
@@ -59,7 +64,11 @@ const Routing = () => {
             }
           >
             <Route path="user/list-view" element={<UserListView />} />
-
+            <Route path="products" element={<ProductList />} />
+            <Route path="rotameter" element={<Rotameter />} />
+            <Route path="approved-tokuchus" element={<ApprovedTokuchus />} />
+            <Route path="sub-products/:id" element={<SubProductList />} />
+            <Route path="product-detail/:id" element={<ProductDetail />} />
             <Route
               path="user/approval-request"
               element={

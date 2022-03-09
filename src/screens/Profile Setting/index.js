@@ -51,7 +51,7 @@ const ProfileSettingScreen = () => {
 
   return (
     <>
-      <div className="profile-setting-container">
+      <div className="profile-setting-container mb-5">
         <PrimaryHeading title={'Profile settings'} />
         <div className="profile-setting">
           <div className="profile-setting__info">

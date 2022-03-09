@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals'
 import { createStore, StoreProvider } from 'easy-peasy'
 import model from './model'
 import { BrowserRouter as Router } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.css'
 
 const store = createStore(model)
 
