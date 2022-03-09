@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
 import PrimaryHeading from '../../components/Primary Headings/index'
 import API from '../../utils/api'
-import { getUserRoles, removeToken, removeUserRole } from '../../utils/token'
+import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import validator from 'validator'
 import CustomCheckbox from '../../components/Profile/CustomCheckbox'
+import Header from '../../components/Header'
 
 const ProfileSettingScreen = () => {
   const [profileData, setProfileData] = useState({})
@@ -81,6 +82,7 @@ const ProfileSettingScreen = () => {
 
   return (
     <>
+      <Header isLogedIn={getToken()} />
       {openSimpleDeleteModal && (
         <DeleteModal
           req={'Account'}

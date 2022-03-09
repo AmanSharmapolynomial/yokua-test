@@ -15,7 +15,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
   // refs for fields in edit VIew
   const newsDescRef = useRef()
   const fileInputRef = useRef()
-  const newsDateRef = useRef()
+
   const categoryRef = useRef()
   const subCategoryRef = useRef()
 
@@ -48,7 +48,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
 
       if (editView) {
         newsDescRef.current.value = data.description
-        newsDateRef.current.value = moment(data.date_uploaded).format('yyyy-MM-DD')
+
         categoryRef.current.value = data.category_name
         subCategoryRef.current.value = data.sub_category_name
         setNewsDesc(data.description)
@@ -96,6 +96,8 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
     console.log(afterAddMsg)
   }
 
+  console.log(fileInput?.name)
+
   return (
     <React.Fragment>
       {deleteModal && (
@@ -110,7 +112,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
       <div className="single-news-item">
         <div className="flex-setup">
           <div
-            className="read-dot"
+            className="dot-adjust"
             onClick={() => {
               // call here the mark as read api
               const payloadRead = {
@@ -119,35 +121,30 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
               const markRead = API.post('/news/mark_read', payloadRead)
               setReadState(false)
             }}
-            style={
-              editView
-                ? {
-                    backgroundColor: '',
-                  }
-                : {
-                    backgroundColor: readState ? 'var(--bgColor2)' : '',
-                  }
-            }
-          ></div>
+          >
+            <div
+              className="read-dot"
+              style={
+                editView
+                  ? {
+                      backgroundColor: '',
+                    }
+                  : {
+                      backgroundColor: readState ? 'var(--bgColor2)' : '',
+                    }
+              }
+            ></div>
+          </div>
+
           <div className="news-img">
             {editView ? <img src={placeholder} /> : <img src={catImg} />}
           </div>
 
           <div className="news-text">
             <div className="news-info">
-              {editView ? (
-                <input
-                  type="date"
-                  ref={newsDateRef}
-                  onChange={e => {
-                    setDate(e.target.value)
-                  }}
-                />
-              ) : (
-                <span className="date">
-                  {moment(data ? data.date_uploaded : '').format('MMM Do')}
-                </span>
-              )}
+              <span className="date">
+                {moment(data ? data.date_uploaded : '').format('MMM Do')}
+              </span>
 
               {editView ? (
                 <>
@@ -241,6 +238,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                 style={{
                   minWidth: '100%',
                   minHeight: '15vh',
+                  marginTop: '1rem',
                 }}
                 placeholder="Subject"
                 onChange={e => {
@@ -340,18 +338,28 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                 }}
               />
             )}
-            <i
-              className="fa-solid fa-trash"
-              style={{
-                color: '#CD2727',
-              }}
-              onClick={() => {
-                // call the delete news API here
-                setDeleteNewsArr([data.id])
-                setDeleteModal(true)
-              }}
-            />
+            {editView ? (
+              <i
+                className="fa-solid fa-xmark"
+                onClick={() => {
+                  setEditView(false)
+                }}
+              />
+            ) : (
+              <i
+                className="fa-solid fa-trash"
+                style={{
+                  color: '#CD2727',
+                }}
+                onClick={() => {
+                  // call the delete news API here
+                  setDeleteNewsArr([data.id])
+                  setDeleteModal(true)
+                }}
+              />
+            )}
           </div>
+
           <div className="attached-file">
             {editView ? (
               <div className="inputfile-box">
@@ -362,14 +370,29 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                   className="inputfile"
                   onChange={() => {
                     console.log(fileInputRef.current.files[0])
+                    setFileInput(fileInputRef.current.files[0])
                   }}
                 />
-                <label htmlFor="file">
+                <label
+                  htmlFor="file"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <span id="file-name" className="file-box"></span>
                   <span className="file-button">
                     <i className="fa-solid fa-paperclip" />
                   </span>
                 </label>
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                  }}
+                >
+                  {fileInput?.name}
+                </span>
               </div>
             ) : (
               <div className="attachment-icon">

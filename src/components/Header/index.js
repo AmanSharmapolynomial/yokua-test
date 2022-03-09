@@ -1,11 +1,18 @@
 import { useStoreState } from 'easy-peasy'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import { Navigate } from 'react-router'
+import { removeToken, removeUserRole } from '../../utils/token'
 import Navbar from '../Navbar'
+import PhoneNav from '../Navbar/PhoneNav'
 import './style.css'
 const Header = ({ isLogedIn, isAdmin }) => {
   // fetch state
   // const userDetails = useStoreState(state => state.userDetails)
   const width = window.outerWidth
+
+  const navigate = useNavigate()
+  const [renderPhoneNav, setrenderPhoneNav] = useState(false)
 
   return (
     <div
@@ -24,12 +31,36 @@ const Header = ({ isLogedIn, isAdmin }) => {
             <span className="logo__tagline">Co-innovating tommorow</span>
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
-          <i
-            className="fa-solid fa-bars"
+          {isLogedIn && (
+            <i
+              className="fa-solid fa-bars"
+              style={{
+                color: 'white',
+                zIndex: '100000',
+                cursor: 'pointer',
+                position: 'relative',
+              }}
+              onClick={() => {
+                setrenderPhoneNav(!renderPhoneNav)
+              }}
+            />
+          )}
+          {isLogedIn && renderPhoneNav && <PhoneNav />}
+          <button
+            className="logout-btn"
             style={{
-              color: 'white',
+              padding: '0.2rem 0.5rem',
+              cursor: 'pointer',
+              zIndex: '1000',
             }}
-          />
+            onClick={() => {
+              removeToken()
+              removeUserRole()
+              navigate('/auth/login')
+            }}
+          >
+            Logout
+          </button>
         </div>
         {isLogedIn && <Navbar isAdmin={isAdmin} />}
       </div>

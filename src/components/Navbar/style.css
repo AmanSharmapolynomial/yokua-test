@@ -73,3 +73,33 @@ left: 8px;
         display: none;
     }
 }
+
+
+.phone-nav-item{
+    padding: 0.35rem 0;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.phone-nav-item:hover{
+    background-color: rgb(237, 237, 237);
+}
+
+.header-container > i {
+    position: relative;
+}
+
+.phone-name-dropdown{
+    position: absolute;
+    right: 20px;
+    top: 40px;
+}
+
+.dropdown-item-phone{
+    padding-left: 0.8rem;
+}
+
+
+

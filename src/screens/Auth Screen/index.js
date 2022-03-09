@@ -20,6 +20,7 @@ const AuthScreen = () => {
 
   return (
     <>
+      <Header isLogedIn={getToken()} isAdmin={true} />
       <div className="container forgot">
         <Outlet />
       </div>

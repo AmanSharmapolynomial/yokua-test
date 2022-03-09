@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
+import Header from '../../components/Header'
 import NewsItem from '../../components/News Components/NewsItem'
 import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
-import { getUserRoles } from '../../utils/token'
+import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
 
 const NewsScreen = () => {
@@ -40,6 +41,7 @@ const NewsScreen = () => {
       news_id: array,
     }
     const markAsRead = API.post('/news/mark_read', payload)
+    console.log(markAsRead)
   }
 
   const saveAndExitAdd = () => {
