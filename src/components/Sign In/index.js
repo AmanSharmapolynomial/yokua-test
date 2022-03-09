@@ -37,7 +37,7 @@ const SignIn = () => {
       if (logindata) {
         setUser(logindata)
         toast.success('Login Successful')
-        navigate('/admin/user/list-view')
+        navigate('/profile')
       }
     }
     setLoading(false)

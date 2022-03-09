@@ -44,6 +44,7 @@ const UserListView = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
   const [deleteEmail, setDeleteEmail] = useState('')
+  const [sortMethod, setSortMethod] = useState('Z to A')
 
   const columns = [
     {
@@ -54,12 +55,37 @@ const UserListView = () => {
     {
       name: 'Permission Level',
       selector: row => row.role,
+      minWidth: '15rem',
     },
     {
-      name: 'Company Email id',
+      name: 'Email id',
       selector: row => row.companyEmail,
       grow: 2,
       minWidth: '15rem',
+    },
+    {
+      name:
+        sortMethod == 'Z to A' ? (
+          <i
+            className="fa-solid fa-arrow-down-a-z"
+            style={{
+              fontSize: '1.5rem',
+            }}
+            onClick={() => {
+              setSortMethod('A to Z')
+            }}
+          />
+        ) : (
+          <i
+            className="fa-solid fa-arrow-down-z-a"
+            style={{
+              fontSize: '1.5rem',
+            }}
+            onClick={() => {
+              setSortMethod('Z to A')
+            }}
+          />
+        ),
     },
     {
       name: 'Company',
@@ -94,9 +120,18 @@ const UserListView = () => {
       filter: filterActive,
     }
     const listuserdata = await API.post('admin/list_users', payload)
+    console.log(listuserdata.data)
+    let sortedArray = listuserdata.data.sort(function (a, b) {
+      if (sortMethod == 'A to Z') {
+        return a.first_name.localeCompare(b.first_name)
+      }
+      if (sortMethod == 'Z to A') {
+        return b.first_name.localeCompare(a.first_name)
+      }
+    })
 
     const contentRowData = []
-    listuserdata.data.map((data, index) => {
+    sortedArray.map((data, index) => {
       contentRowData.push({
         name: (
           <span
@@ -160,10 +195,11 @@ const UserListView = () => {
         ),
       })
     })
-    setBackendData(listuserdata.data)
+
+    setBackendData(sortedArray)
     setContentRow(contentRowData)
     setIsLoading(false)
-  }, [reloadTable, filterActive])
+  }, [reloadTable, filterActive, sortMethod])
 
   const conditionalRowStyles = [
     {

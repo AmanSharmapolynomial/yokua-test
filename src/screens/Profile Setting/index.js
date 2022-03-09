@@ -6,6 +6,7 @@ import { getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import validator from 'validator'
+import CustomCheckbox from '../../components/Profile/CustomCheckbox'
 
 const ProfileSettingScreen = () => {
   const [profileData, setProfileData] = useState({})
@@ -27,13 +28,12 @@ const ProfileSettingScreen = () => {
   const [editMode2, setEditMode2] = useState(false)
 
   const [openSimpleDeleteModal, setOpenSimpleDeleteModal] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [passwordVisible2, setPasswordVisible2] = useState(false)
 
   const addressRef = useRef()
 
   const [checkedIds, setCheckedIds] = useState([])
-
-  // const checkBoxRef = useRef()
-  console.log(checkedIds)
 
   useEffect(async () => {
     // call profile data
@@ -48,12 +48,18 @@ const ProfileSettingScreen = () => {
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
     addressRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
+    const tempCheckedArr = []
     profileData.news_letter?.map((nl, index) => {
-      const tempCheckedArr = []
       if (nl.subscribed) {
-        tempCheckedArr.push(nl.id)
+        const checkedPayload = {
+          id: nl.id,
+          news_letter_title: nl.news_letter_title,
+          subscribed: true,
+        }
+        tempCheckedArr.push(checkedPayload)
       }
     })
+    setCheckedIds(tempCheckedArr)
   }, [profileData])
 
   const saveAndExit = () => {
@@ -72,8 +78,6 @@ const ProfileSettingScreen = () => {
     removeUserRole()
     window.location.reload()
   }
-
-  console.log(name)
 
   return (
     <>
@@ -191,13 +195,29 @@ const ProfileSettingScreen = () => {
               <div className="edit_input">
                 <i className="fa-solid fa-unlock" />
                 <input
-                  type="password"
+                  type={passwordVisible ? 'text' : 'password'}
                   disabled={disabledInputPassword}
                   onChange={e => {
                     setPassword(e.target.value)
                   }}
                   placeholder="Enter New Password"
                 />
+                {passwordVisible ? (
+                  <i
+                    className="fa-regular fa-eye"
+                    onClick={() => {
+                      setPasswordVisible(false)
+                    }}
+                  />
+                ) : (
+                  <i
+                    className="fa-regular fa-eye-slash"
+                    onClick={() => {
+                      setPasswordVisible(true)
+                    }}
+                  />
+                )}
+
                 <i
                   className="fa-solid fa-pen-to-square edit"
                   style={{
@@ -211,13 +231,30 @@ const ProfileSettingScreen = () => {
               <div className="edit_input">
                 <i className="fa-solid fa-unlock" />
                 <input
-                  type="password"
+                  type={passwordVisible2 ? 'text' : 'password'}
                   disabled={disabledInputPasswordRetype}
                   onChange={e => {
                     setPasswordRetype(e.target.value)
                   }}
                   placeholder="Retype New Password"
                 />
+
+                {passwordVisible2 ? (
+                  <i
+                    className="fa-regular fa-eye"
+                    onClick={() => {
+                      setPasswordVisible2(false)
+                    }}
+                  />
+                ) : (
+                  <i
+                    className="fa-regular fa-eye-slash"
+                    onClick={() => {
+                      setPasswordVisible2(true)
+                    }}
+                  />
+                )}
+
                 <i
                   className="fa-solid fa-pen-to-square edit"
                   style={{
@@ -238,33 +275,13 @@ const ProfileSettingScreen = () => {
               ) : (
                 <div className="profile-setting__sales-news ">
                   {profileData.news_letter?.map((info, index) => (
-                    <div
-                      className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}
+                    <CustomCheckbox
+                      info={info}
+                      setCheckedIds={setCheckedIds}
+                      index={index}
                       key={index}
-                    >
-                      <input
-                        type="checkbox"
-                        id={index}
-                        checked={info.subscribed}
-                        // make proper system for checking and unchcking acc to backedn
-                        onChange={e => {
-                          console.log(e.target.checked)
-                          if (e.target.checked) {
-                            if (!checkedIds.includes(index + 1)) {
-                              checkedIds.push(index + 1)
-                            }
-                          } else {
-                            if (checkedIds.includes(index + 1)) {
-                              const ind = checkedIds.indexOf(index + 1)
-                              if (ind > -1) {
-                                checkedIds.splice(ind, 1)
-                              }
-                            }
-                          }
-                        }}
-                      />
-                      <label for="check1">{info.news_letter_title}</label>
-                    </div>
+                      checkedIds={checkedIds}
+                    />
                   ))}
                 </div>
               )}
@@ -357,7 +374,37 @@ const ProfileSettingScreen = () => {
                   }
                 }
 
-                // call for event changes
+                // call for news letter changes
+
+                // /auth/profile_settings/
+                const tempNLArray = []
+                profileData.news_letter.map((nl, index) => {
+                  let diff = true
+                  checkedIds.map((ci, ind) => {
+                    if (ci.id == nl.id) {
+                      diff = false
+                    }
+                  })
+                  if (diff) {
+                    const obj = {
+                      id: nl.id,
+                      subscribed: false,
+                    }
+                    tempNLArray.push(obj)
+                  } else {
+                    const obj = {
+                      id: nl.id,
+                      subscribed: true,
+                    }
+                    tempNLArray.push(obj)
+                  }
+                })
+                const payloadNews = {
+                  news_letter: tempNLArray,
+                }
+                console.log(payloadNews)
+                const afterUpdateNewsMsg = API.post('auth/profile_settings/', payloadNews)
+                console.log(afterUpdateNewsMsg.data)
               }}
             >
               Save Changes
