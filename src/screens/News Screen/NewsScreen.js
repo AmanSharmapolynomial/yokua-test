@@ -20,13 +20,11 @@ const NewsScreen = () => {
   const [newNews, setNewNews] = useState(false)
 
   useEffect(async () => {
-    setIsLoading(true)
-
     const payload = {
       category_id: parseInt(categoryFilter),
       sub_category_id: parseInt(subCategoryFilter),
       archived: archivedFilter,
-      page_index: 2,
+      page_index: 1,
     }
 
     const getAllNews = await API.post('news/', payload)
@@ -35,9 +33,7 @@ const NewsScreen = () => {
     if (getAllNews.status == 200) {
       setBackendData(getAllNews.data)
     }
-
-    setIsLoading(false)
-  }, [archivedFilter, categoryFilter, subCategoryFilter])
+  }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading])
 
   const markAsReadAction = array => {
     const payload = {
@@ -48,26 +44,6 @@ const NewsScreen = () => {
 
   const saveAndExitAdd = () => {
     setNewNews(false)
-  }
-
-  const AddNewCategoryCall = (image, categoryName) => {
-    const payload = {
-      image,
-      data: {
-        category_name: categoryName,
-      },
-    }
-    const afterAddMsg = API.post('news/add_category', payload)
-    console.log(afterAddMsg)
-  }
-
-  const AddNewSubCategoryCall = (categoryName, parentCatId) => {
-    const payload = {
-      sub_category_name: categoryName,
-      parent_category_id: parentCatId,
-    }
-    const afterAddMsg = API.post('news/add_subcategory', payload)
-    console.log(afterAddMsg)
   }
 
   return (
@@ -178,6 +154,7 @@ const NewsScreen = () => {
                 category={backendData.categories}
                 subCategory={backendData.sub_categories}
                 key={index}
+                setIsLoading={setIsLoading}
               />
             ))
           ) : (
@@ -191,6 +168,7 @@ const NewsScreen = () => {
               category={backendData.categories}
               subCategory={backendData.sub_categories}
               saveAndExitAdd={saveAndExitAdd}
+              setIsLoading={setIsLoading}
             />
           ) : (
             <></>
