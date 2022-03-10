@@ -6,6 +6,8 @@ import { registerUser } from './../../services/auth.service'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
+import validator from 'validator'
+
 const SignUp = () => {
   // navigate
   const navigate = useNavigate()
@@ -31,6 +33,7 @@ const SignUp = () => {
   // actions import
   // const fetchRegister = useStoreActions(actions => actions.fetchRegister)
   const alertRef = useRef()
+  const tncRef = useRef()
 
   // if () {
   //   alertRef.current.style.opacity = 1
@@ -42,6 +45,8 @@ const SignUp = () => {
   // console.log(registeredUser[registeredUser.length - 1])
 
   // fill data from form
+
+  useEffect(() => {}, [])
   const registerDetails = {
     first_name: firstName,
     last_name: lastName,
@@ -53,22 +58,35 @@ const SignUp = () => {
   // use actions
 
   const register = async e => {
+    // setLoading(true)
     e.preventDefault()
-
-    if (password.length < 8) {
-      setActionLabel('Password must contain 8-16 characters, one special and numeric value')
-      setTimeout(() => {
-        alertRef.current.style.display = 'none'
-      }, 3000)
-      alertRef.current.style.display = 'block'
-    } else {
-      if (password != confirmPassword) {
-        toast.error('Password and Confirm Password should be same')
+    if (tncRef.current.checked) {
+      if (validator.isEmail(companyEmail)) {
+        if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+          if (password.length < 8) {
+            setActionLabel('Password must contain 8-16 characters, one special and numeric value')
+            setTimeout(() => {
+              alertRef.current.style.display = 'none'
+            }, 3000)
+            alertRef.current.style.display = 'block'
+          } else {
+            if (password != confirmPassword) {
+              toast.error('Password and Confirm Password should be same')
+            } else {
+              const a = await registerUser(registerDetails)
+              setLoading(false)
+            }
+          }
+        } else {
+          toast.error(
+            'First name and last name should be atleast 5 letters and must not contain any special characters'
+          )
+        }
       } else {
-        setLoading(true)
-        registerUser(registerDetails)
-        setLoading(false)
+        toast.error('Please enter a valid email e.g. abc@xyz.com')
       }
+    } else {
+      toast.error('Please accept terms and conditions to proceed')
     }
   }
 
@@ -88,7 +106,7 @@ const SignUp = () => {
           type="text"
           required={true}
           onChange={e => setFirstName(e.target.value)}
-          className="input-field input-field__email"
+          className="input-field"
           placeholder="First Name"
         />
         <input
@@ -100,6 +118,7 @@ const SignUp = () => {
         />
         <input
           type="email"
+          name="Email"
           required={true}
           style={{
             textTransform: 'lowercase',
@@ -110,6 +129,7 @@ const SignUp = () => {
         />
         <input
           type="password"
+          name="Password"
           className="input-field input-field__password"
           onChange={e => setPassword(e.target.value)}
           required={true}
@@ -131,11 +151,11 @@ const SignUp = () => {
           placeholder="Company(representative of yokogawa)"
         />
         <div className="checkbox">
-          <input type="checkbox" id="checkTermandCondtions" />
+          <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
           <span className="checkbox-text">Accept the term and conditions</span>
         </div>
 
-        <button type="submit" className="submit-btn" disabled={isLoading}>
+        <button type="submit" className="submit-btn">
           {isLoading ? 'Loading...' : 'Register'}
         </button>
       </form>

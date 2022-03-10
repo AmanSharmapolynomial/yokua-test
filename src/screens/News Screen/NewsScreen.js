@@ -1,5 +1,6 @@
 import { Pagination } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
+import { useDetectClickOutside } from 'react-detect-click-outside'
 import Header from '../../components/Header'
 import NewsItem from '../../components/News Components/NewsItem'
 import PrimaryHeading from '../../components/Primary Headings'
@@ -56,6 +57,18 @@ const NewsScreen = () => {
     setPageNoCall(pageNumber)
   }
 
+  const closeDropdown1 = () => {
+    setShowFilterDropdown1(false)
+  }
+
+  const ref1 = useDetectClickOutside({ onTriggered: closeDropdown1 })
+
+  const closeDropdown2 = () => {
+    setShowFilterDropdown2(false)
+  }
+
+  const ref2 = useDetectClickOutside({ onTriggered: closeDropdown2 })
+
   return (
     <>
       <Header
@@ -75,6 +88,7 @@ const NewsScreen = () => {
                   onClick={() => {
                     setShowFilterDropdown1(!showFilterDropdown1)
                   }}
+                  ref={ref1}
                 />
                 <div
                   className="filter-dropdown dropdown"
@@ -116,6 +130,7 @@ const NewsScreen = () => {
                   onClick={() => {
                     setShowFilterDropdown2(!showFilterDropdown2)
                   }}
+                  ref={ref2}
                 />
                 <div
                   className="filter-dropdown dropdown"

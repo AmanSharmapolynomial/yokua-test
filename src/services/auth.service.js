@@ -17,8 +17,12 @@ export const login = catchAsync(async payload => {
 // auth/register/
 export const registerUser = catchAsync(async payload => {
   const data = await API.post(`/auth/registration/`, payload)
+  console.log(data)
   if (data.status == 200) {
     toast.success(data.data.message)
+  } else {
+    console.log(data.data.email[0])
+    toast.error(data.data.email[0])
   }
   return data
 })

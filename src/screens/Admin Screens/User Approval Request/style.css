@@ -89,6 +89,10 @@
     cursor: pointer;
 }
 
+.clear-notification{
+    margin-right: 1rem !important;
+}
+
 .domain-text{
     width: 6rem;
 }
