@@ -66,6 +66,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
   const saveAndExitModal = () => {
     setDeleteModal(false)
     setEditView('')
+    document.body.style.overflow = 'scroll'
   }
 
   const deleteNews = idArr => {
@@ -78,6 +79,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
 
   const AddNewCategoryCall = (image, categoryName) => {
     const payload = {
+      // change here to form data
       image,
       data: {
         category_name: categoryName,
@@ -373,6 +375,9 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                 onClick={() => {
                   // call the delete news API here
                   setDeleteNewsArr([data.id])
+                  document.body.scrollTop = 0
+                  document.documentElement.scrollTop = 0
+                  document.body.style.overflow = 'hidden'
                   setDeleteModal(true)
                 }}
               />

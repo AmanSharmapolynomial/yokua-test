@@ -1,3 +1,4 @@
+import { Pagination } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import NewsItem from '../../components/News Components/NewsItem'
@@ -19,13 +20,15 @@ const NewsScreen = () => {
   const [backendData, setBackendData] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [newNews, setNewNews] = useState(false)
+  const [totalPages, setTotalPages] = useState(1)
+  const [pageNoCall, setPageNoCall] = useState(1)
 
   useEffect(async () => {
     const payload = {
       category_id: parseInt(categoryFilter),
       sub_category_id: parseInt(subCategoryFilter),
       archived: archivedFilter,
-      page_index: 1,
+      page_index: pageNoCall,
     }
 
     const getAllNews = await API.post('news/', payload)
@@ -34,7 +37,8 @@ const NewsScreen = () => {
     if (getAllNews.status == 200) {
       setBackendData(getAllNews.data)
     }
-  }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading])
+    setTotalPages(getAllNews.data.total_pages)
+  }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
   const markAsReadAction = array => {
     const payload = {
@@ -46,6 +50,10 @@ const NewsScreen = () => {
 
   const saveAndExitAdd = () => {
     setNewNews(false)
+  }
+
+  function onChange(pageNumber) {
+    setPageNoCall(pageNumber)
   }
 
   return (
@@ -203,6 +211,15 @@ const NewsScreen = () => {
             )}
           </div>
         )}
+        <div className="pagination">
+          <Pagination
+            showQuickJumper
+            showSizeChanger={false}
+            total={totalPages * 10}
+            onChange={onChange}
+            style={{ border: 'none' }}
+          />
+        </div>
         <div className="archived-filter">
           {archivedFilter ? (
             <button
