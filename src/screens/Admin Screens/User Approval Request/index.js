@@ -12,6 +12,7 @@ import CreateNewDomain from '../../../components/Modals/Create Domian Modal/Crea
 import { toast } from 'react-toastify'
 import { useStoreState } from 'easy-peasy'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
+import { Pagination } from 'antd'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
@@ -25,6 +26,8 @@ const UserApprovalScreen = () => {
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const [selectedDULRowsState, setSelectedDULRowsState] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
+  const [pageNoCall, setPageNoCall] = useState(1)
 
   // /admin/user_approval
 
@@ -51,6 +54,7 @@ const UserApprovalScreen = () => {
         email: data.email_id,
         company: data.company,
         requestFor: data.request_for,
+        type: data.type,
         edit:
           data.type == 'approval' ? (
             <div className="edit-icons">
@@ -92,7 +96,7 @@ const UserApprovalScreen = () => {
     })
 
     const payloadDUL = {
-      page_index: 1,
+      page_index: pageNoCall,
     }
 
     const listDULdata = await API.post(`admin/list_whitelisted_domain/${DULfilter}`, payloadDUL)
@@ -108,6 +112,8 @@ const UserApprovalScreen = () => {
       })
     })
 
+    setTotalPages(listDULdata.data.total_pages)
+
     const listDomains = await API.get('admin/list_whitelisted_domain')
     const tempDL = []
     listDomains.data.map(data => {
@@ -118,7 +124,9 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal])
+  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall])
+
+  const rowDisabledCriteria = row => row.type == 'notification'
 
   const columnsApprovalTable = [
     {
@@ -309,6 +317,10 @@ const UserApprovalScreen = () => {
     setSelectedRowsState(selectedRows)
   }
 
+  function onChange(pageNumber) {
+    setPageNoCall(pageNumber)
+  }
+
   return (
     <div className="user-approval-screen">
       {openARModal && (
@@ -366,6 +378,7 @@ const UserApprovalScreen = () => {
               customStyles={customStyles}
               conditionalRowStyles={conditionalRowStyles}
               onSelectedRowsChange={selectedRowsActionUA}
+              selectableRowDisabled={rowDisabledCriteria}
             />
           )}
         </div>
@@ -443,14 +456,25 @@ const UserApprovalScreen = () => {
                   Loading...
                 </div>
               ) : (
-                <DataTable
-                  columns={columnsDomainUserListTable}
-                  data={contentRowDomainUserListTable}
-                  selectableRows
-                  customStyles={customStyles}
-                  conditionalRowStyles={conditionalRowStyles}
-                  onSelectedRowsChange={selectedRowsActionDUL}
-                />
+                <>
+                  <DataTable
+                    columns={columnsDomainUserListTable}
+                    data={contentRowDomainUserListTable}
+                    selectableRows
+                    customStyles={customStyles}
+                    conditionalRowStyles={conditionalRowStyles}
+                    onSelectedRowsChange={selectedRowsActionDUL}
+                  />
+                  <div className="pagination">
+                    <Pagination
+                      showQuickJumper
+                      showSizeChanger={false}
+                      total={totalPages * 10}
+                      onChange={onChange}
+                      style={{ border: 'none' }}
+                    />
+                  </div>
+                </>
               )}
             </div>
             <div className="btn-container">

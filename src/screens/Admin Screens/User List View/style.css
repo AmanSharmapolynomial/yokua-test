@@ -1,3 +1,5 @@
+
+@import '~antd/dist/antd.css';
 .user-list-view-table{
     border: 1px solid rgb(220, 220, 220);
     border-radius: 5px;
@@ -34,7 +36,7 @@
     background-color: black;
     color: white;
     height: 21px;
-    width: 13px;    
+    width: 21px;    
     display: flex;
     align-items: center;       
     justify-content: center;
@@ -75,4 +77,12 @@
 
 #dropdown:checked + label{
     display: none;
+}
+
+.pagination{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
 }

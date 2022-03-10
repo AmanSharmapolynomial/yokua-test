@@ -4,7 +4,7 @@ import PrimaryHeading from '../../../components/Primary Headings'
 import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable, { createTheme } from 'react-data-table-component'
 import './style.css'
-import { Select } from 'antd'
+import { Pagination, Select } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import { useStoreActions, useStoreState } from 'easy-peasy'
@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
+
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
@@ -45,6 +46,8 @@ const UserListView = () => {
   const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
   const [deleteEmail, setDeleteEmail] = useState('')
   const [sortMethod, setSortMethod] = useState('Z to A')
+  const [pageNoCall, setPageNoCall] = useState(1)
+  const [totalPages, setTotalPages] = useState()
 
   const columns = [
     {
@@ -118,7 +121,7 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
-      page_index: 3,
+      page_index: pageNoCall,
     }
     const listuserdata = await API.post('admin/list_users', payload)
     console.log(listuserdata)
@@ -130,6 +133,7 @@ const UserListView = () => {
         return b.first_name.localeCompare(a.first_name)
       }
     })
+    setTotalPages(listuserdata.data.total_pages)
 
     const contentRowData = []
     sortedArray.map((data, index) => {
@@ -200,7 +204,7 @@ const UserListView = () => {
     setBackendData(sortedArray)
     setContentRow(contentRowData)
     setIsLoading(false)
-  }, [reloadTable, filterActive, sortMethod])
+  }, [reloadTable, filterActive, sortMethod, pageNoCall])
 
   const conditionalRowStyles = [
     {
@@ -297,6 +301,9 @@ const UserListView = () => {
   // filters
   const filterTable = value => {
     setFilterActive(value)
+  }
+  function onChange(pageNumber) {
+    setPageNoCall(pageNumber)
   }
 
   return (
@@ -476,6 +483,16 @@ const UserListView = () => {
             Add
           </div>
         )}
+      </div>
+      {/* <Pagination noOfPages={10} /> */}
+      <div className="pagination">
+        <Pagination
+          showQuickJumper
+          showSizeChanger={false}
+          total={totalPages * 10}
+          onChange={onChange}
+          style={{ border: 'none' }}
+        />
       </div>
     </div>
   )
