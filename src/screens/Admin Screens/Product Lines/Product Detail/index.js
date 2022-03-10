@@ -603,6 +603,8 @@ const ProductDetail = () => {
           </button>
           <hr />
           {/*  TODO TABLE COMPONENT */}
+
+          <></>
         </>
       </div>
     </>
@@ -637,6 +639,16 @@ const TableComponent = ({ item, deleteComponent }) => {
       isLink: column.is_link,
       isDate: column.is_date,
       filterable: column.is_filterable,
+      cell: (row, a) => (
+        <a
+          href={row.posterUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => console.log(columnName)}
+        >
+          Download
+        </a>
+      ),
     }
     columnNameList.push(column.column_name)
     columnsApprovalTable.push(columnHeader)
@@ -701,9 +713,8 @@ const TableComponent = ({ item, deleteComponent }) => {
   return (
     <>
       <div className="mb-5 mt-3">
-        {/*<Headerbar title={item.table_name} deleteComponent={deleteComponent} />*/}
         <DataTable
-          className="rdt_Table"
+          pagination
           fixedHeader
           columns={columnsApprovalTable}
           data={contentRowApprovalTable}
