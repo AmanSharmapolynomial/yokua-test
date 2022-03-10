@@ -133,6 +133,7 @@ const NewsScreen = () => {
                         }}
                       >
                         {category.sub_category_name}
+                        Something
                       </span>
                     ))}
                 </div>

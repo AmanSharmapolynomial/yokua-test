@@ -168,6 +168,25 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                       <option key={index}>{cat.category_name}</option>
                     ))}
                   </datalist> */}
+
+                  <div className="btn-group select-font-size">
+                    <button
+                      className="btn  btn-sm dropdown-toggle select-news-bootstrap select-font-size select-border"
+                      type="button"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Small
+                    </button>
+                    <div className="dropdown-menu select-font-size">
+                      {category.map((cat, index) => (
+                        <option key={index}>{cat.category_name}</option>
+                      ))}
+                      <button className={'btn align-middle'} onClick={() => {}}>
+                        Live News
+                      </button>
+                    </div>
+                  </div>
                   <select
                     className="select-news"
                     ref={categoryRef}
@@ -397,7 +416,9 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
             ) : (
               <div className="attachment-icon">
                 <i className="fa-solid fa-file" />
-                <a href={data ? data.attachment_link : ''}>Read attached file</a>
+                <a href={data ? data.attachment_link : ''} download>
+                  Read attached file
+                </a>
               </div>
             )}
           </div>
