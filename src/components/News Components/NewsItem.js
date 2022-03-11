@@ -171,7 +171,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                     ))}
                   </datalist> */}
 
-                  <div className="btn-group select-font-size">
+                  {/* <div className="btn-group select-font-size">
                     <button
                       className="btn  btn-sm dropdown-toggle select-news-bootstrap select-font-size select-border"
                       type="button"
@@ -188,7 +188,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
                         Live News
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                   <select
                     className="select-news"
                     ref={categoryRef}
