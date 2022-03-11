@@ -108,7 +108,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               </div>
             </div>
             <div className="input-field-container">
-              <label className="input-label">E-mail id</label>
+              <label className="input-label">E-Mail id</label>
               <input
                 disabled={disabledInput}
                 className="input-text"

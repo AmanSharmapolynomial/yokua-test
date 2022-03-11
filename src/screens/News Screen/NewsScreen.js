@@ -1,4 +1,3 @@
-import { Pagination } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import Header from '../../components/Header'
@@ -7,6 +6,8 @@ import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
+
+import { Pagination } from 'antd'
 
 const NewsScreen = () => {
   const filter1Ref = useRef()
@@ -38,7 +39,6 @@ const NewsScreen = () => {
       setShowFilterDropdown1(false)
       setShowFilterDropdown2(false)
     })
-
     return handleOnScroll
   }, [])
 
@@ -68,7 +68,7 @@ const NewsScreen = () => {
 
         data.data ? setNewsData(data.data.news_letters) : setNewsData([])
       }
-      setTotalPages(data.total_pages)
+      setTotalPages(data.data.total_pages)
     })
   }
 
@@ -76,7 +76,7 @@ const NewsScreen = () => {
     const markAsPayload = {
       news_id: array,
     }
-    const markAsRead = API.post('/news/mark_read', markAsPayload)
+    API.post('/news/mark_read', markAsPayload)
       .then(data => {
         getAllNews(payload)
       })
@@ -296,9 +296,9 @@ const NewsScreen = () => {
         {newsData.length > 0 && (
           <div className="pagination">
             <Pagination
+              total={totalPages * 8}
               showQuickJumper
               showSizeChanger={false}
-              total={totalPages * 2}
               onChange={onChange}
               style={{ border: 'none' }}
             />

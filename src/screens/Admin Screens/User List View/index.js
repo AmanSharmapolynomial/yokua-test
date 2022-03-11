@@ -294,7 +294,7 @@ const UserListView = () => {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
-      toast.error('Enter email')
+      toast.error('Enter E-Mail')
     }
     setReloadTable(!reloadTable)
   }

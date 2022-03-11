@@ -33,7 +33,7 @@ const AcceptRejectModal = ({
                 padding: '1rem',
               }}
             >
-              The user will be change the e-mail
+              The user will be change the E-Mail
             </span>
           )}
           {change == 'Rejected' ? (

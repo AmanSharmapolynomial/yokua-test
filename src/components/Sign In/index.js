@@ -67,7 +67,7 @@ const SignIn = () => {
             required={true}
             onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
-            placeholder="E-mail"
+            placeholder="E-Mail"
           />
 
           <input

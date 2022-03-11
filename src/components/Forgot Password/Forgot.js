@@ -51,7 +51,7 @@ const Forgot = () => {
             className="input-field input-field__email"
             name="email"
             ref={emailRef}
-            placeholder="E-mail"
+            placeholder="E-Mail"
           />
 
           <button type="submit" className="submit-btn" disabled={isLoading}>

@@ -342,9 +342,10 @@ const NewsItem = ({
                               })
                               .catch(function (response) {
                                 //handle error
-                                console.log(response)
+                                console.log('Error', response)
                                 if (response.status != 200) {
-                                  toast.error(response?.data?.message)
+                                  // toast.error(response?.message)
+                                  toast.error('Something went wrong')
                                 }
                                 setIsLoading(false)
                               })
@@ -383,6 +384,7 @@ const NewsItem = ({
               <i
                 className="fa-solid fa-xmark"
                 onClick={() => {
+                  setEditView(false)
                   cancelAddNews(data.id)
                 }}
               />
@@ -415,9 +417,9 @@ const NewsItem = ({
                     id="file"
                     ref={fileInputRef}
                     className="inputfile"
-                    onChange={() => {
-                      console.log(fileInputRef.current.files[0])
-                      setFileInput(fileInputRef.current.files[0])
+                    onChange={e => {
+                      console.log(e.target.files[0])
+                      setFileInput(e.target.files[0])
                     }}
                   />
                   <label

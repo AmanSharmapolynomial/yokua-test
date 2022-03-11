@@ -43,12 +43,14 @@ const UserApprovalScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [DULfilter, setDULfilter] = useState(1)
 
-  useEffect(async () => {
-    const listUserApprovalData = await API.get('admin/user_approval')
+  const [pageIndex, setPageIndex] = useState({ page_index: 1 })
 
+  useEffect(async () => {
+    const listUserApprovalData = await API.post('admin/user_approval', pageIndex)
+    console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
-    listUserApprovalData.data.map((data, index) => {
+    listUserApprovalData.data.page_data.map((data, index) => {
       tempArr.push({
         id: index,
         name: data.name,
