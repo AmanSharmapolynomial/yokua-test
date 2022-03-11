@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import './style.css'
 import { login } from './../../services/auth.service'
 import { toast } from 'react-toastify'
+import { getToken } from '../../utils/token'
 const SignIn = () => {
   // states
   const [email, setEmail] = useState('')
@@ -63,19 +64,15 @@ const SignIn = () => {
         <form type="submit" onSubmit={SignIn}>
           <input
             type="email"
-            name="email"
             required={true}
-            style={{
-              textTransform: 'lowercase',
-            }}
             onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
-            placeholder="Email"
+            placeholder="E-mail"
           />
 
           <input
-            name="password"
             type="password"
+            name="password"
             required={true}
             onChange={e => setPassword(e.target.value)}
             className="input-field input-field__password"

@@ -61,6 +61,15 @@
  @media(min-width: 970px){
     .logout-btn{
         display: flex;
+        background: var(--textColor5);
+        border: 1px solid var(--bgColor2);
+        border-radius: 5px;
+        margin: 0;
+        padding: 0 0.8rem !important;
+        align-items: center;
+        justify-content: center;
+        height: 2rem;
+        font-family: Poppins;
     }
      
     .header-container{

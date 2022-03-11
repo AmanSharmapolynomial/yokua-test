@@ -35,6 +35,7 @@ const ProfileSettingScreen = () => {
   const addressRef = useRef()
 
   const [checkedIds, setCheckedIds] = useState([])
+  const [reloadData, setReloadData] = useState(false)
 
   useEffect(async () => {
     // call profile data
@@ -43,12 +44,12 @@ const ProfileSettingScreen = () => {
     console.log(backendData)
     setProfileData(backendData.data)
     setIsLoading(false)
-  }, [])
+  }, [reloadData])
 
   useEffect(() => {
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
-    addressRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
+    addressRef.current.value = profileData.basic_profile?.location || 'Rota Yokogawa GmbH & Co. KG'
     const tempCheckedArr = []
     profileData.news_letter?.map((nl, index) => {
       if (nl.subscribed) {
@@ -66,11 +67,12 @@ const ProfileSettingScreen = () => {
   const saveAndExit = () => {
     setOpenSimpleDeleteModal(false)
     document.body.style.overflow = 'scroll'
+    setReloadData(!reloadData)
   }
 
   const runDeleteAccount = async email => {
     const payloadDeleteAccount = {
-      email: email,
+      email: [email],
     }
     // /admin/delete_user
     const afterDeleteMsg = await API.post('/admin/delete_user', payloadDeleteAccount)
@@ -106,7 +108,7 @@ const ProfileSettingScreen = () => {
             </div>
 
             <div className="profile-setting__info_name">
-              <h4 className="name">{profileData.basic_profile?.full_name || 'Michael Jordan'}</h4>
+              <h4 className="name">{profileData.basic_profile?.full_name}</h4>
               <p className="details">FCP user since April 2017</p>
             </div>
           </div>
@@ -165,7 +167,7 @@ const ProfileSettingScreen = () => {
                 )}
               </div>
               <div className="edit_input">
-                <i className="fa-solid fa-house-chimney" />
+                <i className="fa-solid fa-address-book" />
                 <input
                   type="text"
                   disabled={disabledInputAddress}
@@ -407,6 +409,7 @@ const ProfileSettingScreen = () => {
                 console.log(payloadNews)
                 const afterUpdateNewsMsg = API.post('auth/profile_settings/', payloadNews)
                 console.log(afterUpdateNewsMsg.data)
+                setReloadData(!reloadData)
               }}
             >
               Save Changes

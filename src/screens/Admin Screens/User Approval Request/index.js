@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { useStoreState } from 'easy-peasy'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
+import { useDetectClickOutside } from 'react-detect-click-outside'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
@@ -22,6 +23,7 @@ const UserApprovalScreen = () => {
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
   const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
+  const [acceptData, setAcceptData] = useState()
   const [deleteDomainData, setDeleteDomainData] = useState()
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
@@ -82,7 +84,7 @@ const UserApprovalScreen = () => {
                     document.body.scrollTop = 0
                     document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
-                    acceptSingleRequest(data.email_id)
+                    setAcceptData(data.email_id)
                     setChangeModal('Accepted')
                     setOpenARModal(true)
                   }}
@@ -330,6 +332,8 @@ const UserApprovalScreen = () => {
           setRejectMsg={setRejectMsg}
           rejectSingleRequest={rejectSingleRequest}
           rejectionData={rejectionData}
+          acceptData={acceptData}
+          acceptSingleRequest={acceptSingleRequest}
         />
       )}
 
@@ -348,7 +352,17 @@ const UserApprovalScreen = () => {
       <div className="user-approval-request-table-contents">
         <div className="btn-container">
           <button
-            className="action-btn btn"
+            className="action-btn btn clear-notification"
+            onClick={() => {
+              const a = API.get('auth/clear_notification/')
+              console.log(a)
+              setReloadTable(!reloadTable)
+            }}
+          >
+            Clear Notification
+          </button>
+          <button
+            className="action-btn btn "
             onClick={() => {
               if (selectedRowsState.length > 0) {
                 acceptAllRequest()

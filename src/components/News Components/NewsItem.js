@@ -420,10 +420,16 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
               </div>
             ) : (
               <div className="attachment-icon">
-                <i className="fa-solid fa-file" />
-                <a href={data ? data.attachment_link : ''} download>
-                  Read attached file
-                </a>
+                {data.attachment_link != '' ? (
+                  <>
+                    <i className="fa-solid fa-file" />
+                    <a download href={data ? data.attachment_link : ''}>
+                      Read attached file
+                    </a>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             )}
           </div>

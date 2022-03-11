@@ -7,7 +7,7 @@ import Header from '../../components/Header'
 const AdminScreens = () => {
   const { pathname } = useLocation()
   if (pathname == '/admin') {
-    return <Navigate to="/admin/login" replace />
+    return <Navigate to="/auth/login" replace />
   }
 
   return (

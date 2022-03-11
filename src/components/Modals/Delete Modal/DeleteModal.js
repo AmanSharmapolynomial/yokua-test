@@ -13,7 +13,7 @@ const DeleteModal = ({ req, saveAndExit, runDelete, title, data }) => {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '0.8rem',
-              margin: '2rem 0',
+              margin: '1.5rem 0',
               color: 'var(--textColor2)',
               textAlign: 'center',
             }}

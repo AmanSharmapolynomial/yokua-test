@@ -6,20 +6,19 @@ const AcceptRejectModal = ({
   setRejectMsg,
   rejectionData,
   rejectSingleRequest,
+  acceptSingleRequest,
+  acceptData,
 }) => {
   const [msg, setMsg] = useState(null)
-  if (change == 'Accepted') {
-    setTimeout(() => {
-      saveAndExit()
-      document.body.style.overflow = 'scroll'
-    }, 3000)
-  }
+
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">Request {change}</h3>
+        <h3 className="modal-heading">
+          {change == 'Rejected' ? 'Rejection Request' : 'Request Approval'}
+        </h3>
         <div className="modal-content domain-modal">
-          {change == 'Rejected' && (
+          {change == 'Rejected' ? (
             <div className="info-text">
               <input
                 type="text"
@@ -28,6 +27,14 @@ const AcceptRejectModal = ({
                 onChange={e => setMsg(e.target.value)}
               />
             </div>
+          ) : (
+            <span
+              style={{
+                padding: '1rem',
+              }}
+            >
+              The user will be change the e-mail
+            </span>
           )}
           {change == 'Rejected' ? (
             <div className="domain-modal-cta">
@@ -51,15 +58,26 @@ const AcceptRejectModal = ({
               </button>
             </div>
           ) : (
-            <i
-              className="fa-solid fa-check"
-              style={{
-                fontSize: '3rem',
-                backgroundColor: 'green',
-                borderRadius: '100%',
-                color: 'white',
-              }}
-            />
+            <div className="domain-modal-cta">
+              <button
+                className="cancel-domain btn"
+                onClick={() => {
+                  saveAndExit()
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn"
+                onClick={() => {
+                  acceptSingleRequest(acceptData)
+                  saveAndExit()
+                  document.body.style.overflow = 'scroll'
+                }}
+              >
+                Confirm
+              </button>
+            </div>
           )}
         </div>
       </div>

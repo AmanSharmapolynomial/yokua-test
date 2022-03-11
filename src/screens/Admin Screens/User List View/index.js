@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
+import { useDetectClickOutside } from 'react-detect-click-outside'
 
 const UserListView = () => {
   // states
@@ -306,6 +307,12 @@ const UserListView = () => {
     setPageNoCall(pageNumber)
   }
 
+  const closeDropdown = () => {
+    setShowFilterDropdown(false)
+  }
+
+  const ref = useDetectClickOutside({ onTriggered: closeDropdown })
+
   return (
     <div className="user-list-view">
       {openBasicDeleteModal && (
@@ -329,7 +336,7 @@ const UserListView = () => {
       <SecondaryHeading title={'User list view'} />
 
       <div className="filter-actions">
-        <div className="filter-icons">
+        <div className="filter-icons" ref={ref}>
           <i
             className="fa-solid fa-filter has-dropdown"
             onClick={() => {

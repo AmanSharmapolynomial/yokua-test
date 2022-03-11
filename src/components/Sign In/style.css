@@ -3,7 +3,7 @@
 }
 
 .signIn-container{
-    padding-bottom: 2rem;
+    padding: 2rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,4 +74,12 @@ form{
     text-decoration-line: underline;
     text-underline-offset: 3px;
     text-decoration-color: rgb(37, 37, 37);
+}
+
+.input-field__email{
+    text-transform: lowercase;
+}
+
+.input-field__email::placeholder{
+    text-transform: capitalize;
 }
