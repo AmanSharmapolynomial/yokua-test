@@ -8,9 +8,26 @@ import axios from 'axios'
 import { getToken } from '../../utils/token'
 import { toast } from 'react-toastify'
 
-const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, setIsLoading }) => {
+import { getUserRoles } from '../../utils/token'
+
+const NewsItem = ({
+  data,
+  category,
+  subCategory,
+  changeType,
+  saveAndExitAdd,
+  setIsLoading,
+  cancelAddNews,
+  refreshPage,
+}) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
+
+  const [hasPermission] = useState(
+    getUserRoles() == 'PMK Administrator' ||
+      getUserRoles() == 'PMK Content Manager' ||
+      getUserRoles() == 'Technical Administrator'
+  )
 
   // refs for fields in edit VIew
   const newsDescRef = useRef()
@@ -32,7 +49,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
   const [deleteNewsArr, setDeleteNewsArr] = useState([])
 
   useEffect(() => {
-    if (changeType == 'Add' && data == undefined) {
+    if (changeType == 'Add') {
       setEditView(true)
     }
   }, [])
@@ -111,7 +128,7 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
           data={deleteNewsArr}
         />
       )}
-      <div className="single-news-item">
+      <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div
             className="dot-adjust"
@@ -274,150 +291,157 @@ const NewsItem = ({ data, category, subCategory, changeType, saveAndExitAdd, set
 
         <div className="edit-delete-cta">
           <div className="news-edit-icons">
-            {editView ? (
-              <i
-                className="fa-solid fa-floppy-disk"
-                style={{
-                  color: 'var(--bgColor2)',
-                }}
-                onClick={() => {
-                  // add save value to a payload
-                  // call the save or edit api here
-                  if (newsDescRef.current.value == '') {
-                    toast.error('Enter some description to add or edit news')
-                  } else {
-                    setIsLoading(true)
-                    if (categoryID == null) {
-                      // call category add api
-                    } else {
-                      if (subCategoryID == null) {
-                        // call subcategory add api
+            {editView
+              ? hasPermission && (
+                  <i
+                    className="fa-solid fa-floppy-disk"
+                    style={{
+                      color: 'var(--bgColor2)',
+                    }}
+                    onClick={() => {
+                      // add save value to a payload
+                      // call the save or edit api here
+                      if (newsDescRef.current.value == '') {
+                        toast.error('Enter some description to add or edit news')
                       } else {
-                        const details = JSON.stringify({
-                          news_id: dataID || null,
-                          category_id: categoryID,
-                          sub_category_id: subCategoryID,
-                          description: newsDesc,
-                        })
-                        const fileDetails = fileInputRef?.current?.files[0]
-                        var bodyFormData = new FormData()
-                        bodyFormData.append('data', details)
-                        bodyFormData.append('file', fileDetails)
-                        const token = getToken()
-                        axios({
-                          method: 'post',
-                          url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-                          data: bodyFormData,
-                          headers: {
-                            'Content-Type': 'multipart/form-data',
-                            Authorization: `Bearer ${token}`,
-                          },
-                        })
-                          .then(function (response) {
-                            //handle success
-                            console.log(response)
-                            if (response.status == 200) {
-                              toast.success(response.data.message)
-                              setIsLoading(false)
-                            }
-                          })
-                          .catch(function (response) {
-                            //handle error
-                            console.log(response)
-                            if (response.status != 200) {
-                              toast.error(response?.data?.message)
-                            }
-                            setIsLoading(false)
-                          })
-                      }
-                    }
+                        setIsLoading(true)
+                        if (categoryID == null) {
+                          // call category add api
+                        } else {
+                          if (subCategoryID == null) {
+                            // call subcategory add api
+                          } else {
+                            const details = JSON.stringify({
+                              news_id: dataID || null,
+                              category_id: categoryID,
+                              sub_category_id: subCategoryID,
+                              description: newsDesc,
+                            })
+                            const fileDetails = fileInputRef?.current?.files[0]
+                            var bodyFormData = new FormData()
+                            bodyFormData.append('data', details)
+                            bodyFormData.append('file', fileDetails)
+                            const token = getToken()
+                            axios({
+                              method: 'post',
+                              url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
+                              data: bodyFormData,
+                              headers: {
+                                'Content-Type': 'multipart/form-data',
+                                Authorization: `Bearer ${token}`,
+                              },
+                            })
+                              .then(function (response) {
+                                //handle success
+                                console.log(response)
+                                if (response.status == 200) {
+                                  toast.success(response.data.message)
 
-                    console.log(bodyFormData.getAll('file'))
-                    //   file: fileInput ? fileInput : '',
-                  }
-                  console.log(bodyFormData.getAll('file'))
-                  // call the upsert News API here
-                  // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
-                  //   console.log(afterUpdateNewsMsg)
-                  if (!changeType) {
-                    setEditView(false)
-                  } else if (changeType == 'Add') {
-                    // window.location.reload()
-                    saveAndExitAdd()
-                  }
-                }}
-              />
-            ) : (
-              <i
-                className="fa-solid fa-pen-to-square"
-                style={{
-                  color: 'var(--bgColor2)',
-                }}
-                onClick={() => {
-                  setEditView(true)
-                  // change box to edit version
-                }}
-              />
-            )}
-            {editView ? (
+                                  setIsLoading(false)
+                                }
+                              })
+                              .catch(function (response) {
+                                //handle error
+                                console.log(response)
+                                if (response.status != 200) {
+                                  toast.error(response?.data?.message)
+                                }
+                                setIsLoading(false)
+                              })
+                          }
+                        }
+
+                        console.log(bodyFormData.getAll('file'))
+                        //   file: fileInput ? fileInput : '',
+                      }
+                      console.log(bodyFormData.getAll('file'))
+                      // call the upsert News API here
+                      // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
+                      //   console.log(afterUpdateNewsMsg)
+                      if (!changeType) {
+                        setEditView(false)
+                      } else if (changeType == 'Add') {
+                        // window.location.reload()
+                        saveAndExitAdd()
+                      }
+                    }}
+                  />
+                )
+              : hasPermission && (
+                  <i
+                    className="fa-solid fa-pen-to-square"
+                    style={{
+                      color: 'var(--bgColor2)',
+                    }}
+                    onClick={() => {
+                      setEditView(true)
+                      // change box to edit version
+                    }}
+                  />
+                )}
+            {editView && hasPermission ? (
               <i
                 className="fa-solid fa-xmark"
                 onClick={() => {
-                  setEditView(false)
+                  cancelAddNews(data.id)
                 }}
               />
             ) : (
-              <i
-                className="fa-solid fa-trash"
-                style={{
-                  color: '#CD2727',
-                }}
-                onClick={() => {
-                  // call the delete news API here
-                  setDeleteNewsArr([data.id])
-                  document.body.scrollTop = 0
-                  document.documentElement.scrollTop = 0
-                  document.body.style.overflow = 'hidden'
-                  setDeleteModal(true)
-                }}
-              />
+              hasPermission && (
+                <i
+                  className="fa-solid fa-trash"
+                  style={{
+                    color: '#CD2727',
+                  }}
+                  onClick={e => {
+                    // call the delete news API here
+                    setDeleteNewsArr([data.id])
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
+                    document.body.style.overflow = 'hidden'
+                    setDeleteModal(true)
+                  }}
+                />
+              )
             )}
           </div>
 
           <div className="attached-file">
             {editView ? (
-              <div className="inputfile-box">
-                <input
-                  type="file"
-                  id="file"
-                  ref={fileInputRef}
-                  className="inputfile"
-                  onChange={() => {
-                    console.log(fileInputRef.current.files[0])
-                    setFileInput(fileInputRef.current.files[0])
-                  }}
-                />
-                <label
-                  htmlFor="file"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <span id="file-name" className="file-box"></span>
-                  <span className="file-button">
-                    <i className="fa-solid fa-paperclip" />
+              hasPermission && (
+                <div className="inputfile-box">
+                  <input
+                    type="file"
+                    id="file"
+                    ref={fileInputRef}
+                    className="inputfile"
+                    onChange={() => {
+                      console.log(fileInputRef.current.files[0])
+                      setFileInput(fileInputRef.current.files[0])
+                    }}
+                  />
+                  <label
+                    htmlFor="file"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <span id="file-name" className="file-box"></span>
+                    <span className="file-button">
+                      <i className="fa-solid fa-paperclip" />
+                    </span>
+                  </label>
+                  <span
+                    style={{
+                      fontSize: '0.7rem',
+                    }}
+                  >
+                    {fileInput?.name}
                   </span>
-                </label>
-                <span
-                  style={{
-                    fontSize: '0.7rem',
-                  }}
-                >
-                  {fileInput?.name}
-                </span>
-              </div>
+                </div>
+              )
             ) : (
               <div className="attachment-icon">
                 {data.attachment_link != '' ? (

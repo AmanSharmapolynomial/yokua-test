@@ -19,41 +19,85 @@ const NewsScreen = () => {
   const [archivedFilter, setArchivedFilter] = useState(false)
 
   const [backendData, setBackendData] = useState()
+  const [newsData, setNewsData] = useState([])
+
   const [isLoading, setIsLoading] = useState(false)
   const [newNews, setNewNews] = useState(false)
   const [totalPages, setTotalPages] = useState(1)
   const [pageNoCall, setPageNoCall] = useState(1)
 
+  let payload = {
+    category_id: parseInt(categoryFilter),
+    sub_category_id: parseInt(subCategoryFilter),
+    archived: archivedFilter,
+    page_index: pageNoCall,
+  }
+
+  useEffect(() => {
+    const handleOnScroll = window.addEventListener('scroll', () => {
+      setShowFilterDropdown1(false)
+      setShowFilterDropdown2(false)
+    })
+
+    return handleOnScroll
+  }, [])
+
   useEffect(async () => {
-    const payload = {
+    payload = {
       category_id: parseInt(categoryFilter),
       sub_category_id: parseInt(subCategoryFilter),
       archived: archivedFilter,
       page_index: pageNoCall,
     }
 
-    const getAllNews = await API.post('news/', payload)
+    getAllNews(payload)
 
-    console.log(getAllNews)
-    if (getAllNews.status == 200) {
-      setBackendData(getAllNews.data)
-    }
-    setTotalPages(getAllNews.data.total_pages)
+    // const getAllNews = await API.post('news/', payload)
+    //
+    // console.log(getAllNews)
+    // if (getAllNews.status == 200) {
+    //   setBackendData(getAllNews.data)
+    // }
+    // setTotalPages(getAllNews.data.total_pages)
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
+  const getAllNews = payload => {
+    API.post('news/', payload).then(data => {
+      if (data.status == 200) {
+        setBackendData(data.data)
+
+        data.data ? setNewsData(data.data.news_letters) : setNewsData([])
+      }
+      setTotalPages(data.total_pages)
+    })
+  }
+
   const markAsReadAction = array => {
-    const payload = {
+    const markAsPayload = {
       news_id: array,
     }
-    const markAsRead = API.post('/news/mark_read', payload)
-    console.log(markAsRead)
+    const markAsRead = API.post('/news/mark_read', markAsPayload)
+      .then(data => {
+        getAllNews(payload)
+      })
+      .catch(error => {
+        console.log('Something went wrong', error)
+      })
   }
 
   const saveAndExitAdd = () => {
     setNewNews(false)
   }
 
+  const cancelAddNews = id => {
+    const updatedNewsData = newsData
+    const index = updatedNewsData.findIndex(item => item.id == id)
+    updatedNewsData.splice(index, 1)
+    setNewsData([...updatedNewsData])
+  }
+
   function onChange(pageNumber) {
+    debugger
     setPageNoCall(pageNumber)
   }
 
@@ -114,6 +158,7 @@ const NewsScreen = () => {
                         onClick={() => {
                           if (categoryFilter == category.id) {
                             setCategoryFilter(null)
+                            setSubCategoryFilter(null)
                           } else {
                             setCategoryFilter(category.id)
                           }
@@ -125,13 +170,15 @@ const NewsScreen = () => {
                 </div>
               </div>
               <div className="filter-icons">
-                <i
-                  className="fa-solid fa-filter has-dropdown"
-                  onClick={() => {
-                    setShowFilterDropdown2(!showFilterDropdown2)
-                  }}
-                  ref={ref2}
-                />
+                {categoryFilter && backendData.sub_categories.length > 0 && (
+                  <i
+                    className="fa-solid fa-filter has-dropdown"
+                    onClick={() => {
+                      setShowFilterDropdown2(!showFilterDropdown2)
+                    }}
+                    ref={ref2}
+                  />
+                )}
                 <div
                   className="filter-dropdown dropdown"
                   style={{
@@ -167,7 +214,7 @@ const NewsScreen = () => {
             className="btn"
             onClick={() => {
               const payloadArr = []
-              backendData.news_letters.map(news => {
+              newsData.map(news => {
                 payloadArr.push(news.id)
               })
               markAsReadAction(payloadArr)
@@ -180,39 +227,59 @@ const NewsScreen = () => {
           <span>Loading....</span>
         ) : (
           <div className="news-container-list">
-            {backendData?.news_letters.length > 0 ? (
-              backendData.news_letters.map((news, index) => (
-                <NewsItem
-                  data={news}
-                  category={backendData.categories}
-                  subCategory={backendData.sub_categories}
-                  key={index}
-                  setIsLoading={setIsLoading}
-                />
-              ))
+            {newsData.length > 0 ? (
+              newsData.map((news, index) => {
+                console.log(news)
+                if (news && Object.keys(news).length > 1) {
+                  return (
+                    <NewsItem
+                      data={news}
+                      changeType={'View'}
+                      category={backendData.categories}
+                      subCategory={backendData.sub_categories}
+                      key={index}
+                      setIsLoading={setIsLoading}
+                    />
+                  )
+                } else {
+                  return (
+                    <NewsItem
+                      getAllNews={() => getAllNews(payload)}
+                      cancelAddNews={id => cancelAddNews(id)}
+                      data={{}}
+                      changeType={'Add'}
+                      category={backendData.categories}
+                      subCategory={backendData.sub_categories}
+                      saveAndExitAdd={saveAndExitAdd}
+                      setIsLoading={setIsLoading}
+                    />
+                  )
+                }
+              })
             ) : (
               <span> You're all caught up with the News </span>
             )}
 
-            {newNews ? (
-              <NewsItem
-                data={undefined}
-                changeType={'Add'}
-                category={backendData.categories}
-                subCategory={backendData.sub_categories}
-                saveAndExitAdd={saveAndExitAdd}
-                setIsLoading={setIsLoading}
-              />
-            ) : (
-              <></>
-            )}
+            {/*{newNews ? (*/}
+            {/*  <NewsItem*/}
+            {/*    data={undefined}*/}
+            {/*    changeType={true}*/}
+            {/*    category={backendData.categories}*/}
+            {/*    subCategory={backendData.sub_categories}*/}
+            {/*    saveAndExitAdd={saveAndExitAdd}*/}
+            {/*    setIsLoading={setIsLoading}*/}
+            {/*  />*/}
+            {/*) : (*/}
+            {/*  <></>*/}
+            {/*)}*/}
 
             {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
               <div
                 className="add_row"
                 onClick={() => {
-                  setNewNews(true)
+                  setNewsData([...newsData, { id: Math.random() }])
                 }}
               >
                 <i
@@ -226,15 +293,17 @@ const NewsScreen = () => {
             )}
           </div>
         )}
-        <div className="pagination">
-          <Pagination
-            showQuickJumper
-            showSizeChanger={false}
-            total={totalPages * 10}
-            onChange={onChange}
-            style={{ border: 'none' }}
-          />
-        </div>
+        {newsData.length > 0 && (
+          <div className="pagination">
+            <Pagination
+              showQuickJumper
+              showSizeChanger={false}
+              total={totalPages * 2}
+              onChange={onChange}
+              style={{ border: 'none' }}
+            />
+          </div>
+        )}
         <div className="archived-filter">
           {archivedFilter ? (
             <button
