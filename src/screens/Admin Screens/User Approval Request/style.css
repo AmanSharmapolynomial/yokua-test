@@ -29,12 +29,12 @@
     outline: none;
     border: none;
     border-radius: 5px;
-    background-color: var(--bgColor2);
+    background-color: var(--bgColor2) !important;
     font-family: Poppins;
     font-weight: 500;
     width: max-content;
     cursor: pointer;
-    color: var(--textColor5)
+    color: var(--textColor5) !important
 }
 
 .create-domain-btn{

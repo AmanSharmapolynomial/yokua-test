@@ -78,6 +78,7 @@ const Navbar = ({ isAdmin }) => {
             type="text"
             placeholder="What are you looking for?"
             className="search_input"
+            autoComplete={false}
           ></input>
         </div>
       </div>

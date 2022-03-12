@@ -161,7 +161,7 @@ select {
 }
 
 .cancel-domain{
-   background-color: var(--textColor5) !important;
+   background-color: var(--textColor5);
    color: var(--bgColor2) !important;
    border: 1px solid black !important;
 }

@@ -83,7 +83,7 @@ const NewsItem = ({
   const saveAndExitModal = () => {
     setDeleteModal(false)
     setEditView('')
-    document.body.style.overflow = 'scroll'
+    // document.body.style.overflow = 'scroll'
   }
 
   const deleteNews = idArr => {
@@ -119,15 +119,15 @@ const NewsItem = ({
 
   return (
     <React.Fragment>
-      {deleteModal && (
-        <DeleteModal
-          req={'News'}
-          title={'Are you sure you want to delete this news?'}
-          saveAndExit={saveAndExitModal}
-          runDelete={deleteNews}
-          data={deleteNewsArr}
-        />
-      )}
+      <DeleteModal
+        show={deleteModal}
+        setShow={setDeleteModal}
+        req={'News'}
+        title={'Are you sure you want to delete this news?'}
+        saveAndExit={saveAndExitModal}
+        runDelete={deleteNews}
+        data={deleteNewsArr}
+      />
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div
@@ -398,9 +398,7 @@ const NewsItem = ({
                   onClick={e => {
                     // call the delete news API here
                     setDeleteNewsArr([data.id])
-                    document.body.scrollTop = 0
-                    document.documentElement.scrollTop = 0
-                    document.body.style.overflow = 'hidden'
+
                     setDeleteModal(true)
                   }}
                 />
