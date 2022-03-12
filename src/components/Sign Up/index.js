@@ -142,7 +142,9 @@ const SignUp = () => {
         />
 
         <i
-          className={passwordVisible ? 'fa-eye fa-solid first' : 'fa-eye-slash fa-solid first'}
+          className={
+            passwordVisible ? 'fa-eye fa-solid first-signin' : 'fa-eye-slash fa-solid first-signin'
+          }
           onClick={() => setPasswordVisible(!passwordVisible)}
         ></i>
 

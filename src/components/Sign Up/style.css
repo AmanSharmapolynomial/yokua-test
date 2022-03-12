@@ -45,10 +45,10 @@
 .password-box{
     position: relative;
 }
-.first{
+.first-signin{
     position: absolute;
     left: 250px;
-    top: 133px;
+    top: 133px ;
 }
 
 .two {
