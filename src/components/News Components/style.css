@@ -183,3 +183,34 @@
   border-color: black;
   border-width: 1px;
 }
+
+.yk-dropdown-holder{
+    padding: 0 !important;
+    width: max-content;
+    position: relative !important;
+    z-index: 1;
+    flex: 0 !important
+}
+
+.yg-custom-dropdown {
+    background-color: white !important;
+    color: black !important;
+    border-color: #000 !important;
+    width: 100% !important;
+}
+
+.yg-font-size{
+    font-size: small !important;
+}
+
+.yk-dropdown-holder-subtopic{
+    z-index: 0;
+}
+
+.yk-span {
+        display: block;
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+}

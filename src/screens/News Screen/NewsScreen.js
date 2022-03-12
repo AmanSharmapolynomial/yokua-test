@@ -49,7 +49,6 @@ const NewsScreen = () => {
       archived: archivedFilter,
       page_index: pageNoCall,
     }
-
     getAllNews(payload)
 
     // const getAllNews = await API.post('news/', payload)
@@ -235,8 +234,8 @@ const NewsScreen = () => {
                     <NewsItem
                       data={news}
                       changeType={'View'}
-                      category={backendData.categories}
-                      subCategory={backendData.sub_categories}
+                      tempCategory={backendData.categories}
+                      tempSubCategory={backendData.sub_categories}
                       key={index}
                       setIsLoading={setIsLoading}
                     />
@@ -248,8 +247,8 @@ const NewsScreen = () => {
                       cancelAddNews={id => cancelAddNews(id)}
                       data={{}}
                       changeType={'Add'}
-                      category={backendData.categories}
-                      subCategory={backendData.sub_categories}
+                      tempCategory={backendData.categories}
+                      tempSubCategory={backendData.sub_categories}
                       saveAndExitAdd={saveAndExitAdd}
                       setIsLoading={setIsLoading}
                     />

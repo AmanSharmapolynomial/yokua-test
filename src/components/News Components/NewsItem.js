@@ -9,11 +9,12 @@ import { getToken } from '../../utils/token'
 import { toast } from 'react-toastify'
 
 import { getUserRoles } from '../../utils/token'
+import { Dropdown, InputGroup, FormControl, Button } from 'react-bootstrap'
 
 const NewsItem = ({
   data,
-  category,
-  subCategory,
+  tempCategory,
+  tempSubCategory,
   changeType,
   saveAndExitAdd,
   setIsLoading,
@@ -28,6 +29,35 @@ const NewsItem = ({
       getUserRoles() == 'PMK Content Manager' ||
       getUserRoles() == 'Technical Administrator'
   )
+
+  const [category, setCategory] = useState(tempCategory)
+  const [subCategory, setSubCategory] = useState(tempSubCategory)
+
+  const getCategoryAndSubCategory = () => {
+    API.get('news/get_categories').then(data => {
+      console.log('Categories', data)
+      setSubCategory(data.data.sub_categories)
+      setCategory(data.data.categories)
+    })
+  }
+
+  const [isTopicAdd, setIsTopicAdd] = useState(false)
+  const [isSubTopicAdd, setSubTopicAdd] = useState(false)
+
+  const [selectedTopic, setSelectedTopic] = useState('Select Topic')
+  const [selectedSubTopic, setSelectedSubTopic] = useState('Select Sub-Topic')
+
+  const [newTopicName, SetNewTopicName] = useState('')
+  const [newSubTopicName, SetNewSubTopicName] = useState('')
+
+  const handleSelectTopic = cat => {
+    setSelectedTopic(cat.category_name)
+    setCategoryID(cat.id)
+  }
+  const handleSelectSubTopic = cat => {
+    setSelectedSubTopic(cat.sub_category_name)
+    setSubCategoryID(cat.id)
+  }
 
   // refs for fields in edit VIew
   const newsDescRef = useRef()
@@ -66,8 +96,8 @@ const NewsItem = ({
       if (editView) {
         newsDescRef.current.value = data.description
 
-        categoryRef.current.value = data.category_name
-        subCategoryRef.current.value = data.sub_category_name
+        // categoryRef.current.value = data.category_name
+        // subCategoryRef.current.value = data.sub_category_name
         setNewsDesc(data.description)
         setCategoryID(data.category_id)
         setSubCategoryID(data.sub_category_id)
@@ -94,7 +124,7 @@ const NewsItem = ({
     console.log(afterDeleteMsg)
   }
 
-  const AddNewCategoryCall = (image, categoryName) => {
+  const AddNewCategoryCall = async (image, categoryName) => {
     const payload = {
       // change here to form data
       image,
@@ -102,16 +132,19 @@ const NewsItem = ({
         category_name: categoryName,
       },
     }
-    const afterAddMsg = API.post('news/add_category', payload)
+    const afterAddMsg = await API.post('news/add_category', payload)
+    getCategoryAndSubCategory()
     console.log(afterAddMsg)
   }
 
-  const AddNewSubCategoryCall = (categoryName, parentCatId) => {
+  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
     const payload = {
       sub_category_name: categoryName,
       parent_category_id: parentCatId,
     }
-    const afterAddMsg = API.post('news/add_subcategory', payload)
+    debugger
+    const afterAddMsg = await API.post('news/add_subcategory', payload)
+    getCategoryAndSubCategory()
     console.log(afterAddMsg)
   }
 
@@ -167,46 +200,64 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  {/* <input
-                    type={'text'}
-                    list={'subCatList'}
-                    ref={categoryRef}
-                    onChange={e => {
-                      category.map(cat => {
-                        if (cat.category_name == e.target.value) {
-                          setCategoryID(cat.id)
-                        } else {
-                          setCategoryID(null)
-                        }
-                      })
-                    }}
-                  />
-                  {console.log(subCategoryID)}
-                  <datalist id="subCatList">
-                    {category.map((cat, index) => (
-                      <option key={index}>{cat.category_name}</option>
-                    ))}
-                  </datalist> */}
-
-                  {/* <div className="btn-group select-font-size">
-                    <button
-                      className="btn  btn-sm dropdown-toggle select-news-bootstrap select-font-size select-border"
-                      type="button"
-                      data-toggle="dropdown"
-                      aria-expanded="false"
+                  <Dropdown size="sm" autoClose={'inside'} className="yk-dropdown-holder">
+                    <Dropdown.Toggle
+                      size={'sm'}
+                      className="yg-custom-dropdown"
+                      color="red"
+                      id="dropdown-basic"
                     >
-                      Small
-                    </button>
-                    <div className="dropdown-menu select-font-size">
+                      {selectedTopic}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
                       {category.map((cat, index) => (
-                        <option key={index}>{cat.category_name}</option>
+                        <Dropdown.Item
+                          key={index}
+                          className="yg-font-size"
+                          onClick={() => handleSelectTopic(cat)}
+                        >
+                          {cat.category_name}
+                        </Dropdown.Item>
                       ))}
-                      <button className={'btn align-middle'} onClick={() => {}}>
-                        Live News
-                      </button>
-                    </div>
-                  </div> */}
-                  <select
+                      <Dropdown.Divider />
+                      {!isTopicAdd && (
+                        <button
+                          id="mybtn"
+                          className="btn yg-font-size m-2"
+                          onClick={() => {
+                            setIsTopicAdd(true)
+                          }}
+                        >
+                          Add Topic
+                        </button>
+                      )}
+                      {isTopicAdd && (
+                        <InputGroup className="mb-3 yg-font-size p-1 ">
+                          <FormControl
+                            className="yg-font-size"
+                            placeholder="Category"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={newTopicName}
+                            onChange={e => SetNewTopicName(e.target.value)}
+                          />
+                          <Button
+                            onClick={() => {
+                              setIsTopicAdd(false)
+                              AddNewCategoryCall(null, newTopicName)
+                            }}
+                            variant="outline-secondary"
+                            className="yg-font-size"
+                            id="button-addon2"
+                          >
+                            Button
+                          </Button>
+                        </InputGroup>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  {/* <select
                     className="select-news"
                     ref={categoryRef}
                     onChange={e => {
@@ -220,7 +271,7 @@ const NewsItem = ({
                     {category.map((cat, index) => (
                       <option key={index}>{cat.category_name}</option>
                     ))}
-                  </select>
+                  </select> */}
                 </>
               ) : (
                 <span className="news-category">{data ? data.category_name : ''}</span>
@@ -228,27 +279,68 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  {/* <input
-                    type={'text'}
-                    list={'subCatList'}
-                    ref={subCategoryRef}
-                    onChange={e => {
-                      subCategory.map((cat, index) => {
-                        if (cat.sub_category_name == e.target.value) {
-                          setSubCategoryID(cat.id)
-                        } else {
-                          setSubCategoryID(null)
-                        }
-                      })
-                    }}
-                  />
-                  {console.log(subCategoryID)}
-                  <datalist id="subCatList">
-                    {subCategory.map((cat, index) => (
-                      <option key={index}>{cat.sub_category_name}</option>
-                    ))}
-                  </datalist> */}
-                  <select
+                  <Dropdown
+                    size="sm"
+                    autoClose={'inside'}
+                    className="yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic"
+                  >
+                    <Dropdown.Toggle
+                      size={'sm'}
+                      className="yg-custom-dropdown"
+                      color="red"
+                      id="dropdown-basic"
+                    >
+                      {selectedSubTopic}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      {subCategory.map((cat, index) => (
+                        <Dropdown.Item
+                          key={index}
+                          className="yg-font-size"
+                          onClick={() => handleSelectSubTopic(cat)}
+                        >
+                          {cat.sub_category_name}
+                        </Dropdown.Item>
+                      ))}
+                      <Dropdown.Divider />
+                      {!isSubTopicAdd && (
+                        <button
+                          id="mybtn"
+                          className="btn yg-font-size m-2"
+                          onClick={() => {
+                            setSubTopicAdd(true)
+                          }}
+                        >
+                          Add Sub-Topic
+                        </button>
+                      )}
+                      {isSubTopicAdd && (
+                        <InputGroup className="mb-3 yg-font-size p-1 ">
+                          <FormControl
+                            className="yg-font-size"
+                            placeholder="Sub-Category"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={newSubTopicName}
+                            onChange={e => SetNewSubTopicName(e.target.value)}
+                          />
+                          <Button
+                            onClick={() => {
+                              setSubTopicAdd(false)
+                              AddNewSubCategoryCall(newSubTopicName, categoryID)
+                            }}
+                            variant="outline-secondary"
+                            className="yg-font-size"
+                            id="button-addon2"
+                          >
+                            Add
+                          </Button>
+                        </InputGroup>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  {/* <select
                     className="select-news"
                     ref={subCategoryRef}
                     onChange={e => {
@@ -262,7 +354,7 @@ const NewsItem = ({
                     {subCategory.map((cat, index) => (
                       <option key={index}>{cat.sub_category_name}</option>
                     ))}
-                  </select>
+                  </select> */}
                 </>
               ) : (
                 <span className="news-info-text">{data ? data.sub_category_name : ''}</span>
@@ -434,6 +526,7 @@ const NewsItem = ({
                     </span>
                   </label>
                   <span
+                    // className='yk-span'
                     style={{
                       fontSize: '0.7rem',
                     }}
