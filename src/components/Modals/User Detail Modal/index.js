@@ -26,6 +26,8 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   const [password, setPassword] = useState('')
   const [disabledInput, setDisabledInput] = useState(false)
 
+  const [passwordVisible, setPasswordVisible] = useState(false)
+
   useEffect(() => {
     if (change == 'View') {
       setDisabledInput(true)
@@ -119,17 +121,26 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 }}
               />
             </div>
-            <div className="input-field-container">
+            <div className="input-field-container yk-password-container">
               <label className="input-label">Password</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
-                type="password"
+                type={passwordVisible ? 'text' : 'password'}
                 ref={passwordRef}
                 onChange={e => {
                   setPassword(e.target.value)
                 }}
               />
+
+              <i
+                className={
+                  passwordVisible
+                    ? 'fa-eye fa-solid yk-eye-icon '
+                    : 'fa-eye-slash fa-solid yk-eye-icon '
+                }
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              ></i>
             </div>
 
             <div className="input-field-container">

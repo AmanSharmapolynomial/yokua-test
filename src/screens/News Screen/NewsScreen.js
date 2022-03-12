@@ -8,6 +8,7 @@ import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
 
 import { Pagination } from 'antd'
+import { toast } from 'react-toastify'
 
 const NewsScreen = () => {
   const filter1Ref = useRef()
@@ -169,11 +170,15 @@ const NewsScreen = () => {
                 </div>
               </div>
               <div className="filter-icons">
-                {categoryFilter && backendData.sub_categories.length > 0 && (
+                {backendData?.sub_categories?.length > 0 && (
                   <i
                     className="fa-solid fa-filter has-dropdown"
                     onClick={() => {
-                      setShowFilterDropdown2(!showFilterDropdown2)
+                      if (categoryFilter) {
+                        setShowFilterDropdown2(!showFilterDropdown2)
+                      } else {
+                        toast('Please select the Category filter first.')
+                      }
                     }}
                     ref={ref2}
                   />

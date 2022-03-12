@@ -62,6 +62,7 @@ const NewsItem = ({
   // refs for fields in edit VIew
   const newsDescRef = useRef()
   const fileInputRef = useRef()
+  const imageFileInputRef = useRef()
 
   const categoryRef = useRef()
   const subCategoryRef = useRef()
@@ -77,6 +78,8 @@ const NewsItem = ({
 
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteNewsArr, setDeleteNewsArr] = useState([])
+
+  const [newsImage, setNewsImage] = useState(null)
 
   useEffect(() => {
     if (changeType == 'Add') {
@@ -190,7 +193,26 @@ const NewsItem = ({
           </div>
 
           <div className="news-img">
-            {editView ? <img src={placeholder} /> : <img src={catImg} />}
+            {editView ? (
+              <>
+                <input
+                  type="file"
+                  id="file"
+                  ref={imageFileInputRef}
+                  className="inputfile yk-icon-hover"
+                  onChange={e => {
+                    console.log(e.target.files[0])
+                    setNewsImage(e.target.files[0])
+                  }}
+                />
+                <img
+                  src={newsImage ? window.URL.createObjectURL(newsImage) : placeholder}
+                  onClick={() => imageFileInputRef.current.click()}
+                />
+              </>
+            ) : (
+              <img src={catImg} />
+            )}
           </div>
 
           <div className="news-text">
@@ -383,13 +405,14 @@ const NewsItem = ({
         </div>
 
         <div className="edit-delete-cta">
-          <div className="news-edit-icons">
+          <div className="yk-news-edit-icons mb-5">
             {editView
               ? hasPermission && (
                   <i
                     className="fa-solid fa-floppy-disk yk-icon-hover"
                     style={{
                       color: 'var(--bgColor2)',
+                      fontSize: '22px',
                     }}
                     onClick={() => {
                       // add save value to a payload
@@ -414,6 +437,7 @@ const NewsItem = ({
                             var bodyFormData = new FormData()
                             bodyFormData.append('data', details)
                             bodyFormData.append('file', fileDetails)
+                            // bodyFormData.append('image', newsI)
                             const token = getToken()
                             axios({
                               method: 'post',
@@ -467,6 +491,7 @@ const NewsItem = ({
                     className="fa-solid fa-pen-to-square"
                     style={{
                       color: 'var(--bgColor2)',
+                      fontSize: '22px',
                     }}
                     onClick={() => {
                       setEditView(true)
@@ -477,6 +502,9 @@ const NewsItem = ({
             {editView && hasPermission ? (
               <i
                 className="fa-solid fa-xmark yk-icon-hover"
+                style={{
+                  fontSize: '22px',
+                }}
                 onClick={() => {
                   setEditView(false)
                   cancelAddNews(data.id)
@@ -488,6 +516,7 @@ const NewsItem = ({
                   className="fa-solid fa-trash"
                   style={{
                     color: '#CD2727',
+                    fontSize: '22px',
                   }}
                   onClick={e => {
                     // call the delete news API here
@@ -500,7 +529,7 @@ const NewsItem = ({
             )}
           </div>
 
-          <div className="attached-file">
+          <div className="yk-attached-file">
             {editView ? (
               hasPermission && (
                 <div className="inputfile-box ">
@@ -524,7 +553,7 @@ const NewsItem = ({
                   >
                     <span id="file-name" className="file-box"></span>
                     <span className="file-button yk-icon-hover">
-                      <i className="fa-solid fa-paperclip" />
+                      <i className="fa-solid fa-paperclip" style={{ fontSize: '22px' }} />
                     </span>
                   </label>
                   <span
@@ -539,15 +568,26 @@ const NewsItem = ({
               )
             ) : (
               <div className="attachment-icon">
-                {data.attachment_link != '' ? (
+                {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
                     <a download href={data ? data.attachment_link : ''}>
                       Read attached file
                     </a>
                   </>
-                ) : (
-                  <></>
+                )}
+                {data.attachment_link == '' && (
+                  <>
+                    <i className="fa-solid fa-file" />
+                    <a
+                      href={data ? data.attachment_link : ''}
+                      onClick={() => {
+                        toast.warning('File not available')
+                      }}
+                    >
+                      File Not Available
+                    </a>
+                  </>
                 )}
               </div>
             )}

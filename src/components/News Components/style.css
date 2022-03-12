@@ -14,8 +14,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 18vh;
+    justify-content: space-around;
+    height: 100%;
+    flex:1
 }
 
 .dot-adjust{
@@ -151,7 +152,7 @@
   .flex-setup{
       display: flex;
       flex-wrap: wrap;
-
+flex:7;
 
   }
 
@@ -216,3 +217,12 @@
 }
 
 .yk-icon-hover { cursor: pointer; }
+
+.yk-news-edit-icons{
+        flex: 1,
+
+}
+
+.yk-attached-file {
+    display: flex
+}

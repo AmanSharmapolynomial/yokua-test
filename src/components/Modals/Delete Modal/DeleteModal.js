@@ -63,6 +63,7 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            borderBottom: '0',
           }}
         >
           <Modal.Title>Delete {req}</Modal.Title>
@@ -72,6 +73,7 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            borderBottom: '0',
           }}
         >
           {title}
@@ -81,12 +83,13 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTop: '0',
           }}
           centered
         >
           <button
             id="mybtn"
-            className="btn btn-background"
+            className="btn btn-background mr-4"
             onClick={() => {
               saveAndExit()
               setShow(false)
