@@ -31,13 +31,15 @@ const Forgot = () => {
     <>
       <div className="signIn-container">
         <div className="container-head">
-          <i
-            className="fa-solid fa-arrow-left back-arrow-btn"
-            onClick={() => {
-              navigate('/auth/login')
-            }}
-          />
-          <h3 className="container__heading">Forgot Your Password?</h3>
+          <h3 className="container__heading">
+            <i
+              className="fa-solid fa-arrow-left back-arrow-btn mr-2"
+              onClick={() => {
+                navigate('/auth/login')
+              }}
+            />
+            Forgot Your Password?
+          </h3>
         </div>
         <form
           type="submit"

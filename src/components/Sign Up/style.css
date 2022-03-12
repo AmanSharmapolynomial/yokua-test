@@ -40,7 +40,6 @@
     color: var(--bgColor2);
     cursor: pointer;
     size: 50px !important;
-    font-size: large;
 }
 
 .password-box{

@@ -42,6 +42,10 @@ form{
     width: 77%;
 }
 
+.forum{
+    position: relative;
+}
+
 .input-field{
     margin: 0.4rem 0;
     height: 1.7rem;
@@ -77,10 +81,10 @@ form{
     /* margin: 0.1rem 0; */
     text-align: center;
     font-size: 0.7rem;
-    color: var(--textColor2);
+    color: rgb(0, 38, 255) !important;;
     text-decoration-line: underline;
     text-underline-offset: 3px;
-    text-decoration-color: rgb(37, 37, 37);
+    text-decoration-color:  rgb(0, 38, 255) !important;
 }
 
 .input-field__email{
@@ -89,4 +93,11 @@ form{
 
 .input-field__email::placeholder{
     text-transform: capitalize;
+}
+
+
+.first{
+    position: absolute;
+    left: 250px;
+    top: 52px;
 }

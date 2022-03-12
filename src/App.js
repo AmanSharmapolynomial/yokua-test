@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { getToken } from './utils/token'
 // minified version is also included
 // import 'react-toastify/dist/ReactToastify.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   // fetch state

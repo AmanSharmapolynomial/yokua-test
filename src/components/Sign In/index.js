@@ -13,6 +13,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setLoading] = useState(false)
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   // navigate
   const navigate = useNavigate()
@@ -60,8 +61,8 @@ const SignIn = () => {
   return (
     <>
       <div className="signIn-container">
-        <h3 className="container__heading">Sign In with E-mail</h3>
-        <form type="submit" onSubmit={SignIn}>
+        <h3 className="container__heading mt-4">Sign In with E-mail</h3>
+        <form className="forum" type="submit" onSubmit={SignIn}>
           <input
             type="email"
             required={true}
@@ -71,13 +72,19 @@ const SignIn = () => {
           />
 
           <input
-            type="password"
-            name="password"
-            required={true}
-            onChange={e => setPassword(e.target.value)}
+            type={passwordVisible ? 'text' : 'password'}
+            name="Password"
             className="input-field input-field__password"
+            onChange={e => setPassword(e.target.value)}
+            required={true}
             placeholder="Password"
           />
+
+          <i
+            className={passwordVisible ? 'fa-eye fa-solid first' : 'fa-eye-slash fa-solid first'}
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          ></i>
+
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             Incorrect Password
           </span>
