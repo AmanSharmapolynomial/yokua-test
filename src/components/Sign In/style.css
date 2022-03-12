@@ -99,5 +99,5 @@ form{
 .first{
     position: absolute;
     left: 250px;
-    top: 52px;
+    top: 52px !important;
 }
