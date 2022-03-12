@@ -214,3 +214,5 @@
         white-space: nowrap;
         text-overflow: ellipsis;
 }
+
+.yk-icon-hover { cursor: pointer; }

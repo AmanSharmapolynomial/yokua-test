@@ -238,6 +238,7 @@ const NewsScreen = () => {
                       tempSubCategory={backendData.sub_categories}
                       key={index}
                       setIsLoading={setIsLoading}
+                      refreshPage={() => getAllNews(payload)}
                     />
                   )
                 } else {
@@ -251,6 +252,7 @@ const NewsScreen = () => {
                       tempSubCategory={backendData.sub_categories}
                       saveAndExitAdd={saveAndExitAdd}
                       setIsLoading={setIsLoading}
+                      refreshPage={() => getAllNews(payload)}
                     />
                   )
                 }

@@ -116,12 +116,13 @@ const NewsItem = ({
     // document.body.style.overflow = 'scroll'
   }
 
-  const deleteNews = idArr => {
+  const deleteNews = async idArr => {
     const payload = {
       news_id: idArr,
     }
-    const afterDeleteMsg = API.post('/news/delete_news', payload)
+    const afterDeleteMsg = await API.post('/news/delete_news', payload)
     console.log(afterDeleteMsg)
+    refreshPage()
   }
 
   const AddNewCategoryCall = async (image, categoryName) => {
@@ -386,7 +387,7 @@ const NewsItem = ({
             {editView
               ? hasPermission && (
                   <i
-                    className="fa-solid fa-floppy-disk"
+                    className="fa-solid fa-floppy-disk yk-icon-hover"
                     style={{
                       color: 'var(--bgColor2)',
                     }}
@@ -428,8 +429,9 @@ const NewsItem = ({
                                 console.log(response)
                                 if (response.status == 200) {
                                   toast.success(response.data.message)
-
                                   setIsLoading(false)
+                                } else {
+                                  toast.error(response.data.message)
                                 }
                               })
                               .catch(function (response) {
@@ -474,7 +476,7 @@ const NewsItem = ({
                 )}
             {editView && hasPermission ? (
               <i
-                className="fa-solid fa-xmark"
+                className="fa-solid fa-xmark yk-icon-hover"
                 onClick={() => {
                   setEditView(false)
                   cancelAddNews(data.id)
@@ -501,12 +503,12 @@ const NewsItem = ({
           <div className="attached-file">
             {editView ? (
               hasPermission && (
-                <div className="inputfile-box">
+                <div className="inputfile-box ">
                   <input
                     type="file"
                     id="file"
                     ref={fileInputRef}
-                    className="inputfile"
+                    className="inputfile yk-icon-hover"
                     onChange={e => {
                       console.log(e.target.files[0])
                       setFileInput(e.target.files[0])
@@ -521,7 +523,7 @@ const NewsItem = ({
                     }}
                   >
                     <span id="file-name" className="file-box"></span>
-                    <span className="file-button">
+                    <span className="file-button yk-icon-hover">
                       <i className="fa-solid fa-paperclip" />
                     </span>
                   </label>
