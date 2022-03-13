@@ -304,7 +304,7 @@ const NewsScreen = () => {
         {newsData.length > 0 && (
           <div className="pagination">
             <Pagination
-              total={totalPages * 8}
+              total={totalPages * 10}
               showQuickJumper
               showSizeChanger={false}
               onChange={onChange}

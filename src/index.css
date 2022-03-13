@@ -57,3 +57,7 @@ body {
 .Toastify__toast-container{
   z-index: 100000000 !important;
 }
+
+li {
+  padding: 0 !important;
+}

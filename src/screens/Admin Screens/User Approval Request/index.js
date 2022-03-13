@@ -31,6 +31,13 @@ const UserApprovalScreen = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [pageNoCall, setPageNoCall] = useState(1)
 
+  const [totalPageUserApproval, setTotalPageUserApproval] = useState(1)
+  const [pageCallUserApproval, setPageCallUserApproval] = useState(1)
+
+  const onChangeUserApproval = number => {
+    setPageCallUserApproval(number)
+  }
+
   // /admin/user_approval
 
   // refs
@@ -46,7 +53,10 @@ const UserApprovalScreen = () => {
   const [pageIndex, setPageIndex] = useState({ page_index: 1 })
 
   useEffect(async () => {
-    const listUserApprovalData = await API.post('admin/user_approval', pageIndex)
+    const listUserApprovalData = await API.post('admin/user_approval', {
+      page_index: pageCallUserApproval,
+    })
+    setTotalPageUserApproval(listUserApprovalData.data.total_pages)
     console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
@@ -56,7 +66,7 @@ const UserApprovalScreen = () => {
         name: data.name,
         date: data.date,
         email: data.email_id,
-        newemail: data.new_email,
+        new_email: data.new_email,
         company: data.company,
         requestFor: data.request_for,
         type: data.type,
@@ -112,12 +122,10 @@ const UserApprovalScreen = () => {
         name: data.name,
         role: data.role,
         companyEmail: data.email_id,
-        newemail: data.new_email,
         company: 'Yokogawa',
         status: data.status,
       })
     })
-
     setTotalPages(listDULdata.data.total_pages)
 
     const listDomains = await API.get('admin/list_whitelisted_domain')
@@ -130,7 +138,7 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall])
+  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
   const rowDisabledCriteria = row => row.type == 'notification'
 
@@ -154,9 +162,8 @@ const UserApprovalScreen = () => {
     },
     {
       name: 'New E-mail id',
-      selecter: row => row.newemail,
+      selecter: row => row.new_email,
       grow: 2,
-      minWidth: '15rem',
     },
     {
       name: 'Company',
@@ -189,12 +196,6 @@ const UserApprovalScreen = () => {
     {
       name: 'Company Email id',
       selector: row => row.companyEmail,
-      grow: 2,
-      minWidth: '15rem',
-    },
-    {
-      name: 'New Email id',
-      selector: row => row.newemail,
       grow: 2,
       minWidth: '15rem',
     },
@@ -413,10 +414,12 @@ const UserApprovalScreen = () => {
               />
               <div className="pagination">
                 <Pagination
+                  current={pageCallUserApproval}
+                  key={'userApproval'}
+                  total={totalPageUserApproval * 10}
                   showQuickJumper
                   showSizeChanger={false}
-                  total={totalPages * 10}
-                  onChange={onChange}
+                  onChange={onChangeUserApproval}
                   style={{ border: 'none' }}
                 />
               </div>
@@ -510,6 +513,8 @@ const UserApprovalScreen = () => {
                   />
                   <div className="pagination">
                     <Pagination
+                      current={pageNoCall}
+                      key={'domainUser'}
                       showQuickJumper
                       showSizeChanger={false}
                       total={totalPages * 10}
