@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Modal } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 
 const DeleteModal = ({ req, saveAndExit, runDelete, title, data }) => {
   return (

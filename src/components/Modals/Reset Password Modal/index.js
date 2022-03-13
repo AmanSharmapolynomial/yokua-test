@@ -22,7 +22,12 @@ const ResetPasswordModal = ({ change, data, saveAndExit }) => {
           }}
         />
         <h3 className="modal-heading">{change}</h3>
-        <div className="modal-content">
+        <div
+          className="modal-content"
+          style={{
+            border: '0',
+          }}
+        >
           <div className="info-text">
             <p>Please check your E-Mail</p>
           </div>

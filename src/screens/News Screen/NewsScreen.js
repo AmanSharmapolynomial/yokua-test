@@ -190,26 +190,28 @@ const NewsScreen = () => {
                   }}
                 >
                   {backendData &&
-                    backendData.sub_categories.map((category, index) => (
-                      <span
-                        key={index}
-                        className="dropdown-element"
-                        ref={filter2Ref}
-                        style={{
-                          fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
-                        }}
-                        onClick={() => {
-                          if (subCategoryFilter == category.id) {
-                            setSubCategoryFilter(null)
-                          } else {
-                            setSubCategoryFilter(category.id)
-                          }
-                        }}
-                      >
-                        {category.sub_category_name}
-                        Something
-                      </span>
-                    ))}
+                    backendData.sub_categories
+                      .filter(item => item.category_id == categoryFilter)
+                      .map((category, index) => (
+                        <span
+                          key={index}
+                          className="dropdown-element"
+                          ref={filter2Ref}
+                          style={{
+                            fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                          }}
+                          onClick={() => {
+                            if (subCategoryFilter == category.id) {
+                              setSubCategoryFilter(null)
+                            } else {
+                              setSubCategoryFilter(category.id)
+                            }
+                          }}
+                        >
+                          {category.sub_category_name}
+                          Something
+                        </span>
+                      ))}
                 </div>
               </div>
             </div>

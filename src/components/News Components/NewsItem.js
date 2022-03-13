@@ -9,7 +9,7 @@ import { getToken } from '../../utils/token'
 import { toast } from 'react-toastify'
 
 import { getUserRoles } from '../../utils/token'
-import { Dropdown, InputGroup, FormControl, Button } from 'react-bootstrap'
+import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 
 const NewsItem = ({
   data,
@@ -154,6 +154,8 @@ const NewsItem = ({
 
   console.log(fileInput?.name)
 
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
+
   return (
     <React.Fragment>
       <DeleteModal
@@ -164,6 +166,12 @@ const NewsItem = ({
         saveAndExit={saveAndExitModal}
         runDelete={deleteNews}
         data={deleteNewsArr}
+      />
+
+      <AddCategoryModal
+        setShow={setShowCategoryModal}
+        show={showCategoryModal}
+        getCategoryAndSubCategory={getCategoryAndSubCategory}
       />
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
@@ -195,19 +203,19 @@ const NewsItem = ({
           <div className="news-img">
             {editView ? (
               <>
-                <input
+                {/* <input
                   type="file"
                   id="file"
-                  ref={imageFileInputRef}
+                  // ref={imageFileInputRef}
                   className="inputfile yk-icon-hover"
                   onChange={e => {
                     console.log(e.target.files[0])
                     setNewsImage(e.target.files[0])
                   }}
-                />
+                /> */}
                 <img
                   src={newsImage ? window.URL.createObjectURL(newsImage) : placeholder}
-                  onClick={() => imageFileInputRef.current.click()}
+                  // onClick={() => imageFileInputRef.current.click()}
                 />
               </>
             ) : (
@@ -218,7 +226,7 @@ const NewsItem = ({
           <div className="news-text">
             <div className="news-info">
               <span className="date">
-                {moment(data ? data.date_uploaded : '').format('MMM Do')}
+                {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
               </span>
 
               {editView ? (
@@ -249,7 +257,7 @@ const NewsItem = ({
                           id="mybtn"
                           className="btn yg-font-size m-2"
                           onClick={() => {
-                            setIsTopicAdd(true)
+                            setShowCategoryModal(true)
                           }}
                         >
                           Add Topic
@@ -317,15 +325,17 @@ const NewsItem = ({
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      {subCategory.map((cat, index) => (
-                        <Dropdown.Item
-                          key={index}
-                          className="yg-font-size"
-                          onClick={() => handleSelectSubTopic(cat)}
-                        >
-                          {cat.sub_category_name}
-                        </Dropdown.Item>
-                      ))}
+                      {subCategory
+                        .filter(item => item.category_id == categoryID)
+                        .map((cat, index) => (
+                          <Dropdown.Item
+                            key={index}
+                            className="yg-font-size"
+                            onClick={() => handleSelectSubTopic(cat)}
+                          >
+                            {cat.sub_category_name}
+                          </Dropdown.Item>
+                        ))}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
@@ -599,3 +609,112 @@ const NewsItem = ({
 }
 
 export default NewsItem
+
+function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
+  const [categoryName, setCategoryName] = useState('')
+  const [imageFile, SetImageFile] = useState(null)
+  const imageFileInputRef = useRef()
+
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
+
+  const AddNewCategoryCall = async (image, categoryName) => {
+    if (!image) {
+      toast.error('Image Required')
+      return
+    }
+    if (!categoryName) {
+      toast.error('Category Name Required')
+      return
+    }
+    const data = {
+      category_name: categoryName,
+    }
+    const formData = new FormData()
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
+
+    const afterAddMsg = await API.post('news/add_category', formData)
+    setShow(false)
+    getCategoryAndSubCategory()
+    console.log(afterAddMsg)
+  }
+
+  return (
+    <>
+      <Modal show={show} centered onHide={handleClose}>
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+          }}
+        >
+          <Modal.Title>Create Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            flexDirection: 'column',
+          }}
+        >
+          <input
+            type="file"
+            id="imageFile"
+            ref={imageFileInputRef}
+            className="inputfile yk-icon-hover"
+            onChange={e => {
+              console.log(e.target.files[0])
+              SetImageFile(e.target.files[0])
+            }}
+          />
+          <Image
+            thumbnail={true}
+            style={{ maxWidth: '40%' }}
+            src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
+            onClick={() => imageFileInputRef.current.click()}
+          />
+          <FormControl
+            className="yg-font-size mt-4"
+            placeholder="Enter Category Title"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={categoryName}
+            onChange={e => setCategoryName(e.target.value)}
+          />
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderTop: '0',
+          }}
+          centered
+        >
+          <button
+            id="mybtn"
+            className="btn btn-background mr-4"
+            onClick={() => {
+              setShow(false)
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              AddNewCategoryCall(imageFile, categoryName)
+            }}
+          >
+            Confirm
+          </button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  )
+}

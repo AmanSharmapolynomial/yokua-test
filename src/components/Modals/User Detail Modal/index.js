@@ -62,7 +62,12 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
           />
         )}
         <h3 className="modal-heading">{change} User</h3>
-        <div className="modal-content flex-row">
+        <div
+          className="modal-content flex-row"
+          style={{
+            border: '0',
+          }}
+        >
           <div className="user-img">
             <img src="/logo512.png" />
           </div>
