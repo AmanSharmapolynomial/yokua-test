@@ -49,8 +49,7 @@ const ProfileSettingScreen = () => {
   useEffect(() => {
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
-    addressRef.current.value =
-      profileData.basic_profile?.company_name || 'Rota Yokogawa GmbH & Co. KG'
+    addressRef.current.value = profileData.basic_profile?.company_name
     const tempCheckedArr = []
     profileData.news_letter?.map((nl, index) => {
       if (nl.subscribed) {

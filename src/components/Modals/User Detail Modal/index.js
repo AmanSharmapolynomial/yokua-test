@@ -228,60 +228,56 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <button
               className="btn"
               onClick={() => {
-                if (password && password != '') {
-                  if (email != '' && email && firstName && lastName) {
-                    const saveData = {
-                      email: email,
-                      firstName: firstName,
-                      lastName: lastName,
-                      role: role,
-                      company_name: company,
-                      password: password,
-                    }
-                    if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                      if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
-                        if (validator.isEmail(saveData.email)) {
-                          saveAndExit(saveData)
-                        } else toast.warning('Improper Email Format')
-                      } else {
-                        toast.error('First & Last Name should only contain letters')
-                      }
+                if (email != '' && email && firstName && lastName) {
+                  const saveData = {
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    role: role,
+                    company_name: company,
+                    password: password,
+                  }
+                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
+                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                      if (validator.isEmail(saveData.email)) {
+                        saveAndExit(saveData)
+                      } else toast.warning('Improper Email Format')
                     } else {
-                      toast.error('First & Last Name should be 5-50 chars')
+                      toast.error('First & Last Name should only contain letters')
                     }
                   } else {
-                    toast.error('Fill all Mandatory Fields')
-
-                    if (!lastNameRef.current.value) {
-                      lastNameRef.current.style.borderColor = 'red'
-                    }
-                    if (!firstNameRef.current.value) {
-                      firstNameRef.current.style.borderColor = 'red'
-                    }
-                    if (!emailRef.current.value) {
-                      emailRef.current.style.borderColor = 'red'
-                    }
-                    if (!passwordRef.current.value) {
-                      passwordRef.current.style.borderColor = 'red'
-                    }
-                    if (!companyRef.current.value) {
-                      companyRef.current.style.borderColor = 'red'
-                    }
-
-                    setTimeout(() => {
-                      lastNameRef.current.style.borderColor = 'black'
-
-                      firstNameRef.current.style.borderColor = 'black'
-
-                      emailRef.current.style.borderColor = 'black'
-
-                      passwordRef.current.style.borderColor = 'black'
-
-                      companyRef.current.style.borderColor = 'black'
-                    }, 5000)
+                    toast.error('First & Last Name should be 5-50 chars')
                   }
                 } else {
                   toast.error('Fill all Mandatory Fields')
+
+                  if (!lastNameRef.current.value) {
+                    lastNameRef.current.style.borderColor = 'red'
+                  }
+                  if (!firstNameRef.current.value) {
+                    firstNameRef.current.style.borderColor = 'red'
+                  }
+                  if (!emailRef.current.value) {
+                    emailRef.current.style.borderColor = 'red'
+                  }
+                  if (!passwordRef.current.value) {
+                    passwordRef.current.style.borderColor = 'red'
+                  }
+                  if (!companyRef.current.value) {
+                    companyRef.current.style.borderColor = 'red'
+                  }
+
+                  setTimeout(() => {
+                    lastNameRef.current.style.borderColor = 'black'
+
+                    firstNameRef.current.style.borderColor = 'black'
+
+                    emailRef.current.style.borderColor = 'black'
+
+                    passwordRef.current.style.borderColor = 'black'
+
+                    companyRef.current.style.borderColor = 'black'
+                  }, 5000)
                 }
               }}
             >

@@ -20,6 +20,7 @@ import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
+import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
 
 const Routing = () => {
   // get User Login Info
@@ -51,6 +52,7 @@ const Routing = () => {
             <Route path="forgot-password" element={<Forgot />} />
             <Route path="reset-password" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
+            <Route path="verification-email" element={<VerificationEmail />} />
           </Route>
           <Route
             path="/admin"

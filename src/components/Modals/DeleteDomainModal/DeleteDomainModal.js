@@ -23,7 +23,7 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data }) => {
               textAlign: 'center',
             }}
           >
-            The domain will delete permanent & user data will move into Nonwhitelisted.com
+            The domain will delete permanently & user data will move into Move to UNK
           </div>
           <div className="domain-modal-cta mt-3">
             <button

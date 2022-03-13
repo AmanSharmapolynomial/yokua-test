@@ -295,10 +295,10 @@ const UserApprovalScreen = () => {
     // admin/delete_whitelisted_domain
     const payload = {
       domain_id: [data.id],
-      delete_associated_users: data.associated_users,
+      delete_associated_users: 'false',
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
-    toast.success(afterDeleteMsg.data.message)
+    // toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
   }
 
@@ -370,7 +370,7 @@ const UserApprovalScreen = () => {
           <button
             className="action-btn btn clear-notification"
             onClick={() => {
-              const a = API.get('auth/clear_notification/')
+              const a = API.get('admin/clear_notification')
               console.log(a)
               setReloadTable(!reloadTable)
             }}
@@ -460,7 +460,7 @@ const UserApprovalScreen = () => {
                         const sendData = {
                           id: data.id,
                           name: data.domain,
-                          associated_users: 'true',
+                          associated_users: 'false',
                         }
                         document.body.scrollTop = 0
                         document.documentElement.scrollTop = 0

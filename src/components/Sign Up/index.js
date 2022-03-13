@@ -56,6 +56,7 @@ const SignUp = () => {
     email: companyEmail,
     password1: password,
     password2: confirmPassword,
+    company_name: company,
   }
 
   // use actions
@@ -76,7 +77,16 @@ const SignUp = () => {
             if (password != confirmPassword) {
               toast.error('Password and Confirm Password should be same')
             } else {
-              const a = await registerUser(registerDetails)
+              registerUser(registerDetails).then(a => {
+                navigate('/auth/verification-email', { state: companyEmail })
+
+                if (a.status == 200) {
+                } else {
+                  toast.error(a.data?.password1[0])
+
+                  console.log(a.data)
+                }
+              })
               setLoading(false)
             }
           }
@@ -167,6 +177,7 @@ const SignUp = () => {
         <input
           type="text"
           className="input-field input-field__email"
+          onChange={e => setCompany(e.target.value)}
           placeholder="Company(representative of yokogawa)"
         />
         <div className="checkbox">
