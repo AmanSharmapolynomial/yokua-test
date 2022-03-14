@@ -70,24 +70,20 @@ const UserListView = () => {
     {
       name:
         sortMethod == 'Z to A' ? (
-          <i
-            className="fa-solid fa-arrow-down-a-z"
-            style={{
-              fontSize: '1.5rem',
-            }}
+          <img
             onClick={() => {
               setSortMethod('A to Z')
             }}
+            style={{ width: '20px', height: '20px' }}
+            src={require('../../../assets/Rearrange order.png')}
           />
         ) : (
-          <i
-            className="fa-solid fa-arrow-down-z-a"
-            style={{
-              fontSize: '1.5rem',
-            }}
+          <img
             onClick={() => {
               setSortMethod('Z to A')
             }}
+            style={{ width: '20px', height: '20px' }}
+            src={require('../../../assets/Rearrange order.png')}
           />
         ),
     },
