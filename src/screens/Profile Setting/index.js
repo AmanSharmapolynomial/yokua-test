@@ -148,7 +148,11 @@ const ProfileSettingScreen = () => {
             <h1 className="profile-setting__heading">BASIC PROFILE</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
-                <i className="fa-solid fa-user" />
+                {/* src\assets\Icon ionic-ios-person.png */}
+                <img
+                  style={{ width: '20px', height: '20px' }}
+                  src={require('../../assets/Icon ionic-ios-person.png')}
+                />
                 <input
                   type="text"
                   disabled={disabledInputName}
@@ -173,7 +177,10 @@ const ProfileSettingScreen = () => {
                 )}
               </div>
               <div className="edit_input">
-                <i className="fa-solid fa-envelope" />
+                <img
+                  style={{ width: '20px', height: '15px' }}
+                  src={require('../../assets/Icon zocial-email.png')}
+                />
                 <input
                   type="email"
                   disabled={disabledInputEmail}
@@ -198,7 +205,11 @@ const ProfileSettingScreen = () => {
                 )}
               </div>
               <div className="edit_input">
-                <i className="fa-solid fa-address-book" />
+                <img
+                  style={{ width: '20px', height: '20px' }}
+                  src={require('../../assets/Icon awesome-address-book.png')}
+                />
+
                 <input
                   type="text"
                   disabled={disabledInputAddress}
@@ -228,7 +239,11 @@ const ProfileSettingScreen = () => {
             <h1 className="profile-setting__heading">CHANGE PASSWORD</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
-                <i className="fa-solid fa-unlock" />
+                <img
+                  style={{ width: '20px', height: '20px' }}
+                  src={require('../../assets/Icon awesome-unlock.png')}
+                />
+
                 <input
                   type={passwordVisible ? 'text' : 'password'}
                   disabled={disabledInputPassword}
@@ -264,7 +279,10 @@ const ProfileSettingScreen = () => {
                 />
               </div>
               <div className="edit_input">
-                <i className="fa-solid fa-unlock" />
+                <img
+                  style={{ width: '20px', height: '20px' }}
+                  src={require('../../assets/Icon awesome-unlock.png')}
+                />
                 <input
                   type={passwordVisible2 ? 'text' : 'password'}
                   disabled={disabledInputPasswordRetype}
