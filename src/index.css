@@ -58,6 +58,15 @@ body {
   z-index: 100000000 !important;
 }
 
-li {
+.ant-pagination li {
   padding: 0 !important;
+}
+
+
+.nav ul li {
+  padding: 4px;
+}
+
+.user-list-view-table div {
+  overflow-y: visible !important;
 }

@@ -597,16 +597,18 @@ const NewsItem = ({
                     }}
                   >
                     {fileInput?.name}
-                    <i
-                      className="fa-solid fa-xmark yk-icon-hover"
-                      style={{
-                        fontSize: '22px',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        setFileInput(null)
-                      }}
-                    />
+                    {fileInput && (
+                      <i
+                        className="fa-solid fa-xmark yk-icon-hover"
+                        style={{
+                          fontSize: '22px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          setFileInput(null)
+                        }}
+                      />
+                    )}
                   </span>
                 </div>
               )

@@ -121,7 +121,7 @@ const NewsScreen = () => {
         }
       />
       <div className="profile-setting-container">
-        <PrimaryHeading title={'News'} />
+        <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
         <div className="filter-and-read-container">
           <div className="filter-container">
             <div className="filter-actions">

@@ -110,7 +110,7 @@ const ProfileSettingScreen = () => {
         />
       )}
       <div className="profile-setting-container">
-        <PrimaryHeading title={'Profile settings'} />
+        <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
         <div className="profile-setting">
           <div className="profile-setting__info">
             <div>
