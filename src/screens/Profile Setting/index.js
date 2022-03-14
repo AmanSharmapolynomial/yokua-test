@@ -126,6 +126,9 @@ const ProfileSettingScreen = () => {
               />
               <img
                 className="profile-setting__info_img"
+                style={{
+                  cursor: 'pointer',
+                }}
                 onClick={() => imageFileInputRef.current.click()}
                 src={
                   imageFile

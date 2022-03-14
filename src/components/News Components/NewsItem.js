@@ -59,6 +59,14 @@ const NewsItem = ({
     setSubCategoryID(cat.id)
   }
 
+  const _handleEditView = () => {
+    setEditView(true)
+    setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
+    setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
+    setCategoryID(data.category_id)
+    setSubCategoryID(data.sub_category_id)
+  }
+
   // refs for fields in edit VIew
   const newsDescRef = useRef()
   const fileInputRef = useRef()
@@ -179,17 +187,17 @@ const NewsItem = ({
             className="dot-adjust"
             onClick={() => {
               // call here the mark as read api
-              const payloadRead = {
-                news_id: [1],
-              }
-              const markRead = API.post('/news/mark_read', payloadRead)
-              setReadState(false)
+              // const payloadRead = {
+              //   news_id: [1],
+              // }
+              // const markRead = API.post('/news/mark_read', payloadRead)
+              // setReadState(false)
             }}
           >
             <div
               className="read-dot"
               style={
-                editView
+                !editView
                   ? {
                       backgroundColor: '',
                     }
@@ -214,7 +222,9 @@ const NewsItem = ({
                   }}
                 /> */}
                 <img
-                  src={newsImage ? window.URL.createObjectURL(newsImage) : placeholder}
+                  src={
+                    categoryID ? category.find(cat => cat.id == categoryID).image_link : placeholder
+                  }
                   // onClick={() => imageFileInputRef.current.click()}
                 />
               </>
@@ -231,7 +241,14 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  <Dropdown size="sm" autoClose={'inside'} className="yk-dropdown-holder">
+                  <Dropdown
+                    size="sm"
+                    autoClose={'inside'}
+                    className="yk-dropdown-holder"
+                    style={{
+                      overflow: 'visible',
+                    }}
+                  >
                     <Dropdown.Toggle
                       size={'sm'}
                       className="yg-custom-dropdown"
@@ -282,7 +299,7 @@ const NewsItem = ({
                             className="yg-font-size"
                             id="button-addon2"
                           >
-                            Button
+                            Add
                           </Button>
                         </InputGroup>
                       )}
@@ -423,6 +440,7 @@ const NewsItem = ({
                     style={{
                       color: 'var(--bgColor2)',
                       fontSize: '22px',
+                      cursor: 'pointer',
                     }}
                     onClick={() => {
                       // add save value to a payload
@@ -502,9 +520,10 @@ const NewsItem = ({
                     style={{
                       color: 'var(--bgColor2)',
                       fontSize: '22px',
+                      cursor: 'pointer',
                     }}
                     onClick={() => {
-                      setEditView(true)
+                      _handleEditView()
                       // change box to edit version
                     }}
                   />
@@ -514,6 +533,7 @@ const NewsItem = ({
                 className="fa-solid fa-xmark yk-icon-hover"
                 style={{
                   fontSize: '22px',
+                  cursor: 'pointer',
                 }}
                 onClick={() => {
                   setEditView(false)
@@ -527,6 +547,7 @@ const NewsItem = ({
                   style={{
                     color: '#CD2727',
                     fontSize: '22px',
+                    cursor: 'pointer',
                   }}
                   onClick={e => {
                     // call the delete news API here
@@ -590,7 +611,10 @@ const NewsItem = ({
                   <>
                     <i className="fa-solid fa-file" />
                     <a
-                      href={data ? data.attachment_link : ''}
+                      style={{
+                        pointerEvents: 'none',
+                        cursor: 'default',
+                      }}
                       onClick={() => {
                         toast.warning('File not available')
                       }}
@@ -673,13 +697,14 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
             }}
           />
           <Image
+            accept="image/png, image/gif, image/jpeg"
             thumbnail={true}
             style={{ maxWidth: '40%' }}
             src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
             onClick={() => imageFileInputRef.current.click()}
           />
           <FormControl
-            className="yg-font-size mt-4"
+            className="yg-font-size mt-4 mb-3"
             placeholder="Enter Category Title"
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"

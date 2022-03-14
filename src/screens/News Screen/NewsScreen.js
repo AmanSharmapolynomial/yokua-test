@@ -97,7 +97,6 @@ const NewsScreen = () => {
   }
 
   function onChange(pageNumber) {
-    debugger
     setPageNoCall(pageNumber)
   }
 
