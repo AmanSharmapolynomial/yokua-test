@@ -464,7 +464,9 @@ const NewsItem = ({
                             const fileDetails = fileInputRef?.current?.files[0]
                             var bodyFormData = new FormData()
                             bodyFormData.append('data', details)
-                            bodyFormData.append('file', fileDetails)
+                            if (fileDetails) {
+                              bodyFormData.append('file', fileDetails)
+                            }
                             // bodyFormData.append('image', newsI)
                             const token = getToken()
                             axios({
@@ -479,9 +481,9 @@ const NewsItem = ({
                               .then(function (response) {
                                 //handle success
                                 console.log(response)
+                                setIsLoading(false)
                                 if (response.status == 200) {
                                   toast.success(response.data.message)
-                                  setIsLoading(false)
                                 } else {
                                   toast.error(response.data.message)
                                 }
@@ -565,6 +567,7 @@ const NewsItem = ({
               hasPermission && (
                 <div className="inputfile-box ">
                   <input
+                    accept="application/pdf"
                     type="file"
                     id="file"
                     ref={fileInputRef}
@@ -594,6 +597,16 @@ const NewsItem = ({
                     }}
                   >
                     {fileInput?.name}
+                    <i
+                      className="fa-solid fa-xmark yk-icon-hover"
+                      style={{
+                        fontSize: '22px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        setFileInput(null)
+                      }}
+                    />
                   </span>
                 </div>
               )
@@ -639,6 +652,8 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
 
+  useEffect(() => {}, [])
+
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
@@ -659,6 +674,8 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
     formData.append('data', JSON.stringify(data))
 
     const afterAddMsg = await API.post('news/add_category', formData)
+    setCategoryName('')
+    SetImageFile(null)
     setShow(false)
     getCategoryAndSubCategory()
     console.log(afterAddMsg)
@@ -688,6 +705,7 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
         >
           <input
             type="file"
+            accept="image/png, image/gif, image/jpeg"
             id="imageFile"
             ref={imageFileInputRef}
             className="inputfile yk-icon-hover"
@@ -697,7 +715,6 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
             }}
           />
           <Image
-            accept="image/png, image/gif, image/jpeg"
             thumbnail={true}
             style={{ maxWidth: '40%' }}
             src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
@@ -725,6 +742,8 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
             id="mybtn"
             className="btn btn-background mr-4"
             onClick={() => {
+              setCategoryName('')
+              SetImageFile(null)
               setShow(false)
             }}
           >
