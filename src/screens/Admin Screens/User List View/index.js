@@ -488,7 +488,7 @@ const UserListView = () => {
                 backgroundColor: 'var(--bgColor2)',
               }}
             />{' '}
-            Add
+            Add / Update
           </div>
         )}
       </div>
