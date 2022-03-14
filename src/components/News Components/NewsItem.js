@@ -51,10 +51,12 @@ const NewsItem = ({
   const [newSubTopicName, SetNewSubTopicName] = useState('')
 
   const handleSelectTopic = cat => {
+    setToggleDropDown(0)
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
   }
   const handleSelectSubTopic = cat => {
+    setToggleDropDown(0)
     setSelectedSubTopic(cat.sub_category_name)
     setSubCategoryID(cat.id)
   }
@@ -88,6 +90,7 @@ const NewsItem = ({
   const [deleteNewsArr, setDeleteNewsArr] = useState([])
 
   const [newsImage, setNewsImage] = useState(null)
+  const [toggleDropDown, setToggleDropDown] = useState(0)
 
   useEffect(() => {
     if (changeType == 'Add') {
@@ -242,6 +245,10 @@ const NewsItem = ({
               {editView ? (
                 <>
                   <Dropdown
+                    show={toggleDropDown == 1}
+                    onClick={() =>
+                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+                    }
                     size="sm"
                     autoClose={'inside'}
                     className="yk-dropdown-holder"
@@ -328,9 +335,17 @@ const NewsItem = ({
               {editView ? (
                 <>
                   <Dropdown
+                    show={toggleDropDown == 2}
+                    onClick={() =>
+                      toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
+                    }
                     size="sm"
                     autoClose={'inside'}
-                    className="yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic"
+                    className={
+                      toggleDropDown == 1
+                        ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
+                        : 'yk-dropdown-holder mt-3'
+                    }
                   >
                     <Dropdown.Toggle
                       size={'sm'}
