@@ -67,6 +67,7 @@ body {
   padding: 4px;
 }
 
-.user-list-view-table div {
-  overflow-y: visible !important;
+.user-list-view-table div:first-child {
+overflow-x: inherit !important;
+overflow-y: visible !important;
 }
