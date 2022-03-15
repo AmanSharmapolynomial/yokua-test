@@ -24,6 +24,13 @@ const NewsItem = ({
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
+  useEffect(() => {
+    const outsideClick = document.body.addEventListener('click', () => {
+      setToggleDropDown(1)
+    })
+    return outsideClick
+  }, [])
+
   const [hasPermission] = useState(
     getUserRoles() == 'PMK Administrator' ||
       getUserRoles() == 'PMK Content Manager' ||
@@ -51,9 +58,10 @@ const NewsItem = ({
   const [newSubTopicName, SetNewSubTopicName] = useState('')
 
   const subTopicRef = useRef()
+  const topicRef = useRef()
 
   const handleSelectTopic = cat => {
-    setToggleDropDown(0)
+    // setToggleDropDown(0)
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
   }
@@ -111,7 +119,7 @@ const NewsItem = ({
       setReadState(data.news_read)
 
       if (editView) {
-        newsDescRef.current.value = data.description
+        newsDescRef.current.value = data.description ? data.description : ''
 
         // categoryRef.current.value = data.category_name
         // subCategoryRef.current.value = data.sub_category_name
@@ -248,12 +256,14 @@ const NewsItem = ({
               {editView ? (
                 <>
                   <Dropdown
-                    show={toggleDropDown == 1}
-                    onClick={() =>
+                    ref={topicRef}
+                    // show={toggleDropDown == 1}
+                    onClick={() => {
+                      debugger
                       toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
-                    }
+                    }}
                     size="sm"
-                    // autoClose={'inside'}
+                    // autoClose={'outside'}
                     className="yk-dropdown-holder"
                     style={{
                       overflow: 'visible',
@@ -442,7 +452,7 @@ const NewsItem = ({
                   minHeight: '15vh',
                   marginTop: '1rem',
                 }}
-                placeholder="Subject"
+                placeholder="Start writing ......"
                 onChange={e => {
                   setNewsDesc(e.target.value)
                 }}
