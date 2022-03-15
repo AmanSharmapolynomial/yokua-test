@@ -20,6 +20,7 @@ import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
+import EventScreen from '../screens/Event Screen'
 
 const Routing = () => {
   // get User Login Info
@@ -90,6 +91,14 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <ProfileSettingScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="event"
+            element={
+              <PrivateRoute>
+                <EventScreen />
               </PrivateRoute>
             }
           />
