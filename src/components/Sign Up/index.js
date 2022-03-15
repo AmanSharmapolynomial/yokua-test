@@ -78,11 +78,10 @@ const SignUp = () => {
               toast.error('Password and Confirm Password should be same')
             } else {
               registerUser(registerDetails).then(a => {
-                navigate('/auth/verification-email', { state: companyEmail })
-
                 if (a.status == 200) {
+                  navigate('/auth/verification-email', { state: companyEmail })
                 } else {
-                  toast.error(a.data?.password1[0])
+                  // toast.error(a.data?.password1[0])
 
                   console.log(a.data)
                 }

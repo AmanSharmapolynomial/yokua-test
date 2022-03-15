@@ -50,12 +50,15 @@ const NewsItem = ({
   const [newTopicName, SetNewTopicName] = useState('')
   const [newSubTopicName, SetNewSubTopicName] = useState('')
 
+  const subTopicRef = useRef()
+
   const handleSelectTopic = cat => {
     setToggleDropDown(0)
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
   }
   const handleSelectSubTopic = cat => {
+    subTopicRef.current.click()
     setToggleDropDown(0)
     setSelectedSubTopic(cat.sub_category_name)
     setSubCategoryID(cat.id)
@@ -250,7 +253,7 @@ const NewsItem = ({
                       toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
                     }
                     size="sm"
-                    autoClose={'inside'}
+                    // autoClose={'inside'}
                     className="yk-dropdown-holder"
                     style={{
                       overflow: 'visible',
@@ -281,6 +284,7 @@ const NewsItem = ({
                           id="mybtn"
                           className="btn yg-font-size m-2"
                           onClick={() => {
+                            setToggleDropDown(1)
                             setShowCategoryModal(true)
                           }}
                         >
@@ -301,6 +305,7 @@ const NewsItem = ({
                             onClick={() => {
                               setIsTopicAdd(false)
                               AddNewCategoryCall(null, newTopicName)
+                              setToggleDropDown(0)
                             }}
                             variant="outline-secondary"
                             className="yg-font-size"
@@ -335,12 +340,14 @@ const NewsItem = ({
               {editView ? (
                 <>
                   <Dropdown
-                    show={toggleDropDown == 2}
-                    onClick={() =>
-                      toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
-                    }
+                    ref={subTopicRef}
+                    // show={toggleDropDown == 2}
+                    // onClick={() =>
+                    //   toggleDropDown == 2 ? setToggleDropDown(0): setToggleDropDown(2)
+                    //   // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    // }
                     size="sm"
-                    autoClose={'inside'}
+                    autoClose={'outside'}
                     className={
                       toggleDropDown == 1
                         ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
