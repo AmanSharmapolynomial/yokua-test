@@ -240,7 +240,7 @@ const NewsItem = ({
                   }}
                 /> */}
                 <img
-                  src={category && category.find(cat => cat.id == categoryID).image_link}
+                  src={category && category.find(cat => cat.id == categoryID)?.image_link}
                   onError={_onErrorImage}
                   // onClick={() => imageFileInputRef.current.click()}
                 />

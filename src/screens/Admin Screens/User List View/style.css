@@ -23,6 +23,7 @@
 }
 
 .add_row{
+    font-size: 00.8rem;
     display: flex;
     align-items: center;
     justify-content: center !important;
