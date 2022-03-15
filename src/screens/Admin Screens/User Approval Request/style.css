@@ -32,6 +32,7 @@
     background-color: var(--bgColor2) !important;
     font-family: Poppins;
     font-weight: 500;
+    font-size: 0.8rem !important;
     width: max-content;
     cursor: pointer;
     color: var(--textColor5) !important

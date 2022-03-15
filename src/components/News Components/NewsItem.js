@@ -109,6 +109,10 @@ const NewsItem = ({
     }
   }, [])
 
+  const _onErrorImage = () => {
+    setCatImg(placeholder)
+  }
+
   useEffect(() => {
     if (data) {
       category.map((cat, index) => {
@@ -236,14 +240,13 @@ const NewsItem = ({
                   }}
                 /> */}
                 <img
-                  src={
-                    categoryID ? category.find(cat => cat.id == categoryID).image_link : placeholder
-                  }
+                  src={category && category.find(cat => cat.id == categoryID).image_link}
+                  onError={_onErrorImage}
                   // onClick={() => imageFileInputRef.current.click()}
                 />
               </>
             ) : (
-              <img src={catImg} />
+              <img src={catImg} onError={_onErrorImage} />
             )}
           </div>
 
@@ -458,12 +461,23 @@ const NewsItem = ({
                 }}
               />
             ) : (
-              <p>{data ? data.description : ''}</p>
+              <p
+                style={{
+                  marginTop: '1rem',
+                }}
+              >
+                {data ? data.description : ''}
+              </p>
             )}
           </div>
         </div>
 
-        <div className="edit-delete-cta">
+        <div
+          className="edit-delete-cta"
+          style={{
+            marginTop: '1rem',
+          }}
+        >
           <div className="yk-news-edit-icons mb-5">
             {editView
               ? hasPermission && (
@@ -471,7 +485,7 @@ const NewsItem = ({
                     className="fa-solid fa-floppy-disk yk-icon-hover"
                     style={{
                       color: 'var(--bgColor2)',
-                      fontSize: '22px',
+                      fontSize: '20px',
                       cursor: 'pointer',
                     }}
                     onClick={() => {
@@ -553,7 +567,7 @@ const NewsItem = ({
                     className="fa-solid fa-pen-to-square"
                     style={{
                       color: 'var(--bgColor2)',
-                      fontSize: '22px',
+                      fontSize: '20px',
                       cursor: 'pointer',
                     }}
                     onClick={() => {
@@ -566,7 +580,7 @@ const NewsItem = ({
               <i
                 className="fa-solid fa-xmark yk-icon-hover"
                 style={{
-                  fontSize: '22px',
+                  fontSize: '20px',
                   cursor: 'pointer',
                 }}
                 onClick={() => {
@@ -580,7 +594,7 @@ const NewsItem = ({
                   className="fa-solid fa-trash"
                   style={{
                     color: '#CD2727',
-                    fontSize: '22px',
+                    fontSize: '20px',
                     cursor: 'pointer',
                   }}
                   onClick={e => {
