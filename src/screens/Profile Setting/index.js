@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
 import PrimaryHeading from '../../components/Primary Headings/index'
+
+import moment from 'moment'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
@@ -8,6 +10,8 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import validator from 'validator'
 import CustomCheckbox from '../../components/Profile/CustomCheckbox'
 import Header from '../../components/Header'
+
+import placeholder from '../../components/News Components/placeholder.png'
 
 const ProfileSettingScreen = () => {
   const [profileData, setProfileData] = useState({})
@@ -39,13 +43,16 @@ const ProfileSettingScreen = () => {
 
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
+  const [profilePicture, setProfilePicture] = useState(placeholder)
 
   useEffect(async () => {
     // call profile data
     setIsLoading(true)
     const backendData = await API.get('/auth/profile_settings/')
-    console.log(backendData)
     setProfileData(backendData.data)
+    _setProfilePicture(
+      backendData.data.basic_profile?.avatar ? backendData.data.basic_profile?.avatar : placeholder
+    )
     setIsLoading(false)
   }, [reloadData])
 
@@ -93,8 +100,12 @@ const ProfileSettingScreen = () => {
         toast.success('Avatar updated successfully')
       })
       .catch(error => {
-        toast.error('Errow while updating Avatar')
+        // toast.error('Error while updating Avatar')
       })
+  }
+
+  const _setProfilePicture = avatar => {
+    setProfilePicture(avatar)
   }
 
   return (
@@ -102,6 +113,8 @@ const ProfileSettingScreen = () => {
       <Header isLogedIn={getToken()} />
       {openSimpleDeleteModal && (
         <DeleteModal
+          show={openSimpleDeleteModal}
+          setShow={setOpenSimpleDeleteModal}
           req={'Account'}
           saveAndExit={saveAndExit}
           title={'Are you sure want to delete this Account?'}
@@ -130,17 +143,18 @@ const ProfileSettingScreen = () => {
                   cursor: 'pointer',
                 }}
                 onClick={() => imageFileInputRef.current.click()}
-                src={
-                  imageFile
-                    ? window.URL.createObjectURL(imageFile)
-                    : profileData.basic_profile?.avatar
-                }
+                src={profilePicture}
+                onError={() => setProfilePicture(placeholder)}
               />
             </div>
 
             <div className="profile-setting__info_name">
               <h4 className="name">{profileData.basic_profile?.full_name}</h4>
-              <p className="details">FCP user since April 2017</p>
+              <p className="details">
+                {`FCP user since ${moment(profileData.basic_profile?.date_joined).format(
+                  'MMM Do YYYY'
+                )}`}{' '}
+              </p>
             </div>
           </div>
 
@@ -157,6 +171,9 @@ const ProfileSettingScreen = () => {
                   type="text"
                   disabled={disabledInputName}
                   ref={nameRef}
+                  style={{
+                    textTransform: 'capitalize',
+                  }}
                   onChange={e => {
                     setEditMode1(true)
                     setName(e.target.value)
@@ -213,6 +230,9 @@ const ProfileSettingScreen = () => {
                 <input
                   type="text"
                   disabled={disabledInputAddress}
+                  style={{
+                    textTransform: 'capitalize',
+                  }}
                   ref={addressRef}
                   onChange={e => {
                     setAddress(e.target.value)
@@ -352,9 +372,9 @@ const ProfileSettingScreen = () => {
                 }}
                 onClick={async () => {
                   // delete user APi Call and the logout
-                  document.body.scrollTop = 0
-                  document.documentElement.scrollTop = 0
-                  document.body.style.overflow = 'hidden'
+                  // document.body.scrollTop = 0
+                  // document.documentElement.scrollTop = 0
+                  // document.body.style.overflow = 'hidden'
                   setOpenSimpleDeleteModal(true)
                 }}
               >
@@ -421,7 +441,9 @@ const ProfileSettingScreen = () => {
                       '/auth/password/change/',
                       payloadPassword
                     )
-                    toast.success(afterPassChangeMsg.data.detail)
+                    toast.success(afterUpdateNewsMsg.data.message)
+
+                    // toast.success(afterPassChangeMsg.data.detail)
                   } else {
                     toast.error('Password and retype password do not match')
                   }
@@ -457,6 +479,7 @@ const ProfileSettingScreen = () => {
                 }
                 console.log(payloadNews)
                 const afterUpdateNewsMsg = await API.post('auth/profile_settings/', payloadNews)
+                toast.success(afterUpdateNewsMsg.data.message)
                 console.log(afterUpdateNewsMsg.data)
                 setReloadData(!reloadData)
               }}

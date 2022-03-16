@@ -435,7 +435,6 @@ const UserApprovalScreen = () => {
               className="domain-list"
               style={{
                 maxHeight: '27rem',
-                overflow: 'scroll',
               }}
             >
               {domainList.map((data, index) => (
@@ -496,7 +495,6 @@ const UserApprovalScreen = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '5rem 0',
                   }}
                 >
                   Loading...
