@@ -64,7 +64,11 @@ const NewsItem = ({
     // setToggleDropDown(0)
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
-    setCatImg(cat.image_link)
+    if (cat.image_link === 'string') {
+      setCatImg(cat.image_link)
+    } else {
+      setCatImg(window.URL.createObjectURL(cat.image_link))
+    }
   }
   const handleSelectSubTopic = cat => {
     subTopicRef.current.click()
@@ -155,35 +159,36 @@ const NewsItem = ({
     refreshPage()
   }
 
+  const [isNewCatAdded, setIsNewCatAdded] = useState(false)
+  const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
+
   const AddNewCategoryCall = async (image, categoryName) => {
-    const payload = {
-      // change here to form data
-      image,
-      data: {
-        category_name: categoryName,
-      },
+    setIsNewCatAdded(true)
+    const tempCatObject = {
+      category_name: categoryName,
+      id: Math.random(10000, 200000),
+      image_link: image,
     }
-    const afterAddMsg = await API.post('news/add_category', payload)
-    getCategoryAndSubCategory()
-    console.log(afterAddMsg)
+    setCategory([...category, tempCatObject])
+    handleSelectTopic(tempCatObject)
   }
 
   const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
-    const payload = {
+    setIsNewSubCatAdded(true)
+    const tempSubCatObject = {
+      id: Math.random(10000, 200000),
       sub_category_name: categoryName,
-      parent_category_id: parentCatId,
+      category_id: parentCatId,
     }
-    debugger
-    const afterAddMsg = await API.post('news/add_subcategory', payload)
-    getCategoryAndSubCategory()
-    console.log(afterAddMsg)
+    setSubCategory([...subCategory, tempSubCatObject])
+    handleSelectSubTopic(tempSubCatObject)
   }
+
+  const updateSubCategoryViaDataBase = async () => {}
 
   console.log(fileInput?.name)
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
-
-  const _setTempCategoryObject = (image, data) => {}
 
   return (
     <React.Fragment>
@@ -201,7 +206,7 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => _setTempCategoryObject(image, data)}
+        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
       />
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
@@ -493,7 +498,7 @@ const NewsItem = ({
                       fontSize: '20px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => {
+                    onClick={async () => {
                       // add save value to a payload
                       // call the save or edit api here
                       if (newsDescRef.current.value == '') {
@@ -506,10 +511,33 @@ const NewsItem = ({
                           if (subCategoryID == null) {
                             // call subcategory add api
                           } else {
+                            let catPayload
+                            let subCat
+                            debugger
+                            if (isNewCatAdded) {
+                              const formData = new FormData()
+                              const data = {
+                                category_name: category[category.length - 1].category_name,
+                              }
+                              formData.append('image', category[category.length - 1].image_link)
+                              formData.append('data', JSON.stringify(data))
+
+                              catPayLoad = await API.post('news/add_category', formData)
+
+                              if (isNewSubCatAdded) {
+                                const subPayload = {
+                                  sub_category_name:
+                                    subCategory[subCategory.length - 1].sub_category_name,
+                                  parent_category_id: catPayload.data.id,
+                                }
+                                subCat = await API.post('news/add_subcategory', subPayload)
+                              }
+                            }
+
                             const details = JSON.stringify({
                               news_id: dataID || null,
-                              category_id: categoryID,
-                              sub_category_id: subCategoryID,
+                              category_id: isNewCatAdded ? catPayload.data.id : categoryID,
+                              sub_category_id: isNewSubCatAdded ? subCat.data.id : subCategoryID,
                               description: newsDesc,
                             })
                             const fileDetails = fileInputRef?.current?.files[0]
@@ -519,6 +547,7 @@ const NewsItem = ({
                               bodyFormData.append('file', fileDetails)
                             }
                             // bodyFormData.append('image', newsI)
+
                             const token = getToken()
                             axios({
                               method: 'post',
@@ -591,6 +620,8 @@ const NewsItem = ({
                 onClick={() => {
                   setEditView(false)
                   cancelAddNews(data.id)
+                  setIsNewCatAdded(false)
+                  setIsNewSubCatAdded(false)
                 }}
               />
             ) : (
@@ -778,20 +809,18 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
       toast.error('Category Name Required')
       return
     }
-    const data = {
-      category_name: categoryName,
-    }
+
     // const formData = new FormData()
     // formData.append('image', image)
     // formData.append('data', JSON.stringify(data))
 
     // const afterAddMsg = await API.post('news/add_category', formData)
-    setTempCategoryObject(image, data)
+    setTempCategoryObject(image, categoryName)
 
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
-    getCategoryAndSubCategory()
+    // getCategoryAndSubCategory()
   }
 
   return (

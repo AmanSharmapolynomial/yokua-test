@@ -40,6 +40,12 @@
     color: var(--textColor5) !important
 }
 
+.modal-footer .btn-background{
+    background-color: transparent!important;
+    color:#004F9B !important;
+    border: 1px solid #004F9B !important;
+}
+
 .create-domain-btn{
     border: 0.5px solid #707070;
 }
@@ -66,6 +72,7 @@
     display: flex;
     width: 100%;
     flex-wrap: wrap;
+    margin-top: 1.2rem;;
 }
 
 .domain-list-content{
@@ -99,6 +106,11 @@
 .domain-text{
     width: 6rem;
 }
+
+.ant-pagination-item-link{
+    display: grid;
+    place-items: center;
+  }
 
 @media(max-width: 800px){
     .domain-user-table-content{
