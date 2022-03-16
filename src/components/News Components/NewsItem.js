@@ -24,6 +24,9 @@ const NewsItem = ({
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
+  let catPayload = null
+  let subCat = null
+
   useEffect(() => {
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
@@ -190,6 +193,120 @@ const NewsItem = ({
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
+  const uploadCategory = () => {
+    return new Promise((resolve, reject) => {
+      if (isNewCatAdded) {
+        const formData = new FormData()
+        const data = {
+          category_name: category[category.length - 1].category_name,
+        }
+        formData.append('image', category[category.length - 1].image_link)
+        formData.append('data', JSON.stringify(data))
+
+        API.post('news/add_category', formData)
+          .then(data => {
+            resolve(data)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      } else {
+        resolve(null)
+      }
+    })
+  }
+
+  const uploadSubCategory = (categoryId, parentId) => {
+    return new Promise((resolve, reject) => {
+      if (isNewSubCatAdded) {
+        const subPayload = {
+          sub_category_name: categoryId,
+          parent_category_id: parentId,
+        }
+        API.post('news/add_subcategory', subPayload)
+          .then(data => {
+            resolve(data)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      } else {
+        resolve(null)
+      }
+    })
+  }
+
+  const uploadNews = async () => {
+    if (newsDescRef.current.value == '') {
+      toast.error('Enter some description to add or edit news')
+    } else {
+      setIsLoading(true)
+      if (categoryID == null) {
+        // call category add api
+      } else {
+        if (subCategoryID == null) {
+          // call subcategory add api
+        } else {
+          const catPayload = await uploadCategory()
+          const subCat = await uploadSubCategory(
+            isNewSubCatAdded ? subCategory[subCategory.length - 1].sub_category_name : null,
+            isNewCatAdded ? catPayload.data.id : categoryID
+          )
+
+          console.log('CatPay', catPayload)
+          console.log('subCat', subCat)
+
+          const details = JSON.stringify({
+            news_id: dataID || null,
+            category_id: isNewCatAdded ? catPayload.data.id : categoryID,
+            sub_category_id: isNewSubCatAdded ? subCat.data.id : subCategoryID,
+            description: newsDesc,
+          })
+          const fileDetails = fileInputRef?.current?.files[0]
+          var bodyFormData = new FormData()
+          bodyFormData.append('data', details)
+          if (fileDetails) {
+            bodyFormData.append('file', fileDetails)
+          }
+          // bodyFormData.append('image', newsI)
+
+          const token = getToken()
+          axios({
+            method: 'post',
+            url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
+            data: bodyFormData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then(function (response) {
+              //handle success
+              console.log(response)
+              setIsLoading(false)
+              if (response.status == 200) {
+                toast.success(response.data.message)
+              } else {
+                toast.error(response.data.message)
+              }
+            })
+            .catch(function (response) {
+              //handle error
+              console.log('Error', response)
+              if (response.status != 200) {
+                // toast.error(response?.message)
+                toast.error('Something went wrong')
+              }
+              setIsLoading(false)
+            })
+        }
+      }
+
+      console.log(bodyFormData.getAll('file'))
+      //   file: fileInput ? fileInput : '',
+    }
+  }
+
   return (
     <React.Fragment>
       <DeleteModal
@@ -271,7 +388,6 @@ const NewsItem = ({
                     ref={topicRef}
                     // show={toggleDropDown == 1}
                     onClick={() => {
-                      debugger
                       toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
                     }}
                     size="sm"
@@ -501,88 +617,7 @@ const NewsItem = ({
                     onClick={async () => {
                       // add save value to a payload
                       // call the save or edit api here
-                      if (newsDescRef.current.value == '') {
-                        toast.error('Enter some description to add or edit news')
-                      } else {
-                        setIsLoading(true)
-                        if (categoryID == null) {
-                          // call category add api
-                        } else {
-                          if (subCategoryID == null) {
-                            // call subcategory add api
-                          } else {
-                            let catPayload
-                            let subCat
-                            debugger
-                            if (isNewCatAdded) {
-                              const formData = new FormData()
-                              const data = {
-                                category_name: category[category.length - 1].category_name,
-                              }
-                              formData.append('image', category[category.length - 1].image_link)
-                              formData.append('data', JSON.stringify(data))
-
-                              catPayLoad = await API.post('news/add_category', formData)
-
-                              if (isNewSubCatAdded) {
-                                const subPayload = {
-                                  sub_category_name:
-                                    subCategory[subCategory.length - 1].sub_category_name,
-                                  parent_category_id: catPayload.data.id,
-                                }
-                                subCat = await API.post('news/add_subcategory', subPayload)
-                              }
-                            }
-
-                            const details = JSON.stringify({
-                              news_id: dataID || null,
-                              category_id: isNewCatAdded ? catPayload.data.id : categoryID,
-                              sub_category_id: isNewSubCatAdded ? subCat.data.id : subCategoryID,
-                              description: newsDesc,
-                            })
-                            const fileDetails = fileInputRef?.current?.files[0]
-                            var bodyFormData = new FormData()
-                            bodyFormData.append('data', details)
-                            if (fileDetails) {
-                              bodyFormData.append('file', fileDetails)
-                            }
-                            // bodyFormData.append('image', newsI)
-
-                            const token = getToken()
-                            axios({
-                              method: 'post',
-                              url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-                              data: bodyFormData,
-                              headers: {
-                                'Content-Type': 'multipart/form-data',
-                                Authorization: `Bearer ${token}`,
-                              },
-                            })
-                              .then(function (response) {
-                                //handle success
-                                console.log(response)
-                                setIsLoading(false)
-                                if (response.status == 200) {
-                                  toast.success(response.data.message)
-                                } else {
-                                  toast.error(response.data.message)
-                                }
-                              })
-                              .catch(function (response) {
-                                //handle error
-                                console.log('Error', response)
-                                if (response.status != 200) {
-                                  // toast.error(response?.message)
-                                  toast.error('Something went wrong')
-                                }
-                                setIsLoading(false)
-                              })
-                          }
-                        }
-
-                        console.log(bodyFormData.getAll('file'))
-                        //   file: fileInput ? fileInput : '',
-                      }
+                      uploadNews()
                       console.log(bodyFormData.getAll('file'))
                       // call the upsert News API here
                       // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
