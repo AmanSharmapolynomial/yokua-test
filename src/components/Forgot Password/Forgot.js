@@ -29,7 +29,12 @@ const Forgot = () => {
 
   return (
     <>
-      <div className="signIn-container">
+      <div
+        className="signIn-container"
+        style={{
+          marginBottom: '320px',
+        }}
+      >
         <div className="container-head">
           <h3 className="container__heading">
             <i
