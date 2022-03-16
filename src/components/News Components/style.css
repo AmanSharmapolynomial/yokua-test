@@ -79,6 +79,19 @@
     text-decoration: underline;
     cursor: pointer;
     text-transform: capitalize;
+    width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.news-info > .news-category:hover {
+    margin-bottom: 0.6rem;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: capitalize;
 }
 .news-info > .news-info-text{
     font-size: 16px;
@@ -93,8 +106,8 @@
 }
 .news-desc {
     margin: 0 1rem;
-    min-width: 40vw;
-    width: 50vw;
+    min-width: 20vw;
+    width: 30vw;
     max-width: 60vw;
 
 }

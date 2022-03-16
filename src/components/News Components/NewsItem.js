@@ -183,6 +183,8 @@ const NewsItem = ({
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
+  const _setTempCategoryObject = (image, data) => {}
+
   return (
     <React.Fragment>
       <DeleteModal
@@ -199,6 +201,7 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
+        setTempCategoryObject={(image, data) => _setTempCategoryObject(image, data)}
       />
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
@@ -756,7 +759,7 @@ const NewsItem = ({
 
 export default NewsItem
 
-function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
+function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCategoryObject }) {
   const [categoryName, setCategoryName] = useState('')
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
@@ -778,16 +781,17 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
     const data = {
       category_name: categoryName,
     }
-    const formData = new FormData()
-    formData.append('image', image)
-    formData.append('data', JSON.stringify(data))
+    // const formData = new FormData()
+    // formData.append('image', image)
+    // formData.append('data', JSON.stringify(data))
 
-    const afterAddMsg = await API.post('news/add_category', formData)
+    // const afterAddMsg = await API.post('news/add_category', formData)
+    setTempCategoryObject(image, data)
+
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
     getCategoryAndSubCategory()
-    console.log(afterAddMsg)
   }
 
   return (

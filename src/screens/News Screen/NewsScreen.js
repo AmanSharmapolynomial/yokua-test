@@ -265,7 +265,13 @@ const NewsScreen = () => {
                 }
               })
             ) : (
-              <span> You're all caught up with the News </span>
+              <>
+                {backendData?.news_letters.length < 1 ? (
+                  <span>No Records Found</span>
+                ) : (
+                  <span> You're all caught up with the News </span>
+                )}
+              </>
             )}
 
             {/*{newNews ? (*/}

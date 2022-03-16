@@ -15,6 +15,7 @@ import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { useDetectClickOutside } from 'react-detect-click-outside'
+import Plusicon from '../../../assets/Group 331.png'
 
 const UserListView = () => {
   // states
@@ -485,10 +486,11 @@ const UserListView = () => {
             <img
               src={Plusicon}
               style={{
-                backgroundColor: 'var(--bgColor2)',
+                width: '22px',
               }}
-            />{' '}
-            Add / Update
+              className={'mr-2'}
+            />
+            {'  Add / Update'}
           </div>
         )}
       </div>
