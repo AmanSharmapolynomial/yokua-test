@@ -160,10 +160,11 @@ select {
     padding: 0.2rem 0.5rem;
 }
 
-.cancel-domain{
-   background-color: var(--textColor5);
-   color: var(--bgColor2) !important;
-   border: 1px solid black !important;
+.domain-modal-cta .cancel-domain{
+    background-color: transparent!important;
+    color: #004F9B !important;
+    font-weight: 400;
+    border: 1px solid #004F9B;
 }
 .domain-modal{
     align-items: center !important;

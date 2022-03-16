@@ -21,6 +21,7 @@ const NavDropdown = ({ data, icon, renderDropdown }) => {
         className="role-dropdown dropdown"
         style={{
           display: showRoleDropdown ? 'flex' : 'none',
+          lineHeight: '20px',
         }}
       >
         {renderDropdown &&
