@@ -230,9 +230,6 @@ const ProfileSettingScreen = () => {
                 <input
                   type="text"
                   disabled={disabledInputAddress}
-                  style={{
-                    textTransform: 'capitalize',
-                  }}
                   ref={addressRef}
                   onChange={e => {
                     setAddress(e.target.value)

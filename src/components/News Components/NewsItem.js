@@ -452,8 +452,9 @@ const NewsItem = ({
                 ref={newsDescRef}
                 style={{
                   minWidth: '100%',
-                  minHeight: '15vh',
+                  minHeight: '24  vh',
                   marginTop: '1rem',
+                  height: '142px',
                 }}
                 placeholder="Start writing ......"
                 onChange={e => {
@@ -475,7 +476,7 @@ const NewsItem = ({
         <div
           className="edit-delete-cta"
           style={{
-            marginTop: '1rem',
+            marginTop: '0rem',
           }}
         >
           <div className="yk-news-edit-icons mb-5">
@@ -611,19 +612,65 @@ const NewsItem = ({
           <div className="yk-attached-file">
             {editView ? (
               hasPermission && (
-                <div className="inputfile-box ">
-                  <input
-                    accept="application/pdf"
-                    type="file"
-                    id="file"
-                    ref={fileInputRef}
-                    className="inputfile yk-icon-hover"
-                    onChange={e => {
-                      console.log(e.target.files[0])
-                      setFileInput(e.target.files[0])
+                <>
+                  <div
+                    className="inputfile-box "
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column-reverse',
                     }}
-                  />
-                  <label
+                  >
+                    <div>
+                      <i
+                        className="fa-solid fa-paperclip yk-icon-hover"
+                        style={{ fontSize: '22px' }}
+                        onClick={() => fileInputRef.current.click()}
+                      />
+                      <input
+                        accept="application/pdf"
+                        type="file"
+                        id="file"
+                        ref={fileInputRef}
+                        className="inputfile yk-icon-hover"
+                        onChange={e => {
+                          console.log(e.target.files[0])
+                          setFileInput(e.target.files[0])
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <p
+                        className="yk-span"
+                        style={{
+                          fontSize: '16px',
+                        }}
+                      >
+                        {fileInput?.name}
+                      </p>
+                      {fileInput && (
+                        <i
+                          className="fa-solid fa-xmark yk-icon-hover"
+                          style={{
+                            fontSize: '22px',
+                            cursor: 'pointer',
+                            alignSelf: 'baseline',
+                          }}
+                          onClick={() => {
+                            setFileInput(null)
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* <label
                     htmlFor="file"
                     style={{
                       display: 'flex',
@@ -636,7 +683,20 @@ const NewsItem = ({
                       <i className="fa-solid fa-paperclip" style={{ fontSize: '22px' }} />
                     </span>
                   </label>
-                  <span
+                    
+                  <input
+                    accept="application/pdf"
+                    type="file"
+                    id="file"
+                    ref={fileInputRef}
+                    className="inputfile yk-icon-hover"
+                    onChange={e => {
+                      console.log(e.target.files[0])
+                      setFileInput(e.target.files[0])
+                    }}
+                  /> */}
+
+                  {/* <span
                     // className='yk-span'
                     style={{
                       fontSize: '0.7rem',
@@ -655,8 +715,8 @@ const NewsItem = ({
                         }}
                       />
                     )}
-                  </span>
-                </div>
+                  </span> */}
+                </>
               )
             ) : (
               <div className="attachment-icon">

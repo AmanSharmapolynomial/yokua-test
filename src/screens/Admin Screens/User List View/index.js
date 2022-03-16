@@ -482,8 +482,8 @@ const UserListView = () => {
               setOpenModal(true)
             }}
           >
-            <i
-              className="fa-solid fa-plus"
+            <img
+              src={Plusicon}
               style={{
                 backgroundColor: 'var(--bgColor2)',
               }}

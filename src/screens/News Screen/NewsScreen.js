@@ -6,7 +6,8 @@ import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
-
+import Filtermg from '../../assets/Icon awesome-filter.png'
+import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 
@@ -126,8 +127,8 @@ const NewsScreen = () => {
           <div className="filter-container">
             <div className="filter-actions">
               <div className="filter-icons">
-                <i
-                  className="fa-solid fa-filter has-dropdown"
+                <img
+                  src={Filtermg}
                   onClick={() => {
                     setShowFilterDropdown1(!showFilterDropdown1)
                   }}
@@ -170,8 +171,8 @@ const NewsScreen = () => {
               </div>
               <div className="filter-icons">
                 {backendData?.sub_categories?.length > 0 && (
-                  <i
-                    className="fa-solid fa-filter has-dropdown"
+                  <img
+                    src={Filtermg}
                     onClick={() => {
                       if (categoryFilter) {
                         setShowFilterDropdown2(!showFilterDropdown2)
@@ -289,10 +290,11 @@ const NewsScreen = () => {
                   setNewsData([...newsData, { id: Math.random() }])
                 }}
               >
-                <i
-                  className="fa-solid fa-plus"
+                <img
+                  src={Plusicon}
                   style={{
-                    backgroundColor: 'var(--bgColor2)',
+                    width: '22px',
+                    marginRight: '12px',
                   }}
                 />{' '}
                 Add
@@ -315,6 +317,7 @@ const NewsScreen = () => {
           {archivedFilter ? (
             <button
               className="btn"
+              style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(false)
               }}
@@ -324,6 +327,7 @@ const NewsScreen = () => {
           ) : (
             <button
               className="btn"
+              style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(true)
               }}

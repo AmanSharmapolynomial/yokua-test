@@ -19,5 +19,6 @@
 }
 
 .yk-back-image-news {
+  background-size: cover;
   background-image: url('/public/assets/news\ banner.png');
 }

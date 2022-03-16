@@ -67,8 +67,9 @@
     justify-content: space-between;
 }
 
-.filter-icons > i{
+.filter-icons > img{
     margin: 0 2rem;
+    color: rgb(0, 79, 155);
 }
 
 .filter-actions > .filter-checkbox{
@@ -87,3 +88,4 @@
     justify-content: center;
     overflow: hidden;
 }
+
