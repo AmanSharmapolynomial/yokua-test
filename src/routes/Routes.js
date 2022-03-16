@@ -37,7 +37,7 @@ const Routing = () => {
               <React.Fragment>
                 <Header />
                 <AuthLayout />
-                <Footer/>
+                {/* <Footer/> */}
               </React.Fragment>
             }
           >
@@ -47,7 +47,7 @@ const Routing = () => {
                 <React.Fragment>
                   <InfoComponent />
                   <SignIn />
-                  <Footer/>
+                  {/* <Footer/> */}
                 </React.Fragment>
               }
             />
@@ -77,7 +77,7 @@ const Routing = () => {
                     <Navigate to="/admin/user/list-view" />
                   )} */}
                   <UserApprovalScreen />
-                  <Footer/>
+                  {/* <Footer/> */}
                 </React.Fragment>
               }
             />
@@ -88,7 +88,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <NewsScreen />
-                <Footer/>
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           />
@@ -97,7 +97,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <ProfileSettingScreen />
-                <Footer/>
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           />
