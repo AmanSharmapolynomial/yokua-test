@@ -21,6 +21,7 @@ import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
+import Footer from '../components/Footer'
 
 const Routing = () => {
   // get User Login Info
@@ -36,6 +37,7 @@ const Routing = () => {
               <React.Fragment>
                 <Header />
                 <AuthLayout />
+                <Footer/>
               </React.Fragment>
             }
           >
@@ -45,6 +47,7 @@ const Routing = () => {
                 <React.Fragment>
                   <InfoComponent />
                   <SignIn />
+                  <Footer/>
                 </React.Fragment>
               }
             />
@@ -74,6 +77,7 @@ const Routing = () => {
                     <Navigate to="/admin/user/list-view" />
                   )} */}
                   <UserApprovalScreen />
+                  <Footer/>
                 </React.Fragment>
               }
             />
@@ -84,6 +88,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <NewsScreen />
+                <Footer/>
               </PrivateRoute>
             }
           />
@@ -92,6 +97,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <ProfileSettingScreen />
+                <Footer/>
               </PrivateRoute>
             }
           />
