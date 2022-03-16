@@ -64,6 +64,7 @@ const NewsItem = ({
     // setToggleDropDown(0)
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
+    setCatImg(cat.image_link)
   }
   const handleSelectSubTopic = cat => {
     subTopicRef.current.click()
@@ -240,7 +241,7 @@ const NewsItem = ({
                   }}
                 /> */}
                 <img
-                  src={category && category.find(cat => cat.id == categoryID)?.image_link}
+                  src={catImg}
                   onError={_onErrorImage}
                   // onClick={() => imageFileInputRef.current.click()}
                 />

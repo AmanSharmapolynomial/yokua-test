@@ -46,6 +46,7 @@
     max-width: 15rem;
     min-width: 200px;
     overflow: hidden;
+    max-height: 130px;
 }
 
 .news-img > img {
@@ -92,9 +93,9 @@
 }
 .news-desc {
     margin: 0 1rem;
-    min-width: 280px;
-    width: 40vw;
-    max-width: 550px;
+    min-width: 40vw;
+    width: 50vw;
+    max-width: 60vw;
 
 }
 
