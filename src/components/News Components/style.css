@@ -1,0 +1,246 @@
+.single-news-item{
+    padding: 1rem;
+    box-shadow: 0px 0px 8px #00000035;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-family: 'Poppins';
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 0.4rem;;
+}
+
+.edit-delete-cta{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    margin-top: 1rem !important;
+    flex:0.5
+}
+
+.dot-adjust{
+    display: flex;
+    align-items: center;
+}
+
+
+.read-dot{
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 1px solid var(--bgColor2);
+    border-radius: 100%;
+    background-color: #004F9B;
+}
+
+.news-img{
+    border: 1px solid black;
+    border-radius: 0.4rem;
+    margin: 1rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25vw;
+    max-width: 15rem;
+    min-width: 200px;
+    overflow: hidden;
+}
+
+.news-img > img {
+    max-width: 15rem !important;
+    width: 25vw;
+    height: 100%;
+    min-height: 7rem;
+    min-width: 200px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+
+}
+
+.news-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    min-height: 10rem;
+    max-width: 320px;
+    margin-top: 1rem;
+}
+.news-info > .date {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+}
+.news-info > .news-category {
+    margin-bottom: 0.6rem;
+    font-size: 24px;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+.news-info > .news-info-text{
+    font-size: 16px;
+   
+   
+    display: block;
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.news-desc {
+    margin: 0 1rem;
+    min-width: 280px;
+    width: 40vw;
+    max-width: 550px;
+
+}
+
+.select-news{
+    margin: 0.5rem 0;
+}
+
+.news-desc > p {
+    font-size: 0.8rem;
+}
+.news-text{
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 180px;
+}
+
+/* file input styles */
+.inputfile-box {
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .inputfile {
+    display: none;
+  }
+
+  .container {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-box {
+    display: inline-block;
+    width: 100%;
+    padding: 5px 0px 5px 5px;
+    box-sizing: border-box;
+    height: calc(2rem - 2px);
+  }
+
+  .file-button {
+
+    padding: 5px;
+    position: absolute;
+
+    top: 0px;
+    right: 0px;
+  }
+
+  /*  */
+
+  .attachment-icon{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--bgColor2);
+      margin-left: 0px;
+  }
+
+  .attachment-icon > a {
+      font-size: 0.8rem;
+      width: 119px;
+      margin-top: 0.8rem;
+  }
+
+  .attachment-icon > i {
+      font-size: 3rem;
+  }
+
+  .flex-setup{
+      display: flex;
+      flex-wrap: wrap;
+flex:7;
+
+  }
+
+  @media(max-width: 800px){
+    .edit-delete-cta{
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .news-info{
+        min-height: max-content;
+        padding: 1rem 0;
+    }
+}
+
+.select-border {
+  border: 1px solid #000;
+  padding: 2px
+}
+
+.select-font-size {
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.select-news-bootstrap {
+  background-color: white !important;
+  color: black;
+  border-color: black;
+  border-width: 1px;
+}
+
+.yk-dropdown-holder{
+    padding: 0 !important;
+    width: 100%;
+    position: relative !important;
+    z-index: 100;
+    flex: 0 !important
+}
+
+.yg-custom-dropdown {
+    background-color: white !important;
+    color: black !important;
+    border-color: #000 !important;
+    width: 100% !important;
+}
+
+.yg-font-size{
+    font-size: small !important;
+}
+
+.yk-dropdown-holder-subtopic{
+    z-index: 0;
+}
+
+.yk-span {
+        display: block;
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+}
+
+.yk-icon-hover { cursor: pointer;}
+
+.yk-news-edit-icons{
+        flex: 1;
+        align-items: flex-start;
+        align-self: flex-end;
+
+}
+
+.yk-attached-file {
+    display: flex;
+    text-align: end;
+}

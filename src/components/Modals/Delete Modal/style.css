@@ -1,0 +1,13 @@
+@keyframes forceYellow {
+    from {
+      background-color: white;
+    }
+    to {
+      background-color: white;
+    }
+  }
+
+
+  .btn-background {
+      animation: 1s linear infinite forceYellow;
+  }

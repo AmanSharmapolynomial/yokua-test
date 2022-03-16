@@ -1,0 +1,17 @@
+.filter-and-read-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem;
+}
+
+.news-container-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem;
+}
+
+.archived-filter{
+    margin: 1rem 1rem 1rem 2rem;
+}

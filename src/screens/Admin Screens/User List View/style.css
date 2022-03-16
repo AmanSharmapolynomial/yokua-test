@@ -1,0 +1,91 @@
+
+@import '~antd/dist/antd.css';
+.user-list-view-table{
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+    box-shadow: 0px 0px 5px 0px rgba(196,196,196,1);
+
+    z-index: 0;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.user-list-view{
+    width: 100%;
+}
+
+.lnndaO{
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.add_row{
+    font-size: 00.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    cursor: pointer;
+    height: 50px;
+}
+.mgt{
+    margin-top: 2rem !important;
+}
+.add_row > i {
+    background-color: black;
+    color: white;
+    height: 21px;
+    width: 21px;    
+    display: flex;
+    align-items: center;       
+    justify-content: center;
+    border-radius: 100%;       
+    margin-right: 0.4rem;
+}
+
+.edit-icons > i{
+    cursor: pointer;
+}
+.edit-icons > i:hover{
+    opacity: 80%;
+}
+
+.filter-actions{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-icons{
+    width: 30%;
+    max-width: 15rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filter-icons > img{
+    margin: 0 2rem;
+    color: rgb(0, 79, 155);
+}
+
+.filter-actions > .filter-checkbox{
+    margin: 0 1rem;
+}
+
+
+#dropdown:checked + label{
+    display: none;
+}
+
+.pagination{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
