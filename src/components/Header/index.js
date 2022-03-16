@@ -60,7 +60,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 navigate('/auth/login')
               }}
             >
-              Logout
+              Log out
             </button>
           )}
         </div>

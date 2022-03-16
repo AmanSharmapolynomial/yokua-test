@@ -15,10 +15,12 @@
 
 
 .yk-back-image-profile {
-  background-image: url('/public/assets/calendar\ banner\ \(1\).png');
+  background-image: url('/public/assets/profileSettingsbanner.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .yk-back-image-news {
   background-size: cover;
-  background-image: url('/public/assets/news\ banner.png');
+  /*background-image: url('./assets/profileSettings banner.jpg');*/
 }
