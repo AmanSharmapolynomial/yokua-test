@@ -151,13 +151,14 @@ select {
     justify-content: space-between;
 }
 .domain-input{
-    width: 15rem;
+    width: 30rem;
     margin: 1rem 0;
-    height: 2rem !important;
+    height: 3rem !important;
     box-shadow: 0px 0px 8px #00000035;
     border: 1px solid #707070;
     border-radius: 4px;
-    padding: 0.2rem 0.5rem;
+    padding: 0.2rem 1.1rem;
+    color: #000000;
 }
 
 .domain-modal-cta .cancel-domain{

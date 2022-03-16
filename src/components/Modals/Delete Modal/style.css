@@ -11,3 +11,7 @@
   .btn-background {
       animation: 1s linear infinite forceYellow;
   }
+
+.modal-footer .btn{
+  background-color: transparent !important;
+}

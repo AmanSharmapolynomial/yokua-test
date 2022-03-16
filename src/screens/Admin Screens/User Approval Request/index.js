@@ -367,7 +367,7 @@ const UserApprovalScreen = () => {
       )}
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
-        <div className="btn-container">
+        <div className="btn-container mb-2 ">
           <button
             className="action-btn btn clear-notification"
             onClick={() => {
@@ -450,7 +450,7 @@ const UserApprovalScreen = () => {
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  {data.id != 1 && data.id != 2 && (
+                 <div>
                     <i
                       className="fa-solid fa-trash"
                       style={{
@@ -471,7 +471,13 @@ const UserApprovalScreen = () => {
                         setOpenDeleteDomainModal(true)
                       }}
                     />
-                  )}
+
+                    <i className='fa-solid fa-caret-right'/>
+                    </div>
+
+
+                    
+                  
                 </div>
               ))}
             </div>

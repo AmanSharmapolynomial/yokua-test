@@ -6,7 +6,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">Create New Domain</h3>
+        <h3 className="modal-heading">Add New Domain</h3>
         <div
           className="modal-content domain-modal"
           style={{
@@ -24,6 +24,14 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
             />
           </div>
           <div className="domain-modal-cta mt-3">
+          <button
+              className="btn cancel-domain"
+              onClick={() => {
+                saveAndExit()
+              }}
+            >
+              Cancel
+            </button>
             <button
               className="btn mr-4"
               onClick={() => {
@@ -39,14 +47,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
             >
               Confirm
             </button>
-            <button
-              className="btn cancel-domain"
-              onClick={() => {
-                saveAndExit()
-              }}
-            >
-              Cancel
-            </button>
+            
           </div>
         </div>
       </div>

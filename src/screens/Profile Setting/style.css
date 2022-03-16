@@ -192,4 +192,9 @@ margin: 0.8rem 0;
     line-height: 2.4rem;
 }
 
+.ant-pagination-item-link{
+    display: grid;
+    place-items: center;
+  }
+
 

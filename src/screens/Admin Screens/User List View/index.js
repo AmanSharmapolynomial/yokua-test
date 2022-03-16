@@ -16,6 +16,7 @@ import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import Plusicon from '../../../assets/Group 331.png'
+import Filtermg from '../../../assets/Icon awesome-filter.png'
 
 const UserListView = () => {
   // states
@@ -75,7 +76,7 @@ const UserListView = () => {
             onClick={() => {
               setSortMethod('A to Z')
             }}
-            style={{ width: '20px', height: '20px' }}
+            style={{ width: '14px', height: '14px' }}
             src={require('../../../assets/Rearrange order.png')}
           />
         ) : (
@@ -339,8 +340,7 @@ const UserListView = () => {
 
       <div className="filter-actions">
         <div className="filter-icons" ref={ref}>
-          <i
-            className="fa-solid fa-filter has-dropdown"
+          <img src={Filtermg}
             onClick={() => {
               setShowFilterDropdown(!showFilterDropdown)
             }}
@@ -396,7 +396,7 @@ const UserListView = () => {
           )}
         </div>
         <div className="filter-actions mgt">
-          <div className="filter-checkbox">
+          <div className="filter-checkbox"> 
             <input
               type="checkbox"
               ref={filterFromCheckbox1Ref}
@@ -411,7 +411,7 @@ const UserListView = () => {
                 }
               }}
             />
-            PMK Administrator
+            &nbsp; PMK Administrator
           </div>
           <div className="filter-checkbox">
             <input
@@ -428,7 +428,7 @@ const UserListView = () => {
                 }
               }}
             />
-            PMK Content Manager
+             &nbsp; PMK Content Manager
           </div>
           <div className="filter-checkbox">
             <input
@@ -445,7 +445,7 @@ const UserListView = () => {
                 }
               }}
             />{' '}
-            User
+             &nbsp; User
           </div>
         </div>
       </div>

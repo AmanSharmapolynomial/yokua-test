@@ -62,6 +62,10 @@ body {
   padding: 0 !important;
 }
 
+.ant-pagination-item-link{
+  display: grid;
+  place-items: center;
+}
 
 .nav ul li {
   padding: 4px;

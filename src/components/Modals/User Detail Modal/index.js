@@ -109,7 +109,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 >
                   <option>User</option>
                   <option>PMK Content Manager</option>
-                  <option>PMK Administrator</option>
+                  <option>&nbsp; PMK Administrator</option>
                 </select>
                 <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
               </div>
