@@ -447,7 +447,12 @@ const NewsItem = ({
                       {selectedTopic}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
+                    <Dropdown.Menu
+                      style={{
+                        height: '200px',
+                        overflowY: 'scroll',
+                      }}
+                    >
                       {category.map((cat, index) => (
                         <Dropdown.Item
                           key={index}
