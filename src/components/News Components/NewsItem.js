@@ -20,6 +20,8 @@ const NewsItem = ({
   setIsLoading,
   cancelAddNews,
   refreshPage,
+  updateNewsRead,
+  readNews,
 }) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)

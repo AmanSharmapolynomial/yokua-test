@@ -29,6 +29,19 @@ const NewsScreen = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [pageNoCall, setPageNoCall] = useState(1)
 
+  const [readNews, setNewsRead] = useState([])
+
+  const _updateNewsRead = id => {
+    const updatedReadNews = readNews
+    const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
+    if (isAlreadyAdded > 0) {
+      updatedReadNews.splice(isAlreadyAdded, 1)
+    } else {
+      updatedReadNews.push(id)
+    }
+    setNewsRead(readNews)
+  }
+
   let payload = {
     category_id: parseInt(categoryFilter),
     sub_category_id: parseInt(subCategoryFilter),
@@ -239,6 +252,8 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      updateNewsRead={() => _updateNewsRead(news.id)}
+                      readNews={readNews}
                       data={news}
                       changeType={'View'}
                       tempCategory={backendData.categories}
