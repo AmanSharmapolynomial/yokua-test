@@ -191,6 +191,7 @@ const NewsItem = ({
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
   const uploadCategory = () => {
+    setIsLoading(true)
     return new Promise((resolve, reject) => {
       if (isNewCatAdded) {
         const formData = new FormData()
@@ -202,9 +203,13 @@ const NewsItem = ({
 
         API.post('news/add_category', formData)
           .then(data => {
+            setIsLoading(false)
+
             resolve(data)
           })
           .catch(error => {
+            setIsLoading(false)
+
             reject(error)
           })
       } else {
@@ -214,7 +219,10 @@ const NewsItem = ({
   }
 
   const uploadSubCategory = (categoryId, parentId) => {
+    setIsLoading(true)
+
     return new Promise((resolve, reject) => {
+      debugger
       if (isNewSubCatAdded) {
         const subPayload = {
           sub_category_name: categoryId,
@@ -222,15 +230,65 @@ const NewsItem = ({
         }
         API.post('news/add_subcategory', subPayload)
           .then(data => {
+            setIsLoading(false)
+
             resolve(data)
           })
           .catch(error => {
+            setIsLoading(false)
+
             reject(error)
           })
       } else {
         resolve(null)
       }
     })
+  }
+
+  const uploadNewNews = () => {
+    const details = JSON.stringify({
+      news_id: dataID || null,
+      category_id: categoryID,
+      sub_category_id: [subCategoryID],
+      description: newsDesc,
+    })
+    const fileDetails = fileInputRef?.current?.files[0]
+    var bodyFormData = new FormData()
+    bodyFormData.append('data', details)
+    if (fileDetails) {
+      bodyFormData.append('file', fileDetails)
+    }
+    // bodyFormData.append('image', newsI)
+
+    const token = getToken()
+    axios({
+      method: 'post',
+      url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
+      data: bodyFormData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(function (response) {
+        //handle success
+        console.log(response)
+        setIsLoading(false)
+        if (response.status == 200) {
+          toast.success(response.data.message)
+        } else {
+          toast.error(response.data.message)
+        }
+      })
+      .catch(function (response) {
+        //handle error
+        console.log('Error', response)
+        if (response.status != 200) {
+          // toast.error(response?.message)
+          toast.error('Something went wrong')
+        }
+        setIsLoading(false)
+      })
   }
 
   const uploadNews = async () => {
@@ -244,58 +302,40 @@ const NewsItem = ({
         if (subCategoryID == null) {
           // call subcategory add api
         } else {
-          const catPayload = await uploadCategory()
-          const subCat = await uploadSubCategory(
-            isNewSubCatAdded ? subCategory[subCategory.length - 1].sub_category_name : null,
-            isNewCatAdded ? catPayload.data.id : categoryID
-          )
+          if (isNewCatAdded) {
+            uploadCategory().then(data => {
+              if (data) {
+                setCategoryID(data.data.id)
+                debugger
+                if (isNewSubCatAdded) {
+                  uploadSubCategory(
+                    subCategory[subCategory.length - 1].sub_category_name,
+                    data.data.id
+                  ).then(subData => {
+                    if (subData) {
+                      setSubCategoryID(subData.data.id)
 
-          console.log('CatPay', catPayload)
-          console.log('subCat', subCat)
-
-          const details = JSON.stringify({
-            news_id: dataID || null,
-            category_id: isNewCatAdded ? catPayload.data.id : categoryID,
-            sub_category_id: isNewSubCatAdded ? [subCat.data.id] : [subCategoryID],
-            description: newsDesc,
-          })
-          const fileDetails = fileInputRef?.current?.files[0]
-          var bodyFormData = new FormData()
-          bodyFormData.append('data', details)
-          if (fileDetails) {
-            bodyFormData.append('file', fileDetails)
-          }
-          // bodyFormData.append('image', newsI)
-
-          const token = getToken()
-          axios({
-            method: 'post',
-            url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-            data: bodyFormData,
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`,
-            },
-          })
-            .then(function (response) {
-              //handle success
-              console.log(response)
-              setIsLoading(false)
-              if (response.status == 200) {
-                toast.success(response.data.message)
+                      uploadNewNews()
+                    }
+                  })
+                } else {
+                }
               } else {
-                toast.error(response.data.message)
               }
             })
-            .catch(function (response) {
-              //handle error
-              console.log('Error', response)
-              if (response.status != 200) {
-                // toast.error(response?.message)
-                toast.error('Something went wrong')
+          } else if (isNewSubCatAdded) {
+            uploadSubCategory(
+              subCategory[subCategory.length - 1].sub_category_name,
+              data.data.id
+            ).then(subData => {
+              if (subData) {
+                setSubCategoryID(subData.data.id)
+                uploadNewNews()
               }
-              setIsLoading(false)
             })
+          } else {
+            uploadNewNews()
+          }
         }
       }
 
@@ -587,7 +627,7 @@ const NewsItem = ({
                   height: '200px',
                   resize: 'none',
                 }}
-                placeholder="Start writing ......"
+                placeholder="Enter description"
                 onChange={e => {
                   setNewsDesc(e.target.value)
                 }}
