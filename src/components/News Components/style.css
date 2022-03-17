@@ -111,7 +111,7 @@
     min-width: 20vw;
     width: 30vw;
     height: 212px;
-    overflow-y: scroll;
+  overflow-y: auto;
     max-width: 60vw;
 
 }
