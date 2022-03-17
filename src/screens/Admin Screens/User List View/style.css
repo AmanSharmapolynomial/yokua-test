@@ -57,8 +57,9 @@
 
 .filter-actions{
     display: flex;
+    width: 100%;
     justify-content: space-between;
-    margin: 0 1rem 1rem 1rem;
+    margin: 0 1rem -0.9rem 1rem;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -70,6 +71,9 @@
     justify-content: space-between;
 }
 
+.filter-icons .two{
+    margin-left: 300px;
+}
 .filter-icons > img{
     margin: 0 2rem;
     color: rgb(0, 79, 155);

@@ -182,7 +182,9 @@ const NewsScreen = () => {
                     ))}
                 </div>
               </div>
-              <div className="filter-icons">
+              <div className="filter-icons" 
+              // style={{marginLeft:'100px',}}
+              >
                 {backendData?.sub_categories?.length > 0 && (
                   <img
                     src={Filtermg}
@@ -334,10 +336,10 @@ const NewsScreen = () => {
             />
           </div>
         )}
-        <div className="archived-filter">
+        <div className="archived-filter ">
           {archivedFilter ? (
             <button
-              className="btn"
+              className="btn ml-3"
               style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(false)
@@ -347,7 +349,7 @@ const NewsScreen = () => {
             </button>
           ) : (
             <button
-              className="btn"
+              className="btn ml-3"
               style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(true)

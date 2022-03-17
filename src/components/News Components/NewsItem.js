@@ -579,7 +579,8 @@ const NewsItem = ({
                   minWidth: '100%',
                   minHeight: '24  vh',
                   marginTop: '1rem',
-                  height: '142px',
+                  height: '200px',
+                  resize: 'none',
                 }}
                 placeholder="Start writing ......"
                 onChange={e => {
@@ -789,7 +790,7 @@ const NewsItem = ({
                 </>
               )
             ) : (
-              <div className="attachment-icon">
+              <div className="attachment-icon mb-4">
                 {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
