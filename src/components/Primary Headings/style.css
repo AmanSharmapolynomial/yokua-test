@@ -23,5 +23,5 @@
 .yk-back-image-news {
   background-size: cover;
   background-position: center;
-  background-image: url('C:\Projects\yokogam-main\public\assets\news banner.jpg');
+  background-image: url('/public/assets/news banner.jpg');
 }

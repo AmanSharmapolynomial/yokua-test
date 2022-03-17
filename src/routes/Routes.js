@@ -64,6 +64,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <AdminScreens />
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           >
@@ -79,7 +80,6 @@ const Routing = () => {
                     <Navigate to="/admin/user/list-view" />
                   )} */}
                   <UserApprovalScreen />
-                  {/* <Footer/> */}
                 </React.Fragment>
               }
             />
@@ -100,7 +100,7 @@ const Routing = () => {
               <PrivateRoute>
                 <ProfileSettingScreen />
                 {/* <Footer/> */}
-                <Footer />
+                {/* <Footer /> */}
               </PrivateRoute>
             }
           />
