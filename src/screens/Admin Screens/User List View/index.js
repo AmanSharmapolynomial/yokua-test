@@ -22,6 +22,7 @@ const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [modelTitle, setModalTitle] = useState('View User')
   const [changeModal, setChangeModal] = useState('')
   const [filterCheckboxPMK, setFilterCheckboxPMK] = useState(true)
   const [filterCheckboxCM, setFilterCheckboxCM] = useState(true)
@@ -145,6 +146,7 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
+              setModalTitle('View User')
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
@@ -178,6 +180,8 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
+                setModalTitle('Edit User')
+
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
@@ -329,6 +333,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
+          title={modelTitle}
           DetailsModal
           data={backendData[dataToChange]}
           change={changeModal}
@@ -482,6 +487,7 @@ const UserListView = () => {
               document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)
+              setModalTitle('Add User')
             }}
           >
             <img

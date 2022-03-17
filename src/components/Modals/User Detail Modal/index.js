@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import '../style.css'
 import validator from 'validator'
 
-const UserDetailsModal = ({ change, data, saveAndExit }) => {
+const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   // refs
   let emailRef = useRef()
   let firstNameRef = useRef()
@@ -61,7 +61,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             }}
           />
         )}
-        <h3 className="modal-heading">Update user dialog</h3>
+        <h3 className="modal-heading">{title}</h3>
         <div
           className="modal-content flex-row"
           style={{
