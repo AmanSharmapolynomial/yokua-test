@@ -85,7 +85,7 @@ const UserListView = () => {
             onClick={() => {
               setSortMethod('Z to A')
             }}
-            style={{ width: '20px', height: '20px' }}
+            style={{ width: '14px', height: '14px' }}
             src={require('../../../assets/Rearrange order.png')}
           />
         ),
@@ -146,7 +146,7 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
-              setModalTitle('View User')
+              setModalTitle('View User Detail')
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
@@ -180,7 +180,7 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
-                setModalTitle('Edit User')
+                setModalTitle('Edit User Detail')
 
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
@@ -487,7 +487,7 @@ const UserListView = () => {
               document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)
-              setModalTitle('Add User')
+              setModalTitle('Add User Detail')
             }}
           >
             <img
