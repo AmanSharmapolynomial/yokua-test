@@ -59,22 +59,22 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    margin: 0 1rem -0.9rem 1rem;
+    margin: 0 1rem 0rem 1rem;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .filter-icons{
     width: 30%;
+    height: 30px;
     max-width: 15rem;
     display: flex;
     justify-content: space-between;
 }
 
-.filter-icons .two{
-    margin-left: 300px;
-}
+
 .filter-icons > img{
+    width: 30px;
     margin: 0 2rem;
     color: rgb(0, 79, 155);
 }
@@ -98,8 +98,8 @@
 
 
 .ant-pagination-item-link{
-    display: grid;
-    place-items: center;
+    display: grid !important;
+    place-items: center !important;
   }
 
   .filter-checkbox{

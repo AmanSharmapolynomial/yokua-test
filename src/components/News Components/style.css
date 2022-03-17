@@ -248,7 +248,7 @@ flex:7;
         text-overflow: ellipsis;
 }
 
-.yk-icon-hover { cursor: pointer;}
+.yk-icon-hover { cursor: pointer; margin-bottom: 14px;}
 
 .yk-news-edit-icons{
         flex: 1;

@@ -193,8 +193,8 @@ margin: 0.8rem 0;
 }
 
 .ant-pagination-item-link{
-    display: grid;
-    place-items: center;
+    display: grid !important;
+    place-items: center !important ;
   }
 
 
