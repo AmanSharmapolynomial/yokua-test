@@ -1,9 +1,14 @@
-.footerBtn{
-    justify-content: center;
-    display: flex;
+.footer{
     width: 100%;
     background-color: #004F9B;
     padding: 10px 0px;
+    position: sticky;
+    z-index: 5000;
+    bottom: 0;
+}
+.footerBtn{
+    justify-content: center;
+    display: flex;
 }
 .footerBtn .btn{
     background-color: #FFF!important;

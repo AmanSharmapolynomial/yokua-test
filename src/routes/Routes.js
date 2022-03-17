@@ -37,7 +37,6 @@ const Routing = () => {
               <React.Fragment>
                 <Header />
                 <AuthLayout />
-                <Footer/>
               </React.Fragment>
             }
           >
@@ -97,7 +96,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <ProfileSettingScreen />
-                <Footer/>
+                 <Footer/>
               </PrivateRoute>
             }
           />
