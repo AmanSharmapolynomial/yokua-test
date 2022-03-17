@@ -5,6 +5,9 @@ import './style.css'
 import { registerUser } from './../../services/auth.service'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
+
+import API from '../../utils/api'
 
 import validator from 'validator'
 
@@ -12,6 +15,10 @@ const SignUp = () => {
   // navigate
   const navigate = useNavigate()
 
+  const [category, setCategory] = useState([])
+  const [isTopicAdd, setIsTopicAdd] = useState(false)
+  const [topicName, setTopicName] = useState('')
+  const [selectedTopic, setSelectedTopic] = useState('Company')
   // fetch state
   // const userDetails = useStoreState(state => state.userDetails)
   // const registeredUser = useStoreState(state => state.registeredUser)
@@ -25,7 +32,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [company, setCompany] = useState('')
+  const [company, setCompany] = useState(0)
 
   const [actionLabel, setActionLabel] = useState('')
   const [isLoading, setLoading] = useState(false)
@@ -49,7 +56,10 @@ const SignUp = () => {
 
   // fill data from form
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    getCompanyList()
+  }, [])
+
   const registerDetails = {
     first_name: firstName,
     last_name: lastName,
@@ -59,7 +69,37 @@ const SignUp = () => {
     company_name: company,
   }
 
+  const getCompanyList = () => {
+    API.get('auth/view_company').then(data => {
+      setCategory(data.data)
+    })
+  }
   // use actions
+
+  const AddNewCompany = () => {
+    if (topicName.length < 2) {
+      toast.error('Please enter valid company name')
+      setTopicName('')
+      return
+    }
+
+    API.post('auth/add_company', {
+      parent_company: topicName,
+      child_company: '',
+    })
+      .then(data => {
+        getCompanyList()
+        setTopicName('')
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  const handleSelectTopic = cat => {
+    setCompany(cat.company_name)
+    setSelectedTopic(cat.company_name)
+  }
 
   const register = async e => {
     // setLoading(true)
@@ -173,12 +213,70 @@ const SignUp = () => {
         <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
           {actionLabel}
         </span>
-        <input
-          type="text"
-          className="input-field input-field__email"
-          onChange={e => setCompany(e.target.value)}
-          placeholder="Company(representative of yokogawa)"
-        />
+
+        <Dropdown
+          size="sm"
+          autoClose={'outside'}
+          className="yk-dropdown-holder input-field"
+          style={{
+            overflow: 'visible',
+          }}
+        >
+          <Dropdown.Toggle
+            size={'sm'}
+            className="yg-custom-dropdown"
+            color="red"
+            id="dropdown-basic"
+          >
+            {selectedTopic}
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {category.map((cat, index) => (
+              <Dropdown.Item
+                key={index}
+                className="yg-font-size"
+                onClick={() => handleSelectTopic(cat)}
+              >
+                {cat.company_name}
+              </Dropdown.Item>
+            ))}
+            <Dropdown.Divider />
+            {!isTopicAdd && (
+              <Dropdown.Item
+                className="yg-font-size"
+                onClick={() => {
+                  setIsTopicAdd(true)
+                }}
+              >
+                Others
+              </Dropdown.Item>
+            )}
+            {isTopicAdd && (
+              <InputGroup className="mb-3 yg-font-size p-1 ">
+                <FormControl
+                  className="yg-font-size"
+                  placeholder="Company"
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                  value={topicName}
+                  onChange={e => setTopicName(e.target.value)}
+                />
+                <Button
+                  onClick={() => {
+                    setIsTopicAdd(false)
+                    AddNewCompany()
+                  }}
+                  variant="outline-secondary"
+                  className="yg-font-size"
+                  id="button-addon2"
+                >
+                  Save
+                </Button>
+              </InputGroup>
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
         <div className="checkbox">
           <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
           <span className="checkbox-text">Accept the term and conditions</span>
