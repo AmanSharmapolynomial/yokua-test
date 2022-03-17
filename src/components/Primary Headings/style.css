@@ -22,10 +22,6 @@
 
 .yk-back-image-news {
   background-size: cover;
-  /*background-image: url('./assets/profileSettings banner.jpg');*/
-}
-
-.ant-pagination-item-link{
-  display: grid;
-  place-items: center;
+  background-position: center;
+  background-image: url('C:\Projects\yokogam-main\public\assets\news banner.jpg');
 }
