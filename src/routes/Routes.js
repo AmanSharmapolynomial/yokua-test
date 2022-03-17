@@ -54,8 +54,10 @@ const Routing = () => {
             <Route path="register" element={<SignUp />} />
             <Route path="forgot-password" element={<Forgot />} />
             <Route path="reset-password" element={<ChnagePassword />} />
+            <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
             <Route path="verification-email" element={<VerificationEmail />} />
+            <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
           </Route>
           <Route
             path="/admin"

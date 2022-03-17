@@ -1,8 +1,14 @@
 import React, { useRef, useState } from 'react'
 import API from '../../utils/api'
+import { useParams } from 'react-router'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+
 // import './style.css'
 
 const ChnagePassword = () => {
+  const { uid, token } = useParams()
+  const navigate = useNavigate()
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
@@ -22,11 +28,40 @@ const ChnagePassword = () => {
         })
   }
 
+  const _resetPasswordUsingUidandToken = () => {
+    if (password != confirmPassword) {
+      toast.error('Password and Confirm Password should be matched')
+      return
+    }
+    if (password && password.length > 8) {
+      if (uid && token) {
+        API.post('auth/reset-password-verify', {
+          uid: uid,
+          token: token,
+          new_password1: password,
+          new_password2: confirmPassword,
+        })
+          .then(data => {
+            navigate('/auth/login')
+            toast.success(data.data?.message)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    } else {
+      toast.error('Password must be 8 characters')
+    }
+  }
+
   return (
     <>
       <div className="signIn-container">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
+          onSubmit={() => {
+            _resetPasswordUsingUidandToken()
+          }}
           type="submit"
           style={{
             position: 'relative',
@@ -64,7 +99,17 @@ const ChnagePassword = () => {
             onClick={() => setConfirmVisible(!confirmVisible)}
           ></i>
 
-          <button type="submit" className="submit-btn">
+          <button
+            onClick={() => {
+              // if(uid && token) {
+              //   _resetPasswordUsingUidandToken()
+              // } else {
+              //   _resetPassword()
+              // }
+            }}
+            type="submit"
+            className="submit-btn"
+          >
             Save
           </button>
         </form>
