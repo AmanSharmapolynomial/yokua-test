@@ -187,10 +187,6 @@ const NewsItem = ({
     handleSelectSubTopic(tempSubCatObject)
   }
 
-  const updateSubCategoryViaDataBase = async () => {}
-
-  console.log(fileInput?.name)
-
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
   const uploadCategory = () => {
@@ -307,6 +303,19 @@ const NewsItem = ({
     }
   }
 
+  const _getNewsReadColor = () => {
+    if (editView) {
+      return false
+    }
+    if (data?.news_read) {
+      return true
+    }
+    if (readNews.includes(data?.id)) {
+      return true
+    }
+    return false
+  }
+
   return (
     <React.Fragment>
       <DeleteModal
@@ -340,15 +349,8 @@ const NewsItem = ({
           >
             <div
               className="read-dot"
-              style={
-                !editView
-                  ? {
-                      backgroundColor: '',
-                    }
-                  : {
-                      backgroundColor: readState ? 'var(--bgColor2)' : '',
-                    }
-              }
+              onClick={() => updateNewsRead()}
+              style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
             ></div>
           </div>
 

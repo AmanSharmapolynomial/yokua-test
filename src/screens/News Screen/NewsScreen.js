@@ -32,6 +32,7 @@ const NewsScreen = () => {
   const [readNews, setNewsRead] = useState([])
 
   const _updateNewsRead = id => {
+    debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
     if (isAlreadyAdded > 0) {
@@ -39,7 +40,7 @@ const NewsScreen = () => {
     } else {
       updatedReadNews.push(id)
     }
-    setNewsRead(readNews)
+    setNewsRead(p => [...updatedReadNews])
   }
 
   let payload = {
@@ -182,8 +183,9 @@ const NewsScreen = () => {
                     ))}
                 </div>
               </div>
-              <div className="filter-icons" 
-              // style={{marginLeft:'100px',}}
+              <div
+                className="filter-icons"
+                // style={{marginLeft:'100px',}}
               >
                 {backendData?.sub_categories?.length > 0 && (
                   <img
@@ -234,11 +236,7 @@ const NewsScreen = () => {
           <button
             className="btn"
             onClick={() => {
-              const payloadArr = []
-              newsData.map(news => {
-                payloadArr.push(news.id)
-              })
-              markAsReadAction(payloadArr)
+              markAsReadAction(readNews)
             }}
           >
             Mark as Read
@@ -268,6 +266,8 @@ const NewsScreen = () => {
                 } else {
                   return (
                     <NewsItem
+                      updateNewsRead={() => _updateNewsRead(news.id)}
+                      readNews={readNews}
                       getAllNews={() => getAllNews(payload)}
                       cancelAddNews={id => cancelAddNews(id)}
                       data={{}}
