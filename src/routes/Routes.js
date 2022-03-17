@@ -22,6 +22,7 @@ import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
 import Footer from '../components/Footer'
+import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
 
 const Routing = () => {
   // get User Login Info
@@ -69,6 +70,8 @@ const Routing = () => {
             }
           >
             <Route path="user/list-view" element={<UserListView />} />
+
+            <Route path="user/company-names" element={<CompanyNames />} />
 
             <Route
               path="user/approval-request"
