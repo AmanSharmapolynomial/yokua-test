@@ -252,6 +252,7 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      setCategoryFilter={() => setCategoryFilter(news?.category_id)}
                       updateNewsRead={() => _updateNewsRead(news.id)}
                       readNews={readNews}
                       data={news}

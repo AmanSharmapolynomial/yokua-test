@@ -22,6 +22,7 @@ const NewsItem = ({
   refreshPage,
   updateNewsRead,
   readNews,
+  setCategoryFilter,
 }) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
@@ -474,7 +475,9 @@ const NewsItem = ({
                   </select> */}
                 </>
               ) : (
-                <span className="news-category">{data ? data.category_name : ''}</span>
+                <span onClick={setCategoryFilter} className="news-category">
+                  {data ? data.category_name : ''}
+                </span>
               )}
 
               {editView ? (
