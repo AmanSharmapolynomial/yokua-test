@@ -22,11 +22,6 @@
 
 .yk-back-image-news {
   background-size: cover;
-  background-image: url('/public/assets/calendar banner (1).png');
   background-position: center;
-}
-
-.ant-pagination-item-link{
-  display: grid;
-  place-items: center;
+  background-image: url('C:\Projects\yokogam-main\public\assets\news banner.jpg');
 }

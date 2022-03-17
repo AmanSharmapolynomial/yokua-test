@@ -25,6 +25,9 @@
 .add_row{
     font-size: 00.8rem;
     display: flex;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #EFEFEF;
     align-items: center;
     justify-content: center !important;
     cursor: pointer;

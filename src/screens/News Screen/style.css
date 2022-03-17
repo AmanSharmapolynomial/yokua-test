@@ -2,16 +2,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 1rem;
+    margin: 3rem 1rem 0rem 1rem;
 }
 
 .news-container-list{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 2rem;
+    margin: 0rem 1rem 1rem 1rem;
 }
 
 .archived-filter{
-    margin: 1rem 1rem 1rem 2rem;
+    margin: 1rem 1rem 1rem 0rem;
 }

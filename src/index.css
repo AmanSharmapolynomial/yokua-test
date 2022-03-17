@@ -53,6 +53,7 @@ body {
 }
 
 .header{
+  height: auto !important;
   z-index: 10000;
 }
 

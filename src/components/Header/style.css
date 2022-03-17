@@ -20,6 +20,8 @@
     position: fixed;
     width: 100%;
     top: 0;
+    height: auto I !important;
+
 
  }
 
@@ -86,6 +88,7 @@
 
     .header{
         background-color: var(--bgColor2);
+
     
 
     }
