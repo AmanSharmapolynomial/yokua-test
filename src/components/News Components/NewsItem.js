@@ -24,9 +24,6 @@ const NewsItem = ({
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
-  let catPayload = null
-  let subCat = null
-
   useEffect(() => {
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
@@ -65,6 +62,7 @@ const NewsItem = ({
 
   const handleSelectTopic = cat => {
     // setToggleDropDown(0)
+    topicRef.current.click()
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
     if (cat.image_link === 'string') {
@@ -259,7 +257,7 @@ const NewsItem = ({
           const details = JSON.stringify({
             news_id: dataID || null,
             category_id: isNewCatAdded ? catPayload.data.id : categoryID,
-            sub_category_id: isNewSubCatAdded ? subCat.data.id : subCategoryID,
+            sub_category_id: isNewSubCatAdded ? [subCat.data.id] : [subCategoryID],
             description: newsDesc,
           })
           const fileDetails = fileInputRef?.current?.files[0]
@@ -391,7 +389,7 @@ const NewsItem = ({
                       toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
                     }}
                     size="sm"
-                    // autoClose={'outside'}
+                    autoClose={'outside'}
                     className="yk-dropdown-holder"
                     style={{
                       overflow: 'visible',
@@ -480,10 +478,10 @@ const NewsItem = ({
                   <Dropdown
                     ref={subTopicRef}
                     // show={toggleDropDown == 2}
-                    // onClick={() =>
-                    //   toggleDropDown == 2 ? setToggleDropDown(0): setToggleDropDown(2)
-                    //   // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
-                    // }
+                    onClick={
+                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
+                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    }
                     size="sm"
                     autoClose={'outside'}
                     className={
