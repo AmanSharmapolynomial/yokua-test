@@ -110,9 +110,13 @@
     margin: 0 1rem;
     min-width: 20vw;
     width: 30vw;
+    height: 212px;
+    overflow-y: scroll;
     max-width: 60vw;
 
 }
+
+
 
 .select-news{
     margin: 0.5rem 0;

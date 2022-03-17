@@ -29,6 +29,7 @@ const Routing = () => {
   return (
     <React.Fragment>
       <div className="non_header_content relative">
+
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route
@@ -100,7 +101,7 @@ const Routing = () => {
               <PrivateRoute>
                 <ProfileSettingScreen />
                 {/* <Footer/> */}
-                <Footer />
+             
               </PrivateRoute>
             }
           />

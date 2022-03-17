@@ -42,7 +42,7 @@ input:focus, select:focus{
     position: absolute;
     right: 10px;
     margin-top: 0.3rem;
-    color: var(--bgColor2);
+    color: #000000;
 }
 .save-icon{
     position: absolute;
@@ -89,6 +89,7 @@ input:focus, select:focus{
     width: 100%;
     min-width: 290px;
     max-width: 350px;
+
 }
 
 .user-details-form > .input-field-container {
@@ -111,9 +112,10 @@ margin: 0.3rem 1.3rem;
     outline: none;
     border: 1px solid rgb(135, 135, 135);
     border-radius: 3px;
-    padding: 0.07rem 0.6rem;
-    font-size: 0.8rem;
+    padding: 14px 0px;
+    font-size: 18px;
     font-family: Poppins;
+    
 }
 select {
     height: 1.6rem;
@@ -148,7 +150,7 @@ select {
 .domain-modal-cta{
     display: flex;
     width: 11rem;
-    justify-content: space-between;
+    justify-content: center;
 }
 .domain-input{
     width: 30rem;
@@ -166,6 +168,7 @@ select {
     color: #004F9B !important;
     font-weight: 400;
     border: 1px solid #004F9B;
+    margin-right: 1rem;
 }
 .domain-modal{
     align-items: center !important;

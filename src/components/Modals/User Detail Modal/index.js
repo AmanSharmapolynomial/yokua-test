@@ -61,7 +61,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             }}
           />
         )}
-        <h3 className="modal-heading">Add / Update User</h3>
+        <h3 className="modal-heading">Update user dialog</h3>
         <div
           className="modal-content flex-row"
           style={{
@@ -107,9 +107,10 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                     setRole(e.target.value)
                   }}
                 >
-                  <option>User</option>
-                  <option>PMK Content Manager</option>
-                  <option>&nbsp; PMK Administrator</option>
+                    <option>User</option>
+                    <option>PMK Content Manager</option>
+                    <option>&nbsp; PMK Administrator</option>
+                
                 </select>
                 <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
               </div>
