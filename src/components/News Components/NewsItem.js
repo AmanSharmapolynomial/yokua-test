@@ -631,7 +631,7 @@ const NewsItem = ({
                   minWidth: '100%',
                   minHeight: '24  vh',
                   marginTop: '1rem',
-                  height: '200px',
+                  height: '188px',
                   resize: 'none',
                 }}
                 placeholder="Enter description"

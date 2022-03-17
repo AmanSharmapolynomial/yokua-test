@@ -110,8 +110,9 @@
     margin: 0 1rem;
     min-width: 20vw;
     width: 30vw;
+    flex: 1;
     height: 212px;
-    overflow-y: scroll;
+  overflow-y: auto;
     max-width: 60vw;
 
 }
