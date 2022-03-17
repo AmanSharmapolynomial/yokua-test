@@ -66,8 +66,8 @@ body {
 }
 
 .ant-pagination-item-link{
-  display: grid;
-  place-items: center;
+  display: grid !important;
+  place-items: center !important;
 }
 
 .nav ul li {
