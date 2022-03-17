@@ -61,7 +61,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             }}
           />
         )}
-        <h3 className="modal-heading">Add / Update User</h3>
+        <h3 className="modal-heading">Update user dialog</h3>
         <div
           className="modal-content flex-row"
           style={{

@@ -222,7 +222,6 @@ const NewsItem = ({
     setIsLoading(true)
 
     return new Promise((resolve, reject) => {
-      debugger
       if (isNewSubCatAdded) {
         const subPayload = {
           sub_category_name: categoryId,
@@ -245,11 +244,11 @@ const NewsItem = ({
     })
   }
 
-  const uploadNewNews = () => {
+  const uploadNewNews = (catId, subCatId) => {
     const details = JSON.stringify({
       news_id: dataID || null,
-      category_id: categoryID,
-      sub_category_id: [subCategoryID],
+      category_id: catId,
+      sub_category_id: [subCatId],
       description: newsDesc,
     })
     const fileDetails = fileInputRef?.current?.files[0]
@@ -306,7 +305,6 @@ const NewsItem = ({
             uploadCategory().then(data => {
               if (data) {
                 setCategoryID(data.data.id)
-                debugger
                 if (isNewSubCatAdded) {
                   uploadSubCategory(
                     subCategory[subCategory.length - 1].sub_category_name,
@@ -315,7 +313,7 @@ const NewsItem = ({
                     if (subData) {
                       setSubCategoryID(subData.data.id)
 
-                      uploadNewNews()
+                      uploadNewNews(data.data.id, subData.data.id)
                     }
                   })
                 } else {
@@ -330,11 +328,11 @@ const NewsItem = ({
             ).then(subData => {
               if (subData) {
                 setSubCategoryID(subData.data.id)
-                uploadNewNews()
+                uploadNewNews(categoryID, subData.data.id)
               }
             })
           } else {
-            uploadNewNews()
+            uploadNewNews(categoryID, subCategoryID)
           }
         }
       }
@@ -492,7 +490,7 @@ const NewsItem = ({
                             className="yg-font-size"
                             id="button-addon2"
                           >
-                            Add
+                            Save
                           </Button>
                         </InputGroup>
                       )}
@@ -582,14 +580,18 @@ const NewsItem = ({
                           />
                           <Button
                             onClick={() => {
-                              setSubTopicAdd(false)
-                              AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              if (newSubTopicName.length != 0) {
+                                setSubTopicAdd(false)
+                                AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              } else {
+                                toast.error('Please provide Sub Category title')
+                              }
                             }}
                             variant="outline-secondary"
                             className="yg-font-size"
                             id="button-addon2"
                           >
-                            Add
+                            Save
                           </Button>
                         </InputGroup>
                       )}

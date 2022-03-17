@@ -3,6 +3,7 @@ import API from '../../utils/api'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import axios from 'axios'
 
 // import './style.css'
 
@@ -42,6 +43,7 @@ const ChnagePassword = () => {
           new_password2: confirmPassword,
         })
           .then(data => {
+            debugger
             navigate('/auth/login')
             toast.success(data.data?.message)
           })
@@ -59,10 +61,6 @@ const ChnagePassword = () => {
       <div className="signIn-container">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
-          onSubmit={() => {
-            _resetPasswordUsingUidandToken()
-          }}
-          type="submit"
           style={{
             position: 'relative',
           }}
@@ -100,14 +98,14 @@ const ChnagePassword = () => {
           ></i>
 
           <button
-            onClick={() => {
-              // if(uid && token) {
-              //   _resetPasswordUsingUidandToken()
-              // } else {
-              //   _resetPassword()
-              // }
+            onClick={e => {
+              if (uid && token) {
+                _resetPasswordUsingUidandToken(e)
+              } else {
+                _resetPassword(e)
+              }
             }}
-            type="submit"
+            type="button"
             className="submit-btn"
           >
             Save

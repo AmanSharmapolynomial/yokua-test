@@ -183,10 +183,7 @@ const NewsScreen = () => {
                     ))}
                 </div>
               </div>
-              <div
-                className="filter-icons"
-                // style={{marginLeft:'100px',}}
-              >
+              <div className="filter-icons" style={{ marginLeft: '120px' }}>
                 {backendData?.sub_categories?.length > 0 && (
                   <img
                     src={Filtermg}

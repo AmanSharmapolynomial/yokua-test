@@ -100,7 +100,6 @@ const Routing = () => {
               <PrivateRoute>
                 <ProfileSettingScreen />
                 {/* <Footer/> */}
-                {/* <Footer /> */}
               </PrivateRoute>
             }
           />

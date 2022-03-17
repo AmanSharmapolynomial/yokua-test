@@ -23,7 +23,7 @@
 }
 
 .add_row{
-    font-size: 00.8rem;
+    font-size: 16px;
     display: flex;
     width: 100%;
     border-radius: 5px;
@@ -57,15 +57,15 @@
 
 .filter-actions{
     display: flex;
-    width: 100%;
+    width: auto;
     justify-content: space-between;
-    margin: 0 1rem 0rem 1rem;
+    margin: 0rem 0.1rem 0.2rem 0.2rem;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .filter-icons{
-    width: 30%;
+    width: 0%;
     height: 30px;
     max-width: 15rem;
     display: flex;
