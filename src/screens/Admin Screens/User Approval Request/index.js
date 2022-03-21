@@ -147,27 +147,30 @@ const UserApprovalScreen = () => {
       name: 'Name',
       selector: row => row.name,
       sortable: true,
-      minWidth: '10rem',
+      minWidth: '12rem',
     },
     {
       name: 'Date',
       selector: row => row.date,
       sortable: true,
+      minWidth: '10rem',
     },
     {
       name: 'E-Mail id',
       selector: row => row.email,
       grow: 2,
-      minWidth: '15rem',
+      minWidth: '12rem',
     },
     {
       name: 'New E-mail id',
       selecter: row => row.new_email,
       grow: 2,
+      minWidth: '12rem',
     },
     {
       name: 'Company',
       selector: row => row.company,
+      minWidth: '10rem',
     },
     {
       name: 'Request for',
