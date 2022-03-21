@@ -441,7 +441,9 @@ const UserApprovalScreen = () => {
                 maxHeight: '27rem',
               }}
             >
-              {domainList.map((data, index) => (
+              {domainList.map((data, index) =>
+
+              (
                 <div
                   className="listed-domain"
                   style={{
@@ -455,30 +457,34 @@ const UserApprovalScreen = () => {
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  <div>
-                    <i
-                      className="fa-solid fa-trash"
-                      style={{
-                        cursor: 'pointer',
-                        color: '#CD2727',
-                      }}
-                      onClick={() => {
-                        // admin/delete_whitelisted_domain
-                        const sendData = {
-                          id: data.id,
-                          name: data.domain,
-                          associated_users: 'false',
-                        }
-                        document.body.scrollTop = 0
-                        document.documentElement.scrollTop = 0
-                        document.body.style.overflow = 'hidden'
-                        setDeleteDomainData(sendData)
-                        setOpenDeleteDomainModal(true)
-                      }}
-                    />
+                  {(data.id != 1 && data.id != 2) ?
+                    <div>
+                      <i
+                        className="fa-solid fa-trash"
+                        style={{
+                          cursor: 'pointer',
+                          color: '#CD2727',
+                        }}
+                        onClick={() => {
+                          // admin/delete_whitelisted_domain
+                          const sendData = {
+                            id: data.id,
+                            name: data.domain,
+                            associated_users: 'false',
+                          }
+                          document.body.scrollTop = 0
+                          document.documentElement.scrollTop = 0
+                          document.body.style.overflow = 'hidden'
+                          setDeleteDomainData(sendData)
+                          setOpenDeleteDomainModal(true)
+                        }}
+                      />
 
-                    <i className="fa-solid fa-caret-right" />
-                  </div>
+                      <i className="fa-solid fa-caret-right" />
+                    </div>
+                    : <div style={{padding: '0px 1.15rem'}}> 
+
+                   </div>}
                 </div>
               ))}
             </div>

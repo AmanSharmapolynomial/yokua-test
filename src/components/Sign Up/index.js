@@ -222,7 +222,8 @@ const SignUp = () => {
             overflow: 'visible',
           }}
         >
-          <Dropdown.Toggle
+          <Dropdown.Toggle 
+       
             size={'sm'}
             className="yg-custom-dropdown"
             color="red"
@@ -231,7 +232,8 @@ const SignUp = () => {
             {selectedTopic}
           </Dropdown.Toggle>
 
-          <Dropdown.Menu>
+          <Dropdown.Menu style={{width:'100%',}}>
+          
             {category.map((cat, index) => (
               <Dropdown.Item
                 key={index}

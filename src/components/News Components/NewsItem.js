@@ -370,6 +370,7 @@ const NewsItem = ({
         getCategoryAndSubCategory={getCategoryAndSubCategory}
         setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
       />
+
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div

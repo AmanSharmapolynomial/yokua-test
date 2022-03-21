@@ -51,6 +51,12 @@
     top: 133px ;
 }
 
+.yk-dropdown-holder .dropdown-toggle::after{
+    
+position: absolute;
+top: 11px;
+right: 8px;
+}
 .two {
     position: absolute;
     left: 266px;
