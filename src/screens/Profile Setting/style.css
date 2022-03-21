@@ -18,7 +18,7 @@ max-width: 50rem;
 .profile-setting__info{
     display: flex;
     align-items: center;
-    margin: 2.5rem 0;
+    margin: 25px 0;
 }
 
 .profile-setting__info_img{
@@ -36,13 +36,13 @@ max-width: 50rem;
 
 .profile-setting__info_name > h4 {
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 24px;
     margin: 0;
 }
 
 .profile-setting__info_name > p {
     color: var(--textColor3);
-    font-size: 0.8rem;
+    font-size: 16px;
     margin: 0.3rem 0;
 }
 

@@ -179,6 +179,8 @@
       font-size: 0.8rem;
       width: 119px;
       margin-top: 0.8rem;
+      color: #004F9B !important;
+      text-decoration: underline !important;
   }
 
   .attachment-icon > i {

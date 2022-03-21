@@ -40,6 +40,7 @@ input:focus, select:focus{
 }
 .drop-icon{
     position: absolute;
+    top: 5px;
     right: 10px;
     margin-top: 0.3rem;
     color: #000000;
@@ -89,6 +90,7 @@ input:focus, select:focus{
     width: 100%;
     min-width: 290px;
     max-width: 350px;
+    font-size: 0.8rem;
 
 }
 
@@ -112,10 +114,9 @@ margin: 0.3rem 1.3rem;
     outline: none;
     border: 1px solid rgb(135, 135, 135);
     border-radius: 3px;
-    padding: 14px 0px;
-    font-size: 18px;
+    padding: 14px 8px;
+    font-size: 0.8rem;
     font-family: Poppins;
-    
 }
 select {
     height: 1.6rem;
@@ -181,5 +182,5 @@ position: relative;
 .yk-eye-icon {
     position: absolute;
     right: 2px;
-    top: 3px !important;
+    top: 10px !important;
 }
