@@ -78,3 +78,8 @@ body {
 overflow-x: inherit !important;
 overflow-y: visible !important;
 }
+
+
+.yk-sticky-footer{
+  position: fixed;
+}
