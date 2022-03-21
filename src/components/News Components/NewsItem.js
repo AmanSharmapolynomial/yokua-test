@@ -273,9 +273,15 @@ const NewsItem = ({
         //handle success
         console.log(response)
         setIsLoading(false)
-        saveAndExitAdd()
+
         if (response.status == 200) {
           toast.success(response.data.message)
+          if (!changeType) {
+            setEditView(false)
+          } else if (changeType == 'Add') {
+            // window.location.reload()
+            saveAndExitAdd()
+          }
         } else {
           toast.error(response.data.message)
         }
@@ -621,7 +627,13 @@ const NewsItem = ({
                   </select> */}
                 </>
               ) : (
-                <span className="news-info-text">{data ? data.sub_category_name : ''}</span>
+                <>
+                  {data &&
+                    data.sub_category &&
+                    data.sub_category.map(item => (
+                      <span className="news-info-text">{item.sub_category_name}</span>
+                    ))}
+                </>
               )}
             </div>
           </div>
@@ -673,15 +685,9 @@ const NewsItem = ({
                       // add save value to a payload
                       // call the save or edit api here
                       uploadNews()
-                      console.log(bodyFormData.getAll('file'))
                       // call the upsert News API here
                       // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
                       //   console.log(afterUpdateNewsMsg)
-                      if (!changeType) {
-                        setEditView(false)
-                      } else if (changeType == 'Add') {
-                        // window.location.reload()
-                      }
                     }}
                   />
                 )
@@ -847,9 +853,7 @@ const NewsItem = ({
                 {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
-                    <a download href={data ? data.attachment_link : ''}>
-                      Read attached file
-                    </a>
+                    <a href={data ? data.attachment_link : ''}>Read attached file</a>
                   </>
                 )}
                 {data.attachment_link == '' && (
