@@ -98,6 +98,7 @@ const ProfileSettingScreen = () => {
     API.post('auth/update_avatar', formData)
       .then(data => {
         toast.success('Avatar updated successfully')
+        setReloadData(true)
       })
       .catch(error => {
         // toast.error('Error while updating Avatar')

@@ -21,7 +21,7 @@ const Forgot = () => {
       const data = await API.post('/auth/password/reset/', forgotPassPayload1)
       toast.success(data.data.detail)
       setIsLoading(false)
-      navigate('/auth/login')
+      navigate('/auth/verification-email')
     } else {
       toast.error('Email is not in proper format - abc@xyz.com')
     }
