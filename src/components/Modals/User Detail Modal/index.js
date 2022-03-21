@@ -2,6 +2,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import '../style.css'
 import validator from 'validator'
+import {
+  Dropdown,
+  InputGroup,
+  FormControl,
+  Button,
+  Modal,
+  Image,
+  Form,
+} from 'react-bootstrap'
+import Select from 'react-select'
+const options = [
+  { value: 'User', label: 'User' },
+  { value: 'PMK Content Manager', label: 'PMK Content Manager' },
+  { value: 'PMK Administrator', label: 'PMK Administrator' },
+]
 
 const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   // refs
@@ -39,7 +54,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
       emailRef.current.value = data.email
       firstNameRef.current.value = data.first_name
       lastNameRef.current.value = data.last_name
-      roleRef.current.value = data.role
+      // roleRef.current.value = data.role
       companyRef.current.value = data.company_name
       setEmail(data.email)
       setFirstName(data.first_name)
@@ -48,6 +63,10 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
       setCompany(data.company_name)
     }
   }, [])
+  const [selectedOption, setSelectedOption] = useState(null)
+  const handleChange = selectedOption => {
+    setSelectedOption(selectedOption)
+  }
 
   return (
     <div className="modal-background">
@@ -98,6 +117,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
             <div className="input-field-container">
               <label className="input-label">Permission Level</label>
+<<<<<<< Updated upstream
               <div className="select-icon">
                 <select
                   disabled={disabledInput}
@@ -113,7 +133,18 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 </select>
                 <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
               </div>
+=======
+
+              <Select
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={options}
+                style={{ width: '100px' }}
+                className="yg-custom-dropdowns"
+              />
+>>>>>>> Stashed changes
             </div>
+
             <div className="input-field-container">
               <label className="input-label">E-Mail id</label>
               <input
@@ -242,13 +273,21 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     company_name: company,
                     password: password,
                   }
-                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                  if (
+                    saveData.firstName.length >= 4 &&
+                    saveData.lastName.length >= 4
+                  ) {
+                    if (
+                      validator.isAlpha(firstName) &&
+                      validator.isAlpha(lastName)
+                    ) {
                       if (validator.isEmail(saveData.email)) {
                         saveAndExit(saveData)
                       } else toast.warning('Improper Email Format')
                     } else {
-                      toast.error('First & Last Name should only contain letters')
+                      toast.error(
+                        'First & Last Name should only contain letters'
+                      )
                     }
                   } else {
                     toast.error('First & Last Name should be 5-50 chars')

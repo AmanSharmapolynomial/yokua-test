@@ -184,3 +184,12 @@ position: relative;
     right: 2px;
     top: 10px !important;
 }
+
+.yg-custom-dropdowns{
+    background-color: white !important;
+    color: black !important;
+    border-color: #000 !important;
+    width: 162px !important;
+
+}
+
