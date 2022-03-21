@@ -248,7 +248,7 @@ const NewsItem = ({
     const details = JSON.stringify({
       news_id: dataID || null,
       category_id: catId,
-      sub_category_id: [subCatId],
+      sub_category_id: subCatId != 0 ? [subCatId] : [],
       description: newsDesc,
     })
     const fileDetails = fileInputRef?.current?.files[0]
@@ -302,51 +302,40 @@ const NewsItem = ({
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
     } else {
-      setIsLoading(true)
-      if (categoryID == null) {
-        // call category add api
-      } else {
-        if (subCategoryID == null) {
-          // call subcategory add api
-        } else {
-          if (isNewCatAdded) {
-            uploadCategory().then(data => {
-              if (data) {
-                setCategoryID(data.data.id)
-                if (isNewSubCatAdded) {
-                  uploadSubCategory(
-                    subCategory[subCategory.length - 1].sub_category_name,
-                    data.data.id
-                  ).then(subData => {
-                    if (subData) {
-                      setSubCategoryID(subData.data.id)
-
-                      uploadNewNews(data.data.id, subData.data.id)
-                    }
-                  })
-                } else {
+      if (isNewCatAdded) {
+        uploadCategory().then(data => {
+          setIsLoading(false)
+          if (data) {
+            setCategoryID(data.data.id)
+            if (isNewSubCatAdded) {
+              uploadSubCategory(
+                subCategory[subCategory.length - 1].sub_category_name,
+                data.data.id
+              ).then(subData => {
+                if (subData) {
+                  setSubCategoryID(subData.data.id)
+                  uploadNewNews(data.data.id, subData.data.id)
                 }
-              } else {
-              }
-            })
-          } else if (isNewSubCatAdded) {
-            uploadSubCategory(
-              subCategory[subCategory.length - 1].sub_category_name,
-              categoryID
-            ).then(subData => {
-              if (subData) {
-                setSubCategoryID(subData.data.id)
-                uploadNewNews(categoryID, subData.data.id)
-              }
-            })
+              })
+            } else {
+              uploadNewNews(data.data.id, 0)
+            }
           } else {
-            uploadNewNews(categoryID, subCategoryID)
+            console.log('Error Occured')
           }
-        }
+        })
+      } else if (isNewSubCatAdded) {
+        uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
+          subData => {
+            if (subData) {
+              setSubCategoryID(subData.data.id)
+              uploadNewNews(categoryID, subData.data.id)
+            }
+          }
+        )
+      } else {
+        uploadNewNews(categoryID, subCategoryID)
       }
-
-      console.log(bodyFormData.getAll('file'))
-      //   file: fileInput ? fileInput : '',
     }
   }
 
@@ -444,7 +433,6 @@ const NewsItem = ({
                     className="yk-dropdown-holder"
                     style={{
                       overflow: 'visible',
-
                     }}
                   >
                     <Dropdown.Toggle
@@ -473,7 +461,8 @@ const NewsItem = ({
                       ))}
                       <Dropdown.Divider />
                       {!isTopicAdd && (
-                        <button style={{margin:'0px 50px',}}
+                        <button
+                          style={{ margin: '0px 50px' }}
                           id="mybtn"
                           className="btn yg-font-size"
                           onClick={() => {
@@ -572,7 +561,8 @@ const NewsItem = ({
                         ))}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
-                        <button style={{marginLeft:'33px',}}
+                        <button
+                          style={{ marginLeft: '33px' }}
                           id="mybtn"
                           className="btn yg-font-size "
                           onClick={() => {

@@ -475,10 +475,8 @@ const ProfileSettingScreen = () => {
                 const payloadNews = {
                   news_letter: tempNLArray,
                 }
-                console.log(payloadNews)
                 const afterUpdateNewsMsg = await API.post('auth/profile_settings/', payloadNews)
                 toast.success(afterUpdateNewsMsg.data.message)
-                console.log(afterUpdateNewsMsg.data)
                 setReloadData(!reloadData)
               }}
             >

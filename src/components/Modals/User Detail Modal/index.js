@@ -100,16 +100,25 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               <label className="input-label">Permission Level</label>
               <div className="select-icon">
                 <select
+                  onChange={e => {
+                    console.log(e)
+                  }}
+                >
+                  <option key="1">User</option>
+                  <option key="2">PMK Content Manager</option>
+                  <option key="3">PMK Administrator</option>
+                </select>
+                <select
                   disabled={disabledInput}
-                  className="input-text select-role"
                   ref={roleRef}
+                  value={role}
                   onChange={e => {
                     setRole(e.target.value)
                   }}
                 >
-                  <option>User</option>
-                  <option>PMK Content Manager</option>
-                  <option>&nbsp; PMK Administrator</option>
+                  <option value="1">User</option>
+                  <option value="2">PMK Content Manager</option>
+                  <option value="3">PMK Administrator</option>
                 </select>
                 <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
               </div>
