@@ -88,16 +88,20 @@ export default () => {
                       // admin/delete_whitelisted_domain
                     }}
                   />
-                  <DropdownButton
-                    style={{ marginRight: '10px' }}
+                  <i class="fa-solid fa-caret-right"></i>
+                  <DropdownButton 
+                  
+                    style={{ marginRight: '10px', }}
                     key={'end'}
                     id={`dropdown-button-drop-start`}
                     drop={'end'}
                     variant="secondary"
+                    
                   >
+                    
                     {data.company_divisions.map(div => (
                       <>
-                        <Dropdown.Item eventKey="1">{div.sub_div_name}</Dropdown.Item>
+                        <Dropdown.Item eventKey="1" style={{border:'1px solid #000'}}>{div.sub_div_name}</Dropdown.Item>
                         <Dropdown.Divider />
                       </>
                     ))}
