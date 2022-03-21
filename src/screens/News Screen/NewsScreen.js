@@ -144,6 +144,7 @@ const NewsScreen = () => {
                 <img
                   src={Filtermg}
                   onClick={() => {
+                    debugger
                     setShowFilterDropdown1(!showFilterDropdown1)
                   }}
                   ref={ref1}

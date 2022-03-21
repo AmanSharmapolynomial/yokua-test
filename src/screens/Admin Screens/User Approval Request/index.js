@@ -191,17 +191,18 @@ const UserApprovalScreen = () => {
     {
       name: 'Role',
       selector: row => row.role,
+      minWidth: '12rem',
       sortable: true,
     },
     {
       name: 'Company Email id',
       selector: row => row.companyEmail,
-      grow: 2,
       minWidth: '15rem',
     },
     {
       name: 'status',
       selector: row => row.status,
+      maxWidth: '8rem',
     },
   ]
 
@@ -445,6 +446,7 @@ const UserApprovalScreen = () => {
                   }}
                   key={index}
                   onClick={() => {
+                    setPageNoCall(1)
                     setDULfilter(data.id)
                   }}
                 >

@@ -273,6 +273,7 @@ const NewsItem = ({
         //handle success
         console.log(response)
         setIsLoading(false)
+        saveAndExitAdd()
         if (response.status == 200) {
           toast.success(response.data.message)
         } else {
@@ -291,6 +292,7 @@ const NewsItem = ({
   }
 
   const uploadNews = async () => {
+    debugger
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
     } else {
@@ -324,7 +326,7 @@ const NewsItem = ({
           } else if (isNewSubCatAdded) {
             uploadSubCategory(
               subCategory[subCategory.length - 1].sub_category_name,
-              data.data.id
+              categoryID
             ).then(subData => {
               if (subData) {
                 setSubCategoryID(subData.data.id)
@@ -344,15 +346,15 @@ const NewsItem = ({
 
   const _getNewsReadColor = () => {
     if (editView) {
-      return false
+      return true
     }
     if (data?.news_read) {
-      return true
+      return false
     }
     if (readNews.includes(data?.id)) {
-      return true
+      return false
     }
-    return false
+    return true
   }
 
   return (
@@ -679,7 +681,6 @@ const NewsItem = ({
                         setEditView(false)
                       } else if (changeType == 'Add') {
                         // window.location.reload()
-                        saveAndExitAdd()
                       }
                     }}
                   />
