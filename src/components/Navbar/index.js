@@ -15,9 +15,9 @@ const Navbar = ({ isAdmin }) => {
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
     navDropdownAdminData.push({ name: 'User Request', url: '/admin/user/approval-request' })
-    navDropdownAdminData.push({ name: 'Company names', url: '/admin/user/company-names' })
+    navDropdownAdminData.push({ name: 'Company Names', url: '/admin/user/company-names' })
   } else {
-    navDropdownAdminData.push({ name: 'Company names', url: '/admin/user/company-names' })
+    navDropdownAdminData.push({ name: 'Company Names', url: '/admin/user/company-names' })
   }
 
   const searchNavRef = useRef()

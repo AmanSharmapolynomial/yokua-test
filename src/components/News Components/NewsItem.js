@@ -436,6 +436,7 @@ const NewsItem = ({
                     className="yk-dropdown-holder"
                     style={{
                       overflow: 'visible',
+
                     }}
                   >
                     <Dropdown.Toggle
@@ -464,9 +465,9 @@ const NewsItem = ({
                       ))}
                       <Dropdown.Divider />
                       {!isTopicAdd && (
-                        <button
+                        <button style={{margin:'0px 50px',}}
                           id="mybtn"
-                          className="btn yg-font-size m-2"
+                          className="btn yg-font-size"
                           onClick={() => {
                             setToggleDropDown(1)
                             setShowCategoryModal(true)
@@ -563,9 +564,9 @@ const NewsItem = ({
                         ))}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
-                        <button
+                        <button style={{marginLeft:'33px',}}
                           id="mybtn"
-                          className="btn yg-font-size m-2"
+                          className="btn yg-font-size "
                           onClick={() => {
                             setSubTopicAdd(true)
                           }}

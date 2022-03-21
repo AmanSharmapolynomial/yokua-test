@@ -6,7 +6,7 @@ const DeleteModal = ({ req, saveAndExit, runDelete, title, data }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">Delete whitelisted.com {req} </h3>
+        <h3 className="modal-heading">Delete {req} </h3>
         <div className="modal-content domain-modal">
           <div
             className="info-text"
