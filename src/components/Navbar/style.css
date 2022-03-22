@@ -2,7 +2,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    gap: 40px;
+    margin-left: 40px;
+    margin-right: 10px;
+    margin-top: 20px;
+
 }
 
 ul{
@@ -48,6 +53,7 @@ i{
     border: 1px solid black;
     background: white;
     font-size: 0.8rem;
+    font-weight: bold;
 
 
     width: 95%;
