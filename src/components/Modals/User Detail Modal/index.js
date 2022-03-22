@@ -2,15 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import '../style.css'
 import validator from 'validator'
-import {
-  Dropdown,
-  InputGroup,
-  FormControl,
-  Button,
-  Modal,
-  Image,
-  Form,
-} from 'react-bootstrap'
+import { Dropdown, InputGroup, FormControl, Button, Modal, Image, Form } from 'react-bootstrap'
 import Select from 'react-select'
 const options = [
   { value: 'User', label: 'User' },
@@ -117,23 +109,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
             <div className="input-field-container">
               <label className="input-label">Permission Level</label>
-<<<<<<< Updated upstream
-              <div className="select-icon">
-                <select
-                  disabled={disabledInput}
-                  ref={roleRef}
-                  value={role}
-                  onChange={e => {
-                    setRole(e.target.value)
-                  }}
-                >
-                  <option value="1">User</option>
-                  <option value="2">PMK Content Manager</option>
-                  <option value="3">PMK Administrator</option>
-                </select>
-                <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
-              </div>
-=======
 
               <Select
                 defaultValue={selectedOption}
@@ -142,7 +117,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 style={{ width: '100px' }}
                 className="yg-custom-dropdowns"
               />
->>>>>>> Stashed changes
             </div>
 
             <div className="input-field-container">
@@ -273,21 +247,13 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     company_name: company,
                     password: password,
                   }
-                  if (
-                    saveData.firstName.length >= 4 &&
-                    saveData.lastName.length >= 4
-                  ) {
-                    if (
-                      validator.isAlpha(firstName) &&
-                      validator.isAlpha(lastName)
-                    ) {
+                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
+                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
                       if (validator.isEmail(saveData.email)) {
                         saveAndExit(saveData)
                       } else toast.warning('Improper Email Format')
                     } else {
-                      toast.error(
-                        'First & Last Name should only contain letters'
-                      )
+                      toast.error('First & Last Name should only contain letters')
                     }
                   } else {
                     toast.error('First & Last Name should be 5-50 chars')
