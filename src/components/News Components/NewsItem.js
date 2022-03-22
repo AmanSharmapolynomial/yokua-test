@@ -300,6 +300,7 @@ const NewsItem = ({
             if (!changeType) {
               setNewsUnderEdit(false)
             } else if (changeType == 'Add') {
+              refreshPage()
               // window.location.reload()
               saveAndExitAdd()
               setNewsUnderEdit(false)

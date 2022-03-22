@@ -102,8 +102,8 @@ const NewsScreen = () => {
   }
 
   const saveAndExitAdd = () => {
-    setNewNews(false)
     setNewsUnderEdit(false)
+    setNewNews(false)
   }
 
   const cancelAddNews = id => {
