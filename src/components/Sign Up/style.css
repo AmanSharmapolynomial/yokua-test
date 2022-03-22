@@ -62,3 +62,28 @@ right: 8px;
     left: 266px;
     top: 173px;
 }
+
+.yg-font-size-r{
+    margin-left: 20px !important;
+    padding: 0% !important;
+    width: auto !important;
+}
+
+.yg-font-size-registrtion{
+    width:auto !important;
+    margin: 0px !important;
+}
+.yg-font-size-registrtion input{
+    margin: 0 !important;
+}
+
+.input-group{
+    flex-wrap: initial !important;
+}
+.saveBtn{
+    font-size: small !important;
+    text-transform: capitalize;
+    width: auto !important;
+    padding: 4px !important;
+    margin: 0px !important;
+}

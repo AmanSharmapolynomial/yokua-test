@@ -232,12 +232,12 @@ const SignUp = () => {
             {selectedTopic}
           </Dropdown.Toggle>
 
-          <Dropdown.Menu style={{width:'100%',}}>
+          <Dropdown.Menu style={{width: '60%', marginLeft:'124px'}}>
           
             {category.map((cat, index) => (
               <Dropdown.Item
                 key={index}
-                className="yg-font-size"
+                className="yg-font-size-r"
                 onClick={() => handleSelectTopic(cat)}
               >
                 {cat.company_name}
@@ -246,7 +246,7 @@ const SignUp = () => {
             <Dropdown.Divider />
             {!isTopicAdd && (
               <Dropdown.Item
-                className="yg-font-size"
+                className="yg-font-size-r"
                 onClick={() => {
                   setIsTopicAdd(true)
                 }}
@@ -255,7 +255,7 @@ const SignUp = () => {
               </Dropdown.Item>
             )}
             {isTopicAdd && (
-              <InputGroup className="mb-3 yg-font-size p-1 ">
+              <InputGroup className=" yg-font-size-registrtion p-1 ">
                 <FormControl
                   className="yg-font-size"
                   placeholder="Company"
@@ -270,7 +270,7 @@ const SignUp = () => {
                     AddNewCompany()
                   }}
                   variant="outline-secondary"
-                  className="yg-font-size"
+                  className="saveBtn"
                   id="button-addon2"
                 >
                   Save
