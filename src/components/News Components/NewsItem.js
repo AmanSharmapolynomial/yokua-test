@@ -266,7 +266,7 @@ const NewsItem = ({
         news_id: dataID || null,
         category_id: catId,
         description: newsDesc,
-        sub_category_id: subCatId,
+        sub_category_id: [subCatId],
       })
 
       const fileDetails = fileInputRef?.current?.files[0]
