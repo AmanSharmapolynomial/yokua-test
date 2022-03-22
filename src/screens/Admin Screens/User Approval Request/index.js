@@ -43,7 +43,10 @@ const UserApprovalScreen = () => {
   // refs
 
   const [contentRowApprovalTable, setContentRowApprovalTable] = useState([])
-  const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
+  const [
+    contentRowDomainUserListTable,
+    setContentRowDomainUserListTable,
+  ] = useState([])
   const [domainList, setDoaminList] = useState([])
 
   const [reloadTable, setReloadTable] = useState(true)
@@ -114,7 +117,10 @@ const UserApprovalScreen = () => {
       page_index: pageNoCall,
     }
 
-    const listDULdata = await API.post(`admin/list_whitelisted_domain/${DULfilter}`, payloadDUL)
+    const listDULdata = await API.post(
+      `admin/list_whitelisted_domain/${DULfilter}`,
+      payloadDUL
+    )
     const tempDULArr = []
     listDULdata.data.page_data.map((data, index) => {
       tempDULArr.push({
@@ -138,7 +144,14 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
+  }, [
+    reloadTable,
+    DULfilter,
+    openARModal,
+    openDeleteDomainModal,
+    pageNoCall,
+    pageCallUserApproval,
+  ])
 
   const rowDisabledCriteria = row => row.type == 'notification'
 
@@ -274,7 +287,10 @@ const UserApprovalScreen = () => {
       }
       console.log(payload)
       // server is giving internal error
-      const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+      const afterAcceptMsg = await API.post(
+        'admin/user_approval/approve',
+        payload
+      )
       console.log(afterAcceptMsg)
       setReloadTable(!reloadTable)
     } else return
@@ -289,7 +305,10 @@ const UserApprovalScreen = () => {
     }
     console.log(payload)
     // server is giving internal error
-    const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+    const afterAcceptMsg = await API.post(
+      'admin/user_approval/approve',
+      payload
+    )
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
     setOpenARModal(true)
@@ -302,7 +321,10 @@ const UserApprovalScreen = () => {
       domain_id: [data.id],
       delete_associated_users: 'false',
     }
-    const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
+    const afterDeleteMsg = await API.post(
+      'admin/delete_whitelisted_domain',
+      payload
+    )
     // toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
   }
@@ -324,7 +346,10 @@ const UserApprovalScreen = () => {
         msg: rejectMsg,
       }
       // server is giving internal error
-      const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
+      const afterRejectMsg = await API.post(
+        'admin/user_approval/approve',
+        payload
+      )
       console.log(afterRejectMsg.data)
       setReloadTable(!reloadTable)
     }
@@ -359,7 +384,10 @@ const UserApprovalScreen = () => {
       )}
 
       {openDomainModal && (
-        <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
+        <CreateNewDomain
+          saveAndExit={saveAndExitModal}
+          addDomain={createDomain}
+        />
       )}
 
       {openDeleteDomainModal && (
@@ -373,17 +401,7 @@ const UserApprovalScreen = () => {
       <div className="user-approval-request-table-contents">
         <div className="btn-container mb-2 ">
           <button
-            className="action-btn btn clear-notification"
-            onClick={() => {
-              const a = API.get('admin/clear_notification')
-              console.log(a)
-              setReloadTable(!reloadTable)
-            }}
-          >
-            Clear Notification
-          </button>
-          <button
-            className="action-btn btn "
+            className="action-btn btn accept-request "
             onClick={() => {
               if (selectedRowsState.length > 0) {
                 acceptAllRequest()
@@ -391,6 +409,16 @@ const UserApprovalScreen = () => {
             }}
           >
             Accept Request
+          </button>
+          <button
+            className="action-btn btn"
+            onClick={() => {
+              const a = API.get('admin/clear_notification')
+              console.log(a)
+              setReloadTable(!reloadTable)
+            }}
+          >
+            Clear Notification
           </button>
         </div>
         <div className="user-list-view-table aprroval-table">
@@ -441,13 +469,12 @@ const UserApprovalScreen = () => {
                 maxHeight: '27rem',
               }}
             >
-              {domainList.map((data, index) =>
-
-              (
+              {domainList.map((data, index) => (
                 <div
                   className="listed-domain"
                   style={{
-                    backgroundColor: DULfilter == data.id ? 'var(--bgColor4)' : 'white',
+                    backgroundColor:
+                      DULfilter == data.id ? 'var(--bgColor4)' : 'white',
                   }}
                   key={index}
                   onClick={() => {
@@ -457,7 +484,7 @@ const UserApprovalScreen = () => {
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  {(data.id != 1 && data.id != 2) ?
+                  {data.id != 1 && data.id != 2 ? (
                     <div>
                       <i
                         className="fa-solid fa-trash"
@@ -482,9 +509,9 @@ const UserApprovalScreen = () => {
 
                       <i className="fa-solid fa-caret-right" />
                     </div>
-                    : <div style={{padding: '0px 1.15rem'}}> 
-
-                   </div>}
+                  ) : (
+                    <div style={{ padding: '0px 1.15rem' }}></div>
+                  )}
                 </div>
               ))}
             </div>
@@ -538,7 +565,7 @@ const UserApprovalScreen = () => {
             </div>
             <div className="btn-container">
               <button
-                className="action-btn btn"
+                className="action-btn-btn"
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
                     deleteAllDUL()
