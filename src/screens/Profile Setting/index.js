@@ -436,7 +436,7 @@ const ProfileSettingScreen = () => {
                     }
                     console.log(payloadPassword)
                     const afterPassChangeMsg = await API.post(
-                      '/auth/password/change/',
+                      '/auth/password-change/',
                       payloadPassword
                     )
                     toast.success(afterUpdateNewsMsg.data.message)

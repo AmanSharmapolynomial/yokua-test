@@ -17,7 +17,7 @@ const ChnagePassword = () => {
 
   const _resetPassword = () => {
     if (password && password.length > 8 && password.includes())
-      API.post('auth/password/change/', {
+      API.post('auth/password-change/', {
         new_password1: password,
         new_password2: confirmPassword,
       })
