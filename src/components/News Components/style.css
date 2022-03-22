@@ -262,15 +262,16 @@ flex:7;
 .yg-font-size{
     font-size: small !important;
     text-transform: capitalize;
+    width: auto !important;
+    padding: 4px !important;
+    margin-left: 25px !important;
 }
 
 .yk-dropdown-holder-subtopic{
     z-index: 0;
     text-overflow: ellipsis;
 }
-  .yg-font-size {
-      margin: 0px 31px;
-  }
+  
   
 
 .yk-span {

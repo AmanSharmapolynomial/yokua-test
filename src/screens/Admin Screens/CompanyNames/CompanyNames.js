@@ -5,6 +5,7 @@ import DataTable from 'react-data-table-component'
 import Plusicon from '../../../assets/Group 331.png'
 import { Dropdown, SplitButton, DropdownButton, ButtonGroup } from 'react-bootstrap'
 import { toast } from 'react-toastify'
+
 import './yokogawa-component.css'
 
 export default () => {
@@ -177,7 +178,13 @@ export default () => {
               <hr />
               <a class="d-flex justify-content-between align-items-center">abc<i class="fa fa-trash" aria-hidden="true"></i></a><br />
               <hr/>
-              <a class="d-flex justify-content-center align-items-center">Add</a><br />
+              <a class="d-flex justify-content-center align-items-center"><img
+                  src={Plusicon}
+                  style={{
+                    width: '22px',
+                    marginRight: '12px',
+                  }}
+                />Add</a><br />
             </div>
           </div>
         </div>
@@ -186,8 +193,14 @@ export default () => {
 
 
 
-      <div class="row yk-data-row d-flex justify-content-center dropdown-toggle align-items-center px-3 py-2" data-toggle="dropdown">
-        <div>Add</div>
+      <div class="row yk-data-row d-flex justify-content-center align-items-center px-3 py-2">
+        <div><img
+                  src={Plusicon}
+                  style={{
+                    width: '22px',
+                    marginRight: '12px',
+                  }}
+                />Add</div>
       </div>
 
     </div>
