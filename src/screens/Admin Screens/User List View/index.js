@@ -60,12 +60,12 @@ const UserListView = () => {
       minWidth: '10rem',
     },
     {
-      name: 'Permission Level',
+      name: 'Role',
       selector: row => row.role,
       minWidth: '15rem',
     },
     {
-      name: 'Email id',
+      name: 'E-mail',
       selector: row => row.companyEmail,
       grow: 2,
       minWidth: '15rem',
@@ -495,7 +495,8 @@ const UserListView = () => {
           />
         )}
 
-        {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
+        {(getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'Technical Administrator') && (
           <div
             className="add_row"
             onClick={() => {
@@ -514,7 +515,7 @@ const UserListView = () => {
               }}
               className={'mr-2'}
             />
-            {'  Add / Update'}
+            {'Add'}
           </div>
         )}
       </div>
