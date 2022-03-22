@@ -125,7 +125,7 @@
   
   /* Track */
   .news-desc::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px transparent; 
+    
   
   }
    
@@ -135,8 +135,11 @@
   }
   
   /* Handle on hover */
-  .news-desc::-webkit-scrollbar-thumb:hover {
-    background: transparent; 
+  .news-desc:hover::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px grey;
+  }
+  .news-desc:hover::-webkit-scrollbar-thumb{
+    background: #004F9B; 
   }
 
 

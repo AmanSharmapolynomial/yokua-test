@@ -70,6 +70,9 @@ const NewsItem = ({
     topicRef.current.click()
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
+    setSelectedSubTopic('Select Sub-Topic')
+
+    setSubCategoryID(0)
     if (cat.image_link && cat.image_link != '') {
       setCatImg(cat.image_link)
     } else {
@@ -256,9 +259,11 @@ const NewsItem = ({
     const details = JSON.stringify({
       news_id: dataID || null,
       category_id: catId,
-      sub_category_id: subCatId != 0 ? [subCatId] : [],
       description: newsDesc,
     })
+    if (subCatId && subCatId != 0) {
+      details['sub_category_id'] = subCatId
+    }
     const fileDetails = fileInputRef?.current?.files[0]
     var bodyFormData = new FormData()
     bodyFormData.append('data', details)
@@ -283,20 +288,28 @@ const NewsItem = ({
         setIsLoading(false)
 
         if (response.status == 200) {
+          setNewsUnderEdit(false)
+          setEditView(false)
+
           toast.success(response.data.message)
           if (!changeType) {
-            setEditView(false)
             setNewsUnderEdit(false)
           } else if (changeType == 'Add') {
             // window.location.reload()
             saveAndExitAdd()
             setNewsUnderEdit(false)
+            setEditView(false)
           }
         } else {
+          setEditView(false)
+
+          setNewsUnderEdit(false)
           toast.error(response.data.message)
         }
       })
       .catch(function (response) {
+        setEditView(false)
+        setNewsUnderEdit(false)
         //handle error
         console.log('Error', response)
         if (response.status != 200) {
@@ -304,11 +317,11 @@ const NewsItem = ({
           toast.error('Something went wrong')
         }
         setIsLoading(false)
+        setNewsUnderEdit(false)
       })
   }
 
   const uploadNews = async () => {
-    debugger
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
     } else {
