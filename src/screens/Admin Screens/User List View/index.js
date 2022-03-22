@@ -121,8 +121,26 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
+      page_index: 1,
+    }
+
+    _getUserList(payload)
+  }, [reloadTable, filterActive, sortMethod])
+
+  useEffect(async () => {
+    setIsLoading(true)
+    const payload = {
+      pmk_admin: filterCheckboxPMK,
+      content_manager: filterCheckboxCM,
+      user: filterCheckboxUser,
+      filter: filterActive,
       page_index: pageNoCall,
     }
+
+    _getUserList(payload)
+  }, [pageNoCall])
+
+  const _getUserList = async payload => {
     const listuserdata = await API.post('admin/list_users', payload)
     console.log(listuserdata)
     let sortedArray = listuserdata.data.page_data.sort(function (a, b) {
@@ -207,7 +225,7 @@ const UserListView = () => {
     setBackendData(sortedArray)
     setContentRow(contentRowData)
     setIsLoading(false)
-  }, [reloadTable, filterActive, sortMethod, pageNoCall])
+  }
 
   const conditionalRowStyles = [
     {
