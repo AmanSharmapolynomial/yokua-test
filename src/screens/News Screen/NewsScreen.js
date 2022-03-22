@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 const NewsScreen = () => {
   const filter1Ref = useRef()
   const filter2Ref = useRef()
+  const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
 
   const [showFilterDropdown1, setShowFilterDropdown1] = useState()
   const [showFilterDropdown2, setShowFilterDropdown2] = useState()
@@ -102,9 +103,11 @@ const NewsScreen = () => {
 
   const saveAndExitAdd = () => {
     setNewNews(false)
+    setNewsUnderEdit(false)
   }
 
   const cancelAddNews = id => {
+    setNewsUnderEdit(false)
     const updatedNewsData = newsData
     const index = updatedNewsData.findIndex(item => item.id == id)
     updatedNewsData.splice(index, 1)
@@ -250,6 +253,8 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                      setNewsUnderEdit={setNewsUnderEdit}
                       setCategoryFilter={() => setCategoryFilter(news?.category_id)}
                       updateNewsRead={() => _updateNewsRead(news.id)}
                       readNews={readNews}
@@ -265,6 +270,8 @@ const NewsScreen = () => {
                 } else {
                   return (
                     <NewsItem
+                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                      setNewsUnderEdit={setNewsUnderEdit}
                       updateNewsRead={() => _updateNewsRead(news.id)}
                       readNews={readNews}
                       getAllNews={() => getAllNews(payload)}
@@ -309,7 +316,12 @@ const NewsScreen = () => {
               <div
                 className="add_row"
                 onClick={() => {
-                  setNewsData([...newsData, { id: Math.random() }])
+                  if (!isAnyNewsUnderEdit) {
+                    setNewsUnderEdit(true)
+                    setNewsData([...newsData, { id: Math.random() }])
+                  } else {
+                    toast.error('Please finish current news edit.')
+                  }
                 }}
               >
                 <img

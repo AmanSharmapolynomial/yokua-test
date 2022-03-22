@@ -275,7 +275,6 @@ const UserListView = () => {
   }
 
   const deleteUser = async () => {
-    debugger
     // write delete user api call here
     if (selectedRowsState.length > 0) {
       const deleteUserEmails = []

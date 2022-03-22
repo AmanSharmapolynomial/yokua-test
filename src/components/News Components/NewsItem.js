@@ -23,6 +23,8 @@ const NewsItem = ({
   updateNewsRead,
   readNews,
   setCategoryFilter,
+  isAnyNewsUnderEdit,
+  setNewsUnderEdit,
 }) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
@@ -68,7 +70,7 @@ const NewsItem = ({
     topicRef.current.click()
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
-    if (cat.image_link === 'string') {
+    if (cat.image_link && cat.image_link != '') {
       setCatImg(cat.image_link)
     } else {
       setCatImg(window.URL.createObjectURL(cat.image_link))
@@ -82,11 +84,16 @@ const NewsItem = ({
   }
 
   const _handleEditView = () => {
-    setEditView(true)
-    setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
-    setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
-    setCategoryID(data.category_id)
-    setSubCategoryID(data.sub_category_id)
+    if (!isAnyNewsUnderEdit) {
+      setNewsUnderEdit(true)
+      setEditView(true)
+      setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
+      setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
+      setCategoryID(data.category_id)
+      setSubCategoryID(data.sub_category_id)
+    } else {
+      toast.error('Please finish current news edit.')
+    }
   }
 
   // refs for fields in edit VIew
@@ -151,6 +158,7 @@ const NewsItem = ({
   const saveAndExitModal = () => {
     setDeleteModal(false)
     setEditView('')
+    setNewsUnderEdit(false)
     // document.body.style.overflow = 'scroll'
   }
 
@@ -278,9 +286,11 @@ const NewsItem = ({
           toast.success(response.data.message)
           if (!changeType) {
             setEditView(false)
+            setNewsUnderEdit(false)
           } else if (changeType == 'Add') {
             // window.location.reload()
             saveAndExitAdd()
+            setNewsUnderEdit(false)
           }
         } else {
           toast.error(response.data.message)
@@ -334,7 +344,7 @@ const NewsItem = ({
           }
         )
       } else {
-        uploadNewNews(categoryID, subCategoryID)
+        uploadNewNews(categoryID, subCategoryID ? subCategoryID : 0)
       }
     }
   }
@@ -705,6 +715,7 @@ const NewsItem = ({
                   cursor: 'pointer',
                 }}
                 onClick={() => {
+                  setNewsUnderEdit(false)
                   setEditView(false)
                   cancelAddNews(data.id)
                   setIsNewCatAdded(false)

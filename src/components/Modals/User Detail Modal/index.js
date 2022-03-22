@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import '../style.css'
 import validator from 'validator'
-import { Dropdown, InputGroup, FormControl, Button, Modal, Image, Form } from 'react-bootstrap'
+import placeholder from '../../News Components/placeholder.png'
+
 import Select from 'react-select'
 const options = [
   { value: 'User', label: 'User' },
@@ -11,6 +12,9 @@ const options = [
 ]
 
 const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
+  const [profilePicture, setProfilePicture] = useState(
+    data?.avatar_link ? data?.avatar_link : placeholder
+  )
   // refs
   let emailRef = useRef()
   let firstNameRef = useRef()
@@ -80,7 +84,14 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
           }}
         >
           <div className="user-img">
-            <img src="/logo512.png" />
+            <img
+              // className="profile-setting__info_img"
+              // style={{
+              //   cursor: 'pointer',
+              // }}
+              src={profilePicture}
+              onError={() => setProfilePicture(placeholder)}
+            />
           </div>
           <div className="user-details-form">
             <div className="input-field-container">
@@ -245,7 +256,9 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     lastName: lastName,
                     role: role,
                     company_name: company,
-                    password: password,
+                  }
+                  if (password && password.length > 1) {
+                    saveData['password'] = password
                   }
                   if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
                     if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {

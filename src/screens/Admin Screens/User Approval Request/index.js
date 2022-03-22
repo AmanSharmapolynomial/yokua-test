@@ -300,7 +300,7 @@ const UserApprovalScreen = () => {
     // admin/delete_whitelisted_domain
     const payload = {
       domain_id: [data.id],
-      delete_associated_users: 'false',
+      delete_associated_users: false,
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
     // toast.success(afterDeleteMsg.data.message)
@@ -441,9 +441,7 @@ const UserApprovalScreen = () => {
                 maxHeight: '27rem',
               }}
             >
-              {domainList.map((data, index) =>
-
-              (
+              {domainList.map((data, index) => (
                 <div
                   className="listed-domain"
                   style={{
@@ -457,7 +455,7 @@ const UserApprovalScreen = () => {
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  {(data.id != 1 && data.id != 2) ?
+                  {data.id != 1 && data.id != 2 ? (
                     <div>
                       <i
                         className="fa-solid fa-trash"
@@ -482,9 +480,9 @@ const UserApprovalScreen = () => {
 
                       <i className="fa-solid fa-caret-right" />
                     </div>
-                    : <div style={{padding: '0px 1.15rem'}}> 
-
-                   </div>}
+                  ) : (
+                    <div style={{ padding: '0px 1.15rem' }}></div>
+                  )}
                 </div>
               ))}
             </div>
