@@ -74,9 +74,11 @@ const NewsItem = ({
 
     setSubCategoryID(0)
     if (cat.image_link && cat.image_link != '') {
-      setCatImg(cat.image_link)
-    } else {
-      setCatImg(window.URL.createObjectURL(cat.image_link))
+      if (typeof cat.image_link == 'string') {
+        setCatImg(cat.image_link)
+      } else {
+        setCatImg(window.URL.createObjectURL(cat.image_link))
+      }
     }
   }
   const handleSelectSubTopic = cat => {
@@ -202,7 +204,6 @@ const NewsItem = ({
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
   const uploadCategory = () => {
-    setIsLoading(true)
     return new Promise((resolve, reject) => {
       if (isNewCatAdded) {
         const formData = new FormData()
@@ -230,8 +231,6 @@ const NewsItem = ({
   }
 
   const uploadSubCategory = (categoryId, parentId) => {
-    setIsLoading(true)
-
     return new Promise((resolve, reject) => {
       if (isNewSubCatAdded) {
         const subPayload = {
@@ -256,74 +255,82 @@ const NewsItem = ({
   }
 
   const uploadNewNews = (catId, subCatId) => {
-    const details = JSON.stringify({
-      news_id: dataID || null,
-      category_id: catId,
-      description: newsDesc,
-    })
-    if (subCatId && subCatId != 0) {
-      details['sub_category_id'] = subCatId
-    }
-    const fileDetails = fileInputRef?.current?.files[0]
-    var bodyFormData = new FormData()
-    bodyFormData.append('data', details)
-    if (fileDetails) {
-      bodyFormData.append('file', fileDetails)
-    }
-    // bodyFormData.append('image', newsI)
+    if (!catId || catId == 0) {
+      toast.error('Please select Topic')
+      return
+    } else if (!subCatId || subCatId == 0) {
+      toast.error('Please select Sub Topic')
+      return
+    } else {
+      const details = JSON.stringify({
+        news_id: dataID || null,
+        category_id: catId,
+        description: newsDesc,
+        sub_category_id: subCatId,
+      })
 
-    const token = getToken()
-    axios({
-      method: 'post',
-      url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-      data: bodyFormData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(function (response) {
-        //handle success
-        console.log(response)
-        setIsLoading(false)
+      const fileDetails = fileInputRef?.current?.files[0]
+      var bodyFormData = new FormData()
+      bodyFormData.append('data', details)
+      if (fileDetails) {
+        bodyFormData.append('file', fileDetails)
+      }
+      // bodyFormData.append('image', newsI)
 
-        if (response.status == 200) {
-          setNewsUnderEdit(false)
-          setEditView(false)
+      const token = getToken()
+      axios({
+        method: 'post',
+        url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
+        data: bodyFormData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response)
+          setIsLoading(false)
 
-          toast.success(response.data.message)
-          if (!changeType) {
-            setNewsUnderEdit(false)
-          } else if (changeType == 'Add') {
-            // window.location.reload()
-            saveAndExitAdd()
+          if (response.status == 200) {
             setNewsUnderEdit(false)
             setEditView(false)
-          }
-        } else {
-          setEditView(false)
 
+            toast.success(response.data.message)
+            if (!changeType) {
+              setNewsUnderEdit(false)
+            } else if (changeType == 'Add') {
+              // window.location.reload()
+              saveAndExitAdd()
+              setNewsUnderEdit(false)
+              setEditView(false)
+            }
+          } else {
+            setEditView(false)
+
+            setNewsUnderEdit(false)
+            toast.error(response.data.message)
+          }
+        })
+        .catch(function (response) {
+          setEditView(false)
           setNewsUnderEdit(false)
-          toast.error(response.data.message)
-        }
-      })
-      .catch(function (response) {
-        setEditView(false)
-        setNewsUnderEdit(false)
-        //handle error
-        console.log('Error', response)
-        if (response.status != 200) {
-          // toast.error(response?.message)
-          toast.error('Something went wrong')
-        }
-        setIsLoading(false)
-        setNewsUnderEdit(false)
-      })
+          //handle error
+          console.log('Error', response)
+          if (response.status != 200) {
+            // toast.error(response?.message)
+            toast.error('Something went wrong')
+          }
+          setIsLoading(false)
+          setNewsUnderEdit(false)
+        })
+    }
   }
 
   const uploadNews = async () => {
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
+      return
     } else {
       if (isNewCatAdded) {
         uploadCategory().then(data => {
