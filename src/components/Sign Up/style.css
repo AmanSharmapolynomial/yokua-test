@@ -67,6 +67,7 @@ right: 8px;
     margin-left: 20px !important;
     padding: 0% !important;
     width: auto !important;
+    text-transform: capitalize;
 }
 
 .yg-font-size-registrtion{

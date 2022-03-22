@@ -123,17 +123,20 @@
   
   /* Track */
   .news-desc::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
+    
   
   }
    
   /* Handle */
   .news-desc::-webkit-scrollbar-thumb {
-    background: #004F9B; 
+    background: transparent; 
   }
   
   /* Handle on hover */
-  .news-desc::-webkit-scrollbar-thumb:hover {
+  .news-desc:hover::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px grey;
+  }
+  .news-desc:hover::-webkit-scrollbar-thumb{
     background: #004F9B; 
   }
 

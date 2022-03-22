@@ -9,8 +9,38 @@
 
 .filter-dropdown{
     margin: 1rem 3.6rem;
-
+    overflow-y: scroll;
+    height: 200px;
 }
+
+.filter-dropdown::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  /* Track */
+  .filter-dropdown::-webkit-scrollbar-track {
+
+
+  }
+   
+  /* Handle */
+  .filter-dropdown::-webkit-scrollbar-thumb {
+    background: transparent; 
+  
+  }
+  
+  /* Handle on hover */
+  .filter-dropdown:hover::-webkit-scrollbar-thumb{
+    background: #004F9B; 
+  }
+
+  .filter-dropdown:hover::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px grey;
+  }
+
+
+
+
 .role-dropdown{
     left: 22px;
 }
