@@ -1,5 +1,6 @@
 .user-approval-screen{
     width: 100%;
+    padding: 0.5rem 2.5rem;
 }
 .edit-icons{
     display: flex;
@@ -54,10 +55,26 @@
 
 .btn-container{
     display: flex;
-    margin-right: 1rem;
+margin-right: 20px;
     justify-content: right;
 }
 
+
+.action-btn-btn{
+    margin-bottom: 50px;
+    outline: none;
+    border: none;
+    text-align: left !important;
+    border-radius: 5px;
+    background-color: var(--bgColor2) !important;
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 0.8rem !important;
+    width: max-content;
+    cursor: pointer;
+    border: 1px solid #000000 !important;
+    color: var(--textColor5) !important
+}
 .domain-user-list{
     display: flex;
     flex-direction: column;
@@ -71,6 +88,7 @@ margin-bottom: 6rem;
 }
 .domain-user-list h3{
     font-size: 32px;
+    font-weight: 250px;
 }
 
 .domain-user-list-content{
@@ -104,7 +122,7 @@ margin-bottom: 6rem;
     cursor: pointer;
 }
 
-.clear-notification{
+.accept-request{
     margin-right: 1rem !important;
 }
 
