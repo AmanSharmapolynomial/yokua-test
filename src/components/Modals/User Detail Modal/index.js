@@ -250,6 +250,10 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             <button
               className="btn"
               onClick={() => {
+                if (selectedOption == null || selectedOption.value == null) {
+                  toast.error('Please select the permission')
+                  return
+                }
                 if (email != '' && email && firstName && lastName) {
                   const saveData = {
                     email: email,
