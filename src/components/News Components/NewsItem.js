@@ -11,6 +11,10 @@ import { toast } from 'react-toastify'
 import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 
+import { MultiSelect as MultiSelecte } from 'react-multi-select-component'
+
+import Multiselect from 'multiselect-react-dropdown'
+
 const NewsItem = ({
   data,
   tempCategory,
@@ -382,8 +386,38 @@ const NewsItem = ({
     return true
   }
 
+  const onSelect = (selectedList, selectedItem) => {}
+
+  const onRemove = (selectedList, removedItem) => {}
+
+  const options = [
+    { label: 'Grapes', value: 'grapes' },
+    { label: 'Mango', value: 'mango' },
+    { label: 'Strawberry', value: 'strawberry', disabled: true },
+  ]
+
+  const [selectedV, setSelectedV] = useState([])
+  const selected = []
   return (
     <React.Fragment>
+      <div style={{ width: '400px' }}>
+        <MultiSelecte
+          hasSelectAll={true}
+          options={options}
+          value={selectedV}
+          onChange={setSelectedV}
+          labelledBy="Select"
+        />
+      </div>
+
+      <Multiselect
+        showCheckbox
+        options={options} // Options to display in the dropdown
+        selectedValues={selected} // Preselected value to persist in dropdown
+        onSelect={onSelect} // Function will trigger on select event
+        onRemove={onRemove} // Function will trigger on remove event
+        displayValue="value" // Property name to display in the dropdown options
+      />
       <DeleteModal
         show={deleteModal}
         setShow={setDeleteModal}
@@ -450,6 +484,14 @@ const NewsItem = ({
               <span className="date">
                 {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
               </span>
+
+              <MultiSelecte
+                hasSelectAll={true}
+                options={options}
+                value={selectedV}
+                onChange={setSelectedV}
+                labelledBy="Select"
+              />
 
               {editView ? (
                 <>

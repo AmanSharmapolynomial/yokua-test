@@ -33,7 +33,6 @@ const NewsScreen = () => {
   const [readNews, setNewsRead] = useState([])
 
   const _updateNewsRead = id => {
-    debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
     if (isAlreadyAdded > 0) {
