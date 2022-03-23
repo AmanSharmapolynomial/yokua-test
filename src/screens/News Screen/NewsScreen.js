@@ -374,4 +374,15 @@ const NewsScreen = () => {
   )
 }
 
+
+
+
+
+
+
+
+
+
 export default NewsScreen
+
+

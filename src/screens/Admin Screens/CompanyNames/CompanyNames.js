@@ -52,13 +52,13 @@ export default () => {
     <div style={{ padding: '0.5rem 2.5rem', marginBottom: '' }}>
       <SecondaryHeading title={'Company Name'} />
 
-      <div class="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
-        <div class="row yk-h-bg py-3">
-          <p class="d-flex align-items-center px-3 h6">Company name</p>
+      <div className="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
+        <div className="row yk-h-bg py-3">
+          <p className="d-flex align-items-center px-3 h6">Company name</p>
         </div>
         {companyList.map(data => (
-          <div class="yk-dd dropright">
-            <div class="row yk-data-row d-flex justify-content-between align-items-center  p-3">
+          <div className="yk-dd dropright">
+            <div className="row yk-data-row d-flex justify-content-between align-items-center  p-3">
               <div className="h6 text-align-center yg-font-capitalize-only">
                 {data.company_name}
               </div>
@@ -71,54 +71,53 @@ export default () => {
                     aria-hidden="true"
                     onClick={() => deleteCompany(data.parent_company_id)}
                   ></i>
+                  {/* <i
+                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
+                  ></i> */}
                   <i
-                    className="fa fa-caret-right dropright dropdown-toggle dropdown-toggle-split"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                    style={{ zIndex: 1 }}
-                    aria-hidden="true"
+                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
                   ></i>
-                </div>
+                  <div className="yk-drop-m dropdown-menu dropdown">
 
-                <div class="yk-drop-m dropdown-menu">
-                  {data.company_divisions.map(item => (
-                    <>
-                      {/* row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle p-3 */}
-                      <a
-                        class="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
-                        style={{ fontSize: '1rem', padding: '1.17rem', marginLeft: '10px' }}
-                      >
-                        {item.sub_div_name}
-                        <i
-                          class="fa fa-trash"
-                          aria-hidden="true"
-                          style={{ fontSize: '1rem' }}
-                          onClick={() => deleteCompany(item.id)}
-                        ></i>
-                      </a>
-                      <hr />
-                    </>
-                  ))}
-                  <a
-                    class="d-flex justify-content-center align-items-center"
-                    style={{ fontSize: '0.8rem', padding: '1.17rem' }}
-                  >
-                    <img
-                      src={Plusicon}
-                      style={{
-                        width: '1rem',
-                        marginRight: '0.2rem',
-                      }}
-                    />
-                    Add
-                  </a>
+                    {data.company_divisions.map(item => (
+                      <>
+                        row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle p-3
+                        <a
+                          className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
+                          style={{ fontSize: '1rem', padding: '1.17rem', marginLeft: '10px' }}
+                        >
+                          {item.sub_div_name}
+                          <i
+                            className="fa fa-trash"
+                            aria-hidden="true"
+                            style={{ fontSize: '1rem' }}
+                            onClick={() => deleteCompany(item.id)}
+                          ></i>
+                        </a>
+                        <hr />
+                      </>
+                    ))}
+                    <a
+                      className="d-flex justify-content-center align-items-center"
+                      style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                    >
+                      <img
+                        src={Plusicon}
+                        style={{
+                          width: '1rem',
+                          marginRight: '0.2rem',
+                        }}
+                      />
+                      Add
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         ))}
 
-        <div class="row yk-data-row d-flex justify-content-center align-items-center px-3">
+        <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
           <div style={{ padding: '1.17rem' }}>
             <img
               src={Plusicon}
