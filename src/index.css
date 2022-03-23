@@ -1,7 +1,4 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-
 
 body {
   font-family: 'Poppins' !important;
@@ -12,18 +9,18 @@ body {
   overflow-x: hidden;
 }
 
-:root{
+:root {
   --textColor1: #000;
   --textColor2: rgb(42, 42, 42);
   --textColor3: rgb(189, 189, 189);
   --textColor4: rgb(211, 211, 211);
   --textColor5: rgb(255, 255, 255);
   --bgColor1: rgb(24, 24, 24);
-  --bgColor2: #004F9B;
+  --bgColor2: #004f9b;
   --bgColor3: rgb(255, 255, 255);
   --bgColor4: rgb(174, 174, 174);
 }
-.non_header_content{
+.non_header_content {
   height: 100%;
   margin-top: 8rem;
   max-width: 1500px;
@@ -34,8 +31,7 @@ body {
   margin-inline: auto;
 }
 
-
-.alert-under-input{
+.alert-under-input {
   display: none;
   color: red;
   font-size: 0.5rem;
@@ -43,21 +39,21 @@ body {
   width: 100%;
 }
 
-.fSQziN{
+.fSQziN {
   height: 50vh;
   overflow-y: scroll !important;
 }
 
-.hLGqlg{
+.hLGqlg {
   z-index: 0 !important;
 }
 
-.header{
+.header {
   height: auto !important;
   z-index: 10000;
 }
 
-.Toastify__toast-container{
+.Toastify__toast-container {
   z-index: 100000000 !important;
 }
 
@@ -65,7 +61,7 @@ body {
   padding: 0 !important;
 }
 
-.ant-pagination-item-link{
+.ant-pagination-item-link {
   display: grid !important;
   place-items: center !important;
 }
@@ -75,15 +71,19 @@ body {
 }
 
 .user-list-view-table div:first-child {
-overflow-x: inherit !important;
-overflow-y: visible !important;
+  /* overflow-x: inherit !important; */
+  overflow-y: visible !important;
 }
 
-
-.yk-sticky-footer{
+.yk-sticky-footer {
   position: fixed;
 }
 
+.bg-landing {
+  background: url('/src/assets/FCP landing page.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
 
 /* tablet view */
-

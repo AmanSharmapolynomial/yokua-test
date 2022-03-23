@@ -128,9 +128,9 @@ const ProfileSettingScreen = () => {
           data={profileData.basic_profile?.email}
         />
       )}
-      <div className="profile-setting-container">
+      <div className="profile-setting-container pb-5">
         <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
-        <div className="profile-setting">
+        <div className="profile-setting px-5">
           <div className="profile-setting__info">
             <div>
               <input
@@ -165,7 +165,7 @@ const ProfileSettingScreen = () => {
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">BASIC PROFILE</h1>
+            <h1 className="profile-setting__heading py-3">BASIC PROFILE</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 {/* src\assets\Icon ionic-ios-person.png */}
@@ -259,7 +259,7 @@ const ProfileSettingScreen = () => {
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">CHANGE PASSWORD</h1>
+            <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 <img
@@ -344,7 +344,7 @@ const ProfileSettingScreen = () => {
             </div>
           </div>
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">SALES NEWS BY ROTA YOKOGAWA</h1>
+            <h1 className="profile-setting__heading py-3">SALES NEWS BY ROTA YOKOGAWA</h1>
             <div className="sales-news_background">
               {isLoading ? (
                 <span>Loading...</span>
@@ -491,7 +491,7 @@ const ProfileSettingScreen = () => {
 
           <div className="events_trainings">
             <div className="profile-setting__basic-profile profile-setting__box registered_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 You are registered for the following events & trainings
               </h1>
               {isLoading ? (
@@ -515,7 +515,7 @@ const ProfileSettingScreen = () => {
               )}
             </div>
             <div className="profile-setting__basic-profile profile-setting__box last_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 Last participated event
               </h1>
               {isLoading ? (

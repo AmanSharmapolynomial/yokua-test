@@ -16,15 +16,17 @@ const Header = ({ isLogedIn, isAdmin }) => {
 
   return (
     <div
-      className="header"
-      style={{
-        height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '6vh',
-        maxHeight: '10rem',
-        minHeight: isLogedIn ? (width > 820 ? '9rem' : '5rem') : '5rem',
-      }}
+      className="header sticky-top"
+      style={
+        {
+          // height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '6vh',
+          // maxHeight: '10rem',
+          // minHeight: isLogedIn ? (width > 820 ? '9rem' : '5rem') : '5rem',
+        }
+      }
     >
-      <div className="header_max-width">
-        <div className="header-container">
+      <div className="col">
+        <div className="header-container px-4">
           <div className="header__logo">
             {/* Logo */}
             <span className="logo__name">YOKOGAWA</span>

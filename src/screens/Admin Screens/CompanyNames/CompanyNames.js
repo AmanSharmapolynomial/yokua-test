@@ -91,7 +91,7 @@ export default () => {
     //                 }}
     //               />
     //               <i class="fa-solid fa-caret-right"></i>
-    //               <DropdownButton 
+    //               <DropdownButton
 
     //                 style={{ marginRight: '10px', }}
     //                 key={'end'}
@@ -152,61 +152,89 @@ export default () => {
     //   </div>
     // </div>
 
-    <>
-      <div className='company-h row d-flex justify-content-start'>
-        <h2 class="secondary-heading">Company Name</h2>
-      </div>
-      <div class="container company-table m-4">
-
-
-        <div class="row yk-h-bg">
-          <p class="d-flex align-items-center px-3 mb-0">Company name</p>
+    <div style={{ padding: '0.5rem 2.5rem' }}>
+      <SecondaryHeading title={'Company Name'} />
+      <div class="col-4 mx-5 mt-5">
+        <div class="row yk-h-bg py-3">
+          <p class="d-flex align-items-center px-3 h6">Company name</p>
         </div>
         <div class="yk-dd dropright">
-          <div class="row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle px-3" data-toggle="dropdown">
-            <div>YA</div>
+          <div
+            class="row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle p-3"
+            data-toggle="dropdown"
+          >
+            <div className="h6 text-align-center">YA</div>
 
             <div class="">
-              <div>
-                <i class="fa fa-trash" aria-hidden="true"></i>
+              <div className="d-flex align-items-center">
+                <i class="fa fa-trash" style={{ fontSize: '1rem' }} aria-hidden="true"></i>
                 <i class="fa fa-caret-right" aria-hidden="true"></i>
               </div>
               <div class="yk-drop-m dropdown-menu">
-                <a class="d-flex justify-content-between align-items-center">abc<i class="fa fa-trash" aria-hidden="true"></i></a><br />
+                <a
+                  class="d-flex justify-content-between align-items-center"
+                  style={{ fontSize: '1rem' }}
+                >
+                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
+                </a>
+                {/* <br /> */}
                 <hr />
-                <a class="d-flex justify-content-between align-items-center">abc<i class="fa fa-trash" aria-hidden="true"></i></a><br />
+                <a
+                  class="d-flex justify-content-between align-items-center"
+                  style={{ fontSize: '1rem' }}
+                >
+                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
+                </a>
+                {/* <br /> */}
                 <hr />
-                <a class="d-flex justify-content-between align-items-center">abc<i class="fa fa-trash" aria-hidden="true"></i></a><br />
+                <a
+                  class="d-flex justify-content-between align-items-center"
+                  style={{ fontSize: '1rem' }}
+                >
+                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
+                </a>
+                {/* <br /> */}
                 <hr />
-                <a class="d-flex justify-content-between align-items-center">abc<i class="fa fa-trash" aria-hidden="true"></i></a><br />
+                <a
+                  class="d-flex justify-content-between align-items-center"
+                  style={{ fontSize: '1rem' }}
+                >
+                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
+                </a>
+                {/* <br /> */}
                 <hr />
-                <a class="d-flex justify-content-center align-items-center"><img
-                  src={Plusicon}
-                  style={{
-                    width: '22px',
-                    marginRight: '12px',
-                  }}
-                />Add</a><br />
+                <a
+                  class="d-flex justify-content-center align-items-center"
+                  style={{ fontSize: '0.8rem' }}
+                >
+                  <img
+                    src={Plusicon}
+                    style={{
+                      width: '1rem',
+                      marginRight: '0.2rem',
+                    }}
+                  />
+                  Add
+                </a>
+                {/* <br /> */}
               </div>
             </div>
           </div>
         </div>
 
-
-
-
         <div class="row yk-data-row d-flex justify-content-center align-items-center px-3 py-2">
-          <div><img
-            src={Plusicon}
-            style={{
-              width: '22px',
-              marginRight: '12px',
-            }}
-          />Add</div>
+          <div>
+            <img
+              src={Plusicon}
+              style={{
+                width: '1rem',
+                marginRight: '0.2rem',
+              }}
+            />
+            Add
+          </div>
         </div>
-
       </div>
-    </>
-
+    </div>
   )
 }

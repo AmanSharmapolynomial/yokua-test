@@ -17,10 +17,12 @@ import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import Plusicon from '../../../assets/Group 331.png'
 import Filtermg from '../../../assets/Icon awesome-filter.png'
+import Deleteimg from '../../../assets/Icon material-delete.png'
 
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
+  const [showDeleteDropdown, setShowDeleteDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [modelTitle, setModalTitle] = useState('View User')
   const [changeModal, setChangeModal] = useState('')
@@ -30,7 +32,7 @@ const UserListView = () => {
   const [filterActive, setFilterActive] = useState('')
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
-  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
+  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
@@ -358,7 +360,7 @@ const UserListView = () => {
         />
       )}
 
-      <SecondaryHeading title={'User list view'} />
+      <SecondaryHeading title={'Users list view'} />
 
       <div className="filter-actions">
         <div className="filter-icons" ref={ref}>
@@ -368,6 +370,14 @@ const UserListView = () => {
               setShowFilterDropdown(!showFilterDropdown)
             }}
           />
+
+          <img
+            src={Deleteimg}
+            onClick={() => {
+              showDeleteDropdown(!showDeleteDropdown)
+            }}
+          />
+
           <div
             className="filter-dropdown dropdown"
             style={{
@@ -419,7 +429,7 @@ const UserListView = () => {
           )}
         </div>
         <div className="filter-actions mgt">
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox1Ref}
@@ -436,7 +446,7 @@ const UserListView = () => {
             />
             &nbsp; PMK Administrator
           </div>
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox2Ref}
@@ -451,9 +461,9 @@ const UserListView = () => {
                 }
               }}
             />
-            &nbsp; PMK Content Manager
+            &nbsp; Content Manager
           </div>
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox3Ref}
@@ -467,7 +477,7 @@ const UserListView = () => {
                   setReloadTable(!reloadTable)
                 }
               }}
-            />{' '}
+            />
             &nbsp; User
           </div>
         </div>
@@ -495,10 +505,10 @@ const UserListView = () => {
           />
         )}
 
-        {(getUserRoles() == 'PMK Administrator' ||
-          getUserRoles() == 'Technical Administrator') && (
+        {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
           <div
             className="add_row"
+            style={{ fontSize: '0.8rem' }}
             onClick={() => {
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
@@ -511,7 +521,8 @@ const UserListView = () => {
             <img
               src={Plusicon}
               style={{
-                width: '22px',
+                width: '1rem',
+                marginRight: '0.2rem',
               }}
               className={'mr-2'}
             />

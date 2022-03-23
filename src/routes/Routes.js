@@ -29,95 +29,102 @@ const Routing = () => {
 
   return (
     <React.Fragment>
-      
-        <div className="non_header_content relative">
-          <Routes>
-            <Route path="/" element={<HomeScreen />} />
+      <div className="container-fluid p-0 vh-100">
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route
+            path="/auth"
+            element={
+              <React.Fragment>
+                <Header />
+                <AuthLayout />
+                {/* <Footer/> */}
+              </React.Fragment>
+            }
+          >
             <Route
-              path="/auth"
+              path="login"
               element={
                 <React.Fragment>
-                  <Header />
-                  <AuthLayout />
+                  <div className="bg-landing h-100 py-5">
+                    <InfoComponent />
+                    <SignIn />
+                  </div>
                   {/* <Footer/> */}
                 </React.Fragment>
               }
-            >
-              <Route
-                path="login"
-                element={
-                  <React.Fragment>
-                    <InfoComponent />
-                    <SignIn />
-                    {/* <Footer/> */}
-                  </React.Fragment>
-                }
-              />
-              <Route path="register" element={<SignUp />} />
-              <Route path="forgot-password" element={<Forgot />} />
-              <Route path="reset-password" element={<ChnagePassword />} />
-              <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
-              <Route path="terms-privacy" element={<TermsPolicy />} />
-              <Route path="verification-email" element={<VerificationEmail />} />
-              <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
-            </Route>
+            />
             <Route
-              path="/admin"
+              path="register"
               element={
-                <PrivateRoute>
-                  <AdminScreens />
-                  {/* <Footer/> */}
-                </PrivateRoute>
+                <div className="bg-landing h-100 py-5">
+                  <SignUp />
+                </div>
               }
-            >
-              <Route path="user/list-view" element={<UserListView />} />
+            />
+            <Route path="forgot-password" element={<Forgot />} />
+            <Route path="reset-password" element={<ChnagePassword />} />
+            <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
+            <Route path="terms-privacy" element={<TermsPolicy />} />
+            <Route path="verification-email" element={<VerificationEmail />} />
+            <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
+          </Route>
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminScreens />
+                {/* <Footer/> */}
+              </PrivateRoute>
+            }
+          >
+            <Route path="user/list-view" element={<UserListView />} />
 
-              <Route path="user/company-names" element={<CompanyNames />} />
+            <Route path="user/company-names" element={<CompanyNames />} />
 
-              <Route
-                path="user/approval-request"
-                element={
-                  <React.Fragment>
-                    {/* {getUserRoles() == 'PMK Administrator' ? (
+            <Route
+              path="user/approval-request"
+              element={
+                <React.Fragment>
+                  {/* {getUserRoles() == 'PMK Administrator' ? (
                     <UserApprovalScreen />
                   ) : (
                     <Navigate to="/admin/user/list-view" />
                   )} */}
-                    <UserApprovalScreen />
-                  </React.Fragment>
-                }
-              />
-            </Route>
-            {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
-            <Route
-              path="news"
-              element={
-                <PrivateRoute>
-                  <NewsScreen />
-                  {/* <Footer/> */}
-                </PrivateRoute>
+                  <UserApprovalScreen />
+                </React.Fragment>
               }
             />
-            <Route
-              path="profile"
-              element={
-                <PrivateRoute>
-                  <ProfileSettingScreen />
-                  {/* <Footer/> */}
-                </PrivateRoute>
-              }
-            />
-            {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
+          </Route>
+          {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
+          <Route
+            path="news"
+            element={
+              <PrivateRoute>
+                <NewsScreen />
+                {/* <Footer/> */}
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <PrivateRoute>
+                <ProfileSettingScreen />
+                {/* <Footer/> */}
+              </PrivateRoute>
+            }
+          />
+          {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
 
-            {/* {(getUserRoles() == 'Technical Administrator') |
+          {/* {(getUserRoles() == 'Technical Administrator') |
           (getUserRoles() == 'PMK Administrator') ? (
             <Route path="*" element={<Navigate to="/user/list-view" />} />
           ) : (
             <Route path="*" element={<Navigate to="/profile" />} />
           )} */}
-          </Routes>
-        </div>
-   
+        </Routes>
+      </div>
     </React.Fragment>
   )
 }

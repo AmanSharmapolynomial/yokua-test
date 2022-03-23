@@ -60,7 +60,7 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="signIn-container">
+      <div className="signIn-container mx-auto col-4">
         <h3 className="container__heading mt-4">Sign In with E-mail</h3>
         <form className="forum" type="submit" onSubmit={SignIn}>
           <input
@@ -88,7 +88,7 @@ const SignIn = () => {
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             Incorrect Password
           </span>
-          <button type="submit" className="submit-btn" disabled={isLoading}>
+          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Sign In'}
           </button>
           <Link to="/auth/forgot-password" className="forgot-link">

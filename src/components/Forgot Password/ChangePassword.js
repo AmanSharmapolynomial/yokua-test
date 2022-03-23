@@ -58,7 +58,7 @@ const ChnagePassword = () => {
 
   return (
     <>
-      <div className="signIn-container">
+      <div className="signIn-container mx-auto col-4">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
           style={{
@@ -106,7 +106,7 @@ const ChnagePassword = () => {
               }
             }}
             type="button"
-            className="submit-btn"
+            className="submit-btn px-4"
           >
             Save
           </button>

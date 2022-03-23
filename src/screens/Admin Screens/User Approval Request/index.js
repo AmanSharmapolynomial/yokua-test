@@ -43,10 +43,7 @@ const UserApprovalScreen = () => {
   // refs
 
   const [contentRowApprovalTable, setContentRowApprovalTable] = useState([])
-  const [
-    contentRowDomainUserListTable,
-    setContentRowDomainUserListTable,
-  ] = useState([])
+  const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
   const [domainList, setDoaminList] = useState([])
 
   const [reloadTable, setReloadTable] = useState(true)
@@ -117,10 +114,7 @@ const UserApprovalScreen = () => {
       page_index: pageNoCall,
     }
 
-    const listDULdata = await API.post(
-      `admin/list_whitelisted_domain/${DULfilter}`,
-      payloadDUL
-    )
+    const listDULdata = await API.post(`admin/list_whitelisted_domain/${DULfilter}`, payloadDUL)
     const tempDULArr = []
     listDULdata.data.page_data.map((data, index) => {
       tempDULArr.push({
@@ -144,14 +138,7 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [
-    reloadTable,
-    DULfilter,
-    openARModal,
-    openDeleteDomainModal,
-    pageNoCall,
-    pageCallUserApproval,
-  ])
+  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
   const rowDisabledCriteria = row => row.type == 'notification'
 
@@ -287,10 +274,7 @@ const UserApprovalScreen = () => {
       }
       console.log(payload)
       // server is giving internal error
-      const afterAcceptMsg = await API.post(
-        'admin/user_approval/approve',
-        payload
-      )
+      const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterAcceptMsg)
       setReloadTable(!reloadTable)
     } else return
@@ -305,10 +289,7 @@ const UserApprovalScreen = () => {
     }
     console.log(payload)
     // server is giving internal error
-    const afterAcceptMsg = await API.post(
-      'admin/user_approval/approve',
-      payload
-    )
+    const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
     setOpenARModal(true)
@@ -321,10 +302,7 @@ const UserApprovalScreen = () => {
       domain_id: [data.id],
       delete_associated_users: false,
     }
-    const afterDeleteMsg = await API.post(
-      'admin/delete_whitelisted_domain',
-      payload
-    )
+    const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
     // toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
   }
@@ -346,10 +324,7 @@ const UserApprovalScreen = () => {
         msg: rejectMsg,
       }
       // server is giving internal error
-      const afterRejectMsg = await API.post(
-        'admin/user_approval/approve',
-        payload
-      )
+      const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterRejectMsg.data)
       setReloadTable(!reloadTable)
     }
@@ -384,10 +359,7 @@ const UserApprovalScreen = () => {
       )}
 
       {openDomainModal && (
-        <CreateNewDomain
-          saveAndExit={saveAndExitModal}
-          addDomain={createDomain}
-        />
+        <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
       )}
 
       {openDeleteDomainModal && (
@@ -460,7 +432,7 @@ const UserApprovalScreen = () => {
         </div>
       </div>
       <div className="domain-user-list">
-        <h3>Domain User List</h3>
+        <h2 className="h4">Domain User List</h2>
         <div className="domain-user-list-content">
           <div className="domain-list-content">
             <div
@@ -473,8 +445,7 @@ const UserApprovalScreen = () => {
                 <div
                   className="listed-domain"
                   style={{
-                    backgroundColor:
-                      DULfilter == data.id ? 'var(--bgColor4)' : 'white',
+                    backgroundColor: DULfilter == data.id ? 'var(--bgColor4)' : 'white',
                   }}
                   key={index}
                   onClick={() => {
@@ -524,7 +495,7 @@ const UserApprovalScreen = () => {
                 setOpenDomainModal(true)
               }}
             >
-              Create new domain
+              Add new domain
             </button>
           </div>
           <div className="domain-user-table-content">

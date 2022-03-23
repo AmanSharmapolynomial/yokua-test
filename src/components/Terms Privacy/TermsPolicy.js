@@ -5,7 +5,7 @@ import './style.css'
 const TermsPolicy = () => {
   const navigate = useNavigate()
   return (
-    <div className="signIn-container terms-privacy-container">
+    <div className="signIn-container col-4 terms-privacy-container mx-auto">
       <div className="container-head ">
         <h3 className="container__heading privacy-heading">Term of service and privacy policies</h3>
         <i
