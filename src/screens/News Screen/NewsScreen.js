@@ -197,7 +197,7 @@ const NewsScreen = () => {
                       if (categoryFilter) {
                         setShowFilterDropdown2(!showFilterDropdown2)
                       } else {
-                        toast('Please select the Category filter first.')
+                        toast.success('Please select the Category filter first.')
                       }
                     }}
                     ref={ref2}

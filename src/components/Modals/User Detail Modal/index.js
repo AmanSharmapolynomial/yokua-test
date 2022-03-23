@@ -38,6 +38,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   const [disabledInput, setDisabledInput] = useState(false)
 
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
 
   useEffect(() => {
     if (change == 'View') {
@@ -56,13 +57,13 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
       setFirstName(data.first_name)
       setLastName(data.last_name)
       setRole(data.role)
+      setSelectedOption({
+        value: data?.role ? data.role : 'User',
+        label: data?.role ? data.role : 'User',
+      })
       setCompany(data.company_name)
     }
   }, [])
-  const [selectedOption, setSelectedOption] = useState(null)
-  const handleChange = selectedOption => {
-    setSelectedOption(selectedOption)
-  }
 
   return (
     <div className="modal-background">
@@ -254,7 +255,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     email: email,
                     firstName: firstName,
                     lastName: lastName,
-                    role: role,
+                    role: selectedOption.value,
                     company_name: company,
                   }
                   if (password && password.length > 1) {

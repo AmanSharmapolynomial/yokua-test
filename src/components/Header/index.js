@@ -7,6 +7,7 @@ import Navbar from '../Navbar'
 import PhoneNav from '../Navbar/PhoneNav'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
+import { toast } from 'react-toastify'
 const Header = ({ isLogedIn, isAdmin }) => {
   // fetch state
   // const userDetails = useStoreState(state => state.userDetails)
@@ -59,6 +60,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 zIndex: '1000',
               }}
               onClick={() => {
+                toast.success('Log out successfully')
                 removeToken()
                 removeUserRole()
                 navigate('/auth/login')
