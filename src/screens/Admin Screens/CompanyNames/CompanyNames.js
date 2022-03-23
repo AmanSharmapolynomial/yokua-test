@@ -49,181 +49,77 @@ export default () => {
   }
 
   return (
-    // <div className="user-approval-screen">
-    //   <SecondaryHeading title={'Company Name'} />
-    //   <div className="domain-user-list-content">
-    //     <div className="domain-list-content " style={{ border: '2px solid black' }}>
-    //       <div
-    //         style={{
-    //           justifyContent: 'space-between',
-    //           display: 'flex',
-    //           flexDirection: 'row',
-    //           marginBottom: '10px',
-    //           backgroundColor: 'var(--bgColor2)',
-    //           padding: '15px 15px',
-    //         }}
-    //       >
-    //         <span style={{ color: 'white' }}>{'Company name'}</span>
-    //         <div></div>
-    //       </div>
-    //       {companyList.map(data => {
-    //         return (
-    //           <div
-    //             style={{
-    //               justifyContent: 'space-between',
-    //               display: 'flex',
-    //               flexDirection: 'row',
-    //               marginBottom: '10px',
-    //               padding: '5px 0px 5px 15px',
-    //               borderBottom: '2px solid black',
-    //             }}
-    //           >
-    //             <span>{data.company_name}</span>
-    //             <div style={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}>
-    //               <i
-    //                 className="fa-solid fa-trash mr-2"
-    //                 style={{
-    //                   cursor: 'pointer',
-    //                   color: '#CD2727',
-    //                 }}
-    //                 onClick={() => {
-    //                   // admin/delete_whitelisted_domain
-    //                 }}
-    //               />
-    //               <i class="fa-solid fa-caret-right"></i>
-    //               <DropdownButton
-
-    //                 style={{ marginRight: '10px', }}
-    //                 key={'end'}
-    //                 id={`dropdown-button-drop-start`}
-    //                 drop={'end'}
-    //                 variant="secondary"
-
-    //               >
-
-    //                 {data.company_divisions.map(div => (
-    //                   <>
-    //                     <Dropdown.Item eventKey="1" style={{border:'1px solid #000'}}>{div.sub_div_name}</Dropdown.Item>
-    //                     <Dropdown.Divider />
-    //                   </>
-    //                 ))}
-    //                 <Dropdown.Item eventKey="4">
-    //                   <div
-    //                     style={{
-    //                       display: 'flex',
-    //                       alignItems: 'center',
-    //                       justifyContent: 'center',
-    //                     }}
-    //                     onClick={() => {
-    //                       // OPEN COMPONENT
-    //                     }}
-    //                   >
-    //                     <img
-    //                       src={Plusicon}
-    //                       style={{
-    //                         width: '22px',
-    //                       }}
-    //                       className={'mr-2'}
-    //                     />
-    //                     {'Add'}
-    //                   </div>
-    //                 </Dropdown.Item>
-    //               </DropdownButton>
-    //             </div>
-    //           </div>
-    //         )
-    //       })}
-    //       <div
-    //         className="add_row"
-    //         onClick={() => {
-    //           // OPEN COMPONENT
-    //         }}
-    //       >
-    //         <img
-    //           src={Plusicon}
-    //           style={{
-    //             width: '22px',
-    //           }}
-    //           className={'mr-2'}
-    //         />
-    //         {'Add'}
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-
-    <div style={{ padding: '0.5rem 2.5rem' }}>
+    <div style={{ padding: '0.5rem 2.5rem', marginBottom: '' }}>
       <SecondaryHeading title={'Company Name'} />
-      <div class="col-4 mx-5 mt-5">
+
+      <div class="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
         <div class="row yk-h-bg py-3">
           <p class="d-flex align-items-center px-3 h6">Company name</p>
         </div>
-        <div class="yk-dd dropright">
-          <div
-            class="row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle p-3"
-            data-toggle="dropdown"
-          >
-            <div className="h6 text-align-center">YA</div>
-
-            <div class="">
-              <div className="d-flex align-items-center">
-                <i class="fa fa-trash" style={{ fontSize: '1rem' }} aria-hidden="true"></i>
-                <i class="fa fa-caret-right" aria-hidden="true"></i>
+        {companyList.map(data => (
+          <div class="yk-dd dropright">
+            <div class="row yk-data-row d-flex justify-content-between align-items-center  p-3">
+              <div className="h6 text-align-center yg-font-capitalize-only">
+                {data.company_name}
               </div>
-              <div class="yk-drop-m dropdown-menu">
-                <a
-                  class="d-flex justify-content-between align-items-center"
-                  style={{ fontSize: '1rem' }}
-                >
-                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
-                </a>
-                {/* <br /> */}
-                <hr />
-                <a
-                  class="d-flex justify-content-between align-items-center"
-                  style={{ fontSize: '1rem' }}
-                >
-                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
-                </a>
-                {/* <br /> */}
-                <hr />
-                <a
-                  class="d-flex justify-content-between align-items-center"
-                  style={{ fontSize: '1rem' }}
-                >
-                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
-                </a>
-                {/* <br /> */}
-                <hr />
-                <a
-                  class="d-flex justify-content-between align-items-center"
-                  style={{ fontSize: '1rem' }}
-                >
-                  abc<i class="fa fa-trash" aria-hidden="true" style={{ fontSize: '1rem' }}></i>
-                </a>
-                {/* <br /> */}
-                <hr />
-                <a
-                  class="d-flex justify-content-center align-items-center"
-                  style={{ fontSize: '0.8rem' }}
-                >
-                  <img
-                    src={Plusicon}
-                    style={{
-                      width: '1rem',
-                      marginRight: '0.2rem',
-                    }}
-                  />
-                  Add
-                </a>
-                {/* <br /> */}
+
+              <div>
+                <div className="d-flex align-items-center">
+                  <i
+                    className="fa fa-trash"
+                    style={{ fontSize: '1rem' }}
+                    aria-hidden="true"
+                    onClick={() => deleteCompany(data.parent_company_id)}
+                  ></i>
+                  <i
+                    className="fa fa-caret-right dropright dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{ zIndex: 1 }}
+                    aria-hidden="true"
+                  ></i>
+                </div>
+
+                <div class="yk-drop-m dropdown-menu">
+                  {data.company_divisions.map(item => (
+                    <>
+                      {/* row yk-data-row d-flex justify-content-between align-items-center dropdown-toggle p-3 */}
+                      <a
+                        class="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
+                        style={{ fontSize: '1rem', padding: '1.17rem', marginLeft: '10px' }}
+                      >
+                        {item.sub_div_name}
+                        <i
+                          class="fa fa-trash"
+                          aria-hidden="true"
+                          style={{ fontSize: '1rem' }}
+                          onClick={() => deleteCompany(item.id)}
+                        ></i>
+                      </a>
+                      <hr />
+                    </>
+                  ))}
+                  <a
+                    class="d-flex justify-content-center align-items-center"
+                    style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                  >
+                    <img
+                      src={Plusicon}
+                      style={{
+                        width: '1rem',
+                        marginRight: '0.2rem',
+                      }}
+                    />
+                    Add
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
 
-        <div class="row yk-data-row d-flex justify-content-center align-items-center px-3 py-2">
-          <div>
+        <div class="row yk-data-row d-flex justify-content-center align-items-center px-3">
+          <div style={{ padding: '1.17rem' }}>
             <img
               src={Plusicon}
               style={{
