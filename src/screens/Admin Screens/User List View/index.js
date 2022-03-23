@@ -200,7 +200,7 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
-                setModalTitle('Edit User Detail')
+                setModalTitle('Update user dialog')
 
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
@@ -368,13 +368,6 @@ const UserListView = () => {
             src={Filtermg}
             onClick={() => {
               setShowFilterDropdown(!showFilterDropdown)
-            }}
-          />
-
-          <img
-            src={Deleteimg}
-            onClick={() => {
-              showDeleteDropdown(!showDeleteDropdown)
             }}
           />
 
