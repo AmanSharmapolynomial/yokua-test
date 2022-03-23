@@ -488,7 +488,7 @@ const NewsItem = ({
       cat.isChecked = false
     })
     setSubCategory(tempCat)
-    if (data?.sub_category.length > 0) {
+    if (data?.sub_category?.length > 0) {
       data.sub_category.map(x => {
         updatedSubcategpry
           .filter(item => item.category_id == categoryID)
