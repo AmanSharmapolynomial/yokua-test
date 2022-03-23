@@ -165,7 +165,7 @@ const NewsItem = ({
 
   const saveAndExitModal = () => {
     setDeleteModal(false)
-    setEditView('')
+    setEditView(false)
     setNewsUnderEdit(false)
     // document.body.style.overflow = 'scroll'
   }
@@ -318,16 +318,13 @@ const NewsItem = ({
             refreshPage()
             toast.success(response.data.message)
             if (!changeType) {
-              setNewsUnderEdit(false)
             } else if (changeType == 'Add') {
               // window.location.reload()
               saveAndExitAdd()
-              setNewsUnderEdit(false)
               setEditView(false)
             }
           } else {
             setEditView(false)
-
             setNewsUnderEdit(false)
             toast.error(response.data.message)
           }
@@ -342,7 +339,6 @@ const NewsItem = ({
             toast.error('Something went wrong')
           }
           setIsLoading(false)
-          setNewsUnderEdit(false)
         })
     }
   }
@@ -883,8 +879,10 @@ const NewsItem = ({
                 <>
                   {data && data.sub_category && (
                     <select>
-                      {data.sub_category.map(item => (
-                        <option className="news-info-text">{item.sub_category_name}</option>
+                      {data.sub_category.map((item, index) => (
+                        <option selected={index == 0} value={item.id} className="news-info-text">
+                          {item.sub_category_name}
+                        </option>
                       ))}
                     </select>
                   )}
