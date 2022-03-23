@@ -4,12 +4,7 @@ import PrimaryHeading from '../../components/Primary Headings/index'
 
 import moment from 'moment'
 import API from '../../utils/api'
-import {
-  getToken,
-  getUserRoles,
-  removeToken,
-  removeUserRole,
-} from '../../utils/token'
+import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import validator from 'validator'
@@ -32,10 +27,7 @@ const ProfileSettingScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [disabledInputAddress, setDisabledInputAddress] = useState(true)
   const [disabledInputPassword, setDisabledInputPassword] = useState(true)
-  const [
-    disabledInputPasswordRetype,
-    setDisabledInputPasswordRetype,
-  ] = useState(true)
+  const [disabledInputPasswordRetype, setDisabledInputPasswordRetype] = useState(true)
 
   const [editMode1, setEditMode1] = useState(false)
   const [editMode2, setEditMode2] = useState(false)
@@ -59,17 +51,14 @@ const ProfileSettingScreen = () => {
     const backendData = await API.get('/auth/profile_settings/')
     setProfileData(backendData.data)
     _setProfilePicture(
-      backendData.data.basic_profile?.avatar
-        ? backendData.data.basic_profile?.avatar
-        : placeholder
+      backendData.data.basic_profile?.avatar ? backendData.data.basic_profile?.avatar : placeholder
     )
     setIsLoading(false)
   }, [reloadData])
 
   useEffect(() => {
     nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
-    emailRef.current.value =
-      profileData.basic_profile?.email || 'tech@yokogawa.com'
+    emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
     addressRef.current.value = profileData.basic_profile?.company_name
     const tempCheckedArr = []
     profileData.news_letter?.map((nl, index) => {
@@ -96,10 +85,7 @@ const ProfileSettingScreen = () => {
       email: [email],
     }
     // /admin/delete_user
-    const afterDeleteMsg = await API.post(
-      '/admin/delete_user',
-      payloadDeleteAccount
-    )
+    const afterDeleteMsg = await API.post('/admin/delete_user', payloadDeleteAccount)
     console.log(afterDeleteMsg)
     removeToken()
     removeUserRole()
@@ -137,12 +123,9 @@ const ProfileSettingScreen = () => {
           data={profileData.basic_profile?.email}
         />
       )}
-      <div className="profile-setting-container">
-        <PrimaryHeading
-          title={'Profile settings'}
-          backgroundImage={'yk-back-image-profile'}
-        />
-        <div className="profile-setting">
+      <div className="profile-setting-container pb-5">
+        <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
+        <div className="profile-setting px-5">
           <div className="profile-setting__info">
             <div>
               <input
@@ -169,15 +152,15 @@ const ProfileSettingScreen = () => {
             <div className="profile-setting__info_name">
               <h4 className="name">{profileData.basic_profile?.full_name}</h4>
               <p className="details">
-                {`FCP user since ${moment(
-                  profileData.basic_profile?.date_joined
-                ).format('MMM Do YYYY')}`}{' '}
+                {`FCP user since ${moment(profileData.basic_profile?.date_joined).format(
+                  'MMM Do YYYY'
+                )}`}{' '}
               </p>
             </div>
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">BASIC PROFILE</h1>
+            <h1 className="profile-setting__heading py-3">BASIC PROFILE</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 {/* src\assets\Icon ionic-ios-person.png */}
@@ -271,7 +254,7 @@ const ProfileSettingScreen = () => {
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">CHANGE PASSWORD</h1>
+            <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 <img
@@ -346,9 +329,7 @@ const ProfileSettingScreen = () => {
                 <i
                   className="fa-solid fa-pen-to-square edit"
                   style={{
-                    color: disabledInputPasswordRetype
-                      ? 'var(--bgColor2)'
-                      : 'grey',
+                    color: disabledInputPasswordRetype ? 'var(--bgColor2)' : 'grey',
                   }}
                   onClick={() => {
                     setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
@@ -358,9 +339,7 @@ const ProfileSettingScreen = () => {
             </div>
           </div>
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">
-              SALES NEWS BY ROTA YOKOGAWA
-            </h1>
+            <h1 className="profile-setting__heading py-3">SALES NEWS BY ROTA YOKOGAWA</h1>
             <div className="sales-news_background">
               {isLoading ? (
                 <span>Loading...</span>
@@ -416,10 +395,7 @@ const ProfileSettingScreen = () => {
                       full_name: name,
                     }
 
-                    const afterUpdateMsg = await API.post(
-                      '/auth/profile_settings/',
-                      payloadName
-                    )
+                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
                     toast.success(afterUpdateMsg.data.message)
                   }
                 } else {
@@ -434,18 +410,13 @@ const ProfileSettingScreen = () => {
                     const payloadEmail = {
                       email,
                     }
-                    const afterUpdateMsg = await API.post(
-                      '/auth/profile_settings/',
-                      payloadEmail
-                    )
+                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
                     console.log(afterUpdateMsg.data.message)
                     toast.success(afterUpdateMsg.data.message)
                   }
                 } else {
                   if (editMode2) {
-                    toast.error(
-                      'Please enter email in proper format - abc@xyz.com'
-                    )
+                    toast.error('Please enter email in proper format - abc@xyz.com')
                   }
                 }
                 if (address && address != '') {
@@ -504,10 +475,7 @@ const ProfileSettingScreen = () => {
                 const payloadNews = {
                   news_letter: tempNLArray,
                 }
-                const afterUpdateNewsMsg = await API.post(
-                  'auth/profile_settings/',
-                  payloadNews
-                )
+                const afterUpdateNewsMsg = await API.post('auth/profile_settings/', payloadNews)
                 toast.success(afterUpdateNewsMsg.data.message)
                 setReloadData(!reloadData)
               }}
@@ -518,7 +486,7 @@ const ProfileSettingScreen = () => {
 
           <div className="events_trainings">
             <div className="profile-setting__basic-profile profile-setting__box registered_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 You are registered for the following events & trainings
               </h1>
               {isLoading ? (
@@ -531,9 +499,7 @@ const ProfileSettingScreen = () => {
                       <div className="training_text">
                         <span>{training.training_topic}</span>
                         <span>{training.date}</span>
-                        <span>
-                          Latest cancellation date {training.cancellation_date}
-                        </span>
+                        <span>Latest cancellation date {training.cancellation_date}</span>
                         <span>{training.address}</span>
                       </div>
 
@@ -544,26 +510,24 @@ const ProfileSettingScreen = () => {
               )}
             </div>
             <div className="profile-setting__basic-profile profile-setting__box last_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 Last participated event
               </h1>
               {isLoading ? (
                 <span>Loading...</span>
               ) : (
                 <div className="profile-setting__basic-profile-edit">
-                  {profileData.participated_trainings?.map(
-                    (training, index) => (
-                      <div className="edit_training" key={index}>
-                        <i className="fa-solid fa-calendar-check" />
-                        <div className="training_text">
-                          <span>{training.training_name}</span>
-                          <span>{training.date}</span>
-                        </div>
-
-                        <i className="fa-solid fa-pen-to-square edit" />
+                  {profileData.participated_trainings?.map((training, index) => (
+                    <div className="edit_training" key={index}>
+                      <i className="fa-solid fa-calendar-check" />
+                      <div className="training_text">
+                        <span>{training.training_name}</span>
+                        <span>{training.date}</span>
                       </div>
-                    )
-                  )}
+
+                      <i className="fa-solid fa-pen-to-square edit" />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>

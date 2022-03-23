@@ -143,11 +143,11 @@ const SignUp = () => {
   }
 
   return (
-    <div className="signIn-container">
+    <div className="signIn-container mx-auto col-4">
       <div className="container-head">
-        <h3 className="container__heading">
+        <h3 className="container__heading col w-100 text-align-center text-center">
           <i
-            className="fa-solid fa-arrow-left back-arrow-btn mr-2"
+            className="fa-solid fa-arrow-left back-arrow-btn float-left"
             onClick={() => {
               navigate('/auth/login')
             }}
@@ -222,8 +222,7 @@ const SignUp = () => {
             overflow: 'visible',
           }}
         >
-          <Dropdown.Toggle 
-       
+          <Dropdown.Toggle
             size={'sm'}
             className="yg-custom-dropdown"
             color="red"
@@ -232,8 +231,7 @@ const SignUp = () => {
             {selectedTopic}
           </Dropdown.Toggle>
 
-          <Dropdown.Menu style={{width: '60%', marginLeft:'124px'}}>
-          
+          <Dropdown.Menu style={{ width: '60%', marginLeft: '124px' }}>
             {category.map((cat, index) => (
               <Dropdown.Item
                 key={index}
@@ -284,7 +282,7 @@ const SignUp = () => {
           <span className="checkbox-text">Accept the term and conditions</span>
         </div>
 
-        <button type="submit" className="submit-btn">
+        <button type="submit" className="submit-btn px-4">
           {isLoading ? 'Loading...' : 'Register'}
         </button>
       </form>

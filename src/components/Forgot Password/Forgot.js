@@ -30,7 +30,7 @@ const Forgot = () => {
   return (
     <>
       <div
-        className="signIn-container"
+        className="signIn-container mx-auto col-4"
         style={{
           marginBottom: '320px',
         }}
@@ -61,7 +61,7 @@ const Forgot = () => {
             placeholder="E-Mail"
           />
 
-          <button type="submit" className="submit-btn" disabled={isLoading}>
+          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Send Link'}
           </button>
         </form>

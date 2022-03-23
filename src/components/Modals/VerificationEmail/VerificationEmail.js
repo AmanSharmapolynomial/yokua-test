@@ -44,7 +44,7 @@ export default () => {
   return (
     <>
       <div
-        className="signIn-container "
+        className="signIn-container mx-auto col-4"
         style={{
           position: 'relative',
           width: '40rem',
