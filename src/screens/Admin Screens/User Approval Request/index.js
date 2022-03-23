@@ -163,7 +163,7 @@ const UserApprovalScreen = () => {
     },
     {
       name: 'New E-mail id',
-      selecter: row => row.new_email,
+      selector: row => row.new_email,
       grow: 2,
       minWidth: '12rem',
     },

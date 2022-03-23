@@ -881,11 +881,13 @@ const NewsItem = ({
                 </>
               ) : (
                 <>
-                  {data &&
-                    data.sub_category &&
-                    data.sub_category.map(item => (
-                      <span className="news-info-text">{item.sub_category_name}</span>
-                    ))}
+                  {data && data.sub_category && (
+                    <select>
+                      {data.sub_category.map(item => (
+                        <option className="news-info-text">{item.sub_category_name}</option>
+                      ))}
+                    </select>
+                  )}
                 </>
               )}
             </div>

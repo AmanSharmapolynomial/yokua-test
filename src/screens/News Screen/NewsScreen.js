@@ -95,6 +95,7 @@ const NewsScreen = () => {
     }
     API.post('/news/mark_read', markAsPayload)
       .then(data => {
+        setCheckListActivated(false)
         getAllNews(payload)
       })
       .catch(error => {
