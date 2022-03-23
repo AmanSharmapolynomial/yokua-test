@@ -1,17 +1,17 @@
-.footer{
-    width: 100%;
-    background-color: #004F9B;
-    padding: 10px 0px;
-    position: fixed;
-    z-index: 5000;
-    bottom: 0;
+.footer {
+  width: 100%;
+  background-color: #004f9b;
+  padding: 10px 0px;
+  /* position: fixed;
+  z-index: 5000;
+  bottom: 0; */
 }
-.footerBtn{
-    justify-content: center;
-    display: flex;
+.footerBtn {
+  justify-content: center;
+  display: flex;
 }
-.footerBtn .btn{
-    background-color: #FFF!important;
-    color: #000!important;
-    font-weight: 600;
+.footerBtn .btn {
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: 600;
 }

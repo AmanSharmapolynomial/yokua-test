@@ -239,7 +239,7 @@
 }
 
 .yk-dropdown-holder {
-  padding: 0 !important;
+  padding: 0rem 1rem !important;
   /* width: 100%; */
   position: relative !important;
   z-index: 100;
@@ -252,6 +252,7 @@
   border-color: #000 !important;
   width: 100% !important;
   border: none !important;
+  padding-inline-start: 0rem !important;
 }
 
 .yg-font-size {
@@ -259,7 +260,7 @@
   text-transform: capitalize;
   width: auto !important;
   padding: 4px !important;
-  margin-left: 25px !important;
+  /* margin-left: 25px !important; */
 }
 
 .yk-dropdown-holder-subtopic {

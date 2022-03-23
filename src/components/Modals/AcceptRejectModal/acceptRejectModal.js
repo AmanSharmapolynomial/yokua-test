@@ -15,7 +15,7 @@ const AcceptRejectModal = ({
     <div className="modal-background">
       <div className="modal-wrapper">
         <h3 className="modal-heading">
-          {change == 'Rejected' ? 'Rejection Request' : 'Request Approval'}
+          {change == 'Rejected' ? 'Request Denied' : 'Approval E-Mail change request'}
         </h3>
         <div
           className="modal-content domain-modal"
@@ -28,7 +28,7 @@ const AcceptRejectModal = ({
               <input
                 type="text"
                 className="domain-input"
-                placeholder="Reason to reject"
+                placeholder="maximun 255 character support"
                 onChange={e => setMsg(e.target.value)}
               />
             </div>

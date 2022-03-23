@@ -49,7 +49,7 @@ const DeleteModal = ({ req, saveAndExit, runDelete, title, data }) => {
 
 // export default DeleteModal
 
-function Example({ show, setShow, req, saveAndExit, runDelete, title, data }) {
+function Example({ show, setShow, req, saveAndExit, runDelete, title, data, isBold }) {
   // const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false)
@@ -74,6 +74,7 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data }) {
             justifyContent: 'center',
             alignItems: 'center',
             borderBottom: '0',
+            fontWeight: isBold ? '600' : 'normal',
           }}
         >
           {title}

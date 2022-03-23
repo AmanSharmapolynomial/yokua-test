@@ -1,17 +1,17 @@
-.filter-and-read-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 3rem 4rem 0rem 1rem;
+.filter-and-read-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 4rem 0rem 1rem;
 }
 
-.news-container-list{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0rem 1rem 3rem 1rem;
+.news-container-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0rem 1rem 1rem 1rem;
 }
 
-.archived-filter{
-    margin: 1rem 1rem 7rem 0rem;
+.archived-filter {
+  margin: 1rem 1rem 7rem 0rem;
 }

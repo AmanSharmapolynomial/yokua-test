@@ -239,7 +239,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
         {change != 'View' && (
           <div className="domain-modal-cta">
             <button
-              className="cancel-domain btn"
+              className="cancel-domain btn col-6 text-center"
               onClick={() => {
                 saveAndExit()
               }}
@@ -247,7 +247,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               Cancel
             </button>
             <button
-              className="btn"
+              className="btn col-6 text-center"
               onClick={() => {
                 if (email != '' && email && firstName && lastName) {
                   const saveData = {

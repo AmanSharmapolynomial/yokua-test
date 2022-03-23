@@ -14,6 +14,7 @@
 .profile-setting-container {
   width: 100%;
   margin-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .profile-setting__info {
@@ -196,4 +197,9 @@ button > .delete-btn {
 .ant-pagination-item-link {
   display: grid !important;
   place-items: center !important ;
+}
+.add_row {
+  width: 95%;
+  background: #eeeeee;
+  padding: 2rem 0rem !important;
 }

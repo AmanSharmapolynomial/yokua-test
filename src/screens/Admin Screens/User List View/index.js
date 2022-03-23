@@ -508,14 +508,14 @@ const UserListView = () => {
         {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
           <div
             className="add_row"
-            style={{ fontSize: '0.8rem' }}
+            style={{ fontSize: '1rem', background: 'none' }}
             onClick={() => {
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)
-              setModalTitle('Add User Detail')
+              setModalTitle('Add/Update user dialog')
             }}
           >
             <img

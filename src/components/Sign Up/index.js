@@ -231,7 +231,9 @@ const SignUp = () => {
             {selectedTopic}
           </Dropdown.Toggle>
 
-          <Dropdown.Menu style={{ width: '60%', marginLeft: '124px' }}>
+          <Dropdown.Menu
+            style={{ width: '80%', marginLeft: '124px', maxHeight: '14rem', overflowY: 'scroll' }}
+          >
             {category.map((cat, index) => (
               <Dropdown.Item
                 key={index}
@@ -253,7 +255,7 @@ const SignUp = () => {
               </Dropdown.Item>
             )}
             {isTopicAdd && (
-              <InputGroup className=" yg-font-size-registrtion p-1 ">
+              <InputGroup className="yg-font-size-registrtion p-1 ">
                 <FormControl
                   className="yg-font-size"
                   placeholder="Company"

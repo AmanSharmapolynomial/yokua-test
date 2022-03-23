@@ -62,7 +62,14 @@ const Routing = () => {
                 </div>
               }
             />
-            <Route path="forgot-password" element={<Forgot />} />
+            <Route
+              path="forgot-password"
+              element={
+                <div className="bg-landing h-100 py-5 center">
+                  <Forgot />
+                </div>
+              }
+            />
             <Route path="reset-password" element={<ChnagePassword />} />
             <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />

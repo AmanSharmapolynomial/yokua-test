@@ -330,7 +330,7 @@ const NewsScreen = () => {
                     width: '22px',
                     marginRight: '12px',
                   }}
-                />{' '}
+                />
                 Add
               </div>
             )}

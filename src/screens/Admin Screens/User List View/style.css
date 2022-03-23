@@ -94,7 +94,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin-bottom: 4rem;
+  /* margin-bottom: 4rem; */
 }
 
 .ant-pagination-item-link {

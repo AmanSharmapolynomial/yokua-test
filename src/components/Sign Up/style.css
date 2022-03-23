@@ -67,13 +67,16 @@
   width: auto !important;
   text-transform: capitalize;
 }
-
+.yg-custom-dropdown {
+  text-transform: capitalize;
+}
 .yg-font-size-registrtion {
   width: auto !important;
   margin: 0px !important;
 }
 .yg-font-size-registrtion input {
   margin: 0 !important;
+  margin-right: 1rem !important;
 }
 
 .input-group {

@@ -319,7 +319,7 @@ const NewsItem = ({
           console.log('Error', response)
           if (response.status != 200) {
             // toast.error(response?.message)
-            toast.error('Something went wrong')
+            toast.error('Session expired')
           }
           setIsLoading(false)
           setNewsUnderEdit(false)
@@ -389,6 +389,7 @@ const NewsItem = ({
         setShow={setDeleteModal}
         req={'News'}
         title={'Are you sure you want to delete this news?'}
+        isBold={true}
         saveAndExit={saveAndExitModal}
         runDelete={deleteNews}
         data={deleteNewsArr}
@@ -463,7 +464,7 @@ const NewsItem = ({
                     autoClose={'outside'}
                     className="yk-dropdown-holder"
                     style={{
-                      overflow: 'visible',
+                      width: '12rem',
                     }}
                   >
                     <Dropdown.Toggle
@@ -471,13 +472,18 @@ const NewsItem = ({
                       className="yg-custom-dropdown"
                       color="red"
                       id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
                       {selectedTopic}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu
                       style={{
-                        height: '200px',
+                        maxHeight: '14rem',
                         overflowY: 'scroll',
                       }}
                     >
@@ -493,8 +499,7 @@ const NewsItem = ({
                       <Dropdown.Divider />
                       {!isTopicAdd && (
                         <button
-                          style={{ margin: '0px 50px' }}
-                          id="mybtn"
+                          style={{ marginLeft: '2rem' }}
                           className="btn yg-font-size"
                           onClick={() => {
                             setToggleDropDown(1)
@@ -568,17 +573,30 @@ const NewsItem = ({
                         ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
                         : 'yk-dropdown-holder mt-3'
                     }
+                    style={{
+                      width: '12rem',
+                    }}
                   >
                     <Dropdown.Toggle
                       size={'sm'}
                       className="yg-custom-dropdown"
                       color="red"
                       id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
                       {selectedSubTopic}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
                       {subCategory
                         .filter(item => item.category_id == categoryID)
                         .map((cat, index) => (
@@ -593,7 +611,7 @@ const NewsItem = ({
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
-                          style={{ marginLeft: '33px' }}
+                          style={{ marginLeft: '1.2rem' }}
                           id="mybtn"
                           className="btn yg-font-size "
                           onClick={() => {
