@@ -295,12 +295,11 @@ const NewsItem = ({
           if (response.status == 200) {
             setNewsUnderEdit(false)
             setEditView(false)
-
+            refreshPage()
             toast.success(response.data.message)
             if (!changeType) {
               setNewsUnderEdit(false)
             } else if (changeType == 'Add') {
-              refreshPage()
               // window.location.reload()
               saveAndExitAdd()
               setNewsUnderEdit(false)
