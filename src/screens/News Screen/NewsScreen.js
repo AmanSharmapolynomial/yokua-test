@@ -34,9 +34,10 @@ const NewsScreen = () => {
   const [readNews, setNewsRead] = useState([])
 
   const _updateNewsRead = id => {
+    debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
-    if (isAlreadyAdded > 0) {
+    if (isAlreadyAdded > -1) {
       updatedReadNews.splice(isAlreadyAdded, 1)
     } else {
       updatedReadNews.push(id)
@@ -377,15 +378,4 @@ const NewsScreen = () => {
   )
 }
 
-
-
-
-
-
-
-
-
-
 export default NewsScreen
-
-

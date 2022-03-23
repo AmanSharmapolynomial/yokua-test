@@ -537,11 +537,29 @@ const NewsItem = ({
               // setReadState(false)
             }}
           >
-            <div
-              className="read-dot"
-              onClick={() => _getNewsReadColor() && setCheckListActivated(true)}
-              style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
-            ></div>
+            {isCheckListActivated && !data?.news_read && (
+              <>
+                <input
+                  style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
+                  type="checkbox"
+                  checked={readNews.includes(data.id) ? true : false}
+                  onChange={() => updateNewsRead()}
+                />
+              </>
+            )}
+            {isCheckListActivated && data?.news_read && (
+              <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+            )}
+
+            {!isCheckListActivated && (
+              <div
+                className="read-dot"
+                onClick={() =>
+                  _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
+                }
+                style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
+              ></div>
+            )}
           </div>
 
           <div className="news-img">
