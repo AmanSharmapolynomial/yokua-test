@@ -6,6 +6,7 @@ import { removeToken, removeUserRole } from '../../utils/token'
 import Navbar from '../Navbar'
 import PhoneNav from '../Navbar/PhoneNav'
 import './style.css'
+import Yokogawa from '../../assets/Yokogawa png.png'
 const Header = ({ isLogedIn, isAdmin }) => {
   // fetch state
   // const userDetails = useStoreState(state => state.userDetails)
@@ -29,8 +30,9 @@ const Header = ({ isLogedIn, isAdmin }) => {
         <div className="header-container px-4">
           <div className="header__logo">
             {/* Logo */}
-            <span className="logo__name">YOKOGAWA</span>
-            <span className="logo__tagline">Co-innovating tommorow</span>
+            <img src={Yokogawa} alt="logo" />
+            {/* <span className="logo__name">YOKOGAWA</span>
+            <span className="logo__tagline">Co-innovating tommorow</span> */}
           </div>
           <div className="header__title">FLOW CENTER PAGES</div>
           {isLogedIn && (
