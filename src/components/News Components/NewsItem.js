@@ -25,6 +25,8 @@ const NewsItem = ({
   setCategoryFilter,
   isAnyNewsUnderEdit,
   setNewsUnderEdit,
+  setCheckListActivated,
+  isCheckListActivated,
 }) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
@@ -66,6 +68,7 @@ const NewsItem = ({
   const topicRef = useRef()
 
   const handleSelectTopic = cat => {
+    setAllSelectChecked(false)
     // setToggleDropDown(0)
     topicRef.current.click()
     setSelectedTopic(cat.category_name)
@@ -82,7 +85,6 @@ const NewsItem = ({
     }
   }
   const handleSelectSubTopic = cat => {
-    subTopicRef.current.click()
     setToggleDropDown(0)
     setSelectedSubTopic(cat.sub_category_name)
     setSubCategoryID(cat.id)
@@ -90,10 +92,11 @@ const NewsItem = ({
 
   const _handleEditView = () => {
     if (!isAnyNewsUnderEdit) {
+      _checkBoxEditView()
       setNewsUnderEdit(true)
       setEditView(true)
       setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
-      setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
+      // setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
       setCategoryID(data.category_id)
       setSubCategoryID(data.sub_category_id)
     } else {
@@ -196,6 +199,7 @@ const NewsItem = ({
       id: Math.random(10000, 200000),
       sub_category_name: categoryName,
       category_id: parentCatId,
+      isChecked: true,
     }
     setSubCategory([...subCategory, tempSubCatObject])
     handleSelectSubTopic(tempSubCatObject)
@@ -255,10 +259,26 @@ const NewsItem = ({
   }
 
   const uploadNewNews = (catId, subCatId) => {
+    const subCategoryIds = []
+    if (isNewSubCatAdded) {
+      subCategoryIds.push(subCatId)
+    }
+    subCategory
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (cat.isChecked) {
+          subCategoryIds.push(cat.id)
+        }
+      })
+
+    if (isNewSubCatAdded) {
+      subCategoryIds.pop()
+    }
+
     if (!catId || catId == 0) {
       toast.error('Please select Topic')
       return
-    } else if (!subCatId || subCatId == 0) {
+    } else if (subCategoryIds.length < 1) {
       toast.error('Please select Sub Topic')
       return
     } else {
@@ -266,7 +286,7 @@ const NewsItem = ({
         news_id: dataID || null,
         category_id: catId,
         description: newsDesc,
-        sub_category_id: [subCatId],
+        sub_category_id: subCategoryIds,
       })
 
       const fileDetails = fileInputRef?.current?.files[0]
@@ -328,6 +348,7 @@ const NewsItem = ({
   }
 
   const uploadNews = async () => {
+    debugger
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
       return
@@ -364,7 +385,7 @@ const NewsItem = ({
           }
         )
       } else {
-        uploadNewNews(categoryID, subCategoryID ? subCategoryID : 0)
+        uploadNewNews(categoryID, 0)
       }
     }
   }
@@ -382,8 +403,110 @@ const NewsItem = ({
     return true
   }
 
+  const [isAllSelectChecked, setAllSelectChecked] = useState(false)
+  const _handleAllChecked = isChecked => {
+    setAllSelectChecked(isChecked)
+    const updatedSubcategpry = subCategory
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        cat.isChecked = isChecked
+      })
+
+    setSubCategory(updatedSubcategpry)
+  }
+
+  const _handleChecked = id => {
+    const updatedSubcategpry = subCategory
+    let AllSelected = true
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (cat.id == id) {
+          cat.isChecked = !cat.isChecked
+          if (!cat.isChecked) {
+            setAllSelectChecked(false)
+          }
+        }
+
+        if (!cat.isChecked) {
+          AllSelected = false
+        }
+      })
+
+    setSubCategory(updatedSubcategpry)
+
+    if (AllSelected) {
+      setAllSelectChecked(true)
+    }
+  }
+
+  useEffect(() => {
+    _checkAllChecked()
+  }, [subCategory, isAllSelectChecked])
+
+  useEffect(() => {
+    _checkBoxEditView()
+  }, [editView])
+
+  const _checkAllChecked = () => {
+    const updatedSubcategpry = subCategory
+    let AllSelected = true
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (!cat.isChecked) {
+          AllSelected = false
+        }
+      })
+
+    if (AllSelected) {
+      setAllSelectChecked(true)
+    } else {
+      setAllSelectChecked(false)
+    }
+  }
+
+  const _getSelectedItems = () => {
+    let commaSeparated = ''
+    subCategory
+      .filter(item => item.category_id == categoryID && item.isChecked)
+      .forEach((cat, index) => {
+        commaSeparated += ' ' + cat.sub_category_name + ','
+      })
+    if (commaSeparated != '') {
+      return commaSeparated.slice(0, -1)
+    } else {
+      return 'Select Sub Category'
+    }
+  }
+
+  const _checkBoxEditView = () => {
+    const updatedSubcategpry = subCategory
+    const tempCat = subCategory
+    tempCat.forEach((cat, index) => {
+      cat.isChecked = false
+    })
+    setSubCategory(tempCat)
+    if (data?.sub_category?.length > 0) {
+      data.sub_category.map(x => {
+        updatedSubcategpry
+          .filter(item => item.category_id == categoryID)
+          .forEach((cat, index) => {
+            if (x.sub_category_id == cat.id) {
+              cat.isChecked = true
+            }
+          })
+      })
+    }
+
+    setSubCategory(() => [...updatedSubcategpry])
+  }
+
   return (
     <React.Fragment>
+      <div style={{ width: '400px' }}></div>
+
       <DeleteModal
         show={deleteModal}
         setShow={setDeleteModal}
@@ -415,11 +538,29 @@ const NewsItem = ({
               // setReadState(false)
             }}
           >
-            <div
-              className="read-dot"
-              onClick={() => updateNewsRead()}
-              style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
-            ></div>
+            {isCheckListActivated && !data?.news_read && (
+              <>
+                <input
+                  style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
+                  type="checkbox"
+                  checked={readNews.includes(data.id) ? true : false}
+                  onChange={() => updateNewsRead()}
+                />
+              </>
+            )}
+            {isCheckListActivated && data?.news_read && (
+              <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+            )}
+
+            {!isCheckListActivated && (
+              <div
+                className="read-dot"
+                onClick={() =>
+                  _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
+                }
+                style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
+              ></div>
+            )}
           </div>
 
           <div className="news-img">
@@ -559,59 +700,30 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  <Dropdown
-                    ref={subTopicRef}
-                    // show={toggleDropDown == 2}
-                    onClick={
-                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
-                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
-                    }
-                    size="sm"
-                    autoClose={'outside'}
-                    className={
-                      toggleDropDown == 1
-                        ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
-                        : 'yk-dropdown-holder mt-3'
-                    }
-                    style={{
-                      width: '12rem',
-                    }}
-                  >
-                    <Dropdown.Toggle
-                      size={'sm'}
-                      className="yg-custom-dropdown"
-                      color="red"
-                      id="dropdown-basic"
-                      style={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {selectedSubTopic}
-                    </Dropdown.Toggle>
+                  {/* <div class="dropdown yk-dropdown-holder">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                      Dropdown button
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                    <Dropdown.Menu
-                      style={{
-                        maxHeight: '14rem',
-                        overflowY: 'scroll',
-                      }}
-                    >
                       {subCategory
                         .filter(item => item.category_id == categoryID)
                         .map((cat, index) => (
-                          <Dropdown.Item
-                            key={index}
-                            className="yg-font-size"
-                            onClick={() => handleSelectSubTopic(cat)}
-                          >
+
+                          <label className='yg-font-size' style={{ display: 'flex', alignItems: 'center', justifyItems: 'center' }}>
+                            <input
+                              style={{ marginRight: '8px' }}
+                              type="checkbox"
+                              defaultChecked={false}
+                              onChange={() => setChecked(!checked)}
+                            />
                             {cat.sub_category_name}
-                          </Dropdown.Item>
+                          </label>
+
                         ))}
-                      <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
-                          style={{ marginLeft: '1.2rem' }}
+                          style={{ marginLeft: '33px' }}
                           id="mybtn"
                           className="btn yg-font-size "
                           onClick={() => {
@@ -648,6 +760,109 @@ const NewsItem = ({
                           </Button>
                         </InputGroup>
                       )}
+
+
+                    </div>
+                  </div> */}
+
+                  <Dropdown
+                    ref={subTopicRef}
+                    // show={toggleDropDown == 2}
+                    onClick={
+                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
+                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    }
+                    size="sm"
+                    autoClose={'outside'}
+                    className={
+                      toggleDropDown == 1
+                        ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
+                        : 'yk-dropdown-holder mt-3'
+                    }
+                    style={{
+                      width: '12rem',
+                    }}
+                  >
+                    <Dropdown.Toggle
+                      size={'sm'}
+                      className="yg-custom-dropdown"
+                      color="red"
+                      id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {_getSelectedItems()}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      {subCategory
+                        .filter(item => item.category_id == categoryID)
+                        .map((cat, index) => (
+                          <label
+                            className="yg-font-size"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyItems: 'center',
+                            }}
+                          >
+                            <input
+                              style={{ marginRight: '8px' }}
+                              type="checkbox"
+                              checked={cat.isChecked}
+                              onChange={() => _handleChecked(cat.id)}
+                            />
+                            {cat.sub_category_name}
+                          </label>
+                        ))}
+                      <Dropdown.Divider />
+                      {!isSubTopicAdd && (
+                        <button
+                          style={{ marginLeft: '1.2rem' }}
+                          id="mybtn"
+                          className="btn yg-font-size "
+                          onClick={() => {
+                            setSubTopicAdd(true)
+                          }}
+                        >
+                          Add Sub-Topic
+                        </button>
+                      )}
+                      {isSubTopicAdd && (
+                        <InputGroup className="mb-3 yg-font-size p-1 ">
+                          <FormControl
+                            className="yg-font-size"
+                            placeholder="Sub-Category"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={newSubTopicName}
+                            onChange={e => SetNewSubTopicName(e.target.value)}
+                          />
+                          <Button
+                            onClick={() => {
+                              setSubTopicAdd(false)
+                              if (newSubTopicName.length != 0) {
+                                AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              } else {
+                                toast.error('Please provide Sub Category title')
+                              }
+                            }}
+                            variant="outline-secondary"
+                            className="yg-font-size"
+                            id="button-addon2"
+                          >
+                            Save
+                          </Button>
+                        </InputGroup>
+                      )}
                     </Dropdown.Menu>
                   </Dropdown>
                   {/* <select
@@ -668,11 +883,13 @@ const NewsItem = ({
                 </>
               ) : (
                 <>
-                  {data &&
-                    data.sub_category &&
-                    data.sub_category.map(item => (
-                      <span className="news-info-text">{item.sub_category_name}</span>
-                    ))}
+                  {data && data.sub_category && (
+                    <select>
+                      {data.sub_category.map(item => (
+                        <option className="news-info-text">{item.sub_category_name}</option>
+                      ))}
+                    </select>
+                  )}
                 </>
               )}
             </div>

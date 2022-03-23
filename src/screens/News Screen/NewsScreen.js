@@ -15,6 +15,7 @@ const NewsScreen = () => {
   const filter1Ref = useRef()
   const filter2Ref = useRef()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
+  const [isCheckListActivated, setCheckListActivated] = useState(false)
 
   const [showFilterDropdown1, setShowFilterDropdown1] = useState()
   const [showFilterDropdown2, setShowFilterDropdown2] = useState()
@@ -36,7 +37,7 @@ const NewsScreen = () => {
     debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
-    if (isAlreadyAdded > 0) {
+    if (isAlreadyAdded > -1) {
       updatedReadNews.splice(isAlreadyAdded, 1)
     } else {
       updatedReadNews.push(id)
@@ -94,6 +95,7 @@ const NewsScreen = () => {
     }
     API.post('/news/mark_read', markAsPayload)
       .then(data => {
+        setCheckListActivated(false)
         getAllNews(payload)
       })
       .catch(error => {
@@ -195,7 +197,7 @@ const NewsScreen = () => {
                       if (categoryFilter) {
                         setShowFilterDropdown2(!showFilterDropdown2)
                       } else {
-                        toast('Please select the Category filter first.')
+                        toast.success('Please select the Category filter first.')
                       }
                     }}
                     ref={ref2}
@@ -253,6 +255,8 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      setCheckListActivated={setCheckListActivated}
+                      isCheckListActivated={isCheckListActivated}
                       isAnyNewsUnderEdit={isAnyNewsUnderEdit}
                       setNewsUnderEdit={setNewsUnderEdit}
                       setCategoryFilter={() => setCategoryFilter(news?.category_id)}
