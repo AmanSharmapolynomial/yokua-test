@@ -15,6 +15,7 @@ const NewsScreen = () => {
   const filter1Ref = useRef()
   const filter2Ref = useRef()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
+  const [isCheckListActivated, setCheckListActivated] = useState(false)
 
   const [showFilterDropdown1, setShowFilterDropdown1] = useState()
   const [showFilterDropdown2, setShowFilterDropdown2] = useState()
@@ -252,6 +253,8 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      setCheckListActivated={setCheckListActivated}
+                      isCheckListActivated={isCheckListActivated}
                       isAnyNewsUnderEdit={isAnyNewsUnderEdit}
                       setNewsUnderEdit={setNewsUnderEdit}
                       setCategoryFilter={() => setCategoryFilter(news?.category_id)}
