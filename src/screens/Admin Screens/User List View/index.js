@@ -19,6 +19,11 @@ import Plusicon from '../../../assets/Group 331.png'
 import Filtermg from '../../../assets/Icon awesome-filter.png'
 import Deleteimg from '../../../assets/Icon material-delete.png'
 
+const NEW_TO_OLD = 'New to Old'
+const OLD_TO_NEW = 'Old to New'
+const A_TO_Z = 'A to Z'
+const Z_TO_A = 'Z to A'
+
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
@@ -33,6 +38,7 @@ const UserListView = () => {
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const sortDropdownData = [NEW_TO_OLD, OLD_TO_NEW, A_TO_Z, Z_TO_A]
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
@@ -73,24 +79,15 @@ const UserListView = () => {
       minWidth: '15rem',
     },
     {
-      name:
-        sortMethod == 'Z to A' ? (
-          <img
-            onClick={() => {
-              setSortMethod('A to Z')
-            }}
-            style={{ width: '14px', height: '14px' }}
-            src={require('../../../assets/Rearrange order.png')}
-          />
-        ) : (
-          <img
-            onClick={() => {
-              setSortMethod('Z to A')
-            }}
-            style={{ width: '14px', height: '14px' }}
-            src={require('../../../assets/Rearrange order.png')}
-          />
-        ),
+      name: (
+        <img
+          onClick={() => {
+            setSortMethod('A to Z')
+          }}
+          style={{ width: '14px', height: '14px' }}
+          src={require('../../../assets/Rearrange order.png')}
+        />
+      ),
     },
     {
       name: 'Company',
@@ -313,8 +310,22 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
+
     if (payload.email_id != '') {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
+      debugger
+      if (data.imageFile) {
+        const formData = new FormData()
+        formData.append('image', data.imageFile)
+        formData.append('data', JSON.stringify({ email: data.email }))
+        await API.post('auth/update_avatar', formData)
+          .then(data => {
+            setReloadData(true)
+          })
+          .catch(error => {
+            // toast.error('Error while updating Avatar')
+          })
+      }
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
       toast.error('Enter E-Mail')
@@ -351,6 +362,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
+          key={backendData[dataToChange].id}
           title={modelTitle}
           DetailsModal
           data={backendData[dataToChange]}
