@@ -40,8 +40,8 @@ const NewsItem = ({
 
   const [hasPermission] = useState(
     getUserRoles() == 'PMK Administrator' ||
-      getUserRoles() == 'PMK Content Manager' ||
-      getUserRoles() == 'Technical Administrator'
+    getUserRoles() == 'PMK Content Manager' ||
+    getUserRoles() == 'Technical Administrator'
   )
 
   const [category, setCategory] = useState(tempCategory)
@@ -575,7 +575,7 @@ const NewsItem = ({
                 <img
                   src={catImg}
                   onError={_onErrorImage}
-                  // onClick={() => imageFileInputRef.current.click()}
+                // onClick={() => imageFileInputRef.current.click()}
                 />
               </>
             ) : (
@@ -880,13 +880,19 @@ const NewsItem = ({
               ) : (
                 <>
                   {data && data.sub_category && (
-                    <select>
+                    <form action="/action_page.php" method="get">
+                      <input list="browsers" name="browser" id="browser"/>
+
+                      <datalist id="browsers">
+                  
                       {data.sub_category.map((item, index) => (
                         <option selected={index == 0} value={item.id} className="news-info-text">
                           {item.sub_category_name}
                         </option>
                       ))}
-                    </select>
+                      </datalist>
+                  
+                    </form>
                   )}
                 </>
               )}
@@ -929,37 +935,37 @@ const NewsItem = ({
           <div className="yk-news-edit-icons mb-5">
             {editView
               ? hasPermission && (
-                  <i
-                    className="fa-solid fa-floppy-disk yk-icon-hover"
-                    style={{
-                      color: 'var(--bgColor2)',
-                      fontSize: '20px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={async () => {
-                      // add save value to a payload
-                      // call the save or edit api here
-                      uploadNews()
-                      // call the upsert News API here
-                      // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
-                      //   console.log(afterUpdateNewsMsg)
-                    }}
-                  />
-                )
+                <i
+                  className="fa-solid fa-floppy-disk yk-icon-hover"
+                  style={{
+                    color: 'var(--bgColor2)',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={async () => {
+                    // add save value to a payload
+                    // call the save or edit api here
+                    uploadNews()
+                    // call the upsert News API here
+                    // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
+                    //   console.log(afterUpdateNewsMsg)
+                  }}
+                />
+              )
               : hasPermission && (
-                  <i
-                    className="fa-solid fa-pen-to-square"
-                    style={{
-                      color: 'var(--bgColor2)',
-                      fontSize: '20px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => {
-                      _handleEditView()
-                      // change box to edit version
-                    }}
-                  />
-                )}
+                <i
+                  className="fa-solid fa-pen-to-square"
+                  style={{
+                    color: 'var(--bgColor2)',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    _handleEditView()
+                    // change box to edit version
+                  }}
+                />
+              )}
             {editView && hasPermission ? (
               <i
                 className="fa-solid fa-xmark yk-icon-hover"
@@ -1144,7 +1150,7 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
