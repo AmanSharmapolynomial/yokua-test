@@ -40,6 +40,7 @@ const AddEventScreen = () => {
     setRequirement(temp)
   }, [])
 
+  console.log('hello')
   return (
     <>
       <Header isLogedIn={getToken()} />
