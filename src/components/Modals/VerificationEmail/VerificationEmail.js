@@ -42,77 +42,80 @@ export default () => {
   }
 
   return (
-    <>
+    <div
+      className="signIn-container mx-auto col-4 text-center"
+      // style={{
+      //   position: 'relative',
+      //   width: '40rem',
+      //   height: '12rem',
+      //   maxWidth: '60rem',
+      //   minWidth: '10rem',
+      //   minHeight: '10rem',
+      // }}
+    >
       <div
-        className="signIn-container mx-auto col-4"
+        className="container-head "
         style={{
-          position: 'relative',
-          width: '40rem',
-          height: '12rem',
-          maxWidth: '60rem',
-          minWidth: '10rem',
-          minHeight: '10rem',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <div
-          className="container-head "
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          {!uid ? (
-            <>
-              <h3 className="container__heading privacy-heading mb-4">
-                Verification E-Mail has been sent
-              </h3>
-              <h6 className="container__heading  mb-3">Please check your E-Mail</h6>
-              <a
-                onClick={() => _resendVerificationEmail()}
-                className="terms-link"
-                style={{ fontSize: '18px' }}
-              >
-                Resend Link
-              </a>
-              <i
-                className="fa-solid fa-circle-xmark"
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 10,
-                }}
-                onClick={() => {
-                  navigate('/auth/login')
-                }}
-              />
-            </>
-          ) : (
-            <>
-              <h3 className="container__heading privacy-heading mb-4">
-                Verification E-Mail has been sent
-              </h3>
-              <a
-                onClick={() => navigate('/auth/login')}
-                className="terms-link"
-                style={{ fontSize: '18px' }}
-              >
-                Go to Login
-              </a>
-              <i
-                className="fa-solid fa-circle-xmark"
-                style={{
-                  position: 'absolute',
-                  top: 20,
-                  right: 10,
-                }}
-                onClick={() => {
-                  navigate('/auth/login')
-                }}
-              />
-            </>
-          )}
-        </div>
+        {!uid ? (
+          <>
+            <div
+              className="container__heading privacy-heading mb-3 h5"
+              style={{
+                fontWeight: 500,
+              }}
+            >
+              Reset password link has been sent
+            </div>
+            <div className="container__heading  mb-3 h6">Please check your e-Mail</div>
+            <a
+              onClick={() => _resendVerificationEmail()}
+              className="terms-link"
+              style={{ fontSize: '18px', textDecorationLine: 'none' }}
+            >
+              Resend Link
+            </a>
+            <i
+              className="fa-solid fa-circle-xmark"
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 10,
+              }}
+              onClick={() => {
+                navigate('/auth/login')
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <h3 className="container__heading privacy-heading mb-4">
+              Verification E-Mail has been sent
+            </h3>
+            <a
+              onClick={() => navigate('/auth/login')}
+              className="terms-link"
+              style={{ fontSize: '18px' }}
+            >
+              Go to Login
+            </a>
+            <i
+              className="fa-solid fa-circle-xmark"
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 10,
+              }}
+              onClick={() => {
+                navigate('/auth/login')
+              }}
+            />
+          </>
+        )}
       </div>
-    </>
+    </div>
   )
 }

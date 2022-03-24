@@ -4,11 +4,19 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading mt-4">Delete whitelisted.com{data.domain}</h3>
+        <h3
+          className="modal-heading mt-4"
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          Delete whitelisted.com{data.domain}
+        </h3>
         <div
           className="modal-content domain-modal"
           style={{
             border: '0',
+            margin: 0,
           }}
         >
           <div

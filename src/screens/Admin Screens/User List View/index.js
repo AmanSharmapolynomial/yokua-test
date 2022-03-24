@@ -267,7 +267,7 @@ const UserListView = () => {
       setOpenModal(false)
     }
     setOpenBasicDeleteModal(false)
-    document.body.style.overflow = 'scroll'
+    // document.body.style.overflow = 'scroll'
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
