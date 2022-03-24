@@ -14,6 +14,9 @@ const options = [
 ]
 
 const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
+  const imageFileInputRef = useRef()
+  const [imageFile, SetImageFile] = useState(data?.avatar_link ? data?.avatar_link : placeholder)
+
   const [profilePicture, setProfilePicture] = useState(
     data?.avatar_link ? data?.avatar_link : placeholder
   )
@@ -40,7 +43,10 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   const [disabledInput, setDisabledInput] = useState(false)
 
   const [passwordVisible, setPasswordVisible] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState({
+    value: data?.role ? data.role : 'User',
+    label: data?.role ? data.role : 'User',
+  })
 
   useEffect(() => {
     if (change == 'View') {
@@ -59,13 +65,24 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
       setFirstName(data.first_name)
       setLastName(data.last_name)
       setRole(data.role)
-      setSelectedOption({
-        value: data?.role ? data.role : 'User',
-        label: data?.role ? data.role : 'User',
-      })
       setCompany(data.company_name)
+      setProfilePicture(() => data.avatar_link)
     }
   }, [])
+
+  const _setImage = () => {
+    if (imageFile && imageFile != '') {
+      if (typeof imageFile == 'string') {
+        setProfilePicture(imageFile)
+      } else {
+        setProfilePicture(window.URL.createObjectURL(imageFile))
+      }
+    }
+  }
+
+  useEffect(() => {
+    _setImage()
+  }, [imageFile])
 
   return (
     <div className="modal-background">
@@ -95,11 +112,24 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
           }}
         >
           <div className="user-img">
+            <input
+              type="file"
+              accept="image/png, image/gif, image/jpeg"
+              id="imageFile"
+              ref={imageFileInputRef}
+              className="inputfile yk-icon-hover"
+              onChange={e => {
+                console.log(e.target.files[0])
+                SetImageFile(e.target.files[0])
+              }}
+            />
             <img
+              key={data.id}
               // className="profile-setting__info_img"
-              // style={{
-              //   cursor: 'pointer',
-              // }}
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={() => imageFileInputRef.current.click()}
               src={profilePicture}
               onError={() => setProfilePicture(placeholder)}
             />
@@ -187,64 +217,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 }}
               />
             </div>
-
-            {/* <div className="input-field-container">
-              <label className="input-label">Contact No</label>
-              <input
-                disabled={disabledInput}
-                className="input-text"
-                type="tel"
-                ref={contactRef}
-                onChange={e => {
-                  setContact(e.target.value)
-                }}
-              />
-            </div>
-            <div className="input-field-container">
-              <label className="input-label address">Address</label>
-              <div className="address-inputs">
-                <input
-                  disabled={disabledInput}
-                  className="input-text"
-                  type="text"
-                  ref={address1Ref}
-                  onChange={e => {
-                    setAddress1(e.target.value)
-                  }}
-                />
-                <input
-                  disabled={disabledInput}
-                  className="input-text"
-                  type="text"
-                  ref={address2Ref}
-                  onChange={e => {
-                    setAddress2(e.target.value)
-                  }}
-                />
-                <div className="state-and-code">
-                  <input
-                    disabled={disabledInput}
-                    className="input-text"
-                    type="text"
-                    placeholder="State"
-                    ref={stateRef}
-                    onChange={e => {
-                      setState(e.target.value)
-                    }}
-                  />
-                  <input
-                    disabled={disabledInput}
-                    className="input-text"
-                    type="text"
-                    placeholder="PIN Code"
-                    ref={pincodeRef}
-                    onChange={e => {
-                      setPincode(e.target.value)
-                    }}
-                  />
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
         {change != 'View' && (
@@ -271,6 +243,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     lastName: lastName,
                     role: selectedOption.value,
                     company_name: company,
+                    imageFile: imageFile,
                   }
                   if (password && password.length > 1) {
                     saveData['password'] = password

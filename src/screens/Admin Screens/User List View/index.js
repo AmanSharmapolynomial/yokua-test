@@ -1,25 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Header from '../../../components/Header'
-import PrimaryHeading from '../../../components/Primary Headings'
 import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable, { createTheme } from 'react-data-table-component'
 import './style.css'
 import { Pagination, Select } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
-import { useStoreActions, useStoreState } from 'easy-peasy'
-import { fetchUserList } from './../../../services/users.service'
 import API from '../../../utils/api'
 import { toast } from 'react-toastify'
-import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import Plusicon from '../../../assets/Group 331.png'
 import Filtermg from '../../../assets/Icon awesome-filter.png'
 import Deleteimg from '../../../assets/Icon material-delete.png'
+import { useLoading } from '../../../utils/LoadingContext'
+
+const NEW_TO_OLD = 'New to Old'
+const OLD_TO_NEW = 'Old to New'
+const A_TO_Z = 'A to Z'
+const Z_TO_A = 'Z to A'
 
 const UserListView = () => {
+  const { loading, setLoading } = useLoading()
+
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
   const [showDeleteDropdown, setShowDeleteDropdown] = useState(false)
@@ -33,6 +36,8 @@ const UserListView = () => {
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const sortDropdownData = [NEW_TO_OLD, OLD_TO_NEW, A_TO_Z, Z_TO_A]
+  const [showSortDropDown, setShowDropDown] = useState(false)
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
@@ -48,10 +53,9 @@ const UserListView = () => {
   let [contentRow, setContentRow] = useState([])
   const [reloadTable, setReloadTable] = useState(false)
 
-  const [isLoading, setIsLoading] = useState(false)
   const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
   const [deleteEmail, setDeleteEmail] = useState('')
-  const [sortMethod, setSortMethod] = useState('Z to A')
+  const [sortMethod, setSortMethod] = useState(NEW_TO_OLD)
   const [pageNoCall, setPageNoCall] = useState(1)
   const [totalPages, setTotalPages] = useState()
 
@@ -73,24 +77,41 @@ const UserListView = () => {
       minWidth: '15rem',
     },
     {
-      name:
-        sortMethod == 'Z to A' ? (
-          <img
-            onClick={() => {
-              setSortMethod('A to Z')
+      name: (
+        <div className="role-dropdown" style={{ zIndex: 100 }}>
+          <div className="has-dropdown" onClick={() => setShowDropDown(!showSortDropDown)}>
+            <img
+              style={{ width: '14px', height: '14px' }}
+              src={require('../../../assets/Rearrange order.png')}
+            />
+          </div>
+
+          <div
+            className="role-dropdown-sort dropdown mt-2"
+            style={{
+              display: showSortDropDown ? 'flex' : 'none',
             }}
-            style={{ width: '14px', height: '14px' }}
-            src={require('../../../assets/Rearrange order.png')}
-          />
-        ) : (
-          <img
-            onClick={() => {
-              setSortMethod('Z to A')
-            }}
-            style={{ width: '14px', height: '14px' }}
-            src={require('../../../assets/Rearrange order.png')}
-          />
-        ),
+          >
+            {sortDropdownData.map((element, index) => (
+              <span
+                style={{
+                  color: 'rgba(0,0,0,0.87)',
+                  fontWeight: element == sortMethod ? '600' : '400',
+                }}
+                key={index}
+                className="dropdown-element "
+                onClick={() => {
+                  setSortMethod(element)
+                  setShowDropDown(false)
+                  // _handleSort(element);
+                }}
+              >
+                {element}
+              </span>
+            ))}
+          </div>
+        </div>
+      ),
     },
     {
       name: 'Company',
@@ -116,8 +137,63 @@ const UserListView = () => {
     filterFromCheckbox3Ref.current.checked = true
   }, [])
 
+  const _handleSort = () => {
+    setLoading(true)
+    const updatedUserList = backendData
+    debugger
+    let sortedArray = []
+    if (sortMethod == NEW_TO_OLD) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod == OLD_TO_NEW) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod == A_TO_Z) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
+      )
+    } else if (sortMethod == Z_TO_A) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
+      )
+    } else {
+      toast.error('No Filtes found')
+      return
+    }
+    if (sortedArray.length > 0) {
+      setBackendData(p => sortedArray)
+      toast.success('Filters applied')
+    } else {
+      toast.error('Can not apply filter')
+    }
+    setLoading(false)
+  }
+
+  // const customSort = () => {
+  //   return rows.sort((a, b) => {
+  //     	// use the selector to resolve your field names by passing the sort comparators
+  //     	const aField = selector(a).toLowerCase();
+  //     		const bField = selector(b).toLowerCase();
+
+  //     	let comparison = 0;
+
+  //   		if (aField > bField) {
+  //   			comparison = 1;
+  //   		} else if (aField < bField) {
+  //   			comparison = -1;
+  //   		}
+
+  //     		return direction === 'desc' ? comparison * -1 : comparison;
+  //   	});
+  // }
+
+  useEffect(() => {
+    _handleSort(sortMethod)
+  }, [sortMethod])
+
   useEffect(async () => {
-    setIsLoading(true)
     const payload = {
       pmk_admin: filterCheckboxPMK,
       content_manager: filterCheckboxCM,
@@ -127,10 +203,9 @@ const UserListView = () => {
     }
 
     _getUserList(payload)
-  }, [reloadTable, filterActive, sortMethod])
+  }, [reloadTable, filterActive])
 
   useEffect(async () => {
-    setIsLoading(true)
     const payload = {
       pmk_admin: filterCheckboxPMK,
       content_manager: filterCheckboxCM,
@@ -143,20 +218,14 @@ const UserListView = () => {
   }, [pageNoCall])
 
   const _getUserList = async payload => {
+    setLoading(true)
+
     const listuserdata = await API.post('admin/list_users', payload)
     console.log(listuserdata)
-    let sortedArray = listuserdata.data.page_data.sort(function (a, b) {
-      if (sortMethod == 'A to Z') {
-        return a.first_name.localeCompare(b.first_name)
-      }
-      if (sortMethod == 'Z to A') {
-        return b.first_name.localeCompare(a.first_name)
-      }
-    })
-    setTotalPages(listuserdata.data.total_pages)
 
+    setTotalPages(listuserdata.data.total_pages)
     const contentRowData = []
-    sortedArray.map((data, index) => {
+    listuserdata.data?.page_data.map((data, index) => {
       contentRowData.push({
         name: (
           <span
@@ -224,9 +293,9 @@ const UserListView = () => {
       })
     })
 
-    setBackendData(sortedArray)
+    setBackendData(listuserdata.data?.page_data)
     setContentRow(contentRowData)
-    setIsLoading(false)
+    setLoading(false)
   }
 
   const conditionalRowStyles = [
@@ -314,8 +383,22 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
+
     if (payload.email_id != '') {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
+      debugger
+      if (data.imageFile) {
+        const formData = new FormData()
+        formData.append('image', data.imageFile)
+        formData.append('data', JSON.stringify({ email: data.email }))
+        await API.post('auth/update_avatar', formData)
+          .then(data => {
+            setReloadData(true)
+          })
+          .catch(error => {
+            // toast.error('Error while updating Avatar')
+          })
+      }
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
       toast.error('Enter E-Mail')
@@ -352,6 +435,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
+          key={backendData[dataToChange].id}
           title={modelTitle}
           DetailsModal
           data={backendData[dataToChange]}
@@ -476,27 +560,15 @@ const UserListView = () => {
         </div>
       </div>
       <div className="user-list-view-table">
-        {isLoading ? (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '5rem 0',
-            }}
-          >
-            Loading...
-          </div>
-        ) : (
-          <DataTable
-            columns={columns}
-            data={contentRow}
-            selectableRows
-            customStyles={customStyles}
-            conditionalRowStyles={conditionalRowStyles}
-            onSelectedRowsChange={selectedRowsAction}
-          />
-        )}
+        <DataTable
+          onSort={_handleSort}
+          columns={columns}
+          data={contentRow}
+          selectableRows
+          customStyles={customStyles}
+          conditionalRowStyles={conditionalRowStyles}
+          onSelectedRowsChange={selectedRowsAction}
+        />
 
         {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
           <div

@@ -107,10 +107,6 @@ const NewsItem = ({
   // refs for fields in edit VIew
   const newsDescRef = useRef()
   const fileInputRef = useRef()
-  const imageFileInputRef = useRef()
-
-  const categoryRef = useRef()
-  const subCategoryRef = useRef()
 
   // states for fields in edit View
   const [newsDesc, setNewsDesc] = useState()
@@ -124,7 +120,6 @@ const NewsItem = ({
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteNewsArr, setDeleteNewsArr] = useState([])
 
-  const [newsImage, setNewsImage] = useState(null)
   const [toggleDropDown, setToggleDropDown] = useState(0)
 
   useEffect(() => {
@@ -181,7 +176,6 @@ const NewsItem = ({
 
   const [isNewCatAdded, setIsNewCatAdded] = useState(false)
   const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
-
   const AddNewCategoryCall = async (image, categoryName) => {
     setIsNewCatAdded(true)
     const tempCatObject = {
@@ -499,6 +493,49 @@ const NewsItem = ({
     setSubCategory(() => [...updatedSubcategpry])
   }
 
+  const [preloadedCategoryData, setPreloadedCategoryData] = useState(null)
+
+  const _editSubCategory = (cat = null) => {
+    const updatedSubCategories = subCategory
+    updatedSubCategories.forEach(item => {
+      if (cat) {
+        if (item.id == cat.id) {
+          item.isEdit = true
+          item.tempSubTopicName = cat.sub_category_name
+        } else {
+          item.isEdit = false
+        }
+      } else {
+        item.isEdit = false
+      }
+    })
+    setSubCategory(updatedSubCategories)
+  }
+
+  const _updateSubTopicName = (name, id) => {
+    const updatedSubCategories = subCategory
+    updatedSubCategories.forEach(item => {
+      if (item.id == id) {
+        item.tempSubTopicName = name
+      }
+    })
+
+    setSubCategory([...updatedSubCategories])
+  }
+
+  const _updateSubCategoryAPI = async (name, id, parent) => {
+    await API.post('news/edit_subcategory', {
+      sub_category_id: id,
+      sub_category_name: name,
+      parent_category_id: parent,
+    })
+      .then(data => {
+        _editSubCategory()
+        getCategoryAndSubCategory()
+      })
+      .catch(error => {})
+  }
+
   return (
     <React.Fragment>
       <div style={{ width: '400px' }}></div>
@@ -513,13 +550,16 @@ const NewsItem = ({
         runDelete={deleteNews}
         data={deleteNewsArr}
       />
-
-      <AddCategoryModal
-        setShow={setShowCategoryModal}
-        show={showCategoryModal}
-        getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
-      />
+      {showCategoryModal && (
+        <AddCategoryModal
+          key={data.id}
+          preloadedCategoryData={preloadedCategoryData}
+          setShow={setShowCategoryModal}
+          show={showCategoryModal}
+          getCategoryAndSubCategory={getCategoryAndSubCategory}
+          setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+        />
+      )}
 
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
@@ -562,21 +602,7 @@ const NewsItem = ({
           <div className="news-img">
             {editView ? (
               <>
-                {/* <input
-                  type="file"
-                  id="file"
-                  // ref={imageFileInputRef}
-                  className="inputfile yk-icon-hover"
-                  onChange={e => {
-                    console.log(e.target.files[0])
-                    setNewsImage(e.target.files[0])
-                  }}
-                /> */}
-                <img
-                  src={catImg}
-                  onError={_onErrorImage}
-                  // onClick={() => imageFileInputRef.current.click()}
-                />
+                <img src={catImg} onError={_onErrorImage} />
               </>
             ) : (
               <img src={catImg} onError={_onErrorImage} />
@@ -625,12 +651,25 @@ const NewsItem = ({
                       }}
                     >
                       {category.map((cat, index) => (
-                        <Dropdown.Item
-                          key={index}
-                          className="yg-font-size"
-                          onClick={() => handleSelectTopic(cat)}
-                        >
-                          {cat.category_name}
+                        <Dropdown.Item key={index} className="yg-font-size">
+                          <div className="d-flex justify-content-between p-1">
+                            <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
+                            <i
+                              className="fa-solid fa-pen-to-square"
+                              style={{
+                                alignSelf: 'flex-end',
+                                color: 'var(--bgColor2)',
+                                fontSize: '20px',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                setPreloadedCategoryData(p => cat)
+                                setToggleDropDown(1)
+                                setShowCategoryModal(true)
+                                // change box to edit version
+                              }}
+                            />
+                          </div>
                         </Dropdown.Item>
                       ))}
                       <Dropdown.Divider />
@@ -641,6 +680,7 @@ const NewsItem = ({
                           onClick={() => {
                             setToggleDropDown(1)
                             setShowCategoryModal(true)
+                            setPreloadedCategoryData(null)
                           }}
                         >
                           Add Topic
@@ -672,21 +712,6 @@ const NewsItem = ({
                       )}
                     </Dropdown.Menu>
                   </Dropdown>
-                  {/* <select
-                    className="select-news"
-                    ref={categoryRef}
-                    onChange={e => {
-                      category.map(cat => {
-                        if (cat.category_name == e.target.value) {
-                          setCategoryID(cat.id)
-                        }
-                      })
-                    }}
-                  >
-                    {category.map((cat, index) => (
-                      <option key={index}>{cat.category_name}</option>
-                    ))}
-                  </select> */}
                 </>
               ) : (
                 <span onClick={setCategoryFilter} className="news-category">
@@ -696,77 +721,10 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  {/* <div class="dropdown yk-dropdown-holder">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                      Dropdown button
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                      {subCategory
-                        .filter(item => item.category_id == categoryID)
-                        .map((cat, index) => (
-
-                          <label className='yg-font-size' style={{ display: 'flex', alignItems: 'center', justifyItems: 'center' }}>
-                            <input
-                              style={{ marginRight: '8px' }}
-                              type="checkbox"
-                              defaultChecked={false}
-                              onChange={() => setChecked(!checked)}
-                            />
-                            {cat.sub_category_name}
-                          </label>
-
-                        ))}
-                      {!isSubTopicAdd && (
-                        <button
-                          style={{ marginLeft: '33px' }}
-                          id="mybtn"
-                          className="btn yg-font-size "
-                          onClick={() => {
-                            setSubTopicAdd(true)
-                          }}
-                        >
-                          Add Sub-Topic
-                        </button>
-                      )}
-                      {isSubTopicAdd && (
-                        <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <FormControl
-                            className="yg-font-size"
-                            placeholder="Sub-Category"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={newSubTopicName}
-                            onChange={e => SetNewSubTopicName(e.target.value)}
-                          />
-                          <Button
-                            onClick={() => {
-                              if (newSubTopicName.length != 0) {
-                                setSubTopicAdd(false)
-                                AddNewSubCategoryCall(newSubTopicName, categoryID)
-                              } else {
-                                toast.error('Please provide Sub Category title')
-                              }
-                            }}
-                            variant="outline-secondary"
-                            className="yg-font-size"
-                            id="button-addon2"
-                          >
-                            Save
-                          </Button>
-                        </InputGroup>
-                      )}
-
-
-                    </div>
-                  </div> */}
-
                   <Dropdown
                     ref={subTopicRef}
-                    // show={toggleDropDown == 2}
-                    onClick={
-                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
-                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    onClick={() =>
+                      toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
                     }
                     size="sm"
                     autoClose={'outside'}
@@ -801,24 +759,76 @@ const NewsItem = ({
                     >
                       {subCategory
                         .filter(item => item.category_id == categoryID)
-                        .map((cat, index) => (
-                          <label
-                            className="yg-font-size"
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyItems: 'center',
-                            }}
-                          >
-                            <input
-                              style={{ marginRight: '8px' }}
-                              type="checkbox"
-                              checked={cat.isChecked}
-                              onChange={() => _handleChecked(cat.id)}
-                            />
-                            {cat.sub_category_name}
-                          </label>
-                        ))}
+                        .map((cat, index) => {
+                          if (cat.isEdit) {
+                            return (
+                              <InputGroup className="mb-3 yg-font-size p-1 ">
+                                <FormControl
+                                  className="yg-font-size"
+                                  placeholder="Sub-Category"
+                                  aria-label="Recipient's username"
+                                  aria-describedby="basic-addon2"
+                                  value={cat.tempSubTopicName}
+                                  onChange={e => _updateSubTopicName(e.target.value, cat.id)}
+                                />
+                                <Button
+                                  onClick={() => {
+                                    debugger
+                                    if (cat.tempSubTopicName) {
+                                      _updateSubCategoryAPI(
+                                        cat.tempSubTopicName,
+                                        cat.id,
+                                        categoryID
+                                      )
+                                      _handleChecked(false)
+                                    } else {
+                                      toast.error('Please provide Sub Category title')
+                                    }
+                                  }}
+                                  variant="outline-secondary"
+                                  className="yg-font-size"
+                                  id="button-addon2"
+                                >
+                                  Save
+                                </Button>
+                              </InputGroup>
+                            )
+                          }
+
+                          return (
+                            <div className="d-flex justify-content-between p-1 ">
+                              <label
+                                className="yg-font-size"
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyItems: 'center',
+                                }}
+                              >
+                                <input
+                                  style={{ marginRight: '8px' }}
+                                  type="checkbox"
+                                  checked={cat.isChecked}
+                                  onChange={() => _handleChecked(cat.id)}
+                                />
+                                {cat.sub_category_name}
+                              </label>
+                              <i
+                                className="fa-solid fa-pen-to-square"
+                                style={{
+                                  paddingTop: '2px',
+                                  color: 'var(--bgColor2)',
+                                  fontSize: '20px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  _editSubCategory(cat)
+                                  // change box to edit version
+                                }}
+                              />
+                            </div>
+                          )
+                        })}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
@@ -861,33 +871,52 @@ const NewsItem = ({
                       )}
                     </Dropdown.Menu>
                   </Dropdown>
-                  {/* <select
-                    className="select-news"
-                    ref={subCategoryRef}
-                    onChange={e => {
-                      subCategory.map((cat, index) => {
-                        if (cat.sub_category_name == e.target.value) {
-                          setSubCategoryID(cat.id)
-                        }
-                      })
-                    }}
-                  >
-                    {subCategory.map((cat, index) => (
-                      <option key={index}>{cat.sub_category_name}</option>
-                    ))}
-                  </select> */}
                 </>
               ) : (
                 <>
-                  {data && data.sub_category && (
-                    <select>
-                      {data.sub_category.map((item, index) => (
-                        <option selected={index == 0} value={item.id} className="news-info-text">
-                          {item.sub_category_name}
-                        </option>
+                  <Dropdown
+                    ref={topicRef}
+                    // show={toggleDropDown == 1}
+                    onClick={() => {
+                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+                    }}
+                    size="sm"
+                    autoClose={'outside'}
+                    className="yk-dropdown-holder"
+                    style={{
+                      width: '12rem',
+                    }}
+                  >
+                    <Dropdown.Toggle
+                      size={'sm'}
+                      className="yg-custom-dropdown"
+                      color="red"
+                      id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {data?.sub_category &&
+                        data.sub_category.length > 0 &&
+                        data.sub_category[0].sub_category_name}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      {data.sub_category?.map((cat, index) => (
+                        <Dropdown.Item key={index} className="yg-font-size">
+                          <span>{cat.sub_category_name}</span>
+                        </Dropdown.Item>
                       ))}
-                    </select>
-                  )}
+                      <Dropdown.Divider />
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </>
               )}
             </div>
@@ -1139,15 +1168,23 @@ const NewsItem = ({
 
 export default NewsItem
 
-function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCategoryObject }) {
-  const [categoryName, setCategoryName] = useState('')
-  const [imageFile, SetImageFile] = useState(null)
+function AddCategoryModal({
+  show,
+  setShow,
+  preloadedCategoryData,
+  setTempCategoryObject,
+  getCategoryAndSubCategory,
+}) {
+  const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
+  const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
+  const [catImg, setCatImg] = useState()
   const imageFileInputRef = useRef()
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    _setImage()
+  }, [imageFile])
 
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
 
   const AddNewCategoryCall = async (image, categoryName) => {
     if (!image) {
@@ -1159,17 +1196,46 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
       return
     }
 
-    // const formData = new FormData()
-    // formData.append('image', image)
-    // formData.append('data', JSON.stringify(data))
-
-    // const afterAddMsg = await API.post('news/add_category', formData)
     setTempCategoryObject(image, categoryName)
 
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
-    // getCategoryAndSubCategory()
+  }
+
+  const EditCategory = async () => {
+    if (!imageFile) {
+      toast.error('Image Required')
+      return
+    }
+    if (!categoryName) {
+      toast.error('Category Name Required')
+      return
+    }
+
+    const formData = new FormData()
+    const data = {
+      id: preloadedCategoryData?.id,
+      category_name: categoryName,
+    }
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
+
+    await API.post('news/edit_category', formData)
+      .then(data => {
+        getCategoryAndSubCategory()
+      })
+      .catch(error => {})
+  }
+
+  const _setImage = () => {
+    if (imageFile && imageFile != '') {
+      if (typeof imageFile == 'string') {
+        setCatImg(imageFile)
+      } else {
+        setCatImg(window.URL.createObjectURL(imageFile))
+      }
+    }
   }
 
   return (
@@ -1209,7 +1275,8 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
             <Image
               thumbnail={true}
               style={{ maxWidth: '40%' }}
-              src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
+              src={catImg}
+              onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
             />
           </div>
@@ -1245,7 +1312,11 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
           <button
             className="btn"
             onClick={() => {
-              AddNewCategoryCall(imageFile, categoryName)
+              if (preloadedCategoryData) {
+                EditCategory()
+              } else {
+                AddNewCategoryCall(imageFile, categoryName)
+              }
             }}
           >
             Confirm

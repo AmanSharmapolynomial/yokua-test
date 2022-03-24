@@ -97,12 +97,18 @@
 }
 .news-info > .news-info-text {
   font-size: 16px;
-
+  border-radius: 30px;
   display: block;
   width: 150px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  border: none;
+}
+
+
+.news-info > option {
+  border: none;
 }
 .news-desc {
   margin: 0 1rem;
@@ -121,6 +127,7 @@
 
 /* Track */
 .news-desc::-webkit-scrollbar-track {
+
 }
 
 /* Handle */
@@ -136,9 +143,12 @@
   background: #004f9b;
 }
 
+
+form input{border: none; width: 10rem; padding-right: 1rem;}
 .select-news {
   margin: 0.5rem 0;
 }
+
 
 .news-desc > p {
   font-size: 0.8rem;
