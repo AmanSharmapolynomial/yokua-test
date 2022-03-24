@@ -898,7 +898,12 @@ const NewsItem = ({
                 <>
                   {data && data.sub_category && (
                     <form action="/action_page.php" method="get">
-                      <input list="browsers" name="browser" id="browser" />
+                      <input
+                        list="browsers"
+                        name="browser"
+                        id="browser"
+                        value={data.sub_category[0].sub_category_name}
+                      />
 
                       <datalist id="browsers">
                         {data.sub_category.map((item, index) => (
