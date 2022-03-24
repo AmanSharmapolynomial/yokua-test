@@ -9,6 +9,7 @@ import { Modal, FormControl } from 'react-bootstrap'
 
 import './yokogawa-component.css'
 import { useLoading } from '../../../utils/LoadingContext'
+import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 
 export default () => {
   const [companyList, setCompanyList] = useState([])
@@ -46,6 +47,8 @@ export default () => {
 
   const [show, setShow] = useState(false)
   const [parentCompnay, setParentCompany] = useState('')
+  const [showDelete, setDelete] = useState(false)
+  const [currentDeleteId, setCurrentDeleteId] = useState(0)
   return (
     <div style={{ padding: '0.5rem 2.5rem', marginBottom: '' }}>
       <SecondaryHeading title={'Company Name'} />
@@ -55,6 +58,16 @@ export default () => {
         setShow={setShow}
         getCompanyList={getCompanyList}
         parentCompnay={parentCompnay}
+      />
+
+      <DeleteModal
+        setShow={setDelete}
+        show={showDelete}
+        title={'Are you sure want to delete this Company?'}
+        runDelete={deleteCompany}
+        saveAndExit={() => setDelete(false)}
+        data={currentDeleteId}
+        req={'Company'}
       />
 
       <div className="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
@@ -74,7 +87,10 @@ export default () => {
                     className="fa fa-trash"
                     style={{ fontSize: '1rem' }}
                     aria-hidden="true"
-                    onClick={() => deleteCompany(data.parent_company_id)}
+                    onClick={() => {
+                      setCurrentDeleteId(data.parent_company_id)
+                      setDelete(true)
+                    }}
                   ></i>
                   {/* <i
                     className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
@@ -96,7 +112,10 @@ export default () => {
                             className="fa fa-trash"
                             aria-hidden="true"
                             style={{ fontSize: '1rem' }}
-                            onClick={() => deleteCompany(item.id)}
+                            onClick={() => {
+                              setCurrentDeleteId(data.parent_company_id)
+                              setDelete(true)
+                            }}
                           ></i>
                         </a>
                         <hr />

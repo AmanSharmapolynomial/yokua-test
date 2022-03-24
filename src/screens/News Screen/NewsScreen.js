@@ -149,7 +149,6 @@ const NewsScreen = () => {
                 <img
                   src={Filtermg}
                   onClick={() => {
-                    debugger
                     setShowFilterDropdown1(!showFilterDropdown1)
                   }}
                   ref={ref1}
@@ -177,9 +176,13 @@ const NewsScreen = () => {
                         }
                         onClick={() => {
                           if (categoryFilter == category.id) {
+                            toast.success('Category filter removed')
+
                             setCategoryFilter(null)
                             setSubCategoryFilter(null)
                           } else {
+                            toast.success('Category filter Applied')
+
                             setCategoryFilter(category.id)
                           }
                         }}
@@ -195,6 +198,11 @@ const NewsScreen = () => {
                     src={Filtermg}
                     onClick={() => {
                       if (categoryFilter) {
+                        if (showFilterDropdown2) {
+                          toast.success('Sub Category filter applied')
+                        } else {
+                          toast.success('Sub Category filter removed')
+                        }
                         setShowFilterDropdown2(!showFilterDropdown2)
                       } else {
                         toast.success('Please select the Category filter first.')
@@ -259,7 +267,15 @@ const NewsScreen = () => {
                       isCheckListActivated={isCheckListActivated}
                       isAnyNewsUnderEdit={isAnyNewsUnderEdit}
                       setNewsUnderEdit={setNewsUnderEdit}
-                      setCategoryFilter={() => setCategoryFilter(news?.category_id)}
+                      setCategoryFilter={() => {
+                        if (categoryFilter) {
+                          toast.success('Category filter removed')
+                          setCategoryFilter(null)
+                        } else {
+                          toast.success('Category filter applied')
+                          setCategoryFilter(news?.category_id)
+                        }
+                      }}
                       updateNewsRead={() => _updateNewsRead(news.id)}
                       readNews={readNews}
                       data={news}

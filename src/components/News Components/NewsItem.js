@@ -499,6 +499,8 @@ const NewsItem = ({
     setSubCategory(() => [...updatedSubcategpry])
   }
 
+  const [preloadedCategoryData, setPreloadedCategoryData] = useState(null)
+
   return (
     <React.Fragment>
       <div style={{ width: '400px' }}></div>
@@ -513,13 +515,16 @@ const NewsItem = ({
         runDelete={deleteNews}
         data={deleteNewsArr}
       />
-
-      <AddCategoryModal
-        setShow={setShowCategoryModal}
-        show={showCategoryModal}
-        getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
-      />
+      {showCategoryModal && (
+        <AddCategoryModal
+          key={data.id}
+          preloadedCategoryData={preloadedCategoryData}
+          setShow={setShowCategoryModal}
+          show={showCategoryModal}
+          getCategoryAndSubCategory={getCategoryAndSubCategory}
+          setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+        />
+      )}
 
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
@@ -625,12 +630,23 @@ const NewsItem = ({
                       }}
                     >
                       {category.map((cat, index) => (
-                        <Dropdown.Item
-                          key={index}
-                          className="yg-font-size"
-                          onClick={() => handleSelectTopic(cat)}
-                        >
-                          {cat.category_name}
+                        <Dropdown.Item key={index} className="yg-font-size">
+                          <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
+                          <i
+                            className="fa-solid fa-pen-to-square"
+                            style={{
+                              alignSelf: 'flex-end',
+                              color: 'var(--bgColor2)',
+                              fontSize: '20px',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                              setPreloadedCategoryData(p => cat)
+                              setToggleDropDown(1)
+                              setShowCategoryModal(true)
+                              // change box to edit version
+                            }}
+                          />
                         </Dropdown.Item>
                       ))}
                       <Dropdown.Divider />
@@ -641,6 +657,7 @@ const NewsItem = ({
                           onClick={() => {
                             setToggleDropDown(1)
                             setShowCategoryModal(true)
+                            setPreloadedCategoryData(null)
                           }}
                         >
                           Add Topic
@@ -1139,15 +1156,17 @@ const NewsItem = ({
 
 export default NewsItem
 
-function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCategoryObject }) {
-  const [categoryName, setCategoryName] = useState('')
-  const [imageFile, SetImageFile] = useState(null)
+function AddCategoryModal({ show, setShow, preloadedCategoryData, setTempCategoryObject }) {
+  const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
+  const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
+  const [catImg, setCatImg] = useState()
   const imageFileInputRef = useRef()
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    _setImage()
+  }, [imageFile])
 
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
 
   const AddNewCategoryCall = async (image, categoryName) => {
     if (!image) {
@@ -1159,17 +1178,21 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
       return
     }
 
-    // const formData = new FormData()
-    // formData.append('image', image)
-    // formData.append('data', JSON.stringify(data))
-
-    // const afterAddMsg = await API.post('news/add_category', formData)
     setTempCategoryObject(image, categoryName)
 
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
-    // getCategoryAndSubCategory()
+  }
+
+  const _setImage = () => {
+    if (imageFile && imageFile != '') {
+      if (typeof imageFile == 'string') {
+        setCatImg(imageFile)
+      } else {
+        setCatImg(window.URL.createObjectURL(imageFile))
+      }
+    }
   }
 
   return (
@@ -1208,7 +1231,8 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
           <Image
             thumbnail={true}
             style={{ maxWidth: '40%' }}
-            src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
+            src={catImg}
+            onError={() => setCatImg(placeholder)}
             onClick={() => imageFileInputRef.current.click()}
           />
           <FormControl
