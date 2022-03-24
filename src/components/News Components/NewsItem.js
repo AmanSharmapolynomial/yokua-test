@@ -880,19 +880,16 @@ const NewsItem = ({
               ) : (
                 <>
                   {data && data.sub_category && (
-                    <form action="/action_page.php" method="get">
-                      <input list="browsers" name="browser" id="browser"/>
+                    <select>
 
-                      <datalist id="browsers">
-                  
                       {data.sub_category.map((item, index) => (
                         <option selected={index == 0} value={item.id} className="news-info-text">
                           {item.sub_category_name}
                         </option>
                       ))}
-                      </datalist>
-                  
-                    </form>
+                    </select>
+
+
                   )}
                 </>
               )}
