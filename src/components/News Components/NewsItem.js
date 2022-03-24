@@ -107,10 +107,6 @@ const NewsItem = ({
   // refs for fields in edit VIew
   const newsDescRef = useRef()
   const fileInputRef = useRef()
-  const imageFileInputRef = useRef()
-
-  const categoryRef = useRef()
-  const subCategoryRef = useRef()
 
   // states for fields in edit View
   const [newsDesc, setNewsDesc] = useState()
@@ -124,7 +120,6 @@ const NewsItem = ({
   const [deleteModal, setDeleteModal] = useState(false)
   const [deleteNewsArr, setDeleteNewsArr] = useState([])
 
-  const [newsImage, setNewsImage] = useState(null)
   const [toggleDropDown, setToggleDropDown] = useState(0)
 
   useEffect(() => {
@@ -567,21 +562,7 @@ const NewsItem = ({
           <div className="news-img">
             {editView ? (
               <>
-                {/* <input
-                  type="file"
-                  id="file"
-                  // ref={imageFileInputRef}
-                  className="inputfile yk-icon-hover"
-                  onChange={e => {
-                    console.log(e.target.files[0])
-                    setNewsImage(e.target.files[0])
-                  }}
-                /> */}
-                <img
-                  src={catImg}
-                  onError={_onErrorImage}
-                  // onClick={() => imageFileInputRef.current.click()}
-                />
+                <img src={catImg} onError={_onErrorImage} />
               </>
             ) : (
               <img src={catImg} onError={_onErrorImage} />
@@ -631,22 +612,24 @@ const NewsItem = ({
                     >
                       {category.map((cat, index) => (
                         <Dropdown.Item key={index} className="yg-font-size">
-                          <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
-                          <i
-                            className="fa-solid fa-pen-to-square"
-                            style={{
-                              alignSelf: 'flex-end',
-                              color: 'var(--bgColor2)',
-                              fontSize: '20px',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                              setPreloadedCategoryData(p => cat)
-                              setToggleDropDown(1)
-                              setShowCategoryModal(true)
-                              // change box to edit version
-                            }}
-                          />
+                          <div className="d-flex justify-content-between">
+                            <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
+                            <i
+                              className="fa-solid fa-pen-to-square"
+                              style={{
+                                alignSelf: 'flex-end',
+                                color: 'var(--bgColor2)',
+                                fontSize: '20px',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                setPreloadedCategoryData(p => cat)
+                                setToggleDropDown(1)
+                                setShowCategoryModal(true)
+                                // change box to edit version
+                              }}
+                            />
+                          </div>
                         </Dropdown.Item>
                       ))}
                       <Dropdown.Divider />
@@ -689,21 +672,6 @@ const NewsItem = ({
                       )}
                     </Dropdown.Menu>
                   </Dropdown>
-                  {/* <select
-                    className="select-news"
-                    ref={categoryRef}
-                    onChange={e => {
-                      category.map(cat => {
-                        if (cat.category_name == e.target.value) {
-                          setCategoryID(cat.id)
-                        }
-                      })
-                    }}
-                  >
-                    {category.map((cat, index) => (
-                      <option key={index}>{cat.category_name}</option>
-                    ))}
-                  </select> */}
                 </>
               ) : (
                 <span onClick={setCategoryFilter} className="news-category">
@@ -713,71 +681,6 @@ const NewsItem = ({
 
               {editView ? (
                 <>
-                  {/* <div class="dropdown yk-dropdown-holder">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                      Dropdown button
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                      {subCategory
-                        .filter(item => item.category_id == categoryID)
-                        .map((cat, index) => (
-
-                          <label className='yg-font-size' style={{ display: 'flex', alignItems: 'center', justifyItems: 'center' }}>
-                            <input
-                              style={{ marginRight: '8px' }}
-                              type="checkbox"
-                              defaultChecked={false}
-                              onChange={() => setChecked(!checked)}
-                            />
-                            {cat.sub_category_name}
-                          </label>
-
-                        ))}
-                      {!isSubTopicAdd && (
-                        <button
-                          style={{ marginLeft: '33px' }}
-                          id="mybtn"
-                          className="btn yg-font-size "
-                          onClick={() => {
-                            setSubTopicAdd(true)
-                          }}
-                        >
-                          Add Sub-Topic
-                        </button>
-                      )}
-                      {isSubTopicAdd && (
-                        <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <FormControl
-                            className="yg-font-size"
-                            placeholder="Sub-Category"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={newSubTopicName}
-                            onChange={e => SetNewSubTopicName(e.target.value)}
-                          />
-                          <Button
-                            onClick={() => {
-                              if (newSubTopicName.length != 0) {
-                                setSubTopicAdd(false)
-                                AddNewSubCategoryCall(newSubTopicName, categoryID)
-                              } else {
-                                toast.error('Please provide Sub Category title')
-                              }
-                            }}
-                            variant="outline-secondary"
-                            className="yg-font-size"
-                            id="button-addon2"
-                          >
-                            Save
-                          </Button>
-                        </InputGroup>
-                      )}
-
-
-                    </div>
-                  </div> */}
-
                   <Dropdown
                     ref={subTopicRef}
                     // show={toggleDropDown == 2}
@@ -878,42 +781,52 @@ const NewsItem = ({
                       )}
                     </Dropdown.Menu>
                   </Dropdown>
-                  {/* <select
-                    className="select-news"
-                    ref={subCategoryRef}
-                    onChange={e => {
-                      subCategory.map((cat, index) => {
-                        if (cat.sub_category_name == e.target.value) {
-                          setSubCategoryID(cat.id)
-                        }
-                      })
-                    }}
-                  >
-                    {subCategory.map((cat, index) => (
-                      <option key={index}>{cat.sub_category_name}</option>
-                    ))}
-                  </select> */}
                 </>
               ) : (
                 <>
-                  {data && data.sub_category && (
-                    <form action="/action_page.php" method="get">
-                      <input
-                        list="browsers"
-                        name="browser"
-                        id="browser"
-                        value={data.sub_category[0].sub_category_name}
-                      />
+                  <Dropdown
+                    ref={topicRef}
+                    // show={toggleDropDown == 1}
+                    onClick={() => {
+                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+                    }}
+                    size="sm"
+                    autoClose={'outside'}
+                    className="yk-dropdown-holder"
+                    style={{
+                      width: '12rem',
+                    }}
+                  >
+                    <Dropdown.Toggle
+                      size={'sm'}
+                      className="yg-custom-dropdown"
+                      color="red"
+                      id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {data?.sub_category &&
+                        data.sub_category.length > 0 &&
+                        data.sub_category[0].sub_category_name}
+                    </Dropdown.Toggle>
 
-                      <datalist id="browsers">
-                        {data.sub_category.map((item, index) => (
-                          <option selected={index == 0} value={item.id} className="news-info-text">
-                            {item.sub_category_name}
-                          </option>
-                        ))}
-                      </datalist>
-                    </form>
-                  )}
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      {data.sub_category.map((cat, index) => (
+                        <Dropdown.Item key={index} className="yg-font-size">
+                          <span>{cat.sub_category_name}</span>
+                        </Dropdown.Item>
+                      ))}
+                      <Dropdown.Divider />
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </>
               )}
             </div>

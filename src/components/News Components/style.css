@@ -106,25 +106,6 @@
   border: none;
 }
 
-select::-ms-expand {  -moz-appearance: none;
-  /* for Chrome */
-  -webkit-appearance: none;}
-input:hover{
-  -webkit-appearance: none;
-  -moz-appearance: none;
-color: transparent;
-  appearance: none;
-  /* Some browsers will not display the caret when using calc, so we put the fallback first */ 
-  background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
-  background: url("/public/assets/chevron-icon.svg") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
-}
-
-input:focus{color: transparent; text-shadow: 0 0 0 #000000; /* Some browsers will not display the caret when using calc, so we put the fallback first */ 
-  background: url("http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
-  background: url("/public/assets/chevron-icon.svg") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */}
-
-
-
 
 .news-info > option {
   border: none;
@@ -146,6 +127,7 @@ input:focus{color: transparent; text-shadow: 0 0 0 #000000; /* Some browsers wil
 
 /* Track */
 .news-desc::-webkit-scrollbar-track {
+
 }
 
 /* Handle */
