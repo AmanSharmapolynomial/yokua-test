@@ -145,7 +145,7 @@ const NewsScreen = () => {
         <div className="filter-and-read-container">
           <div className="filter-container">
             <div className="filter-actions">
-              <div className="filter-icons">
+              <div className="filter-icons" style={{ marginLeft: '2rem' }}>
                 <img
                   src={Filtermg}
                   onClick={() => {
@@ -189,7 +189,7 @@ const NewsScreen = () => {
                     ))}
                 </div>
               </div>
-              <div className="filter-icons" style={{ marginLeft: '120px' }}>
+              <div className="filter-icons" style={{ marginLeft: '12rem' }}>
                 {backendData?.sub_categories?.length > 0 && (
                   <img
                     src={Filtermg}

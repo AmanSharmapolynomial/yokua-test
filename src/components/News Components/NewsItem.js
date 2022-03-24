@@ -1205,12 +1205,14 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCat
               SetImageFile(e.target.files[0])
             }}
           />
-          <Image
-            thumbnail={true}
-            style={{ maxWidth: '40%' }}
-            src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
-            onClick={() => imageFileInputRef.current.click()}
-          />
+          <div className="d-flex justify-content-center">
+            <Image
+              thumbnail={true}
+              style={{ maxWidth: '40%' }}
+              src={imageFile ? window.URL.createObjectURL(imageFile) : placeholder}
+              onClick={() => imageFileInputRef.current.click()}
+            />
+          </div>
           <FormControl
             className="yg-font-size mt-4 mb-3"
             placeholder="Enter Category Title"
