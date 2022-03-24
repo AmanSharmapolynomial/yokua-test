@@ -81,7 +81,14 @@ const Routing = () => {
                 </div>
               }
             />
-            <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
+            <Route
+              path="verification-email/:uid/:token"
+              element={
+                <div className="bg-landing h-100 py-5">
+                  <VerificationEmail />
+                </div>
+              }
+            />
           </Route>
           <Route
             path="/admin"
