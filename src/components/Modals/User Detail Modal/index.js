@@ -26,6 +26,8 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   const [password, setPassword] = useState('')
   const [disabledInput, setDisabledInput] = useState(false)
 
+  const [passwordVisible, setPasswordVisible] = useState(false)
+
   useEffect(() => {
     if (change == 'View') {
       setDisabledInput(true)
@@ -59,8 +61,13 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             }}
           />
         )}
-        <h3 className="modal-heading">{change} User</h3>
-        <div className="modal-content flex-row">
+        <h3 className="modal-heading">Add / Update User</h3>
+        <div
+          className="modal-content flex-row"
+          style={{
+            border: '0',
+          }}
+        >
           <div className="user-img">
             <img src="/logo512.png" />
           </div>
@@ -108,7 +115,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               </div>
             </div>
             <div className="input-field-container">
-              <label className="input-label">E-mail id</label>
+              <label className="input-label">E-Mail id</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -119,17 +126,26 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
                 }}
               />
             </div>
-            <div className="input-field-container">
+            <div className="input-field-container yk-password-container">
               <label className="input-label">Password</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
-                type="password"
+                type={passwordVisible ? 'text' : 'password'}
                 ref={passwordRef}
                 onChange={e => {
                   setPassword(e.target.value)
                 }}
               />
+
+              <i
+                className={
+                  passwordVisible
+                    ? 'fa-eye fa-solid yk-eye-icon '
+                    : 'fa-eye-slash fa-solid yk-eye-icon '
+                }
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              ></i>
             </div>
 
             <div className="input-field-container">
@@ -217,60 +233,56 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             <button
               className="btn"
               onClick={() => {
-                if (password && password != '') {
-                  if (email != '' && email && firstName && lastName) {
-                    const saveData = {
-                      email: email,
-                      firstName: firstName,
-                      lastName: lastName,
-                      role: role,
-                      company_name: company,
-                      password: password,
-                    }
-                    if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                      if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
-                        if (validator.isEmail(saveData.email)) {
-                          saveAndExit(saveData)
-                        } else toast.warning('Improper Email Format')
-                      } else {
-                        toast.error('First & Last Name should only contain letters')
-                      }
+                if (email != '' && email && firstName && lastName) {
+                  const saveData = {
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    role: role,
+                    company_name: company,
+                    password: password,
+                  }
+                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
+                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                      if (validator.isEmail(saveData.email)) {
+                        saveAndExit(saveData)
+                      } else toast.warning('Improper Email Format')
                     } else {
-                      toast.error('First & Last Name should be 5-50 chars')
+                      toast.error('First & Last Name should only contain letters')
                     }
                   } else {
-                    toast.error('Fill all Mandatory Fields')
-
-                    if (!lastNameRef.current.value) {
-                      lastNameRef.current.style.borderColor = 'red'
-                    }
-                    if (!firstNameRef.current.value) {
-                      firstNameRef.current.style.borderColor = 'red'
-                    }
-                    if (!emailRef.current.value) {
-                      emailRef.current.style.borderColor = 'red'
-                    }
-                    if (!passwordRef.current.value) {
-                      passwordRef.current.style.borderColor = 'red'
-                    }
-                    if (!companyRef.current.value) {
-                      companyRef.current.style.borderColor = 'red'
-                    }
-
-                    setTimeout(() => {
-                      lastNameRef.current.style.borderColor = 'black'
-
-                      firstNameRef.current.style.borderColor = 'black'
-
-                      emailRef.current.style.borderColor = 'black'
-
-                      passwordRef.current.style.borderColor = 'black'
-
-                      companyRef.current.style.borderColor = 'black'
-                    }, 5000)
+                    toast.error('First & Last Name should be 5-50 chars')
                   }
                 } else {
                   toast.error('Fill all Mandatory Fields')
+
+                  if (!lastNameRef.current.value) {
+                    lastNameRef.current.style.borderColor = 'red'
+                  }
+                  if (!firstNameRef.current.value) {
+                    firstNameRef.current.style.borderColor = 'red'
+                  }
+                  if (!emailRef.current.value) {
+                    emailRef.current.style.borderColor = 'red'
+                  }
+                  if (!passwordRef.current.value) {
+                    passwordRef.current.style.borderColor = 'red'
+                  }
+                  if (!companyRef.current.value) {
+                    companyRef.current.style.borderColor = 'red'
+                  }
+
+                  setTimeout(() => {
+                    lastNameRef.current.style.borderColor = 'black'
+
+                    firstNameRef.current.style.borderColor = 'black'
+
+                    emailRef.current.style.borderColor = 'black'
+
+                    passwordRef.current.style.borderColor = 'black'
+
+                    companyRef.current.style.borderColor = 'black'
+                  }, 5000)
                 }
               }}
             >

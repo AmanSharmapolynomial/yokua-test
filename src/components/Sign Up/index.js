@@ -30,6 +30,9 @@ const SignUp = () => {
   const [actionLabel, setActionLabel] = useState('')
   const [isLoading, setLoading] = useState(false)
 
+  const [passwordVisible, setPasswordVisible] = useState(false)
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
+
   // actions import
   // const fetchRegister = useStoreActions(actions => actions.fetchRegister)
   const alertRef = useRef()
@@ -53,6 +56,7 @@ const SignUp = () => {
     email: companyEmail,
     password1: password,
     password2: confirmPassword,
+    company_name: company,
   }
 
   // use actions
@@ -73,7 +77,15 @@ const SignUp = () => {
             if (password != confirmPassword) {
               toast.error('Password and Confirm Password should be same')
             } else {
-              const a = await registerUser(registerDetails)
+              registerUser(registerDetails).then(a => {
+                if (a.status == 200) {
+                  navigate('/auth/verification-email', { state: companyEmail })
+                } else {
+                  // toast.error(a.data?.password1[0])
+
+                  console.log(a.data)
+                }
+              })
               setLoading(false)
             }
           }
@@ -83,7 +95,7 @@ const SignUp = () => {
           )
         }
       } else {
-        toast.error('Please enter a valid email e.g. abc@xyz.com')
+        toast.error('Please enter a valid E-Mail e.g. abc@xyz.com')
       }
     } else {
       toast.error('Please accept terms and conditions to proceed')
@@ -93,15 +105,17 @@ const SignUp = () => {
   return (
     <div className="signIn-container">
       <div className="container-head">
-        <i
-          className="fa-solid fa-arrow-left back-arrow-btn"
-          onClick={() => {
-            navigate('/auth/login')
-          }}
-        />
-        <h3 className="container__heading">Create a New Account</h3>
+        <h3 className="container__heading">
+          <i
+            className="fa-solid fa-arrow-left back-arrow-btn mr-2"
+            onClick={() => {
+              navigate('/auth/login')
+            }}
+          />
+          Create a New Account
+        </h3>
       </div>
-      <form type="submit" onSubmit={register}>
+      <form className="forum" type="submit" onSubmit={register}>
         <input
           type="text"
           required={true}
@@ -125,29 +139,44 @@ const SignUp = () => {
           }}
           className="input-field input-field__email"
           onChange={e => setCompanyEmail(e.target.value)}
-          placeholder="Company Email"
+          placeholder="Company E-Mail"
         />
         <input
-          type="password"
+          type={passwordVisible ? 'text' : 'password'}
           name="Password"
           className="input-field input-field__password"
           onChange={e => setPassword(e.target.value)}
           required={true}
           placeholder="Password"
         />
+
+        <i
+          className={
+            passwordVisible ? 'fa-eye fa-solid first-signin' : 'fa-eye-slash fa-solid first-signin'
+          }
+          onClick={() => setPasswordVisible(!passwordVisible)}
+        ></i>
+
         <input
-          type="password"
+          type={confirmPasswordVisible ? 'text' : 'password'}
           required={true}
           className="input-field input-field__password"
           onChange={e => setConfirmPassword(e.target.value)}
           placeholder="Confirm Password"
         />
+
+        <i
+          className={confirmPasswordVisible ? 'fa-solid fa-eye two' : 'fa-solid fa-eye-slash two'}
+          onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+        ></i>
+
         <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
           {actionLabel}
         </span>
         <input
           type="text"
           className="input-field input-field__email"
+          onChange={e => setCompany(e.target.value)}
           placeholder="Company(representative of yokogawa)"
         />
         <div className="checkbox">
@@ -160,7 +189,7 @@ const SignUp = () => {
         </button>
       </form>
       <div className="terms">
-        By signing up, you agree with the
+        {'By signing up, you agree with the '}
         <Link to="/auth/terms-privacy" className="terms-link">
           Terms of Service and Privacy Policy
         </Link>

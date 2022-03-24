@@ -18,7 +18,7 @@
 }
 
 .info__text{
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     width: 90%;
     line-height: 1.18rem;
 
@@ -27,7 +27,7 @@
 .register-link{
     text-align: center;
     font-size: 0.8rem;
-    color: rgb(8, 108, 240);
+    color: rgb(8, 108, 240) !important;
     text-decoration-line: underline;
     text-underline-offset: 3px;
     text-decoration-color: rgb(8, 108, 240);

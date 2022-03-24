@@ -15,7 +15,7 @@
     left: 100px;
 }
 .dropdown{
-    position: absolute;
+    position: absolute !important;
     flex-direction: column;
     z-index: 10000000;
     background-color: white;

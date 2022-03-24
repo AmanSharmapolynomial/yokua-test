@@ -21,6 +21,8 @@ import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
 import EventScreen from '../screens/Event Screen'
+import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
+import AddEventScreen from '../screens/Event Screen/addEvent'
 
 const Routing = () => {
   // get User Login Info
@@ -52,6 +54,7 @@ const Routing = () => {
             <Route path="forgot-password" element={<Forgot />} />
             <Route path="reset-password" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
+            <Route path="verification-email" element={<VerificationEmail />} />
           </Route>
           <Route
             path="/admin"
@@ -99,6 +102,14 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <EventScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="event/add"
+            element={
+              <PrivateRoute>
+                <AddEventScreen />
               </PrivateRoute>
             }
           />

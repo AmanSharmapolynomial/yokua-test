@@ -4,11 +4,20 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: var(--bgColor2);
+  /* background-color: var(--bgColor2); */
 }
 
 .heading-container > h1 {
-  font-size: 2.3rem;
+  font-size: 3rem;
   font-weight: 500;
   padding: 3rem 2.6rem;
+}
+
+
+.yk-back-image-profile {
+  background-image: url('/public/assets/calendar\ banner\ \(1\).png');
+}
+
+.yk-back-image-news {
+  background-image: url('/public/assets/news\ banner.png');
 }

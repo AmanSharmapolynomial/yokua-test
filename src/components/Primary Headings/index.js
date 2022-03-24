@@ -1,9 +1,9 @@
 import React from 'react'
 import './style.css'
 
-const PrimaryHeading = ({ heading, title }) => {
+const PrimaryHeading = ({ heading, title, backgroundImage }) => {
   return (
-    <div className="heading-container">
+    <div className={'heading-container ' + backgroundImage}>
       <h1
         style={{
           color: 'var(--textColor5)',

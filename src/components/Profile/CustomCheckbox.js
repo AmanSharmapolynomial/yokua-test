@@ -11,7 +11,8 @@ const CustomCheckbox = ({ info, setCheckedIds, index, checkedIds }) => {
   }, [])
 
   return (
-    <div className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}>
+    //  className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}
+    <div className={'edit_sales-news'}>
       <input
         type="checkbox"
         id={'check' + index}

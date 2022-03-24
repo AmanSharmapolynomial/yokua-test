@@ -1,4 +1,3 @@
-import { Pagination } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDetectClickOutside } from 'react-detect-click-outside'
 import Header from '../../components/Header'
@@ -7,6 +6,9 @@ import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
+
+import { Pagination } from 'antd'
+import { toast } from 'react-toastify'
 
 const NewsScreen = () => {
   const filter1Ref = useRef()
@@ -38,7 +40,6 @@ const NewsScreen = () => {
       setShowFilterDropdown1(false)
       setShowFilterDropdown2(false)
     })
-
     return handleOnScroll
   }, [])
 
@@ -49,7 +50,6 @@ const NewsScreen = () => {
       archived: archivedFilter,
       page_index: pageNoCall,
     }
-
     getAllNews(payload)
 
     // const getAllNews = await API.post('news/', payload)
@@ -68,7 +68,7 @@ const NewsScreen = () => {
 
         data.data ? setNewsData(data.data.news_letters) : setNewsData([])
       }
-      setTotalPages(data.total_pages)
+      setTotalPages(data.data.total_pages)
     })
   }
 
@@ -76,7 +76,7 @@ const NewsScreen = () => {
     const markAsPayload = {
       news_id: array,
     }
-    const markAsRead = API.post('/news/mark_read', markAsPayload)
+    API.post('/news/mark_read', markAsPayload)
       .then(data => {
         getAllNews(payload)
       })
@@ -97,7 +97,6 @@ const NewsScreen = () => {
   }
 
   function onChange(pageNumber) {
-    debugger
     setPageNoCall(pageNumber)
   }
 
@@ -122,7 +121,7 @@ const NewsScreen = () => {
         }
       />
       <div className="profile-setting-container">
-        <PrimaryHeading title={'News'} />
+        <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
         <div className="filter-and-read-container">
           <div className="filter-container">
             <div className="filter-actions">
@@ -170,11 +169,15 @@ const NewsScreen = () => {
                 </div>
               </div>
               <div className="filter-icons">
-                {categoryFilter && backendData.sub_categories.length > 0 && (
+                {backendData?.sub_categories?.length > 0 && (
                   <i
                     className="fa-solid fa-filter has-dropdown"
                     onClick={() => {
-                      setShowFilterDropdown2(!showFilterDropdown2)
+                      if (categoryFilter) {
+                        setShowFilterDropdown2(!showFilterDropdown2)
+                      } else {
+                        toast('Please select the Category filter first.')
+                      }
                     }}
                     ref={ref2}
                   />
@@ -186,26 +189,28 @@ const NewsScreen = () => {
                   }}
                 >
                   {backendData &&
-                    backendData.sub_categories.map((category, index) => (
-                      <span
-                        key={index}
-                        className="dropdown-element"
-                        ref={filter2Ref}
-                        style={{
-                          fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
-                        }}
-                        onClick={() => {
-                          if (subCategoryFilter == category.id) {
-                            setSubCategoryFilter(null)
-                          } else {
-                            setSubCategoryFilter(category.id)
-                          }
-                        }}
-                      >
-                        {category.sub_category_name}
-                        Something
-                      </span>
-                    ))}
+                    backendData.sub_categories
+                      .filter(item => item.category_id == categoryFilter)
+                      .map((category, index) => (
+                        <span
+                          key={index}
+                          className="dropdown-element"
+                          ref={filter2Ref}
+                          style={{
+                            fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                          }}
+                          onClick={() => {
+                            if (subCategoryFilter == category.id) {
+                              setSubCategoryFilter(null)
+                            } else {
+                              setSubCategoryFilter(category.id)
+                            }
+                          }}
+                        >
+                          {category.sub_category_name}
+                          Something
+                        </span>
+                      ))}
                 </div>
               </div>
             </div>
@@ -235,10 +240,11 @@ const NewsScreen = () => {
                     <NewsItem
                       data={news}
                       changeType={'View'}
-                      category={backendData.categories}
-                      subCategory={backendData.sub_categories}
+                      tempCategory={backendData.categories}
+                      tempSubCategory={backendData.sub_categories}
                       key={index}
                       setIsLoading={setIsLoading}
+                      refreshPage={() => getAllNews(payload)}
                     />
                   )
                 } else {
@@ -248,10 +254,11 @@ const NewsScreen = () => {
                       cancelAddNews={id => cancelAddNews(id)}
                       data={{}}
                       changeType={'Add'}
-                      category={backendData.categories}
-                      subCategory={backendData.sub_categories}
+                      tempCategory={backendData.categories}
+                      tempSubCategory={backendData.sub_categories}
                       saveAndExitAdd={saveAndExitAdd}
                       setIsLoading={setIsLoading}
+                      refreshPage={() => getAllNews(payload)}
                     />
                   )
                 }
@@ -296,9 +303,9 @@ const NewsScreen = () => {
         {newsData.length > 0 && (
           <div className="pagination">
             <Pagination
+              total={totalPages * 10}
               showQuickJumper
               showSizeChanger={false}
-              total={totalPages * 2}
               onChange={onChange}
               style={{ border: 'none' }}
             />

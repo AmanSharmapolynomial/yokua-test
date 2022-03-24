@@ -70,24 +70,20 @@ const UserListView = () => {
     {
       name:
         sortMethod == 'Z to A' ? (
-          <i
-            className="fa-solid fa-arrow-down-a-z"
-            style={{
-              fontSize: '1.5rem',
-            }}
+          <img
             onClick={() => {
               setSortMethod('A to Z')
             }}
+            style={{ width: '20px', height: '20px' }}
+            src={require('../../../assets/Rearrange order.png')}
           />
         ) : (
-          <i
-            className="fa-solid fa-arrow-down-z-a"
-            style={{
-              fontSize: '1.5rem',
-            }}
+          <img
             onClick={() => {
               setSortMethod('Z to A')
             }}
+            style={{ width: '20px', height: '20px' }}
+            src={require('../../../assets/Rearrange order.png')}
           />
         ),
     },
@@ -255,6 +251,7 @@ const UserListView = () => {
   }
 
   const deleteUser = async () => {
+    debugger
     // write delete user api call here
     if (selectedRowsState.length > 0) {
       const deleteUserEmails = []
@@ -267,6 +264,7 @@ const UserListView = () => {
       }
       console.log(payload)
       const afterDeleteMsg = await API.post('admin/delete_user', payload)
+      setPageNoCall(1)
       console.log(afterDeleteMsg)
     }
     console.log('deleted Selected Users', selectedRowsState)
@@ -274,11 +272,12 @@ const UserListView = () => {
 
   const deleteSingleUser = async userEmail => {
     const payload = {
-      email: userEmail,
+      email: [userEmail],
     }
     const afterDeleteMsg = await API.post('admin/delete_user', payload)
     toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
+    setPageNoCall(1)
   }
 
   const addOrEditUser = async data => {
@@ -294,7 +293,7 @@ const UserListView = () => {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
-      toast.error('Enter email')
+      toast.error('Enter E-Mail')
     }
     setReloadTable(!reloadTable)
   }
@@ -317,6 +316,8 @@ const UserListView = () => {
     <div className="user-list-view">
       {openBasicDeleteModal && (
         <DeleteModal
+          setShow={setOpenBasicDeleteModal}
+          show={openBasicDeleteModal}
           title={'Are you sure want to delete this user?'}
           runDelete={deleteSingleUser}
           saveAndExit={saveAndExitModal}
@@ -487,7 +488,7 @@ const UserListView = () => {
                 backgroundColor: 'var(--bgColor2)',
               }}
             />{' '}
-            Add
+            Add / Update
           </div>
         )}
       </div>

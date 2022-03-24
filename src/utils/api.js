@@ -30,10 +30,12 @@ API.interceptors.response.use(null, e => {
     window.location.href = '/auth/login'
   }
 
-  toast.error(e.response.data?.message)
-  toast.error(e.response.data?.message[0])
+  if (Array.isArray(e.response.data?.message)) {
+    toast.error(e.response.data?.message[0])
+  } else if (e.response.data?.message[0]) {
+    toast.error(e.response.data?.message)
+  }
   toast.error(e.response.data?.email[0])
-
   toast.error(e.response.data?.new_password2[0])
   toast.error(e.response.data?.new_password2[1])
 

@@ -17,7 +17,12 @@ const AcceptRejectModal = ({
         <h3 className="modal-heading">
           {change == 'Rejected' ? 'Rejection Request' : 'Request Approval'}
         </h3>
-        <div className="modal-content domain-modal">
+        <div
+          className="modal-content domain-modal"
+          style={{
+            border: '0',
+          }}
+        >
           {change == 'Rejected' ? (
             <div className="info-text">
               <input
@@ -33,7 +38,7 @@ const AcceptRejectModal = ({
                 padding: '1rem',
               }}
             >
-              The user will be change the e-mail
+              The user will be change the E-Mail
             </span>
           )}
           {change == 'Rejected' ? (

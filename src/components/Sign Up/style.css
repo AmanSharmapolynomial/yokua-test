@@ -6,7 +6,7 @@
 }
 
 .checkbox-text{
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     margin-top: 1px;
     margin-left: 6px;
 }
@@ -19,22 +19,40 @@
 .terms-link{
     text-align: center;
     font-size: 0.8rem;
-    color: rgb(0, 38, 255);
+    color: rgb(0, 38, 255) !important;
     text-decoration-line: underline;
     text-underline-offset: 1px;
     text-decoration-color: rgb(134, 152, 255);
 
 }
+.forum{
+    position: relative;
+}
 .container-head{
     position: relative;
     width: 100%;
+    padding-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .back-arrow-btn{
-    position: absolute;
-    left: 12px;
     color: var(--bgColor2);
     cursor: pointer;
+    size: 50px !important;
+}
+
+.password-box{
+    position: relative;
+}
+.first-signin{
+    position: absolute;
+    left: 250px;
+    top: 133px ;
+}
+
+.two {
+    position: absolute;
+    left: 250px;
+    top: 173px;
 }

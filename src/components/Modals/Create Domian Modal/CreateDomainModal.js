@@ -7,7 +7,12 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
     <div className="modal-background">
       <div className="modal-wrapper">
         <h3 className="modal-heading">Create New Domain</h3>
-        <div className="modal-content domain-modal">
+        <div
+          className="modal-content domain-modal"
+          style={{
+            border: '0',
+          }}
+        >
           <div className="info-text">
             <input
               type="text"
@@ -18,9 +23,9 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
               }}
             />
           </div>
-          <div className="domain-modal-cta">
+          <div className="domain-modal-cta mt-3">
             <button
-              className="btn"
+              className="btn mr-4"
               onClick={() => {
                 if (domain) {
                   if (domain.includes('.')) {

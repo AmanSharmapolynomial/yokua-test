@@ -31,6 +31,13 @@ const UserApprovalScreen = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [pageNoCall, setPageNoCall] = useState(1)
 
+  const [totalPageUserApproval, setTotalPageUserApproval] = useState(1)
+  const [pageCallUserApproval, setPageCallUserApproval] = useState(1)
+
+  const onChangeUserApproval = number => {
+    setPageCallUserApproval(number)
+  }
+
   // /admin/user_approval
 
   // refs
@@ -43,17 +50,23 @@ const UserApprovalScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [DULfilter, setDULfilter] = useState(1)
 
-  useEffect(async () => {
-    const listUserApprovalData = await API.get('admin/user_approval')
+  const [pageIndex, setPageIndex] = useState({ page_index: 1 })
 
+  useEffect(async () => {
+    const listUserApprovalData = await API.post('admin/user_approval', {
+      page_index: pageCallUserApproval,
+    })
+    setTotalPageUserApproval(listUserApprovalData.data.total_pages)
+    console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
-    listUserApprovalData.data.map((data, index) => {
+    listUserApprovalData.data.page_data.map((data, index) => {
       tempArr.push({
         id: index,
         name: data.name,
         date: data.date,
         email: data.email_id,
+        new_email: data.new_email,
         company: data.company,
         requestFor: data.request_for,
         type: data.type,
@@ -113,7 +126,6 @@ const UserApprovalScreen = () => {
         status: data.status,
       })
     })
-
     setTotalPages(listDULdata.data.total_pages)
 
     const listDomains = await API.get('admin/list_whitelisted_domain')
@@ -126,7 +138,7 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall])
+  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
   const rowDisabledCriteria = row => row.type == 'notification'
 
@@ -143,10 +155,15 @@ const UserApprovalScreen = () => {
       sortable: true,
     },
     {
-      name: 'Email id',
+      name: 'E-Mail id',
       selector: row => row.email,
       grow: 2,
       minWidth: '15rem',
+    },
+    {
+      name: 'New E-mail id',
+      selecter: row => row.new_email,
+      grow: 2,
     },
     {
       name: 'Company',
@@ -279,10 +296,10 @@ const UserApprovalScreen = () => {
     // admin/delete_whitelisted_domain
     const payload = {
       domain_id: [data.id],
-      delete_associated_users: data.associated_users,
+      delete_associated_users: 'false',
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
-    toast.success(afterDeleteMsg.data.message)
+    // toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
   }
 
@@ -354,7 +371,7 @@ const UserApprovalScreen = () => {
           <button
             className="action-btn btn clear-notification"
             onClick={() => {
-              const a = API.get('auth/clear_notification/')
+              const a = API.get('admin/clear_notification')
               console.log(a)
               setReloadTable(!reloadTable)
             }}
@@ -385,15 +402,28 @@ const UserApprovalScreen = () => {
               Loading...
             </div>
           ) : (
-            <DataTable
-              columns={columnsApprovalTable}
-              data={contentRowApprovalTable}
-              selectableRows
-              customStyles={customStyles}
-              conditionalRowStyles={conditionalRowStyles}
-              onSelectedRowsChange={selectedRowsActionUA}
-              selectableRowDisabled={rowDisabledCriteria}
-            />
+            <>
+              <DataTable
+                columns={columnsApprovalTable}
+                data={contentRowApprovalTable}
+                selectableRows
+                customStyles={customStyles}
+                conditionalRowStyles={conditionalRowStyles}
+                onSelectedRowsChange={selectedRowsActionUA}
+                selectableRowDisabled={rowDisabledCriteria}
+              />
+              <div className="pagination">
+                <Pagination
+                  current={pageCallUserApproval}
+                  key={'userApproval'}
+                  total={totalPageUserApproval * 10}
+                  showQuickJumper
+                  showSizeChanger={false}
+                  onChange={onChangeUserApproval}
+                  style={{ border: 'none' }}
+                />
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -421,26 +451,28 @@ const UserApprovalScreen = () => {
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  <i
-                    className="fa-solid fa-trash"
-                    style={{
-                      cursor: 'pointer',
-                      color: '#CD2727',
-                    }}
-                    onClick={() => {
-                      // admin/delete_whitelisted_domain
-                      const sendData = {
-                        id: data.id,
-                        name: data.domain,
-                        associated_users: 'true',
-                      }
-                      document.body.scrollTop = 0
-                      document.documentElement.scrollTop = 0
-                      document.body.style.overflow = 'hidden'
-                      setDeleteDomainData(sendData)
-                      setOpenDeleteDomainModal(true)
-                    }}
-                  />
+                  {data.id != 1 && data.id != 2 && (
+                    <i
+                      className="fa-solid fa-trash"
+                      style={{
+                        cursor: 'pointer',
+                        color: '#CD2727',
+                      }}
+                      onClick={() => {
+                        // admin/delete_whitelisted_domain
+                        const sendData = {
+                          id: data.id,
+                          name: data.domain,
+                          associated_users: 'false',
+                        }
+                        document.body.scrollTop = 0
+                        document.documentElement.scrollTop = 0
+                        document.body.style.overflow = 'hidden'
+                        setDeleteDomainData(sendData)
+                        setOpenDeleteDomainModal(true)
+                      }}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -481,6 +513,8 @@ const UserApprovalScreen = () => {
                   />
                   <div className="pagination">
                     <Pagination
+                      current={pageNoCall}
+                      key={'domainUser'}
                       showQuickJumper
                       showSizeChanger={false}
                       total={totalPages * 10}

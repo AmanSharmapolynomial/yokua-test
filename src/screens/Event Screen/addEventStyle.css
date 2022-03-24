@@ -1,0 +1,10 @@
+.react-datepicker-wrapper {
+  width: 200px !important;
+}
+
+select {
+  width: 200px;
+  height: 40px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}

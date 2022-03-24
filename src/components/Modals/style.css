@@ -116,8 +116,8 @@ margin: 0.3rem 1.3rem;
     font-family: Poppins;
 }
 select {
-    width: 11.3rem;
     height: 1.6rem;
+    font-size: 0.8rem !important;
 }
 
 .address-inputs > input{
@@ -161,11 +161,20 @@ select {
 }
 
 .cancel-domain{
-   background-color: var(--textColor5) !important;
+   background-color: var(--textColor5);
    color: var(--bgColor2) !important;
    border: 1px solid black !important;
 }
 .domain-modal{
     align-items: center !important;
     justify-content: center !important;
+}
+
+.yk-password-container{
+position: relative;
+}
+.yk-eye-icon {
+    position: absolute;
+    right: 2px;
+    top: 3px !important;
 }

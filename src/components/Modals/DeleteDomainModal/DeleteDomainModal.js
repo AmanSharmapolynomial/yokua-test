@@ -5,7 +5,12 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data }) => {
     <div className="modal-background">
       <div className="modal-wrapper">
         <h3 className="modal-heading">Delete {data.domain}</h3>
-        <div className="modal-content domain-modal">
+        <div
+          className="modal-content domain-modal"
+          style={{
+            border: '0',
+          }}
+        >
           <div
             className="info-text"
             style={{
@@ -18,11 +23,11 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data }) => {
               textAlign: 'center',
             }}
           >
-            The domain will delete permanent & user data will move into Nonwhitelisted.com
+            The domain will delete permanently & user data will move into Move to UNK
           </div>
-          <div className="domain-modal-cta">
+          <div className="domain-modal-cta mt-3">
             <button
-              className="btn cancel-domain"
+              className="btn cancel-domain mr-4"
               onClick={() => {
                 saveAndExit()
               }}

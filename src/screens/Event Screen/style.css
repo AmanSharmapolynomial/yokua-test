@@ -34,12 +34,10 @@
   margin-top: 2rem;
 }
 
-.ReactModal__Content {
-  margin-top: 150px;
-  margin-left: 400px;
-  margin-right: 400px;
-  margin-bottom: 200px;
+.tdFirstAndLastWidth {
+  width: 5% !important;
 }
+
 .tdWidth {
-  width: 120px;
+  width: 35% !important;
 }

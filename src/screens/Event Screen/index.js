@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router'
 import Table from 'react-bootstrap/Table'
-import './style.css'
-import PrimaryHeading from '../../components/Primary Headings/index'
+import PrimaryHeading from '../../components/Event/PrimaryHeading'
+import AddEventScreen from './addEvent'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
@@ -14,7 +15,8 @@ import Modal from 'react-modal'
 const moment = require('moment')
 
 const EventScreen = () => {
-  //const [value, onChange] = useState(new Date())
+  const navigate = useNavigate()
+  //const [value, onChangse] = useState(new Date())
   //for handling check box feature, and delete one or more event
   const [checkedBoxState, setCheckedBoxState] = useState([])
   const [mainCheckedBoxState, setMainCheckedBoxState] = useState([])
@@ -65,6 +67,18 @@ const EventScreen = () => {
     setIsOpen(false)
   }
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '32%',
+    },
+  }
+
   //handle single event delete
   const handleDeleteEvent = async () => {
     let temp = []
@@ -102,12 +116,13 @@ const EventScreen = () => {
   }
   //delete model
 
+  //console.log(getUserRoles())
   //if (reloadData == true) {
   return (
     <>
       <Header isLogedIn={getToken()} />
       <div className="event-screen-header">
-        <PrimaryHeading title={'RYC Event Calender'} />
+        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-profile'} />
       </div>
       {eventList.length > 0 ? (
         <div className="calenderDiv">
@@ -140,7 +155,7 @@ const EventScreen = () => {
             >
               <thead>
                 <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="6">
+                  <td colSpan="5" style={{ width: '10%' }}>
                     <div style={{ background: 'rgb(0, 79, 155)' }}>
                       <input
                         id="mainCheckbox"
@@ -173,7 +188,7 @@ const EventScreen = () => {
                   let endDate = moment(e.end_date, 'yyyy-MM-DD')
                   return (
                     <tr>
-                      <td>
+                      <td className="tdFirstAndLastWidth">
                         <div
                           style={{
                             padding: '25px',
@@ -195,23 +210,25 @@ const EventScreen = () => {
                           />
                         </div>
                       </td>
-                      <td>
+                      <td
+                        style={{
+                          width: '15%',
+                        }}
+                      >
                         <div
                           style={{
                             fontWeight: 'bold',
+                            borderRight: '1px solid',
                           }}
                         >
-                          {moment(startDate).format('ddd DD MMM')}
+                          <span> {moment(startDate).format('ddd DD MMM')}</span>
                           <br />
-                          {moment(endDate).format('ddd DD MMM')}
+                          <span>{moment(endDate).format('ddd DD MMM')}</span>
                           <br />
-                          {endDate.diff(startDate, 'days')} days
+                          <span>{endDate.diff(startDate, 'days')} days</span>
                         </div>
                       </td>
-                      <td>
-                        <div style={{ borderLeft: '1.5px solid', height: '80px' }} />
-                      </td>
-                      <td>
+                      <td className="tdWidth">
                         <div>
                           <img
                             src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
@@ -222,8 +239,7 @@ const EventScreen = () => {
                           {e.location}
                         </div>
                       </td>
-
-                      <td>
+                      <td className="tdWidth">
                         <div
                           style={{
                             padding: '25px',
@@ -232,18 +248,21 @@ const EventScreen = () => {
                           {e.description}
                         </div>
                       </td>
-                      <td>
+                      <td className="tdFirstAndLastWidth">
                         <div
                           style={{
                             padding: '25px',
                           }}
                         >
-                          <img
-                            src="https://img.icons8.com/ios-glyphs/30/fa314a/trash--v1.png"
-                            onClick={() => {
-                              openModal(e.id)
-                            }}
-                          />
+                          {getUserRoles() == 'Technical Administrator' ||
+                          getUserRoles() == 'PMK Administrator' ? (
+                            <img
+                              src="https://img.icons8.com/ios-glyphs/30/fa314a/trash--v1.png"
+                              onClick={() => {
+                                openModal(e.id)
+                              }}
+                            />
+                          ) : null}
                         </div>
                       </td>
                     </tr>
@@ -271,7 +290,9 @@ const EventScreen = () => {
             <br />
             <br />
             <button
-              onClick={() => {}}
+              onClick={() => {
+                navigate('/event/add')
+              }}
               style={{
                 background: 'rgb(0, 79, 155)',
                 color: 'white',
@@ -286,55 +307,71 @@ const EventScreen = () => {
           <br />
 
           <div>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Example Modal">
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
               <div>
-                <p style={{ fontWeight: 'bold', fontSize: '20px', marginLeft: '150px' }}>
+                <p
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   Event Cancellation
                 </p>
-                <input
+                <div
                   style={{
-                    width: '400px',
-                    marginLeft: '45px',
-                    border: '1px solid black',
-                    borderRadius: '3px',
+                    display: 'flex',
+                    justifyContent: 'center',
                   }}
-                  type="text"
-                  maxLength="255"
-                  placeholder="Maximum 255 character support..."
-                  onChange={e => {
-                    setEventDeleteMsg(e.target.value)
-                  }}
-                />
+                  className="row"
+                >
+                  <input
+                    style={{
+                      borderRadius: '3px',
+                      width: '75%',
+                    }}
+                    type="text"
+                    maxLength="255"
+                    placeholder="Maximum 255 character support..."
+                    onChange={e => {
+                      setEventDeleteMsg(e.target.value)
+                    }}
+                    className="form-control"
+                    required
+                  />
+                </div>
                 <br />
                 <br />
-                <button
-                  style={{
-                    background: 'white',
-                    color: 'rgb(0, 79, 155)',
-                    border: '1px solid black',
-                    borderRadius: '3px',
-                    marginLeft: '150px',
-                  }}
-                  onClick={() => {
-                    closeModal()
-                  }}
-                >
-                  Cancel
-                </button>
-                &nbsp;&nbsp;
-                <button
-                  onClick={() => {
-                    handleDeleteEvent()
-                  }}
-                  style={{
-                    background: 'rgb(0, 79, 155)',
-                    color: 'white',
-                    border: '1px solid black',
-                    borderRadius: '3px',
-                  }}
-                >
-                  Send
-                </button>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    style={{
+                      background: 'white',
+                      color: 'rgb(0, 79, 155)',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                    }}
+                    onClick={() => {
+                      closeModal()
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  &nbsp;&nbsp;
+                  <button
+                    onClick={() => {
+                      handleDeleteEvent()
+                    }}
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      color: 'white',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
             </Modal>
           </div>

@@ -14,8 +14,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 18vh;
+    justify-content: space-around;
+    height: 100%;
+    flex:1
 }
 
 .dot-adjust{
@@ -70,7 +71,7 @@
 }
 .news-info > .news-category {
     margin-bottom: 0.6rem;
-
+    font-size: 0.8rem;
     font-weight: 500;
     text-decoration: underline;
 }
@@ -140,8 +141,8 @@
   }
 
   .attachment-icon > a {
-      font-size: 0.7rem;
-      margin-top: 0.7rem;
+      font-size: 0.8rem;
+      margin-top: 0.8rem;
   }
 
   .attachment-icon > i {
@@ -151,7 +152,7 @@
   .flex-setup{
       display: flex;
       flex-wrap: wrap;
-
+flex:7;
 
   }
 
@@ -182,4 +183,46 @@
   color: black;
   border-color: black;
   border-width: 1px;
+}
+
+.yk-dropdown-holder{
+    padding: 0 !important;
+    width: max-content;
+    position: relative !important;
+    z-index: 100;
+    flex: 0 !important
+}
+
+.yg-custom-dropdown {
+    background-color: white !important;
+    color: black !important;
+    border-color: #000 !important;
+    width: 100% !important;
+}
+
+.yg-font-size{
+    font-size: small !important;
+}
+
+.yk-dropdown-holder-subtopic{
+    z-index: 0;
+}
+
+.yk-span {
+        display: block;
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+}
+
+.yk-icon-hover { cursor: pointer; }
+
+.yk-news-edit-icons{
+        flex: 1,
+
+}
+
+.yk-attached-file {
+    display: flex
 }
