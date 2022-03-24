@@ -176,7 +176,6 @@ const NewsItem = ({
 
   const [isNewCatAdded, setIsNewCatAdded] = useState(false)
   const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
-
   const AddNewCategoryCall = async (image, categoryName) => {
     setIsNewCatAdded(true)
     const tempCatObject = {
@@ -496,6 +495,47 @@ const NewsItem = ({
 
   const [preloadedCategoryData, setPreloadedCategoryData] = useState(null)
 
+  const _editSubCategory = (cat = null) => {
+    const updatedSubCategories = subCategory
+    updatedSubCategories.forEach(item => {
+      if (cat) {
+        if (item.id == cat.id) {
+          item.isEdit = true
+          item.tempSubTopicName = cat.sub_category_name
+        } else {
+          item.isEdit = false
+        }
+      } else {
+        item.isEdit = false
+      }
+    })
+    setSubCategory(updatedSubCategories)
+  }
+
+  const _updateSubTopicName = (name, id) => {
+    const updatedSubCategories = subCategory
+    updatedSubCategories.forEach(item => {
+      if (item.id == id) {
+        item.tempSubTopicName = name
+      }
+    })
+
+    setSubCategory([...updatedSubCategories])
+  }
+
+  const _updateSubCategoryAPI = async (name, id, parent) => {
+    await API.post('news/edit_subcategory', {
+      sub_category_id: id,
+      sub_category_name: name,
+      parent_category_id: parent,
+    })
+      .then(data => {
+        _editSubCategory()
+        getCategoryAndSubCategory()
+      })
+      .catch(error => {})
+  }
+
   return (
     <React.Fragment>
       <div style={{ width: '400px' }}></div>
@@ -612,7 +652,7 @@ const NewsItem = ({
                     >
                       {category.map((cat, index) => (
                         <Dropdown.Item key={index} className="yg-font-size">
-                          <div className="d-flex justify-content-between">
+                          <div className="d-flex justify-content-between p-1">
                             <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
                             <i
                               className="fa-solid fa-pen-to-square"
@@ -683,10 +723,8 @@ const NewsItem = ({
                 <>
                   <Dropdown
                     ref={subTopicRef}
-                    // show={toggleDropDown == 2}
-                    onClick={
-                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
-                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    onClick={() =>
+                      toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
                     }
                     size="sm"
                     autoClose={'outside'}
@@ -721,24 +759,76 @@ const NewsItem = ({
                     >
                       {subCategory
                         .filter(item => item.category_id == categoryID)
-                        .map((cat, index) => (
-                          <label
-                            className="yg-font-size"
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyItems: 'center',
-                            }}
-                          >
-                            <input
-                              style={{ marginRight: '8px' }}
-                              type="checkbox"
-                              checked={cat.isChecked}
-                              onChange={() => _handleChecked(cat.id)}
-                            />
-                            {cat.sub_category_name}
-                          </label>
-                        ))}
+                        .map((cat, index) => {
+                          if (cat.isEdit) {
+                            return (
+                              <InputGroup className="mb-3 yg-font-size p-1 ">
+                                <FormControl
+                                  className="yg-font-size"
+                                  placeholder="Sub-Category"
+                                  aria-label="Recipient's username"
+                                  aria-describedby="basic-addon2"
+                                  value={cat.tempSubTopicName}
+                                  onChange={e => _updateSubTopicName(e.target.value, cat.id)}
+                                />
+                                <Button
+                                  onClick={() => {
+                                    debugger
+                                    if (cat.tempSubTopicName) {
+                                      _updateSubCategoryAPI(
+                                        cat.tempSubTopicName,
+                                        cat.id,
+                                        categoryID
+                                      )
+                                      _handleChecked(false)
+                                    } else {
+                                      toast.error('Please provide Sub Category title')
+                                    }
+                                  }}
+                                  variant="outline-secondary"
+                                  className="yg-font-size"
+                                  id="button-addon2"
+                                >
+                                  Save
+                                </Button>
+                              </InputGroup>
+                            )
+                          }
+
+                          return (
+                            <div className="d-flex justify-content-between p-1 ">
+                              <label
+                                className="yg-font-size"
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyItems: 'center',
+                                }}
+                              >
+                                <input
+                                  style={{ marginRight: '8px' }}
+                                  type="checkbox"
+                                  checked={cat.isChecked}
+                                  onChange={() => _handleChecked(cat.id)}
+                                />
+                                {cat.sub_category_name}
+                              </label>
+                              <i
+                                className="fa-solid fa-pen-to-square"
+                                style={{
+                                  paddingTop: '2px',
+                                  color: 'var(--bgColor2)',
+                                  fontSize: '20px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                  _editSubCategory(cat)
+                                  // change box to edit version
+                                }}
+                              />
+                            </div>
+                          )
+                        })}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
@@ -819,7 +909,7 @@ const NewsItem = ({
                         overflowY: 'scroll',
                       }}
                     >
-                      {data.sub_category.map((cat, index) => (
+                      {data.sub_category?.map((cat, index) => (
                         <Dropdown.Item key={index} className="yg-font-size">
                           <span>{cat.sub_category_name}</span>
                         </Dropdown.Item>
@@ -1078,7 +1168,13 @@ const NewsItem = ({
 
 export default NewsItem
 
-function AddCategoryModal({ show, setShow, preloadedCategoryData, setTempCategoryObject }) {
+function AddCategoryModal({
+  show,
+  setShow,
+  preloadedCategoryData,
+  setTempCategoryObject,
+  getCategoryAndSubCategory,
+}) {
   const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
   const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
   const [catImg, setCatImg] = useState()
@@ -1105,6 +1201,31 @@ function AddCategoryModal({ show, setShow, preloadedCategoryData, setTempCategor
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
+  }
+
+  const EditCategory = async () => {
+    if (!imageFile) {
+      toast.error('Image Required')
+      return
+    }
+    if (!categoryName) {
+      toast.error('Category Name Required')
+      return
+    }
+
+    const formData = new FormData()
+    const data = {
+      id: preloadedCategoryData?.id,
+      category_name: categoryName,
+    }
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
+
+    await API.post('news/edit_category', formData)
+      .then(data => {
+        getCategoryAndSubCategory()
+      })
+      .catch(error => {})
   }
 
   const _setImage = () => {
@@ -1191,7 +1312,11 @@ function AddCategoryModal({ show, setShow, preloadedCategoryData, setTempCategor
           <button
             className="btn"
             onClick={() => {
-              AddNewCategoryCall(imageFile, categoryName)
+              if (preloadedCategoryData) {
+                EditCategory()
+              } else {
+                AddNewCategoryCall(imageFile, categoryName)
+              }
             }}
           >
             Confirm
