@@ -434,7 +434,7 @@ const ProfileSettingScreen = () => {
 
                 if (password && passwordRetype) {
                   if (password == passwordRetype) {
-                    // call for passsword change /auth/password/change/
+                    // c                    toast.success(afterUpdateNewsMsg.data.message)
                     const payloadPassword = {
                       new_password1: password,
                       new_password2: passwordRetype,
@@ -444,7 +444,7 @@ const ProfileSettingScreen = () => {
                       '/auth/password-change/',
                       payloadPassword
                     )
-                    toast.success(afterUpdateNewsMsg.data.message)
+                    toast.success(afterPassChangeMsg.data.message)
 
                     // toast.success(afterPassChangeMsg.data.detail)
                   } else {

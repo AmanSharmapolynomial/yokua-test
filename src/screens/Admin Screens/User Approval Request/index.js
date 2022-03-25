@@ -235,7 +235,7 @@ const UserApprovalScreen = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
     setOpenDeleteDomainModal(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'scroll'
   }
 
   const deleteAllDUL = async () => {
