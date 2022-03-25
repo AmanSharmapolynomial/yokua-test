@@ -82,8 +82,8 @@ const NewsItem = ({
     topicRef.current.click()
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
-    setSelectedSubTopic('Select Sub-Topic')
 
+    setSelectedSubTopic('Select Sub-Topic')
     setSubCategoryID(0)
     if (cat.image_link && cat.image_link != '') {
       if (typeof cat.image_link == 'string') {
@@ -131,11 +131,11 @@ const NewsItem = ({
 
   const [toggleDropDown, setToggleDropDown] = useState(0)
 
-  // useEffect(() => {
-  //   if (changeType == 'Add') {
-  //     setEditView(true)
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (changeType == 'Add') {
+      setEditView(true)
+    }
+  }, [])
 
   const _onErrorImage = () => {
     setCatImg(placeholder)
@@ -560,17 +560,15 @@ const NewsItem = ({
         runDelete={deleteNews}
         data={deleteNewsArr}
       />
-      {showCategoryModal && (
-        <AddCategoryModal
-          closeModal={() => setShowCategoryModal(false)}
-          key={data.id}
-          preloadedCategoryData={preloadedCategoryData}
-          setShow={setShowCategoryModal}
-          show={showCategoryModal}
-          getCategoryAndSubCategory={getCategoryAndSubCategory}
-          setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
-        />
-      )}
+      <AddCategoryModal
+        closeModal={() => setShowCategoryModal(false)}
+        key={data.id}
+        preloadedCategoryData={preloadedCategoryData}
+        setShow={setShowCategoryModal}
+        show={showCategoryModal}
+        getCategoryAndSubCategory={getCategoryAndSubCategory}
+        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+      />
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div
@@ -624,7 +622,6 @@ const NewsItem = ({
               <span className="date">
                 {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
               </span>
-
               {editView ? (
                 <>
                   <Dropdown
@@ -1188,7 +1185,7 @@ function AddCategoryModal({
 }) {
   const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
   const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
-  const [catImg, setCatImg] = useState()
+  const [catImg, setCatImg] = useState(preloadedCategoryData?.image_link)
   const imageFileInputRef = useRef()
 
   useEffect(() => {
@@ -1252,10 +1249,10 @@ function AddCategoryModal({
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
-      if (typeof imageFile == 'string') {
-        setCatImg(imageFile)
-      } else {
+      if (!typeof imageFile == 'string') {
         setCatImg(window.URL.createObjectURL(imageFile))
+      } else {
+        setCatImg(imageFile)
       }
     }
   }
@@ -1291,6 +1288,7 @@ function AddCategoryModal({
             onChange={e => {
               console.log(e.target.files[0])
               SetImageFile(e.target.files[0])
+              _setImage()
             }}
           />
           <div className="d-flex justify-content-center">
@@ -1324,10 +1322,10 @@ function AddCategoryModal({
             id="mybtn"
             className="btn btn-background mr-4"
             onClick={() => {
-              closeModal()
+              debugger
               setCategoryName('')
               SetImageFile(null)
-              setShow(false)
+              setShow(p => false)
             }}
           >
             Cancel

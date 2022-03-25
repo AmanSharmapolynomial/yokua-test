@@ -336,28 +336,29 @@ const NewsScreen = () => {
 
             {(getUserRoles() == 'PMK Administrator' ||
               getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') && (
-              <div
-                className="add_row"
-                onClick={() => {
-                  if (!isAnyNewsUnderEdit) {
-                    setNewsUnderEdit(true)
-                    setNewsData([...newsData, { id: Math.random() }])
-                  } else {
-                    toast.error('Please finish current news edit.')
-                  }
-                }}
-              >
-                <img
-                  src={Plusicon}
-                  style={{
-                    width: '22px',
-                    marginRight: '12px',
+              getUserRoles() == 'Technical Administrator') &&
+              !archivedFilter && (
+                <div
+                  className="add_row"
+                  onClick={() => {
+                    if (!isAnyNewsUnderEdit) {
+                      setNewsUnderEdit(true)
+                      setNewsData([...newsData, { id: Math.random() }])
+                    } else {
+                      toast.error('Please finish current news edit.')
+                    }
                   }}
-                />
-                Add
-              </div>
-            )}
+                >
+                  <img
+                    src={Plusicon}
+                    style={{
+                      width: '22px',
+                      marginRight: '12px',
+                    }}
+                  />
+                  Add
+                </div>
+              )}
           </div>
         )}
         {newsData.length > 0 && (
