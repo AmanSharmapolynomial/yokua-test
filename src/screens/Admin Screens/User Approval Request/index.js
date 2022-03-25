@@ -394,6 +394,8 @@ const UserApprovalScreen = () => {
             onClick={() => {
               if (selectedRowsState.length > 0) {
                 acceptAllRequest()
+              } else {
+                toast.error('Please select the requests to Accept')
               }
             }}
           >
