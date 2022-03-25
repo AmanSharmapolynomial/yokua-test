@@ -1,40 +1,58 @@
 import React, { useRef, useEffect, useState } from 'react'
-import '../style.css'
+import { useLocation, useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
+import API from '../../../utils/api'
 
-const ResetPasswordModal = ({ change, data, saveAndExit }) => {
+const ResetPasswordModal = () => {
+  const navigate = useNavigate()
+  const { state } = useLocation()
   useEffect(() => {}, [])
-
-  // refs
-  const nameRef = useRef()
-  const emailRef = useRef()
-  const roleRef = useRef()
-  const contactRef = useRef()
-  const address1Ref = useRef()
-  const address2Ref = useRef()
-  const stateRef = useRef()
-  const pincodeRef = useRef()
+  const _resendPasswordLink = async () => {
+    const forgotPassPayload1 = {
+      email: state,
+    }
+    const data = await API.post('/auth/password/reset/', forgotPassPayload1)
+    toast.success(data.data.detail)
+  }
 
   return (
-    <div className="modal-background">
-      <div className="modal-wrapper">
-        <i
-          className="fa-solid fa-circle-xmark"
-          onClick={() => {
-            saveAndExit()
-          }}
-        />
-        <h3 className="modal-heading">{change}</h3>
-        <div
-          className="modal-content"
-          style={{
-            border: '0',
-          }}
-        >
-          <div className="info-text">
-            <p>Please check your E-Mail</p>
+    <div className="signIn-container mx-auto col-4 text-center">
+      <div
+        className="container-head "
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <>
+          <div
+            className="container__heading privacy-heading mb-3 h5"
+            style={{
+              fontWeight: 500,
+            }}
+          >
+            Reset password link has been sent
           </div>
-          <a className="action-link">Resend Link</a>
-        </div>
+          <div className="container__heading  mb-3 h6">Please check your e-mail</div>
+          <a
+            onClick={() => _resendPasswordLink()}
+            className="terms-link"
+            style={{ fontSize: '18px', textDecorationLine: 'none' }}
+          >
+            Resend Link
+          </a>
+          <i
+            className="fa-solid fa-circle-xmark"
+            style={{
+              position: 'absolute',
+              top: 20,
+              right: 10,
+            }}
+            onClick={() => {
+              navigate('/auth/login')
+            }}
+          />
+        </>
       </div>
     </div>
   )

@@ -28,6 +28,7 @@ import SubProductList from '../screens/Admin Screens/Product Lines/Sub Products'
 import ProductDetail from '../screens/Admin Screens/Product Lines/Product Detail'
 import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
 import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
+import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 
 const Routing = () => {
   // get User Login Info
@@ -75,7 +76,7 @@ const Routing = () => {
                 </div>
               }
             />
-            <Route path="reset-password" element={<ChnagePassword />} />
+            <Route path="reset-password" element={<ResetPasswordModal />} />
             <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
             <Route
