@@ -142,6 +142,15 @@ const NewsItem = ({
   }
 
   useEffect(() => {
+    category.map((cat, index) => {
+      if (cat.id == data.category_id) {
+        setCatImg(cat.image_link)
+      }
+    })
+  }, [catImg])
+
+  useEffect(() => {
+    debugger
     if (data) {
       category.map((cat, index) => {
         if (cat.id == data.category_id) {
