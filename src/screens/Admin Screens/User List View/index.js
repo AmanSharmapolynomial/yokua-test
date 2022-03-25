@@ -163,9 +163,10 @@ const UserListView = () => {
       return
     }
     if (sortedArray.length > 0) {
-      setBackendData(p => [...sortedArray])
+      setBackendData(p => sortedArray)
       toast.success('Filters applied')
     } else {
+      toast.error('Can not apply filter')
     }
     setLoading(false)
   }
@@ -276,7 +277,7 @@ const UserListView = () => {
                 setDataToChange(index)
               }}
             />
-            {/* <i
+            <i
               className="fa-solid fa-trash"
               style={{
                 color: '#CD2727',
@@ -286,7 +287,7 @@ const UserListView = () => {
                 setDeleteEmail(data.email)
                 setOpenBasicDeleteModal(true)
               }}
-            /> */}
+            />
           </div>
         ),
       })
