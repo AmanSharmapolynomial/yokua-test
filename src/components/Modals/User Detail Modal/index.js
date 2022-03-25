@@ -161,14 +161,22 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
             <div className="input-field-container">
               <label className="input-label font-weight-bold">Permission Level</label>
-
-              <Select
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={options}
-                style={{ width: '100px' }}
-                className="yg-custom-dropdowns"
-              />
+              {!disabledInput ? (
+                <Select
+                  defaultValue={selectedOption}
+                  onChange={setSelectedOption}
+                  options={options}
+                  style={{ width: '100px' }}
+                  className="yg-custom-dropdowns"
+                />
+              ) : (
+                <input
+                  disabled={disabledInput}
+                  className="input-text"
+                  type="text"
+                  defaultValue={selectedOption?.value}
+                />
+              )}
             </div>
 
             <div className="input-field-container">

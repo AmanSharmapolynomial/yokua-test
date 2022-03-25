@@ -164,7 +164,6 @@ const UserListView = () => {
       setBackendData(p => sortedArray)
       toast.success('Filters applied')
     } else {
-      toast.error('Can not apply filter')
     }
     setLoading(false)
   }
