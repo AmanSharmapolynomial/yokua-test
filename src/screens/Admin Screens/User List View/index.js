@@ -277,7 +277,7 @@ const UserListView = () => {
                 setDataToChange(index)
               }}
             />
-            <i
+            {/* <i
               className="fa-solid fa-trash"
               style={{
                 color: '#CD2727',
@@ -287,7 +287,7 @@ const UserListView = () => {
                 setDeleteEmail(data.email)
                 setOpenBasicDeleteModal(true)
               }}
-            />
+            /> */}
           </div>
         ),
       })
@@ -494,7 +494,7 @@ const UserListView = () => {
               Inactive
             </span>
           </div>
-          {getUserRoles() == 'PMK Administrator' && (
+          {/* {getUserRoles() == 'PMK Administrator' && (
             <i
               className="fa-solid fa-trash"
               style={{ cursor: 'pointer' }}
@@ -503,7 +503,7 @@ const UserListView = () => {
                 setReloadTable(!reloadTable)
               }}
             />
-          )}
+          )} */}
         </div>
         <div className="filter-actions mgt">
           <div className="filter-checkbox d-flex align-items-center">
