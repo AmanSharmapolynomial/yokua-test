@@ -81,7 +81,7 @@ const ProfileSettingScreen = () => {
 
   const saveAndExit = () => {
     setOpenSimpleDeleteModal(false)
-    document.body.style.overflow = 'scroll'
+    // document.body.style.overflow = 'scroll'
     setReloadData(!reloadData)
   }
 

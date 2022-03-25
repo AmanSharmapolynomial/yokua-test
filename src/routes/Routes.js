@@ -73,8 +73,22 @@ const Routing = () => {
             <Route path="reset-password" element={<ChnagePassword />} />
             <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
-            <Route path="verification-email" element={<VerificationEmail />} />
-            <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
+            <Route
+              path="verification-email"
+              element={
+                <div className="bg-landing h-100 py-5">
+                  <VerificationEmail />
+                </div>
+              }
+            />
+            <Route
+              path="verification-email/:uid/:token"
+              element={
+                <div className="bg-landing h-100 py-5">
+                  <VerificationEmail />
+                </div>
+              }
+            />
           </Route>
           <Route
             path="/admin"

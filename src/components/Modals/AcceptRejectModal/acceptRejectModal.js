@@ -14,13 +14,19 @@ const AcceptRejectModal = ({
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">
+        <h3
+          className="modal-heading"
+          style={{
+            marginBottom: 0,
+          }}
+        >
           {change == 'Rejected' ? 'Request Denied' : 'Approval E-Mail change request'}
         </h3>
         <div
           className="modal-content domain-modal"
           style={{
             border: '0',
+            margin: 0,
           }}
         >
           {change == 'Rejected' ? (
@@ -77,7 +83,7 @@ const AcceptRejectModal = ({
                 onClick={() => {
                   acceptSingleRequest(acceptData)
                   saveAndExit()
-                  document.body.style.overflow = 'scroll'
+                  // document.body.style.overflow = 'scroll'
                 }}
               >
                 Confirm

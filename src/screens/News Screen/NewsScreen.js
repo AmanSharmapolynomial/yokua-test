@@ -367,7 +367,7 @@ const NewsScreen = () => {
             />
           </div>
         )}
-        <div className="archived-filter ">
+        <div className="archived-filter">
           {archivedFilter ? (
             <button
               className="btn ml-3"

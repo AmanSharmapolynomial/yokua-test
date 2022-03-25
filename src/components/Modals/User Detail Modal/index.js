@@ -5,6 +5,8 @@ import validator from 'validator'
 import placeholder from '../../News Components/placeholder.png'
 
 import Select from 'react-select'
+
+import close from '../../../assets/close_black.png'
 const options = [
   { value: 'User', label: 'User' },
   { value: 'PMK Content Manager', label: 'PMK Content Manager' },
@@ -86,11 +88,19 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
     <div className="modal-background">
       <div className="modal-wrapper">
         {change == 'View' && (
-          <i
-            className="fa-solid fa-remove save-icon"
+          // <i
+          //   className="fa-solid fa-remove save-icon"
+          //   onClick={() => {
+          //     saveAndExit()
+          //     // document.body.style.overflow = 'scroll'
+          //   }}
+          // />
+
+          <img
+            className="save-icon"
+            src={close}
             onClick={() => {
               saveAndExit()
-              document.body.style.overflow = 'scroll'
             }}
           />
         )}
@@ -126,7 +136,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
           </div>
           <div className="user-details-form">
             <div className="input-field-container">
-              <label className="input-label">First Name</label>
+              <label className="input-label font-weight-bold">First Name</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -138,7 +148,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container">
-              <label className="input-label">Last Name</label>
+              <label className="input-label font-weight-bold">Last Name</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -150,7 +160,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container">
-              <label className="input-label">Permission Level</label>
+              <label className="input-label font-weight-bold">Permission Level</label>
 
               <Select
                 defaultValue={selectedOption}
@@ -162,7 +172,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label">E-Mail id</label>
+              <label className="input-label font-weight-bold">E-Mail id</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -174,7 +184,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container yk-password-container">
-              <label className="input-label">Password</label>
+              <label className="input-label font-weight-bold">Password</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -196,7 +206,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label">Company</label>
+              <label className="input-label font-weight-bold">Company</label>
               <input
                 disabled={disabledInput}
                 className="input-text"

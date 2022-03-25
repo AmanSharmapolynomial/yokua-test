@@ -6,11 +6,19 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">Add New Domain</h3>
+        <h3
+          className="modal-heading"
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          Add New Domain
+        </h3>
         <div
           className="modal-content domain-modal"
           style={{
             border: '0',
+            margin: 0,
           }}
         >
           <div className="info-text">
