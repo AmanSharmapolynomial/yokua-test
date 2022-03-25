@@ -243,7 +243,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     lastName: lastName,
                     role: selectedOption.value,
                     company_name: company,
-                    imageFile: imageFile,
+                    imageFile: imageFile != placeholder ? imageFile : null,
                   }
                   if (password && password.length > 1) {
                     saveData['password'] = password

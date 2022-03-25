@@ -35,7 +35,7 @@ const UserListView = () => {
   const [filterActive, setFilterActive] = useState('')
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
   const sortDropdownData = [NEW_TO_OLD, OLD_TO_NEW, A_TO_Z, Z_TO_A]
   const [showSortDropDown, setShowDropDown] = useState(false)
 
@@ -369,6 +369,7 @@ const UserListView = () => {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
       if (data.imageFile) {
         const formData = new FormData()
+
         formData.append('image', data.imageFile)
         formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)

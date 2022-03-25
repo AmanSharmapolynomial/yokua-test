@@ -1,4 +1,4 @@
-.sub-header {
+/* .sub-header {
   font-weight: 500;
   font-size: 1.8rem;
 
@@ -23,7 +23,6 @@
   position: relative;
   margin-bottom: 2rem;
   border: 1px solid #000000; display: grid; place-items: center; position: relative;
-  /*            margin-right: 22px;*/
 }
 
 .img-section-two .img-main{
@@ -96,11 +95,7 @@
   border-style: solid;
   border: 1px;
   border-color: black;
-}
 
-.icon-size{
-  /*font-weight: 500;*/
-  /*font-size: 1.8rem;*/
 }
 
 .bottom-border{
@@ -141,4 +136,4 @@
 
 .head-5{
   margin-bottom: 0px;
-}
+} */
