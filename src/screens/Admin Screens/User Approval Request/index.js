@@ -8,8 +8,12 @@ import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acce
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
+import { toast } from 'react-toastify'
+// import DeleteModal from '../../../components/Modals/DeleteModal'
+import Example from '../../../components/Modals/Delete Modal/DeleteModal'
 
 const UserApprovalScreen = () => {
+  const [show, setShow] = useState(false)
   const [openARModal, setOpenARModal] = useState(false)
   const [openDomainModal, setOpenDomainModal] = useState(false)
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
@@ -239,6 +243,10 @@ const UserApprovalScreen = () => {
   }
 
   const deleteAllDUL = async () => {
+    if (selectedDULRowsState.length < 1) {
+      toast.error('Please select the Users to Delete')
+      return
+    }
     const dataArray = []
     selectedDULRowsState.map(row => {
       dataArray.push(row.companyEmail)
@@ -364,6 +372,20 @@ const UserApprovalScreen = () => {
           data={deleteDomainData}
         />
       )}
+
+      <Example
+        show={show}
+        setShow={setShow}
+        data={null}
+        runDelete={() => {
+          setShow(false)
+          deleteAllDUL()
+        }}
+        req={'Attention'}
+        title={'Are you sure you want to delete Users ?'}
+        saveAndExit={() => setShow(false)}
+      />
+
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
         <div className="btn-container mb-2 ">
@@ -534,7 +556,9 @@ const UserApprovalScreen = () => {
                 className="action-btn-btn"
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
-                    deleteAllDUL()
+                    setShow(true)
+                  } else {
+                    toast.error('Please select users to Delete.')
                   }
                 }}
               >
