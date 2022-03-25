@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import './style.css'
 
-import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import SecondaryHeading from '../../../components/Secondary Heading'
-import Dropdown from '../../../components/Dropdown'
 import DataTable from 'react-data-table-component'
-import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
 import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
-import { toast } from 'react-toastify'
-import { useStoreState } from 'easy-peasy'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
-import { useDetectClickOutside } from 'react-detect-click-outside'
 
 const UserApprovalScreen = () => {
   const [openARModal, setOpenARModal] = useState(false)
@@ -215,6 +209,7 @@ const UserApprovalScreen = () => {
       style: {},
     },
   ]
+
   const customStyles = {
     rows: {
       style: {},
@@ -292,7 +287,7 @@ const UserApprovalScreen = () => {
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
-    setOpenARModal(true)
+    setOpenARModal(false)
     console.log('accepted', data)
   }
 

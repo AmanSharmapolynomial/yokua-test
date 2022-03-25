@@ -170,24 +170,6 @@ const UserListView = () => {
     setLoading(false)
   }
 
-  // const customSort = () => {
-  //   return rows.sort((a, b) => {
-  //     	// use the selector to resolve your field names by passing the sort comparators
-  //     	const aField = selector(a).toLowerCase();
-  //     		const bField = selector(b).toLowerCase();
-
-  //     	let comparison = 0;
-
-  //   		if (aField > bField) {
-  //   			comparison = 1;
-  //   		} else if (aField < bField) {
-  //   			comparison = -1;
-  //   		}
-
-  //     		return direction === 'desc' ? comparison * -1 : comparison;
-  //   	});
-  // }
-
   useEffect(() => {
     _handleSort(sortMethod)
   }, [sortMethod])
@@ -385,11 +367,10 @@ const UserListView = () => {
 
     if (payload.email_id != '') {
       const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
-      debugger
       if (data.imageFile) {
         const formData = new FormData()
         formData.append('image', data.imageFile)
-        formData.append('data', JSON.stringify({ email: data.email }))
+        formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)
           .then(data => {
             setReloadData(true)

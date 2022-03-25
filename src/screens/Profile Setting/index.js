@@ -425,11 +425,11 @@ const ProfileSettingScreen = () => {
                   }
                 }
                 if (address && address != '') {
-                  // const payloadAddress = {
-                  //   address: address,
-                  // }
-                  // const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
-                  // toast.success(afterUpdateMsg.data.message)
+                  const payloadAddress = {
+                    company: address,
+                  }
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
+                  toast.success(afterUpdateMsg.data.message)
                 }
 
                 if (password && passwordRetype) {
