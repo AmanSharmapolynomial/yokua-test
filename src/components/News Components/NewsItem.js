@@ -24,6 +24,7 @@ const NewsItem = ({
   updateNewsRead,
   readNews,
   setCategoryFilter,
+  categoryFilter,
   isAnyNewsUnderEdit,
   setNewsUnderEdit,
   setCheckListActivated,
@@ -141,6 +142,15 @@ const NewsItem = ({
   }
 
   useEffect(() => {
+    category.map((cat, index) => {
+      if (cat.id == data.category_id) {
+        setCatImg(cat.image_link)
+      }
+    })
+  }, [catImg])
+
+  useEffect(() => {
+    debugger
     if (data) {
       category.map((cat, index) => {
         if (cat.id == data.category_id) {
@@ -164,7 +174,7 @@ const NewsItem = ({
       }
       setDataID(data.id)
     }
-  }, [editView])
+  }, [editView, categoryFilter])
 
   const saveAndExitModal = () => {
     setDeleteModal(false)
@@ -1219,14 +1229,18 @@ function AddCategoryModal({
       id: preloadedCategoryData?.id,
       category_name: categoryName,
     }
-    formData.append('image', image)
+    formData.append('image', imageFile)
     formData.append('data', JSON.stringify(data))
 
     await API.post('news/edit_category', formData)
       .then(data => {
         getCategoryAndSubCategory()
+        setShow(false)
       })
-      .catch(error => {})
+      .catch(error => {
+        handleClose()
+        setShow(false)
+      })
   }
 
   const _setImage = () => {

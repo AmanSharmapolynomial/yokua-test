@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import './style.css'
 
-import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import SecondaryHeading from '../../../components/Secondary Heading'
-import Dropdown from '../../../components/Dropdown'
 import DataTable from 'react-data-table-component'
-import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
 import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
-import { toast } from 'react-toastify'
-import { useStoreState } from 'easy-peasy'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
-import { useDetectClickOutside } from 'react-detect-click-outside'
+import { toast } from 'react-toastify'
+// import DeleteModal from '../../../components/Modals/DeleteModal'
+import Example from '../../../components/Modals/Delete Modal/DeleteModal'
 
 const UserApprovalScreen = () => {
+  const [show, setShow] = useState(false)
   const [openARModal, setOpenARModal] = useState(false)
   const [openDomainModal, setOpenDomainModal] = useState(false)
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
@@ -215,6 +213,7 @@ const UserApprovalScreen = () => {
       style: {},
     },
   ]
+
   const customStyles = {
     rows: {
       style: {},
@@ -240,10 +239,14 @@ const UserApprovalScreen = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
     setOpenDeleteDomainModal(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'scroll'
   }
 
   const deleteAllDUL = async () => {
+    if (selectedDULRowsState.length < 1) {
+      toast.error('Please select the Users to Delete')
+      return
+    }
     const dataArray = []
     selectedDULRowsState.map(row => {
       dataArray.push(row.companyEmail)
@@ -292,7 +295,7 @@ const UserApprovalScreen = () => {
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
-    setOpenARModal(true)
+    setOpenARModal(false)
     console.log('accepted', data)
   }
 
@@ -369,6 +372,20 @@ const UserApprovalScreen = () => {
           data={deleteDomainData}
         />
       )}
+
+      <Example
+        show={show}
+        setShow={setShow}
+        data={null}
+        runDelete={() => {
+          setShow(false)
+          deleteAllDUL()
+        }}
+        req={'Attention'}
+        title={'Are you sure you want to delete Users ?'}
+        saveAndExit={() => setShow(false)}
+      />
+
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
         <div className="btn-container mb-2 ">
@@ -539,7 +556,9 @@ const UserApprovalScreen = () => {
                 className="action-btn-btn"
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
-                    deleteAllDUL()
+                    setShow(true)
+                  } else {
+                    toast.error('Please select users to Delete.')
                   }
                 }}
               >

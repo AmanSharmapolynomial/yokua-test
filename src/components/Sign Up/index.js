@@ -104,6 +104,10 @@ const SignUp = () => {
   const register = async e => {
     // setLoading(true)
     e.preventDefault()
+    if (topicName.length < 2 || topicName == 'Company') {
+      toast.error('Please select the company')
+      return
+    }
     if (tncRef.current.checked) {
       if (validator.isEmail(companyEmail)) {
         if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {

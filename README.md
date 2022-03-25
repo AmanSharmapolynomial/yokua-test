@@ -95,7 +95,7 @@ src\
  |--utils\          # Utility classes and functions
  |--validations\    # Request data validation schemas
  |--app.js          # React app
- |--index.js        # App entry point
+ |--index        # App entry point
 
 ```
 

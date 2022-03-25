@@ -83,6 +83,7 @@ const NewsScreen = () => {
   const getAllNews = payload => {
     setLoading(true)
     API.post('news/', payload).then(data => {
+      setLoading(false)
       if (data.status == 200) {
         setBackendData(data.data)
         setLoading(false)
@@ -181,12 +182,10 @@ const NewsScreen = () => {
                         onClick={() => {
                           if (categoryFilter == category.id) {
                             toast.success('Category filter removed')
-
                             setCategoryFilter(null)
                             setSubCategoryFilter(null)
                           } else {
                             toast.success('Category filter Applied')
-
                             setCategoryFilter(category.id)
                           }
                         }}
@@ -280,6 +279,7 @@ const NewsScreen = () => {
                           setCategoryFilter(news?.category_id)
                         }
                       }}
+                      categoryFilter={categoryFilter}
                       updateNewsRead={() => _updateNewsRead(news.id)}
                       readNews={readNews}
                       data={news}
