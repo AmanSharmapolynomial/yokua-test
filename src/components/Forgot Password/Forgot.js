@@ -18,7 +18,7 @@ const Forgot = () => {
       const forgotPassPayload1 = {
         email,
       }
-      const data = await API.post('/auth/password/reset/', forgotPassPayload1)
+      const data = await API.post('/auth/reset-password-token-gen', forgotPassPayload1)
       toast.success(data.data.detail)
       setIsLoading(false)
       navigate('/auth/reset-password', { state: email })

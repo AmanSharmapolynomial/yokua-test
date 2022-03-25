@@ -11,7 +11,7 @@ const ResetPasswordModal = () => {
     const forgotPassPayload1 = {
       email: state,
     }
-    const data = await API.post('/auth/password/reset/', forgotPassPayload1)
+    const data = await API.post('/auth/reset-password-token-gen', forgotPassPayload1)
     toast.success(data.data.detail)
   }
 
