@@ -18,7 +18,7 @@ const UserApprovalScreen = () => {
   const [openDomainModal, setOpenDomainModal] = useState(false)
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
+  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
   const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
   const [acceptData, setAcceptData] = useState()

@@ -123,7 +123,6 @@ const UserListView = () => {
       selector: row => row.status,
       sortable: true,
     },
-
     {
       name: '',
       selector: row => row.edit,
@@ -140,7 +139,6 @@ const UserListView = () => {
   const _handleSort = () => {
     setLoading(true)
     const updatedUserList = backendData
-    debugger
     let sortedArray = []
     if (sortMethod == NEW_TO_OLD) {
       sortedArray = updatedUserList.sort((a, b) =>
@@ -258,7 +256,7 @@ const UserListView = () => {
                 setDataToChange(index)
               }}
             />
-            {/* <i
+            <i
               className="fa-solid fa-trash"
               style={{
                 color: '#CD2727',
@@ -268,7 +266,7 @@ const UserListView = () => {
                 setDeleteEmail(data.email)
                 setOpenBasicDeleteModal(true)
               }}
-            /> */}
+            />
           </div>
         ),
       })
@@ -416,7 +414,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
-          key={backendData[dataToChange].id}
+          key={backendData[dataToChange]?.id}
           title={modelTitle}
           DetailsModal
           data={backendData[dataToChange]}
@@ -475,7 +473,7 @@ const UserListView = () => {
               Inactive
             </span>
           </div>
-          {/* {getUserRoles() == 'PMK Administrator' && (
+          {getUserRoles() == 'PMK Administrator' && (
             <i
               className="fa-solid fa-trash"
               style={{ cursor: 'pointer' }}
@@ -484,7 +482,7 @@ const UserListView = () => {
                 setReloadTable(!reloadTable)
               }}
             />
-          )} */}
+          )}
         </div>
         <div className="filter-actions mgt">
           <div className="filter-checkbox d-flex align-items-center">
@@ -580,6 +578,7 @@ const UserListView = () => {
       <div className="pagination">
         <Pagination
           showQuickJumper
+          current={pageNoCall}
           showSizeChanger={false}
           total={totalPages * 10}
           onChange={onChange}

@@ -77,7 +77,7 @@ const SignUp = () => {
   // use actions
 
   const AddNewCompany = () => {
-    if (topicName.length < 2) {
+    if (selectedTopic.length < 2) {
       toast.error('Please enter valid company name')
       setTopicName('')
       return
@@ -104,7 +104,8 @@ const SignUp = () => {
   const register = async e => {
     // setLoading(true)
     e.preventDefault()
-    if (topicName.length < 2 || topicName == 'Company') {
+    debugger
+    if (selectedTopic.length < 2) {
       toast.error('Please select the company')
       return
     }

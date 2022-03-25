@@ -124,7 +124,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               }}
             />
             <img
-              key={data.id}
+              key={data?.id}
               // className="profile-setting__info_img"
               style={{
                 cursor: 'pointer',

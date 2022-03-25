@@ -131,26 +131,25 @@ const NewsItem = ({
 
   const [toggleDropDown, setToggleDropDown] = useState(0)
 
-  useEffect(() => {
-    if (changeType == 'Add') {
-      setEditView(true)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (changeType == 'Add') {
+  //     setEditView(true)
+  //   }
+  // }, [])
 
   const _onErrorImage = () => {
     setCatImg(placeholder)
   }
 
-  useEffect(() => {
-    category.map((cat, index) => {
-      if (cat.id == data.category_id) {
-        setCatImg(cat.image_link)
-      }
-    })
-  }, [catImg])
+  // useEffect(() => {
+  //   category.map((cat, index) => {
+  //     if (cat.id == data.category_id) {
+  //       setCatImg(cat.image_link)
+  //     }
+  //   })
+  // }, [catImg])
 
   useEffect(() => {
-    debugger
     if (data) {
       category.map((cat, index) => {
         if (cat.id == data.category_id) {
@@ -548,7 +547,7 @@ const NewsItem = ({
   }
 
   return (
-    <React.Fragment>
+    <React.Fragment key={data?.id}>
       <div style={{ width: '400px' }}></div>
 
       <DeleteModal
@@ -563,6 +562,7 @@ const NewsItem = ({
       />
       {showCategoryModal && (
         <AddCategoryModal
+          closeModal={() => setShowCategoryModal(false)}
           key={data.id}
           preloadedCategoryData={preloadedCategoryData}
           setShow={setShowCategoryModal}
@@ -571,7 +571,6 @@ const NewsItem = ({
           setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
         />
       )}
-
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div
@@ -1180,6 +1179,7 @@ const NewsItem = ({
 export default NewsItem
 
 function AddCategoryModal({
+  closeModal,
   show,
   setShow,
   preloadedCategoryData,
@@ -1193,7 +1193,7 @@ function AddCategoryModal({
 
   useEffect(() => {
     _setImage()
-  }, [imageFile])
+  }, [])
 
   const handleClose = () => setShow(false)
 
@@ -1212,6 +1212,7 @@ function AddCategoryModal({
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
+    closeModal()
   }
 
   const EditCategory = async () => {
@@ -1229,16 +1230,22 @@ function AddCategoryModal({
       id: preloadedCategoryData?.id,
       category_name: categoryName,
     }
-    formData.append('image', imageFile)
+    if (typeof imageFile != 'string') {
+      formData.append('image', imageFile)
+    }
     formData.append('data', JSON.stringify(data))
 
     await API.post('news/edit_category', formData)
       .then(data => {
-        getCategoryAndSubCategory()
+        SetImageFile(null)
+        closeModal()
+        toast.success(data.data.message)
         setShow(false)
+        getCategoryAndSubCategory()
       })
       .catch(error => {
-        handleClose()
+        closeModal()
+        SetImageFile(null)
         setShow(false)
       })
   }
@@ -1317,6 +1324,7 @@ function AddCategoryModal({
             id="mybtn"
             className="btn btn-background mr-4"
             onClick={() => {
+              closeModal()
               setCategoryName('')
               SetImageFile(null)
               setShow(false)
@@ -1327,6 +1335,7 @@ function AddCategoryModal({
           <button
             className="btn"
             onClick={() => {
+              debugger
               if (preloadedCategoryData) {
                 EditCategory()
               } else {
