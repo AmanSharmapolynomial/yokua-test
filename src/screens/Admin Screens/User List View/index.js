@@ -161,16 +161,16 @@ const UserListView = () => {
       return
     }
     if (sortedArray.length > 0) {
-      setBackendData(p => sortedArray)
+      setBackendData(p => [...sortedArray])
       toast.success('Filters applied')
     } else {
     }
     setLoading(false)
   }
 
-  useEffect(() => {
-    _handleSort(sortMethod)
-  }, [sortMethod])
+  // useEffect(() => {
+  //   _handleSort(sortMethod)
+  // }, [sortMethod])
 
   useEffect(async () => {
     const payload = {
@@ -194,17 +194,36 @@ const UserListView = () => {
     }
 
     _getUserList(payload)
-  }, [pageNoCall])
+  }, [pageNoCall, sortMethod])
 
   const _getUserList = async payload => {
     setLoading(true)
 
     const listuserdata = await API.post('admin/list_users', payload)
-    console.log(listuserdata)
+    const updatedUserList = listuserdata.data?.page_data
+    let sortedArray = []
+    if (sortMethod == NEW_TO_OLD) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod == OLD_TO_NEW) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod == A_TO_Z) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
+      )
+    } else if (sortMethod == Z_TO_A) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
+      )
+    }
+    toast.success('Filter applied.')
 
     setTotalPages(listuserdata.data.total_pages)
     const contentRowData = []
-    listuserdata.data?.page_data.map((data, index) => {
+    sortedArray.map((data, index) => {
       contentRowData.push({
         name: (
           <span
@@ -272,7 +291,7 @@ const UserListView = () => {
       })
     })
 
-    setBackendData(listuserdata.data?.page_data)
+    setBackendData(sortedArray)
     setContentRow(contentRowData)
     setLoading(false)
   }
