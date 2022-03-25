@@ -121,9 +121,11 @@ const ProfileSettingScreen = () => {
         <DeleteModal
           show={openSimpleDeleteModal}
           setShow={setOpenSimpleDeleteModal}
-          req={'Account'}
+          req={'your Account'}
           saveAndExit={saveAndExit}
-          title={'Are you sure want to delete this Account?'}
+          title={
+            'This would delete your personal data permanently from our Flow Center Page, You will lose all access and any subscription will be canceled.'
+          }
           runDelete={runDeleteAccount}
           data={profileData.basic_profile?.email}
         />

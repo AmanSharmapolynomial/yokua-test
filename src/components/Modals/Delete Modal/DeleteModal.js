@@ -28,6 +28,7 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data, isBo
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            textAlign: 'center',
             borderBottom: '0',
             fontWeight: isBold ? '600' : 'normal',
           }}
