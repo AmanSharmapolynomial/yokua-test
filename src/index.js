@@ -8,6 +8,7 @@ import model from './model'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Footer from './components/Footer/index'
 import { LoadingProvider } from './utils/LoadingContext'
+import 'bootstrap/dist/css/bootstrap.css'
 
 const store = createStore(model)
 

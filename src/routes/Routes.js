@@ -23,6 +23,11 @@ import NewsScreen from '../screens/News Screen/NewsScreen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
 import Footer from '../components/Footer'
 import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
+import ProductList from '../screens/Admin Screens/Product Lines/Product List'
+import SubProductList from '../screens/Admin Screens/Product Lines/Sub Products'
+import ProductDetail from '../screens/Admin Screens/Product Lines/Product Detail'
+import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
+import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
 
 const Routing = () => {
   // get User Login Info
@@ -103,6 +108,11 @@ const Routing = () => {
 
             <Route path="user/company-names" element={<CompanyNames />} />
 
+            <Route path="products" element={<ProductList />} />
+            <Route path="rotameter" element={<Rotameter />} />
+            <Route path="approved-tokuchus" element={<ApprovedTokuchus />} />
+            <Route path="sub-products/:id" element={<SubProductList />} />
+            <Route path="product-detail/:id" element={<ProductDetail />} />
             <Route
               path="user/approval-request"
               element={
