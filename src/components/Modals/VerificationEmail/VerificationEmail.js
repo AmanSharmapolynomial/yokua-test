@@ -68,7 +68,7 @@ export default () => {
                 fontWeight: 500,
               }}
             >
-              Reset password link has been sent
+              Verification e-mail has been sent
             </div>
             <div className="container__heading  mb-3 h6">Please check your e-Mail</div>
             <a

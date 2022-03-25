@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 
 import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
+import { useLoading } from '../../utils/LoadingContext'
 
 const NewsItem = ({
   data,
@@ -28,6 +29,7 @@ const NewsItem = ({
   setCheckListActivated,
   isCheckListActivated,
 }) => {
+  const { setLoading } = useLoading()
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
@@ -48,11 +50,17 @@ const NewsItem = ({
   const [subCategory, setSubCategory] = useState(tempSubCategory)
 
   const getCategoryAndSubCategory = () => {
-    API.get('news/get_categories').then(data => {
-      console.log('Categories', data)
-      setSubCategory(data.data.sub_categories)
-      setCategory(data.data.categories)
-    })
+    setLoading(true)
+    API.get('news/get_categories')
+      .then(data => {
+        setLoading(false)
+        console.log('Categories', data)
+        setSubCategory(data.data.sub_categories)
+        setCategory(data.data.categories)
+      })
+      .catch(err => {
+        setLoading(false)
+      })
   }
 
   const [isTopicAdd, setIsTopicAdd] = useState(false)
@@ -213,13 +221,9 @@ const NewsItem = ({
 
         API.post('news/add_category', formData)
           .then(data => {
-            setIsLoading(false)
-
             resolve(data)
           })
           .catch(error => {
-            setIsLoading(false)
-
             reject(error)
           })
       } else {
@@ -237,13 +241,9 @@ const NewsItem = ({
         }
         API.post('news/add_subcategory', subPayload)
           .then(data => {
-            setIsLoading(false)
-
             resolve(data)
           })
           .catch(error => {
-            setIsLoading(false)
-
             reject(error)
           })
       } else {
@@ -253,6 +253,8 @@ const NewsItem = ({
   }
 
   const uploadNewNews = (catId, subCatId) => {
+    setLoading(true)
+
     const subCategoryIds = []
     if (isNewSubCatAdded) {
       subCategoryIds.push(subCatId)
@@ -304,7 +306,7 @@ const NewsItem = ({
         .then(function (response) {
           //handle success
           console.log(response)
-          setIsLoading(false)
+          setLoading(false)
 
           if (response.status == 200) {
             setNewsUnderEdit(false)
@@ -324,28 +326,27 @@ const NewsItem = ({
           }
         })
         .catch(function (response) {
+          setLoading(false)
           setEditView(false)
           setNewsUnderEdit(false)
           //handle error
           console.log('Error', response)
           if (response.status != 200) {
             // toast.error(response?.message)
-            toast.error('Session expired')
+            // toast.error('Session expired')
           }
-          setIsLoading(false)
         })
     }
   }
 
   const uploadNews = async () => {
-    debugger
+    setLoading(true)
     if (newsDescRef.current.value == '') {
       toast.error('Enter some description to add or edit news')
       return
     } else {
       if (isNewCatAdded) {
         uploadCategory().then(data => {
-          setIsLoading(false)
           if (data) {
             setCategoryID(data.data.id)
             if (isNewSubCatAdded) {

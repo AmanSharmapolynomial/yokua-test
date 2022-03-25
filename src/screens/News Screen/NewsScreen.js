@@ -10,8 +10,10 @@ import Filtermg from '../../assets/Icon awesome-filter.png'
 import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
+import { useLoading } from '../../utils/LoadingContext'
 
 const NewsScreen = () => {
+  const { setLoading } = useLoading()
   const filter1Ref = useRef()
   const filter2Ref = useRef()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
@@ -79,9 +81,11 @@ const NewsScreen = () => {
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
   const getAllNews = payload => {
+    setLoading(true)
     API.post('news/', payload).then(data => {
       if (data.status == 200) {
         setBackendData(data.data)
+        setLoading(false)
 
         data.data ? setNewsData(data.data.news_letters) : setNewsData([])
       }
