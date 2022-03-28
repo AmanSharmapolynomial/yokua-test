@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
+import { faBullseye } from '@fortawesome/free-solid-svg-icons'
 
 const NewsItem = ({
   data,
@@ -37,6 +38,13 @@ const NewsItem = ({
   useEffect(() => {
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
+
+      if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+        setSubTopicAdd(false)
+      }
+      // if ((subTopicRef?.current?.classList) .includes('show')) {
+      //   debugger
+      // }
     })
     return outsideClick
   }, [])
@@ -75,6 +83,8 @@ const NewsItem = ({
 
   const subTopicRef = useRef()
   const topicRef = useRef()
+
+  useEffect(() => {}, [editView])
 
   const handleSelectTopic = cat => {
     setAllSelectChecked(false)
@@ -506,6 +516,10 @@ const NewsItem = ({
   const [preloadedCategoryData, setPreloadedCategoryData] = useState(null)
 
   const _editSubCategory = (cat = null) => {
+    if (isSubTopicAdd) {
+      toast.error('Please save the current edit first')
+      return
+    }
     const updatedSubCategories = subCategory
     updatedSubCategories.forEach(item => {
       if (cat) {
@@ -544,6 +558,11 @@ const NewsItem = ({
         getCategoryAndSubCategory()
       })
       .catch(error => {})
+  }
+
+  const _checkIsEditSubTopicOpen = () => {
+    const items = subCategory.filter(item => item.isChecked)
+    return items.length > 0 ? true : false
   }
 
   return (
@@ -843,7 +862,11 @@ const NewsItem = ({
                           id="mybtn"
                           className="btn yg-font-size "
                           onClick={() => {
-                            setSubTopicAdd(true)
+                            if (_checkIsEditSubTopicOpen()) {
+                              toast.error('Please close the current Sub category edit')
+                            } else {
+                              setSubTopicAdd(true)
+                            }
                           }}
                         >
                           Add Sub-Topic
