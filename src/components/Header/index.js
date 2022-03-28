@@ -17,7 +17,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
   const [renderPhoneNav, setrenderPhoneNav] = useState(false)
 
   return (
-    <div
+    <header
       className="header sticky-top"
       style={
         {
@@ -28,15 +28,17 @@ const Header = ({ isLogedIn, isAdmin }) => {
       }
     >
       <div className="col">
-        <div className="header-container px-4">
-          <div className="header__logo">
+        <div className="row header-container px-4 py-2">
+          <div className="header__logo col-12 col-md-2">
             {/* Logo */}
             <img src={Yokogawa} alt="logo" />
             {/* <span className="logo__name">YOKOGAWA</span>
             <span className="logo__tagline">Co-innovating tommorow</span> */}
           </div>
-          <div className="header__title">FLOW CENTER PAGES</div>
-          {isLogedIn && (
+          <div className="header__title col-12 col-md-8 mr-md-auto text-center my-2 my-md-0">
+            FLOW CENTER PAGES
+          </div>
+          {/* {isLogedIn && (
             <i
               className="fa-solid fa-bars"
               style={{
@@ -50,7 +52,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
               }}
             />
           )}
-          {isLogedIn && renderPhoneNav && <PhoneNav />}
+          {isLogedIn && renderPhoneNav && <PhoneNav />} */}
           {isLogedIn && (
             <button
               className="logout-btn"
@@ -72,7 +74,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
         </div>
         {isLogedIn && <Navbar isAdmin={isAdmin} />}
       </div>
-    </div>
+    </header>
   )
 }
 

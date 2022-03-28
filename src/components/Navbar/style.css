@@ -1,118 +1,110 @@
-.nav{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    /* justify-content: space-between; */
-    gap: 40px;
-    margin-left: 40px;
-    margin-right: 10px;
-    margin-top: 20px;
-
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* justify-content: space-between; */
+  gap: 40px;
+  margin-left: 40px;
+  margin-right: 10px;
+  margin-top: 20px;
 }
 
-ul{
-    list-style: none;
-    display: flex;
-    border: 1px solid;
-    margin: 0.5rem 1rem !important;
-    background-color: white;
-    align-items: center;
-    justify-content: center;
-    max-width: 65rem;
-    padding: 0;
-    min-width: 55rem;
+ul {
+  list-style: none;
+  /* display: flex; */
+  border: 1px solid;
+  margin: 0.5rem 1rem !important;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+  /* max-width: 65rem; */
+  padding: 0;
+  /* min-width: 55rem; */
 }
-a{
-    color: black !important;
-}
-
-li{
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 0.2rem 0;
+a {
+  color: black !important;
 }
 
-.border-left{
-    border-left: 1px solid black;
+li {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.2rem 0;
 }
 
-.border-right{
-
-    border-right: 1px solid black;
+.border-left {
+  border-left: 1px solid black;
 }
 
-li>a{
-    padding: 0 1rem;
+.border-right {
+  border-right: 1px solid black;
 }
 
-i{
-    padding: 0 0.3rem;
+li > a {
+  padding: 0 1rem;
 }
 
-.search_input{
-    border: 1px solid black;
-    background: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-
-
-    width: 95%;
-    min-width: 14rem;
-    padding: 4px;
-    font-family: Poppins;
-    color: black;
-    /* padding-left: 2rem; */
-    text-align: center;
+i {
+  padding: 0 0.3rem;
 }
 
-.searchBar{
-    min-width: 14rem;
-    width: 21%;
-    max-width: 20rem;
-    /* border: 1px solid black; */
-    /* margin: 0 1rem; */
-    margin-left: 1rem;
-    position: relative;
-  
+.search_input {
+  border: 1px solid black;
+  background: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  width: 95%;
+  min-width: 14rem;
+  padding: 4px;
+  font-family: Poppins;
+  color: black;
+  /* padding-left: 2rem; */
+  text-align: center;
+}
+
+.searchBar {
+  min-width: 14rem;
+  width: 21%;
+  max-width: 20rem;
+  /* border: 1px solid black; */
+  /* margin: 0 1rem; */
+  margin-left: 1rem;
+  position: relative;
 }
 
 .searchBar > i {
-position: absolute;
-top: 7px;
-left: 8px;
+  position: absolute;
+  top: 7px;
+  left: 8px;
 }
-@media(max-width: 970px){
-    .nav{
-        display: none;
-    }
-}
-
-
-.phone-nav-item{
-    padding: 0.35rem 0;
-    cursor: pointer;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+@media (max-width: 970px) {
+  .nav {
+    display: none;
+  }
 }
 
-.phone-nav-item:hover{
-    background-color: rgb(237, 237, 237);
+.phone-nav-item {
+  padding: 0.35rem 0;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.phone-nav-item:hover {
+  background-color: rgb(237, 237, 237);
 }
 
 .header-container > i {
-    position: relative;
+  position: relative;
 }
 
-.phone-name-dropdown{
-    position: absolute;
-    right: 20px;
-    top: 40px;
+.phone-name-dropdown {
+  position: absolute;
+  right: 20px;
+  top: 40px;
 }
 
-.dropdown-item-phone{
-    padding-left: 0.8rem;
+.dropdown-item-phone {
+  padding-left: 0.8rem;
 }
-
-
-

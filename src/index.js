@@ -19,7 +19,6 @@ ReactDOM.render(
         <LoadingProvider>
           <App />
         </LoadingProvider>
-        <Footer />
       </StoreProvider>
     </Router>
   </React.StrictMode>,

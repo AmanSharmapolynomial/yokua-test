@@ -33,7 +33,7 @@ function App() {
   // const userDetails = useStoreState(state => state.userDetails)
 
   return (
-    <div className="App">
+    <div className="container-fluid p-0 vh-100 row m-0">
       <Routing />
       {loading && (
         <LoaderContainer>
@@ -42,7 +42,6 @@ function App() {
           </div>
         </LoaderContainer>
       )}
-
       <ToastContainer />
     </div>
   )

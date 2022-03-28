@@ -148,150 +148,161 @@ const SignUp = () => {
   }
 
   return (
-    <div className="signIn-container mx-auto col-4">
+    <div className="signIn-container mx-auto col-10 col-md-4 my-5">
       <div className="container-head">
-        <h3 className="container__heading col w-100 text-align-center text-center">
+        <span className="position-absolute float-left">
           <i
-            className="fa-solid fa-arrow-left back-arrow-btn float-left"
+            className="fa-solid fa-arrow-left back-arrow-btn"
             onClick={() => {
               navigate('/auth/login')
             }}
           />
-          Create a New Account
-        </h3>
-      </div>
-      <form className="forum" type="submit" onSubmit={register}>
-        <input
-          type="text"
-          required={true}
-          onChange={e => setFirstName(e.target.value)}
-          className="input-field"
-          placeholder="First Name"
-        />
-        <input
-          type="text"
-          required={true}
-          className="input-field input-field__password"
-          onChange={e => setLastName(e.target.value)}
-          placeholder="Last Name"
-        />
-        <input
-          type="email"
-          name="Email"
-          required={true}
-          style={{
-            textTransform: 'lowercase',
-          }}
-          className="input-field input-field__email"
-          onChange={e => setCompanyEmail(e.target.value)}
-          placeholder="Company E-Mail"
-        />
-        <input
-          type={passwordVisible ? 'text' : 'password'}
-          name="Password"
-          className="input-field input-field__password"
-          onChange={e => setPassword(e.target.value)}
-          required={true}
-          placeholder="Password"
-        />
-
-        <i
-          className={
-            passwordVisible ? 'fa-eye fa-solid first-signin' : 'fa-eye-slash fa-solid first-signin'
-          }
-          onClick={() => setPasswordVisible(!passwordVisible)}
-        ></i>
-
-        <input
-          type={confirmPasswordVisible ? 'text' : 'password'}
-          required={true}
-          className="input-field input-field__password"
-          onChange={e => setConfirmPassword(e.target.value)}
-          placeholder="Confirm Password"
-        />
-
-        <i
-          className={confirmPasswordVisible ? 'fa-solid fa-eye two' : 'fa-solid fa-eye-slash two'}
-          onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-        ></i>
-
-        <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
-          {actionLabel}
         </span>
+        <div className="container__heading text-center">Create a New Account</div>
+      </div>
+      <form className="forum mt-2" type="submit" onSubmit={register}>
+        <div className="row">
+          <input
+            type="text"
+            required={true}
+            onChange={e => setFirstName(e.target.value)}
+            className="input-field"
+            placeholder="First Name"
+          />
+          <input
+            type="text"
+            required={true}
+            className="input-field input-field__password"
+            onChange={e => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+          <input
+            type="email"
+            name="Email"
+            required={true}
+            style={{
+              textTransform: 'lowercase',
+            }}
+            className="input-field input-field__email"
+            onChange={e => setCompanyEmail(e.target.value)}
+            placeholder="Company E-Mail"
+          />
+          <div className="row align-items-center input-field mx-auto">
+            <span className="flex-fill">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                name="Password"
+                className="input-field__password"
+                onChange={e => setPassword(e.target.value)}
+                required={true}
+                placeholder="Password"
+              />
+            </span>
+            <span>
+              <i
+                className={passwordVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              />
+            </span>
+          </div>
+          <div className="row align-items-center input-field mx-auto">
+            <span className="flex-fill">
+              <input
+                type={confirmPasswordVisible ? 'text' : 'password'}
+                required={true}
+                className="input-field__password"
+                onChange={e => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+              />
+            </span>
+            <span>
+              <i
+                className={confirmPasswordVisible ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'}
+                onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+              />
+            </span>
+          </div>
+          <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
+            {actionLabel}
+          </span>
 
-        <Dropdown
-          size="sm"
-          autoClose={'outside'}
-          className="yk-dropdown-holder input-field"
-          style={{
-            overflow: 'visible',
-          }}
-        >
-          <Dropdown.Toggle
-            size={'sm'}
-            className="yg-custom-dropdown"
-            color="red"
-            id="dropdown-basic"
+          <Dropdown
+            size="sm"
+            autoClose={'outside'}
+            className="yk-dropdown-holder input-field"
+            style={{
+              flexDirection: 'row',
+              overflow: 'visible',
+            }}
           >
-            {selectedTopic}
-          </Dropdown.Toggle>
+            <Dropdown.Toggle
+              size={'sm'}
+              className="yg-custom-dropdown"
+              color="red"
+              id="dropdown-basic"
+            >
+              {selectedTopic}
+            </Dropdown.Toggle>
 
-          <Dropdown.Menu
-            style={{ width: '80%', marginLeft: '124px', maxHeight: '14rem', overflowY: 'scroll' }}
-          >
-            {category.map((cat, index) => (
-              <Dropdown.Item
-                key={index}
-                className="yg-font-size-r"
-                onClick={() => handleSelectTopic(cat)}
-              >
-                {cat.company_name}
-              </Dropdown.Item>
-            ))}
-            <Dropdown.Divider />
-            {!isTopicAdd && (
-              <Dropdown.Item
-                className="yg-font-size-r"
-                onClick={() => {
-                  setIsTopicAdd(true)
-                }}
-              >
-                Others
-              </Dropdown.Item>
-            )}
-            {isTopicAdd && (
-              <InputGroup className="yg-font-size-registrtion p-1 ">
-                <FormControl
-                  className="yg-font-size"
-                  placeholder="Company"
-                  aria-label="Recipient's username"
-                  aria-describedby="basic-addon2"
-                  value={topicName}
-                  onChange={e => setTopicName(e.target.value)}
-                />
-                <Button
-                  onClick={() => {
-                    setIsTopicAdd(false)
-                    AddNewCompany()
-                  }}
-                  variant="outline-secondary"
-                  className="saveBtn"
-                  id="button-addon2"
+            <Dropdown.Menu style={{ width: '80%', maxHeight: '14rem', overflowY: 'scroll' }}>
+              {category.map((cat, index) => (
+                <Dropdown.Item
+                  key={index}
+                  className="yg-font-size-r"
+                  onClick={() => handleSelectTopic(cat)}
                 >
-                  Save
-                </Button>
-              </InputGroup>
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
-        <div className="checkbox">
-          <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
-          <span className="checkbox-text">Accept the term and conditions</span>
-        </div>
+                  {cat.company_name}
+                </Dropdown.Item>
+              ))}
+              <Dropdown.Divider />
+              {!isTopicAdd && (
+                <Dropdown.Item
+                  className="yg-font-size-r"
+                  onClick={() => {
+                    setIsTopicAdd(true)
+                  }}
+                >
+                  Others
+                </Dropdown.Item>
+              )}
+              {isTopicAdd && (
+                <InputGroup className="yg-font-size-registrtion p-1 ">
+                  <FormControl
+                    className="yg-font-size"
+                    placeholder="Company"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    value={topicName}
+                    onChange={e => setTopicName(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => {
+                      setIsTopicAdd(false)
+                      AddNewCompany()
+                    }}
+                    variant="outline-secondary"
+                    className="saveBtn"
+                    id="button-addon2"
+                  >
+                    Save
+                  </Button>
+                </InputGroup>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+          <div className="col-12">
+            <div className="row text-center d-flex justify-content-center align-items-center">
+              <span>
+                <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
+              </span>
+              <span className="checkbox-text mx-auto">Accept the term and conditions</span>
+            </div>
+          </div>
 
-        <button type="submit" className="submit-btn px-4">
-          {isLoading ? 'Loading...' : 'Register'}
-        </button>
+          <button type="submit" className="submit-btn px-4 mx-auto">
+            {isLoading ? 'Loading...' : 'Register'}
+          </button>
+        </div>
       </form>
       <div className="terms">
         {'By signing up, you agree with the '}
