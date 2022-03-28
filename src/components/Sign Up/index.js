@@ -105,7 +105,7 @@ const SignUp = () => {
     // setLoading(true)
     e.preventDefault()
     debugger
-    if (selectedTopic.length < 2) {
+    if (selectedTopic.length < 2 || selectedTopic.toLowerCase() == 'company') {
       toast.error('Please select the company')
       return
     }
