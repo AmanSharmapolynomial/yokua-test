@@ -1184,13 +1184,15 @@ function AddCategoryModal({
   getCategoryAndSubCategory,
 }) {
   const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
-  const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
+  const [imageFile, SetImageFile] = useState(
+    preloadedCategoryData?.image_link ? preloadedCategoryData?.image_link : null
+  )
   const [catImg, setCatImg] = useState(preloadedCategoryData?.image_link)
   const imageFileInputRef = useRef()
 
   useEffect(() => {
     _setImage()
-  }, [])
+  }, [imageFile])
 
   const handleClose = () => setShow(false)
 
@@ -1247,13 +1249,21 @@ function AddCategoryModal({
       })
   }
 
-  const _setImage = () => {
-    if (imageFile && imageFile != '') {
-      if (!typeof imageFile == 'string') {
-        setCatImg(window.URL.createObjectURL(imageFile))
-      } else {
-        setCatImg(imageFile)
-      }
+  const _setImage = (image = null) => {
+    let finalImage = imageFile
+    if (image) {
+      finalImage = image
+    }
+    if (typeof finalImage == 'string' && finalImage != '') {
+      setCatImg(finalImage)
+      return
+    }
+    if (finalImage && !(typeof finalImage == 'string')) {
+      setCatImg(window.URL.createObjectURL(finalImage))
+    } else if (finalImage == null) {
+      setCatImg(placeholder)
+    } else {
+      setCatImg(imageFile)
     }
   }
 
@@ -1288,7 +1298,7 @@ function AddCategoryModal({
             onChange={e => {
               console.log(e.target.files[0])
               SetImageFile(e.target.files[0])
-              _setImage()
+              _setImage(e.target.files[0])
             }}
           />
           <div className="d-flex justify-content-center">

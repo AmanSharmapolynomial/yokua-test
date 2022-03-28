@@ -436,7 +436,6 @@ const ProfileSettingScreen = () => {
 
                 if (password && passwordRetype) {
                   if (password == passwordRetype) {
-                    // c                    toast.success(afterUpdateNewsMsg.data.message)
                     const payloadPassword = {
                       new_password1: password,
                       new_password2: passwordRetype,
@@ -450,7 +449,7 @@ const ProfileSettingScreen = () => {
 
                     // toast.success(afterPassChangeMsg.data.detail)
                   } else {
-                    toast.error('Password and retype password do not match')
+                    toast.error('Password and retype password does not match')
                   }
                 }
 

@@ -278,6 +278,7 @@ const UserApprovalScreen = () => {
       console.log(payload)
       // server is giving internal error
       const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+      toast.success(afterAcceptMsg.data.message)
       console.log(afterAcceptMsg)
       setReloadTable(!reloadTable)
     } else return
@@ -329,6 +330,8 @@ const UserApprovalScreen = () => {
       // server is giving internal error
       const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterRejectMsg.data)
+      setReloadTable(!reloadTable)
+    } else {
       setReloadTable(!reloadTable)
     }
   }

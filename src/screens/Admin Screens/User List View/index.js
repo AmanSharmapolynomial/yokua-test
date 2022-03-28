@@ -180,7 +180,7 @@ const UserListView = () => {
       filter: filterActive,
       page_index: 1,
     }
-
+    setPageNoCall(1)
     _getUserList(payload)
   }, [reloadTable, filterActive])
 
