@@ -15,10 +15,15 @@ import Filtermg from '../../../assets/Icon awesome-filter.png'
 import Deleteimg from '../../../assets/Icon material-delete.png'
 import { useLoading } from '../../../utils/LoadingContext'
 
-const NEW_TO_OLD = 'New to Old'
-const OLD_TO_NEW = 'Old to New'
-const A_TO_Z = 'A to Z'
-const Z_TO_A = 'Z to A'
+const NEW_TO_OLD = 'latest'
+const OLD_TO_NEW = 'old'
+const A_TO_Z = 'ascending'
+const Z_TO_A = 'descending'
+
+const nto = 'New to Old'
+const otn = 'Old to New'
+const atz = 'A to Z'
+const zta = 'Z to A'
 
 const UserListView = () => {
   const { loading, setLoading } = useLoading()
@@ -36,7 +41,7 @@ const UserListView = () => {
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
-  const sortDropdownData = [NEW_TO_OLD, OLD_TO_NEW, A_TO_Z, Z_TO_A]
+  const sortDropdownData = [nto, otn, atz, zta]
   const [showSortDropDown, setShowDropDown] = useState(false)
 
   const filter1Ref = useRef()
@@ -173,24 +178,47 @@ const UserListView = () => {
   // }, [sortMethod])
 
   useEffect(async () => {
+    let sort = A_TO_Z
+    if (sortMethod === atz) {
+      sort == A_TO_Z
+    } else if (sortMethod === zta) {
+      sort == Z_TO_A
+    } else if (sortMethod === nto) {
+      sort == NEW_TO_OLD
+    } else {
+      sort == OLD_TO_NEW
+    }
+
     const payload = {
       pmk_admin: filterCheckboxPMK,
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
       page_index: 1,
+      sort_by: sort,
     }
     setPageNoCall(1)
     _getUserList(payload)
   }, [reloadTable, filterActive])
 
   useEffect(async () => {
+    let sort = A_TO_Z
+    if (sortMethod === atz) {
+      sort == A_TO_Z
+    } else if (sortMethod === zta) {
+      sort == Z_TO_A
+    } else if (sortMethod === nto) {
+      sort == NEW_TO_OLD
+    } else {
+      sort == OLD_TO_NEW
+    }
     const payload = {
       pmk_admin: filterCheckboxPMK,
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
       page_index: pageNoCall,
+      sort_by: sort,
     }
 
     _getUserList(payload)
@@ -201,25 +229,25 @@ const UserListView = () => {
 
     const listuserdata = await API.post('admin/list_users', payload)
     const updatedUserList = listuserdata.data?.page_data
-    let sortedArray = []
-    if (sortMethod == NEW_TO_OLD) {
-      sortedArray = updatedUserList.sort((a, b) =>
-        new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
-      )
-    } else if (sortMethod == OLD_TO_NEW) {
-      sortedArray = updatedUserList.sort((a, b) =>
-        new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
-      )
-    } else if (sortMethod == A_TO_Z) {
-      sortedArray = updatedUserList.sort((a, b) =>
-        a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
-      )
-    } else if (sortMethod == Z_TO_A) {
-      sortedArray = updatedUserList.sort((a, b) =>
-        a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
-      )
-    }
-    toast.success('Filter applied.')
+    let sortedArray = updatedUserList
+    // if (sortMethod == NEW_TO_OLD) {
+    //   sortedArray = updatedUserList.sort((a, b) =>
+    //     new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
+    //   )
+    // } else if (sortMethod == OLD_TO_NEW) {
+    //   sortedArray = updatedUserList.sort((a, b) =>
+    //     new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
+    //   )
+    // } else if (sortMethod == A_TO_Z) {
+    //   sortedArray = updatedUserList.sort((a, b) =>
+    //     a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
+    //   )
+    // } else if (sortMethod == Z_TO_A) {
+    //   sortedArray = updatedUserList.sort((a, b) =>
+    //     a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
+    //   )
+    // }
+    // toast.success('Filter applied.')
 
     setTotalPages(listuserdata.data.total_pages)
     const contentRowData = []
