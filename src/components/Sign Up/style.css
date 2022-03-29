@@ -108,9 +108,10 @@
   position: relative; background-color: #ffffff !important;
 }
 
-.dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin-left: 130px !important;}
+.yk-sign-up-dropdn .yg-font-size-r{margin-left: 0 !important;  padding: 0.25rem 1.5rem !important;}
+.dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin-right: 4px; float: right;}
 
-
+.yk-sign-up-dropdn .dropdown-item{font-size: 0.8rem; margin-right: 0;}
 
 
 
