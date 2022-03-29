@@ -1,275 +1,254 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import './style.css'
+import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
+import API from '../../utils/api'
 
-const Dropdown = ({ submenus, dropdown, depthLevel }) => {
-  depthLevel = depthLevel + 1
-  const dropdownClass = depthLevel > 1 ? 'dropdown-submenu' : ''
-  return (
-    <ul className={`dropdown ${dropdownClass} ${dropdown ? 'show' : ''}`}>
-      {submenus.map((submenu, index) => (
-        <MenuItems items={submenu} key={index} depthLevel={depthLevel} />
-      ))}
-    </ul>
-  )
-}
+const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedCompany }) => {
+  const [show, setShow] = useState(false)
+  const [currentEdit, setCurrentEdit] = useState(1)
+  const [parentCompany, setParentCompany] = useState('')
+  const [isTopicAdd, setIsTopicAdd] = useState(false)
+  const [isSubTopicAdd, setIsSubTopicAdd] = useState(false)
 
-const MenuItems = ({ items, depthLevel }) => {
-  const [dropdown, setDropdown] = useState(false)
-
-  let ref = useRef()
+  const [selectedCompany, setSelectedCompany] = useState('Company')
 
   useEffect(() => {
-    console.log(items)
-    const handler = event => {
-      if (dropdown && ref.current && !ref.current.contains(event.target)) {
-        setDropdown(false)
+    getSelectedCompany(selectedCompany)
+  }, [selectedCompany])
+
+  const _saveCompany = (currentEdit, name) => {
+    if (name.length < 2) {
+      toast.error('Please enter valid company name')
+      setTopicName('')
+      return
+    }
+
+    let payload = {}
+    if (currentEdit == 1) {
+      payload = {
+        parent_company: name,
+        child_company: '',
+      }
+    } else {
+      payload = {
+        parent_company: parentCompany,
+        child_company: name,
       }
     }
-    document.addEventListener('mousedown', handler)
-    document.addEventListener('touchstart', handler)
-    return () => {
-      // Cleanup the event listener
-      document.removeEventListener('mousedown', handler)
-      document.removeEventListener('touchstart', handler)
-    }
-  }, [dropdown])
 
-  const onMouseEnter = () => {
-    window.innerWidth > 960 && setDropdown(true)
-  }
+    API.post('auth/add_company', payload)
+      .then(data => {
+        setSelectedCompany(name)
+        getCompanyList()
+        setTopicName('')
 
-  const onMouseLeave = () => {
-    window.innerWidth > 960 && setDropdown(false)
+        setCurrentEdit(1)
+        setParentCompany('')
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   return (
-    <li className="menu-items" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      {items.company_divisions ? (
-        <>
-          <button
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded={dropdown ? 'true' : 'false'}
-            onClick={() => setDropdown(prev => !prev)}
-          >
-            {items.company_name}{' '}
-            {depthLevel > 0 ? <span>&raquo;</span> : <span className="arrow" />}
-          </button>
-          <Dropdown depthLevel={depthLevel} submenus={items.submenu} dropdown={dropdown} />
-        </>
-      ) : (
-        <a>{items.company_name}</a>
-      )}
-    </li>
-  )
-}
-
-const CustomDropdown = ({ categories }) => {
-  return (
-    <div class="container">
-      <div class="yk-sign-up-dropdn">
-        <div class="row">
-          <div class="dropdown">
-            <div class="btn-group">
-              <button class="btn btn-secondary btn-main btn-sm" type="button">
-                Choose your Product line
+    <div className="container">
+      <CompanyModal
+        saveCompany={(currentEdit, name) => _saveCompany(currentEdit, name)}
+        show={show}
+        setShow={setShow}
+        key={categories.parent_company_id}
+        currentEdit={currentEdit}
+      />
+      <div className="yk-sign-up-dropdn">
+        <div className="row">
+          <div className="yg-dropdown-overwrtie">
+            <div className="btn-group">
+              <button className="btn btn-secondary btn-main btn-sm" type="button">
+                {selectedCompany}
               </button>
               <button
                 type="button"
-                class="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
+                className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <span class="sr-only">Toggle Dropdown</span>
+                <span className="sr-only">Toggle Dropdown</span>
               </button>
-              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                <li class="dropdown-submenu">
-                  <a class="dropdown-item" tabIndex="-1" href="#">
-                    RAMC <i class="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li class="dropdown-item">
-                      <a tabIndex="-1" href="#">
-                        RAMC - all
-                      </a>
-                    </li>
-                    <li class="dropdown-submenu">
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
+              <ul className="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                {categories.map(item => (
+                  <li className="dropdown-submenu">
+                    <a
+                      className="dropdown-item"
+                      tabIndex="-1"
+                      onClick={() => setSelectedCompany(item.company_name)}
+                    >
+                      {item.company_name}
+                      {item.company_divisions.length > 0 && (
+                        <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                      )}
+                    </a>
+                    <ul className="dropdown-menu">
+                      {item.company_divisions.map((subc, index) => (
+                        <li
+                          className="dropdown-item"
+                          onClick={() => setSelectedCompany(subc.sub_div_name)}
+                        >
+                          <a tabIndex="-1">{subc.sub_div_name}</a>
                         </li>
-                        <li class="dropdown-submenu">
-                          <a class="dropdown-item" href="#">
-                            another level
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">RAMC01</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">RAMC02</a>
-                    </li>
-                  </ul>
-                </li>
+                      ))}
+                      <li className="dropdown-item">
+                        {!isSubTopicAdd && (
+                          <Dropdown.Item
+                            className="yg-font-size-r"
+                            onClick={() => {
+                              setParentCompany(item.company_name)
+                              setCurrentEdit(2)
+                              setShow(true)
+                              // setIsSubTopicAdd(true)
+                            }}
+                          >
+                            Others
+                          </Dropdown.Item>
+                        )}
+                        {isSubTopicAdd && (
+                          <InputGroup className="yg-font-size-registrtion p-1 ">
+                            <FormControl
+                              className="yg-font-size"
+                              placeholder="Company"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={'topicName'}
+                              onChange={e => setTopicName(e.target.value)}
+                            />
+                            <Button
+                              onClick={() => {
+                                setIsSubTopicAdd(false)
+                                AddNewCompany()
+                              }}
+                              variant="outline-secondary"
+                              className="saveBtn"
+                              id="button-addon2"
+                            >
+                              Save
+                            </Button>
+                          </InputGroup>
+                        )}
+                      </li>
+                    </ul>
+                  </li>
+                ))}
 
-                <li class="dropdown-submenu">
-                  <a class="dropdown-item" tabindex="-1" href="#">
-                    RAMC <i class="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li class="dropdown-item">
-                      <a tabindex="-1" href="#">
-                        Second level
-                      </a>
-                    </li>
-                    <li class="dropdown-submenu">
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                        <li class="dropdown-submenu">
-                          <a class="dropdown-item" href="#">
-                            another level
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li class="dropdown-submenu">
-                  <a class="dropdown-item" tabIndex="-1" href="#">
-                    RAMC <i class="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li class="dropdown-item">
-                      <a tabIndex="-1" href="#">
-                        Second level
-                      </a>
-                    </li>
-                    <li class="dropdown-submenu">
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                        <li class="dropdown-submenu">
-                          <a class="dropdown-item" href="#">
-                            another level
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li class="dropdown-submenu">
-                  <a class="dropdown-item" tabIndex="-1" href="#">
-                    RAMC<i class="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li class="dropdown-item">
-                      <a tabIndex="-1" href="#">
-                        Second level
-                      </a>
-                    </li>
-                    <li class="dropdown-submenu">
-                      <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                        <li class="dropdown-submenu">
-                          <a class="dropdown-item" href="#">
-                            another level
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                            <li class="dropdown-item">
-                              <a href="#">4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li class="dropdown-item">
-                          <a href="#">3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                    <li class="dropdown-item">
-                      <a href="#">Second level</a>
-                    </li>
-                  </ul>
-                </li>
+                {!isTopicAdd && (
+                  <Dropdown.Item
+                    className="yg-font-size-r"
+                    onClick={() => {
+                      setCurrentEdit(1)
+                      setShow(true)
+                      // setIsTopicAdd(true)
+                    }}
+                  >
+                    Others
+                  </Dropdown.Item>
+                )}
+                {isTopicAdd && (
+                  <InputGroup className="yg-font-size-registrtion p-1 ">
+                    <FormControl
+                      className="yg-font-size"
+                      placeholder="Company"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                      value={'topicName'}
+                      onChange={e => setTopicName(e.target.value)}
+                    />
+                    <Button
+                      onClick={() => {
+                        setIsTopicAdd(false)
+                        AddNewCompany()
+                      }}
+                      variant="outline-secondary"
+                      className="saveBtn"
+                      id="button-addon2"
+                    >
+                      Save
+                    </Button>
+                  </InputGroup>
+                )}
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
+  )
+}
+
+const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
+  const [companyName, setCompanyname] = useState('')
+  const handleClose = () => setShow(false)
+
+  return (
+    <Modal show={show} centered onHide={handleClose}>
+      <Modal.Header
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderBottom: '0',
+        }}
+      >
+        <Modal.Title>Enter Company Name</Modal.Title>
+      </Modal.Header>
+      <Modal.Body
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          borderBottom: '0',
+          fontWeight: 'normal',
+        }}
+      >
+        <FormControl
+          className="yg-font-size mt-4 mb-3"
+          placeholder="Enter Company Name"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+          value={companyName}
+          onChange={e => setCompanyname(e.target.value)}
+        />
+      </Modal.Body>
+      <Modal.Footer
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderTop: '0',
+        }}
+        centered
+      >
+        <button
+          id="mybtn"
+          className="btn btn-background mr-4"
+          onClick={() => {
+            handleClose()
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          className="btn"
+          onClick={() => {
+            saveCompany(currentEdit, companyName)
+            setCompanyname('')
+            handleClose()
+          }}
+        >
+          Confirm
+        </button>
+      </Modal.Footer>
+    </Modal>
   )
 }
 
