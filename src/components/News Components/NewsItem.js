@@ -38,7 +38,6 @@ const NewsItem = ({
   useEffect(() => {
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
-
       if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
         setSubTopicAdd(false)
       }
@@ -63,7 +62,6 @@ const NewsItem = ({
     API.get('news/get_categories')
       .then(data => {
         setLoading(false)
-        console.log('Categories', data)
         setSubCategory(data.data.sub_categories)
         setCategory(data.data.categories)
       })
@@ -197,7 +195,6 @@ const NewsItem = ({
       news_id: idArr,
     }
     const afterDeleteMsg = await API.post('/news/delete_news', payload)
-    console.log(afterDeleteMsg)
     refreshPage()
   }
 
@@ -324,7 +321,6 @@ const NewsItem = ({
       })
         .then(function (response) {
           //handle success
-          console.log(response)
           setLoading(false)
 
           if (response.status == 200) {
@@ -349,7 +345,6 @@ const NewsItem = ({
           setEditView(false)
           setNewsUnderEdit(false)
           //handle error
-          console.log('Error', response)
           if (response.status != 200) {
             // toast.error(response?.message)
             // toast.error('Session expired')
@@ -382,7 +377,6 @@ const NewsItem = ({
               uploadNewNews(data.data.id, 0)
             }
           } else {
-            console.log('Error Occured')
           }
         })
       } else if (isNewSubCatAdded) {
@@ -533,7 +527,7 @@ const NewsItem = ({
         item.isEdit = false
       }
     })
-    setSubCategory(updatedSubCategories)
+    setSubCategory([...updatedSubCategories])
   }
 
   const _updateSubTopicName = (name, id) => {
@@ -561,7 +555,7 @@ const NewsItem = ({
   }
 
   const _checkIsEditSubTopicOpen = () => {
-    const items = subCategory.filter(item => item.isChecked)
+    const items = subCategory.filter(item => item.isEdit)
     return items.length > 0 ? true : false
   }
 
@@ -789,17 +783,30 @@ const NewsItem = ({
                           if (cat.isEdit) {
                             return (
                               <InputGroup className="mb-3 yg-font-size p-1 ">
-                                <FormControl
-                                  className="yg-font-size"
-                                  placeholder="Sub-Category"
-                                  aria-label="Recipient's username"
-                                  aria-describedby="basic-addon2"
-                                  value={cat.tempSubTopicName}
-                                  onChange={e => _updateSubTopicName(e.target.value, cat.id)}
-                                />
+                                <div className="position-relative align-items-center">
+                                  <FormControl
+                                    className="yg-font-size"
+                                    placeholder="Sub-Category"
+                                    aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2"
+                                    value={cat.tempSubTopicName}
+                                    onChange={e => _updateSubTopicName(e.target.value, cat.id)}
+                                  />
+                                  <i
+                                    className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                    style={{
+                                      right: 5,
+                                      top: 0,
+                                      fontSize: '20px',
+                                      cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                      _editSubCategory()
+                                    }}
+                                  />
+                                </div>
                                 <Button
                                   onClick={() => {
-                                    debugger
                                     if (cat.tempSubTopicName) {
                                       _updateSubCategoryAPI(
                                         cat.tempSubTopicName,
@@ -874,14 +881,28 @@ const NewsItem = ({
                       )}
                       {isSubTopicAdd && (
                         <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <FormControl
-                            className="yg-font-size"
-                            placeholder="Sub-Category"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={newSubTopicName}
-                            onChange={e => SetNewSubTopicName(e.target.value)}
-                          />
+                          <div className="position-relative align-items-center">
+                            <FormControl
+                              className="yg-font-size"
+                              placeholder="Sub-Category"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={newSubTopicName}
+                              onChange={e => SetNewSubTopicName(e.target.value)}
+                            />
+                            <i
+                              className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                              style={{
+                                right: 5,
+                                top: 0,
+                                fontSize: '20px',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                setSubTopicAdd(false)
+                              }}
+                            />
+                          </div>
                           <Button
                             onClick={() => {
                               setSubTopicAdd(false)

@@ -377,9 +377,6 @@ const ProfileSettingScreen = () => {
                 }}
                 onClick={async () => {
                   // delete user APi Call and the logout
-                  // document.body.scrollTop = 0
-                  // document.documentElement.scrollTop = 0
-                  // document.body.style.overflow = 'hidden'
                   setOpenSimpleDeleteModal(true)
                 }}
               >
