@@ -99,8 +99,8 @@ const SignUp = () => {
   }
 
   const handleSelectTopic = cat => {
-    setCompany(cat.company_name)
-    setSelectedTopic(cat.company_name)
+    setCompany(cat)
+    setSelectedTopic(cat)
   }
 
   const register = async e => {
@@ -147,6 +147,10 @@ const SignUp = () => {
     } else {
       toast.error('Please accept terms and conditions to proceed')
     }
+  }
+
+  const getSelectedCompany = name => {
+    handleSelectTopic(name)
   }
 
   return (
@@ -220,8 +224,13 @@ const SignUp = () => {
         <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
           {actionLabel}
         </span>
-        <CustomDropdown />
-        <Dropdown
+        <CustomDropdown
+          categories={category}
+          getCompanyList={getCompanyList}
+          setTopicName={setTopicName}
+          getSelectedCompany={getSelectedCompany}
+        />
+        {/* <Dropdown
           size="sm"
           autoClose={'outside'}
           className="yk-dropdown-holder input-field"
@@ -285,7 +294,7 @@ const SignUp = () => {
               </InputGroup>
             )}
           </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> */}
         <div className="checkbox">
           <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
           <span className="checkbox-text">Accept the term and conditions</span>
