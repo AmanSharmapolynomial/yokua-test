@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 
+import CustomDropdown from './CustomDropdown'
+
 import API from '../../utils/api'
 
 import validator from 'validator'
@@ -218,7 +220,7 @@ const SignUp = () => {
         <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
           {actionLabel}
         </span>
-
+        <CustomDropdown />
         <Dropdown
           size="sm"
           autoClose={'outside'}
