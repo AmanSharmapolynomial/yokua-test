@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/api'
+import '../Tokachu/Tokachu.css'
 
 export default () => {
   const [isArchieved, setIsArchived] = useState(false)
