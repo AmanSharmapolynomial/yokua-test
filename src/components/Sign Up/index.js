@@ -7,6 +7,8 @@ import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 
+import CustomDropdown from './CustomDropdown'
+
 import API from '../../utils/api'
 
 import validator from 'validator'
@@ -97,14 +99,14 @@ const SignUp = () => {
   }
 
   const handleSelectTopic = cat => {
-    setCompany(cat.company_name)
-    setSelectedTopic(cat.company_name)
+    setCompany(cat)
+    setSelectedTopic(cat)
   }
 
   const register = async e => {
     // setLoading(true)
     e.preventDefault()
-    if (selectedTopic.length < 2) {
+    if (selectedTopic.length < 2 || selectedTopic.toLowerCase() == 'company') {
       toast.error('Please select the company')
       return
     }
@@ -144,6 +146,10 @@ const SignUp = () => {
     } else {
       toast.error('Please accept terms and conditions to proceed')
     }
+  }
+
+  const getSelectedCompany = name => {
+    handleSelectTopic(name)
   }
 
   return (
@@ -224,8 +230,14 @@ const SignUp = () => {
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             {actionLabel}
           </span>
-
-          <Dropdown
+          <CustomDropdown
+            categories={category}
+            getCompanyList={getCompanyList}
+            getSelectedCompany={getSelectedCompany}
+            setTopicName={setTopicName}
+            key={'registration'}
+          />
+          {/* <Dropdown
             size="sm"
             autoClose={'outside'}
             className="yk-dropdown-holder input-field"
@@ -296,6 +308,10 @@ const SignUp = () => {
               </span>
               <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
             </div>
+          </Dropdown> */}
+          <div className="checkbox">
+            <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
+            <span className="checkbox-text">Accept the term and conditions</span>
           </div>
 
           <button type="submit" className="submit-btn px-4 mx-auto">

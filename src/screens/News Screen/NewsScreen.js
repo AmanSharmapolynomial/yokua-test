@@ -190,7 +190,7 @@ const NewsScreen = () => {
                             }
                           }}
                         >
-                          {category.category_name}
+                          {category.sub_category_name}
                         </span>
                       ))}
                   </div>

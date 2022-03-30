@@ -127,9 +127,11 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               key={data?.id}
               // className="profile-setting__info_img"
               style={{
-                cursor: 'pointer',
+                cursor: !disabledInput ? 'pointer' : 'default',
               }}
-              onClick={() => imageFileInputRef.current.click()}
+              onClick={() => {
+                !disabledInput && imageFileInputRef.current.click()
+              }}
               src={profilePicture}
               onError={() => setProfilePicture(placeholder)}
             />

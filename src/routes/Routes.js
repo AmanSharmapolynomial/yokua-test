@@ -29,6 +29,7 @@ import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 import ProductLine from '../screens/ProductLine/ProductLine'
 import SubProduct from '../screens/ProductLine/SubProduct'
 import ProductDetail from '../screens/ProductLine/ProductDetail'
+import Tokachu from '../screens/Admin Screens/Tokachu/Tokachu'
 
 const Routing = () => {
   // get User Login Info
@@ -138,9 +139,9 @@ const Routing = () => {
 
           {/* <Route path="products" element={<ProductList />} /> */}
           <Route path="rotameter" element={<Rotameter />} />
-          <Route path="approved-tokuchus" element={<ApprovedTokuchus />} />
-          {/* <Route path="sub-products/:id" element={<SubProductList />} />
-          <Route path="product-detail/:id" element={<ProductDetail />} /> */}
+          <Route path="approved-tokuchus" element={<Tokachu />} />
+          <Route path="sub-products/:id" element={<SubProductList />} />
+          <Route path="product-detail/:id" element={<ProductDetail />} />
           <Route
             path="user/approval-request"
             element={
