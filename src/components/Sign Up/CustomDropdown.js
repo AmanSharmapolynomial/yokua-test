@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import './style.css'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import API from '../../utils/api'
+import { toast } from 'react-toastify'
 
 const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedCompany }) => {
   const [show, setShow] = useState(false)
