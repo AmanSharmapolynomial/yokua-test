@@ -140,7 +140,7 @@ const Routing = () => {
           {/* <Route path="products" element={<ProductList />} /> */}
           <Route path="rotameter" element={<Rotameter />} />
           <Route path="approved-tokuchus" element={<Tokachu />} />
-          <Route path="sub-products/:id" element={<SubProductList />} />
+          {/* <Route path="sub-products/:id" element={<SubProductList />} /> */}
           <Route path="product-detail/:id" element={<ProductDetail />} />
           <Route
             path="user/approval-request"

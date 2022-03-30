@@ -147,7 +147,7 @@ const NewsScreen = () => {
       <div className="row mx-5">
         <div className="profile-setting-container col center py-md-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
-          <div className="filter-and-read-container">
+          <div className="filter-and-read-container py-3">
             <div className="filter-container">
               <div className="filter-actions">
                 <div className="filter-icons" style={{ marginLeft: '2rem' }}>
@@ -259,106 +259,108 @@ const NewsScreen = () => {
           {isLoading ? (
             <span>Loading....</span>
           ) : (
-            <div className="news-container-list">
-              {newsData.length > 0 ? (
-                newsData.map((news, index) => {
-                  console.log(news)
-                  if (news && Object.keys(news).length > 1) {
-                    return (
-                      <NewsItem
-                        setCheckListActivated={setCheckListActivated}
-                        isCheckListActivated={isCheckListActivated}
-                        isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                        setNewsUnderEdit={setNewsUnderEdit}
-                        setCategoryFilter={() => {
-                          if (categoryFilter) {
-                            toast.success('Category filter removed')
-                            setCategoryFilter(null)
-                          } else {
-                            toast.success('Category filter applied')
-                            setCategoryFilter(news?.category_id)
-                          }
-                        }}
-                        categoryFilter={categoryFilter}
-                        updateNewsRead={() => _updateNewsRead(news.id)}
-                        readNews={readNews}
-                        data={news}
-                        changeType={'View'}
-                        tempCategory={backendData.categories}
-                        tempSubCategory={backendData.sub_categories}
-                        key={index}
-                        setIsLoading={setIsLoading}
-                        refreshPage={() => getAllNews(payload)}
-                      />
-                    )
-                  } else {
-                    return (
-                      <NewsItem
-                        isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                        setNewsUnderEdit={setNewsUnderEdit}
-                        updateNewsRead={() => _updateNewsRead(news.id)}
-                        readNews={readNews}
-                        getAllNews={() => getAllNews(payload)}
-                        cancelAddNews={id => cancelAddNews(id)}
-                        data={{}}
-                        changeType={'Add'}
-                        tempCategory={backendData.categories}
-                        tempSubCategory={backendData.sub_categories}
-                        saveAndExitAdd={saveAndExitAdd}
-                        setIsLoading={setIsLoading}
-                        refreshPage={() => getAllNews(payload)}
-                      />
-                    )
-                  }
-                })
-              ) : (
-                <>
-                  {backendData?.news_letters.length < 1 ? (
-                    <span>No Records Found</span>
-                  ) : (
-                    <span> You're all caught up with the News </span>
-                  )}
-                </>
-              )}
-
-              {/*{newNews ? (*/}
-              {/*  <NewsItem*/}
-              {/*    data={undefined}*/}
-              {/*    changeType={true}*/}
-              {/*    category={backendData.categories}*/}
-              {/*    subCategory={backendData.sub_categories}*/}
-              {/*    saveAndExitAdd={saveAndExitAdd}*/}
-              {/*    setIsLoading={setIsLoading}*/}
-              {/*  />*/}
-              {/*) : (*/}
-              {/*  <></>*/}
-              {/*)}*/}
-
-              {(getUserRoles() == 'PMK Administrator' ||
-                getUserRoles() == 'PMK Content Manager' ||
-                getUserRoles() == 'Technical Administrator') &&
-                !archivedFilter && (
-                  <div
-                    className="add_row"
-                    onClick={() => {
-                      if (!isAnyNewsUnderEdit) {
-                        setNewsUnderEdit(true)
-                        setNewsData([...newsData, { id: Math.random() }])
-                      } else {
-                        toast.error('Please finish current news edit.')
-                      }
-                    }}
-                  >
-                    <img
-                      src={Plusicon}
-                      style={{
-                        width: '22px',
-                        marginRight: '12px',
-                      }}
-                    />
-                    Add
-                  </div>
+            <div className="col">
+              <div className="row d-flex justify-content-center">
+                {newsData.length > 0 ? (
+                  newsData.map((news, index) => {
+                    console.log(news)
+                    if (news && Object.keys(news).length > 1) {
+                      return (
+                        <NewsItem
+                          setCheckListActivated={setCheckListActivated}
+                          isCheckListActivated={isCheckListActivated}
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          setCategoryFilter={() => {
+                            if (categoryFilter) {
+                              toast.success('Category filter removed')
+                              setCategoryFilter(null)
+                            } else {
+                              toast.success('Category filter applied')
+                              setCategoryFilter(news?.category_id)
+                            }
+                          }}
+                          categoryFilter={categoryFilter}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          data={news}
+                          changeType={'View'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          key={index}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    } else {
+                      return (
+                        <NewsItem
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          getAllNews={() => getAllNews(payload)}
+                          cancelAddNews={id => cancelAddNews(id)}
+                          data={{}}
+                          changeType={'Add'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          saveAndExitAdd={saveAndExitAdd}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    }
+                  })
+                ) : (
+                  <>
+                    {backendData?.news_letters.length < 1 ? (
+                      <span>No Records Found</span>
+                    ) : (
+                      <span> You're all caught up with the News </span>
+                    )}
+                  </>
                 )}
+
+                {/*{newNews ? (*/}
+                {/*  <NewsItem*/}
+                {/*    data={undefined}*/}
+                {/*    changeType={true}*/}
+                {/*    category={backendData.categories}*/}
+                {/*    subCategory={backendData.sub_categories}*/}
+                {/*    saveAndExitAdd={saveAndExitAdd}*/}
+                {/*    setIsLoading={setIsLoading}*/}
+                {/*  />*/}
+                {/*) : (*/}
+                {/*  <></>*/}
+                {/*)}*/}
+
+                {(getUserRoles() == 'PMK Administrator' ||
+                  getUserRoles() == 'PMK Content Manager' ||
+                  getUserRoles() == 'Technical Administrator') &&
+                  !archivedFilter && (
+                    <div
+                      className="add_row mt-3"
+                      onClick={() => {
+                        if (!isAnyNewsUnderEdit) {
+                          setNewsUnderEdit(true)
+                          setNewsData([...newsData, { id: Math.random() }])
+                        } else {
+                          toast.error('Please finish current news edit.')
+                        }
+                      }}
+                    >
+                      <img
+                        src={Plusicon}
+                        style={{
+                          width: '22px',
+                          marginRight: '12px',
+                        }}
+                      />
+                      Add
+                    </div>
+                  )}
+              </div>
             </div>
           )}
           {newsData.length > 0 && (

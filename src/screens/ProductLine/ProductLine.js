@@ -125,15 +125,16 @@ const ProductLine = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="col center py-md-3 px-md-5">
-        <PrimaryHeading title={'Product Lines'} />
-        {isLoading ? (
-          <div className="col text-center">Loading....</div>
-        ) : (
-          <div className="col">{renderRow()}</div>
-        )}
+      <div className="row mx-5">
+        <div className="col center py-md-3">
+          <PrimaryHeading title={'Product Lines'} />
+          {isLoading ? (
+            <div className="col text-center">Loading....</div>
+          ) : (
+            <div className="col">{renderRow()}</div>
+          )}
 
-        {/* {(getUserRoles() == 'PMK Administrator' ||
+          {/* {(getUserRoles() == 'PMK Administrator' ||
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') &&
               !archivedFilter && (
@@ -160,7 +161,7 @@ const ProductLine = () => {
               )}
           </div>
         )} */}
-        {/* {productList.length > 0 && (
+          {/* {productList.length > 0 && (
           <div className="pagination">
             <Pagination
               total={totalPages * 10}
@@ -171,28 +172,29 @@ const ProductLine = () => {
             />
           </div>
         )} */}
-        <div className="archived-filter mt-5 mb-5">
-          {archivedFilter ? (
-            <button
-              className="btn"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(false)
-              }}
-            >
-              Live Product
-            </button>
-          ) : (
-            <button
-              className="btn"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(true)
-              }}
-            >
-              Product Archive
-            </button>
-          )}
+          <div className="archived-filter mt-5 mb-5">
+            {archivedFilter ? (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(false)
+                }}
+              >
+                Live Product
+              </button>
+            ) : (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(true)
+                }}
+              >
+                Product Archive
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

@@ -80,52 +80,54 @@ const SubProduct = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="col center py-3 px-5">
-        <div className="row">
-          <div className="col-12 col-md-6 border rounded py-2">
-            <div className="row">
-              <span
-                className="col-6 light-grey"
-                onClick={() => {
-                  navigate(-1)
-                }}
-              >
-                Previous page
-              </span>
-              <span className="col-6">
-                <u>Product Lines</u> {'>'} {state.name}
-              </span>
+      <div className="row mx-5">
+        <div className="col center py-3">
+          <div className="row">
+            <div className="col-12 col-md-6 border rounded py-2">
+              <div className="row">
+                <span
+                  className="col-6 light-grey"
+                  onClick={() => {
+                    navigate(-1)
+                  }}
+                >
+                  Previous page
+                </span>
+                <span className="col-6">
+                  <u>Product Lines</u> {'>'} {state.name}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row mt-5 text-bold">{state.name}</div>
-        {isLoading ? (
-          <div className="col text-center">Loading....</div>
-        ) : (
-          <div className="col">{renderRow()}</div>
-        )}
-        <div className="archived-filter mt-5">
-          {archivedFilter ? (
-            <button
-              className="btn"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(false)
-              }}
-            >
-              Live Product
-            </button>
+          <div className="row mt-5 text-bold">{state.name}</div>
+          {isLoading ? (
+            <div className="col text-center">Loading....</div>
           ) : (
-            <button
-              className="btn"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(true)
-              }}
-            >
-              Product Archive
-            </button>
+            <div className="col">{renderRow()}</div>
           )}
+          <div className="archived-filter mt-5">
+            {archivedFilter ? (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(false)
+                }}
+              >
+                Live Product
+              </button>
+            ) : (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(true)
+                }}
+              >
+                Product Archive
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
