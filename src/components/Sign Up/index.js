@@ -231,8 +231,14 @@ const SignUp = () => {
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             {actionLabel}
           </span>
-
-          <Dropdown
+          <CustomDropdown
+            categories={category}
+            getCompanyList={getCompanyList}
+            getSelectedCompany={getSelectedCompany}
+            setTopicName={setTopicName}
+            key={'registration'}
+          />
+          {/* <Dropdown
             size="sm"
             autoClose={'outside'}
             className="yk-dropdown-holder input-field"
@@ -295,7 +301,7 @@ const SignUp = () => {
                 </InputGroup>
               )}
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown> */}
           <div className="checkbox">
             <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
             <span className="checkbox-text">Accept the term and conditions</span>
