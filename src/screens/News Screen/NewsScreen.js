@@ -150,7 +150,7 @@ const NewsScreen = () => {
           <div className="filter-and-read-container py-3">
             <div className="filter-container">
               <div className="filter-actions">
-                <div className="filter-icons" style={{ marginLeft: '2rem' }}>
+                <div className="filter-icons">
                   <img
                     className={categoryFilter === null ? 'greyed' : null}
                     src={Filtermg}
