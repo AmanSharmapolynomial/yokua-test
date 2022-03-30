@@ -85,9 +85,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                       onClick={() => setSelectedCompany(item.company_name)}
                     >
                       {item.company_name}
-                      {item.company_divisions.length > 0 && (
-                        <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                      )}
+                      <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
                     </a>
                     <ul className="dropdown-menu">
                       {item.company_divisions.map((subc, index) => (
@@ -240,6 +238,10 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
         <button
           className="btn"
           onClick={() => {
+            if (companyName.length < 2) {
+              toast.error('Please enter valid Company Name')
+              return
+            }
             saveCompany(currentEdit, companyName)
             setCompanyname('')
             handleClose()
