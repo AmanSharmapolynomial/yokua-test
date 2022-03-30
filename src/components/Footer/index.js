@@ -3,12 +3,12 @@ import '../../components/Footer/style.css'
 
 const Footer = () => {
   return (
-    <div className="footer fixed-bottom">
+    <footer className="footer">
       <div className="footerBtn">
         <button className="btn mr-2">Impressum</button>
         <button className="btn">Privacy Policy</button>
       </div>
-    </div>
+    </footer>
   )
 }
 

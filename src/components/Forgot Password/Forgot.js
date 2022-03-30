@@ -30,23 +30,24 @@ const Forgot = () => {
   return (
     <>
       <div
-        className="signIn-container mx-auto col-4"
+        className="signIn-container mx-auto col-10 col-md-4"
         style={{
           marginBottom: '320px',
         }}
       >
         <div className="container-head">
-          <h3 className="container__heading">
+          <span className="position-absolute float-left">
             <i
               className="fa-solid fa-arrow-left back-arrow-btn mr-2"
               onClick={() => {
                 navigate('/auth/login')
               }}
             />
-            Forgot Your Password?
-          </h3>
+          </span>
+          <div className="container__heading text-center">Forgot Your Password?</div>
         </div>
         <form
+          className="mt-2"
           type="submit"
           onSubmit={e => {
             e.preventDefault()

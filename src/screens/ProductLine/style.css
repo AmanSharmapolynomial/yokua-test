@@ -1,0 +1,17 @@
+.thumb {
+  border: 1px solid lightgrey;
+  aspect-ratio: 1;
+  /* width: 12rem; */
+}
+
+.border {
+  border: 1px solid lightgrey;
+  font-size: 2vh;
+  font-weight: 500;
+  /* width: 12rem; */
+}
+
+.thumb > img {
+  object-fit: contain;
+  aspect-ratio: 1;
+}
