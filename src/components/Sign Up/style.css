@@ -120,11 +120,11 @@
 .yk-sign-up-dropdn .dropdown-item:focus{background-color:#ffffff;}
 .yk-sign-up-dropdn .dropdown-item a:focus{background-color:#ffffff;}
 .yk-sign-up-dropdn .dropdown-submenu .dropdown-item{font-size: 24px; color: #000000; font-size: 0.8rem !important;}
-
+.yk-sign-up-dropdn .dropdown-menu.show{top: auto !important;}
 .yk-sign-up-dropdn .btn{background-color: #ffffff !important; color: #000000 !important; font-size: 0.8rem !important;}
 .yk-sign-up-dropdn .dropdown-submenu>.dropdown-menu {
   top: auto;
-  
+  margin-top: -28px !important;
   left: 100%;
   margin-top: -6px;
   margin-left: -1px;
