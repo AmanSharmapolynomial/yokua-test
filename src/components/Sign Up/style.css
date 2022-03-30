@@ -123,7 +123,8 @@
 
 .yk-sign-up-dropdn .btn{background-color: #ffffff !important; color: #000000 !important; font-size: 0.8rem !important;}
 .yk-sign-up-dropdn .dropdown-submenu>.dropdown-menu {
-  top: 0;
+  top: auto;
+  margin-top: auto!important;
   left: 100%;
   margin-top: -6px;
   margin-left: -1px;

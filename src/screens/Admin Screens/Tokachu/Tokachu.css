@@ -4,7 +4,7 @@
 .toku-dropdn button:focus{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
 .toku-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
 .toku-dropdn .dropdown-submenu>a:after{display: none !important;}
-.toku-dropdn .btn-arrow{width: 40px; background-color: #ffffff !important; border: 1px solid #000000 !important; color: #000000 !important; }
+.toku-dropdn .btn-arrow{width: 40px; background-color: #ffffff !important; border: 1px solid #000000 !important; color: #000000 !important; display: grid !important; place-items: center !important; }
 .toku-dropdn .dropdown-menu{min-width: 250px;}
 .toku-dropdn .fa-chevron-right{float: right;}
 .toku-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle
@@ -12,10 +12,14 @@
     position: relative;
 }
 
+.dropdown-item.active, .dropdown-item:active{background-color:#EFEFEF !important;}
+
+
+
 .toku-dropdn .dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin: 0 0 0 6px  !important;}
 .toku-dropdn .dropdown{  box-shadow: none !important;}
 .toku-dropdn .dropdown-menu{margin: 0 !important;}
-.toku-dropdn .dropdown-menu.show{left: 40px !important;}
+.toku-dropdn .dropdown-menu.show{left: -209px !important; top: 1px !important; }
 .toku-dropdn .dropdown-item a{color: #000000;}
 .toku-dropdn .dropdown-item:focus{background-color:#EFEFEF;}
 .toku-dropdn .dropdown-item a:focus{background-color:#EFEFEF;}
@@ -66,6 +70,7 @@
 }
 
 .toku-dropdn .btn-main{min-width: 411px; min-height: 50px; text-align: left; border: 1px solid #000000 !important; color: #000000 !important;}
+
 
 
 
