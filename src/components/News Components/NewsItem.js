@@ -939,6 +939,7 @@ const NewsItem = ({
                     }}
                   >
                     <Dropdown.Toggle
+                      disabled={data.sub_category.length <= 1}
                       size={'sm'}
                       className="yg-custom-dropdown"
                       color="red"

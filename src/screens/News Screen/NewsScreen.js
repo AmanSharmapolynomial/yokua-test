@@ -265,7 +265,6 @@ const NewsScreen = () => {
               <div className="row d-flex justify-content-center">
                 {newsData.length > 0 ? (
                   newsData.map((news, index) => {
-                    console.log(news)
                     if (news && Object.keys(news).length > 1) {
                       return (
                         <NewsItem
