@@ -45,193 +45,247 @@ export default () => {
     _getProducts()
   }, [])
 
-  return (
-    <div className="container">
-      <div className="toku-dropdn">
-        <div className="row">
-          <div className="dropdown">
-            <div className="btn-group">
-              <button className="btn btn-secondary btn-main btn-sm" type="button" data-toggle="dropdown">
-                Choose your Product line
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Toggle Dropdown</span>
-              </button>
-              <ul className="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                <li className="dropdown-submenu">
-                  <a className="dropdown-item" tabIndex="-1">
-                    RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li className="dropdown-item">
-                      <a tabIndex="-1">RAMC - all <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-                    </li>
-                    <li className="dropdown-submenu">
-                      <ul className="dropdown-menu">
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
+  // return (
+  //   <div className="container">
+  //     <div className="toku-dropdn">
+  //       <div className="row">
+  //         <div className="dropdown">
+  //           <div className="btn-group">
+  //             <button className="btn btn-secondary btn-main btn-sm" type="button" data-toggle="dropdown">
+  //               Choose your Product line
+  //             </button>
+  //             <button
+  //               type="button"
+  //               className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
+  //               data-toggle="dropdown"
+  //               aria-haspopup="true"
+  //               aria-expanded="false"
+  //             >
+  //               <span className="sr-only">Toggle Dropdown</span>
+  //             </button>
+  //             <ul className="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+  //               <li className="dropdown-submenu">
+  //                 <a className="dropdown-item" tabIndex="-1">
+  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+  //                 </a>
+  //                 <ul className="dropdown-menu">
+  //                   <li className="dropdown-item">
+  //                     <a tabIndex="-1">RAMC - all <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+  //                   </li>
+  //                   <li className="dropdown-submenu">
+  //                     <ul className="dropdown-menu">
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                       <li className="dropdown-submenu">
+  //                         <a className="dropdown-item">another level</a>
+  //                         <ul className="dropdown-menu">
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                         </ul>
+  //                       </li>
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                     </ul>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>RAMC01 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>RAMC02 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+  //                   </li>
+  //                 </ul>
+  //               </li>
+
+  //               <li className="dropdown-submenu">
+  //                 <a className="dropdown-item" tabIndex="-1">
+  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+  //                 </a>
+  //                 <ul className="dropdown-menu">
+  //                   <li className="dropdown-item">
+  //                     <a tabIndex="-1">Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-submenu">
+  //                     <ul className="dropdown-menu">
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                       <li className="dropdown-submenu">
+  //                         <a className="dropdown-item">another level</a>
+  //                         <ul className="dropdown-menu">
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                         </ul>
+  //                       </li>
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                     </ul>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                 </ul>
+  //               </li>
+
+  //               <li className="dropdown-submenu">
+  //                 <a className="dropdown-item" tabIndex="-1">
+  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+  //                 </a>
+  //                 <ul className="dropdown-menu">
+  //                   <li className="dropdown-item">
+  //                     <a tabIndex="-1">Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-submenu">
+  //                     <ul className="dropdown-menu">
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                       <li className="dropdown-submenu">
+  //                         <a className="dropdown-item">another level</a>
+  //                         <ul className="dropdown-menu">
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                         </ul>
+  //                       </li>
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                     </ul>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                 </ul>
+  //               </li>
+
+  //               <li className="dropdown-submenu">
+  //                 <a className="dropdown-item" tabIndex="-1">
+  //                   RAMC<i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+  //                 </a>
+  //                 <ul className="dropdown-menu">
+  //                   <li className="dropdown-item">
+  //                     <a tabIndex="-1">Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-submenu">
+  //                     <ul className="dropdown-menu">
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                       <li className="dropdown-submenu">
+  //                         <a className="dropdown-item">another level</a>
+  //                         <ul className="dropdown-menu">
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                           <li className="dropdown-item">
+  //                             <a>4th level</a>
+  //                           </li>
+  //                         </ul>
+  //                       </li>
+  //                       <li className="dropdown-item">
+  //                         <a>3rd level</a>
+  //                       </li>
+  //                     </ul>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                   <li className="dropdown-item">
+  //                     <a>Second level</a>
+  //                   </li>
+  //                 </ul>
+  //               </li>
+  //             </ul>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // )
+
+  return(
+    <ul id="tokachu">
+
+        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Choose your Product line <span class="float-right"><i class="fa fa-caret-down" aria-hidden="true"></i></span></a>
+            <ul class="dd shadow-sm  mb-5 bg-white rounded">
+
+                <li><a class="tokachu-dropdwn border-0" href="#" tabindex="1">Coriolis - Rotamass <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                    <ul class="sub-sm shadow-sm mb-4 bg-white rounded">
+
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+
+
+                            <ul class="sub-three shadow-sm mb-4">
+                                <li><a href="#">Menu31</a></li>
+                                <li><a href="#">Menu32</a></li>
+                                <li><a href="#">Menu33</a></li>
+                                <li><a href="#">Menu34</a></li>
+                            </ul>
+
+
                         </li>
-                        <li className="dropdown-submenu">
-                          <a className="dropdown-item">another level</a>
-                          <ul className="dropdown-menu">
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>RAMC01 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>RAMC02 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-                    </li>
-                  </ul>
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+
+
+
+                    </ul>
                 </li>
 
-                <li className="dropdown-submenu">
-                  <a className="dropdown-item" tabIndex="-1">
-                    RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li className="dropdown-item">
-                      <a tabIndex="-1">Second level</a>
-                    </li>
-                    <li className="dropdown-submenu">
-                      <ul className="dropdown-menu">
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                        <li className="dropdown-submenu">
-                          <a className="dropdown-item">another level</a>
-                          <ul className="dropdown-menu">
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                  </ul>
+                <li><a class="tokachu-dropdwn border-0" href="#" tabindex="1">Coriolis - Rotamass <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                    <ul class="sub-sm shadow-sm mb-4 bg-white rounded">
+
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+
+                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+
+
+
+                    </ul>
                 </li>
 
-                <li className="dropdown-submenu">
-                  <a className="dropdown-item" tabIndex="-1">
-                    RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li className="dropdown-item">
-                      <a tabIndex="-1">Second level</a>
-                    </li>
-                    <li className="dropdown-submenu">
-                      <ul className="dropdown-menu">
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                        <li className="dropdown-submenu">
-                          <a className="dropdown-item">another level</a>
-                          <ul className="dropdown-menu">
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                  </ul>
-                </li>
 
-                <li className="dropdown-submenu">
-                  <a className="dropdown-item" tabIndex="-1">
-                    RAMC<i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li className="dropdown-item">
-                      <a tabIndex="-1">Second level</a>
-                    </li>
-                    <li className="dropdown-submenu">
-                      <ul className="dropdown-menu">
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                        <li className="dropdown-submenu">
-                          <a className="dropdown-item">another level</a>
-                          <ul className="dropdown-menu">
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                            <li className="dropdown-item">
-                              <a>4th level</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="dropdown-item">
-                          <a>3rd level</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                    <li className="dropdown-item">
-                      <a>Second level</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </ul>
+        </li>
+
+
+    </ul>
   )
 }
+
+
+
