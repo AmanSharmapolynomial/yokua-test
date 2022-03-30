@@ -1189,7 +1189,9 @@ const NewsItem = ({
                 {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
-                    <a href={data ? data.attachment_link : ''}>Read attached file</a>
+                    <a target="_blank" href={data ? data.attachment_link : ''}>
+                      Read attached file
+                    </a>
                   </>
                 )}
                 {data.attachment_link == '' && (
@@ -1237,6 +1239,12 @@ function AddCategoryModal({
   useEffect(() => {
     _setImage()
   }, [imageFile])
+
+  useEffect(() => {
+    setCategoryName(preloadedCategoryData?.category_name)
+    SetImageFile(preloadedCategoryData?.image_link ? preloadedCategoryData?.image_link : null)
+    setCatImg(preloadedCategoryData?.image_link)
+  }, [preloadedCategoryData])
 
   const handleClose = () => setShow(false)
 

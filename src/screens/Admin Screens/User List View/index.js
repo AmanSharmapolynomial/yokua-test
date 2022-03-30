@@ -41,7 +41,24 @@ const UserListView = () => {
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
   const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
-  const sortDropdownData = [nto, otn, atz, zta]
+  const customeSortDown = [
+    {
+      key: NEW_TO_OLD,
+      value: nto,
+    },
+    {
+      key: OLD_TO_NEW,
+      value: otn,
+    },
+    {
+      key: A_TO_Z,
+      value: atz,
+    },
+    {
+      key: Z_TO_A,
+      value: zta,
+    },
+  ]
   const [showSortDropDown, setShowDropDown] = useState(false)
 
   const filter1Ref = useRef()
@@ -60,7 +77,10 @@ const UserListView = () => {
 
   const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
   const [deleteEmail, setDeleteEmail] = useState('')
-  const [sortMethod, setSortMethod] = useState(NEW_TO_OLD)
+  const [sortMethod, setSortMethod] = useState({
+    key: NEW_TO_OLD,
+    value: nto,
+  })
   const [pageNoCall, setPageNoCall] = useState(1)
   const [totalPages, setTotalPages] = useState()
 
@@ -97,11 +117,11 @@ const UserListView = () => {
               display: showSortDropDown ? 'flex' : 'none',
             }}
           >
-            {sortDropdownData.map((element, index) => (
+            {customeSortDown.map((element, index) => (
               <span
                 style={{
                   color: 'rgba(0,0,0,0.87)',
-                  fontWeight: element == sortMethod ? '600' : '400',
+                  fontWeight: element.key == sortMethod.key ? '600' : '400',
                 }}
                 key={index}
                 className="dropdown-element "
@@ -111,7 +131,7 @@ const UserListView = () => {
                   // _handleSort(element);
                 }}
               >
-                {element}
+                {element.value}
               </span>
             ))}
           </div>
@@ -178,76 +198,25 @@ const UserListView = () => {
   // }, [sortMethod])
 
   useEffect(async () => {
-    let sort = A_TO_Z
-    if (sortMethod === atz) {
-      sort == A_TO_Z
-    } else if (sortMethod === zta) {
-      sort == Z_TO_A
-    } else if (sortMethod === nto) {
-      sort == NEW_TO_OLD
-    } else {
-      sort == OLD_TO_NEW
-    }
-
     const payload = {
       pmk_admin: filterCheckboxPMK,
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
       page_index: 1,
-      sort_by: sort,
+      sort_by: sortMethod.key,
     }
     setPageNoCall(1)
     _getUserList(payload)
-  }, [reloadTable, filterActive])
-
-  useEffect(async () => {
-    let sort = A_TO_Z
-    if (sortMethod === atz) {
-      sort == A_TO_Z
-    } else if (sortMethod === zta) {
-      sort == Z_TO_A
-    } else if (sortMethod === nto) {
-      sort == NEW_TO_OLD
-    } else {
-      sort == OLD_TO_NEW
-    }
-    const payload = {
-      pmk_admin: filterCheckboxPMK,
-      content_manager: filterCheckboxCM,
-      user: filterCheckboxUser,
-      filter: filterActive,
-      page_index: pageNoCall,
-      sort_by: sort,
-    }
-
-    _getUserList(payload)
-  }, [pageNoCall, sortMethod])
+  }, [reloadTable, filterActive, pageNoCall, sortMethod])
 
   const _getUserList = async payload => {
     setLoading(true)
 
     const listuserdata = await API.post('admin/list_users', payload)
+    setLoading(false)
     const updatedUserList = listuserdata.data?.page_data
     let sortedArray = updatedUserList
-    // if (sortMethod == NEW_TO_OLD) {
-    //   sortedArray = updatedUserList.sort((a, b) =>
-    //     new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
-    //   )
-    // } else if (sortMethod == OLD_TO_NEW) {
-    //   sortedArray = updatedUserList.sort((a, b) =>
-    //     new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
-    //   )
-    // } else if (sortMethod == A_TO_Z) {
-    //   sortedArray = updatedUserList.sort((a, b) =>
-    //     a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
-    //   )
-    // } else if (sortMethod == Z_TO_A) {
-    //   sortedArray = updatedUserList.sort((a, b) =>
-    //     a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
-    //   )
-    // }
-    // toast.success('Filter applied.')
 
     setTotalPages(listuserdata.data.total_pages)
     const contentRowData = []
