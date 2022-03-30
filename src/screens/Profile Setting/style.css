@@ -199,7 +199,7 @@ button > .delete-btn {
   place-items: center !important ;
 }
 .add_row {
-  width: 95%;
+  /* width: 95%; */
   background: #eeeeee;
   padding: 2rem 0rem !important;
 }

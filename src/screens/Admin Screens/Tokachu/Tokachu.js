@@ -51,7 +51,11 @@ export default () => {
         <div className="row">
           <div className="dropdown">
             <div className="btn-group">
-              <button className="btn btn-secondary btn-main btn-sm" type="button" data-toggle="dropdown">
+              <button
+                className="btn btn-secondary btn-main btn-sm"
+                type="button"
+                data-toggle="dropdown"
+              >
                 Choose your Product line
               </button>
               <button
@@ -70,7 +74,9 @@ export default () => {
                   </a>
                   <ul className="dropdown-menu">
                     <li className="dropdown-item">
-                      <a tabIndex="-1">RAMC - all <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+                      <a tabIndex="-1">
+                        RAMC - all <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                      </a>
                     </li>
                     <li className="dropdown-submenu">
                       <ul className="dropdown-menu">
@@ -97,10 +103,14 @@ export default () => {
                       </ul>
                     </li>
                     <li className="dropdown-item">
-                      <a>RAMC01 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+                      <a>
+                        RAMC01 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                      </a>
                     </li>
                     <li className="dropdown-item">
-                      <a>RAMC02 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
+                      <a>
+                        RAMC02 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                      </a>
                     </li>
                   </ul>
                 </li>
