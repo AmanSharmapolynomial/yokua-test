@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
+import { faBullseye } from '@fortawesome/free-solid-svg-icons'
 
 const NewsItem = ({
   data,
@@ -37,6 +38,12 @@ const NewsItem = ({
   useEffect(() => {
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
+      if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+        setSubTopicAdd(false)
+      }
+      // if ((subTopicRef?.current?.classList) .includes('show')) {
+      //   debugger
+      // }
     })
     return outsideClick
   }, [])
@@ -55,7 +62,6 @@ const NewsItem = ({
     API.get('news/get_categories')
       .then(data => {
         setLoading(false)
-        console.log('Categories', data)
         setSubCategory(data.data.sub_categories)
         setCategory(data.data.categories)
       })
@@ -75,6 +81,8 @@ const NewsItem = ({
 
   const subTopicRef = useRef()
   const topicRef = useRef()
+
+  useEffect(() => {}, [editView])
 
   const handleSelectTopic = cat => {
     setAllSelectChecked(false)
@@ -187,7 +195,6 @@ const NewsItem = ({
       news_id: idArr,
     }
     const afterDeleteMsg = await API.post('/news/delete_news', payload)
-    console.log(afterDeleteMsg)
     refreshPage()
   }
 
@@ -314,7 +321,6 @@ const NewsItem = ({
       })
         .then(function (response) {
           //handle success
-          console.log(response)
           setLoading(false)
 
           if (response.status == 200) {
@@ -339,7 +345,6 @@ const NewsItem = ({
           setEditView(false)
           setNewsUnderEdit(false)
           //handle error
-          console.log('Error', response)
           if (response.status != 200) {
             // toast.error(response?.message)
             // toast.error('Session expired')
@@ -372,7 +377,6 @@ const NewsItem = ({
               uploadNewNews(data.data.id, 0)
             }
           } else {
-            console.log('Error Occured')
           }
         })
       } else if (isNewSubCatAdded) {
@@ -506,6 +510,10 @@ const NewsItem = ({
   const [preloadedCategoryData, setPreloadedCategoryData] = useState(null)
 
   const _editSubCategory = (cat = null) => {
+    if (isSubTopicAdd) {
+      toast.error('Please save the current edit first')
+      return
+    }
     const updatedSubCategories = subCategory
     updatedSubCategories.forEach(item => {
       if (cat) {
@@ -519,7 +527,7 @@ const NewsItem = ({
         item.isEdit = false
       }
     })
-    setSubCategory(updatedSubCategories)
+    setSubCategory([...updatedSubCategories])
   }
 
   const _updateSubTopicName = (name, id) => {
@@ -544,6 +552,11 @@ const NewsItem = ({
         getCategoryAndSubCategory()
       })
       .catch(error => {})
+  }
+
+  const _checkIsEditSubTopicOpen = () => {
+    const items = subCategory.filter(item => item.isEdit)
+    return items.length > 0 ? true : false
   }
 
   return (
@@ -770,17 +783,30 @@ const NewsItem = ({
                           if (cat.isEdit) {
                             return (
                               <InputGroup className="mb-3 yg-font-size p-1 ">
-                                <FormControl
-                                  className="yg-font-size"
-                                  placeholder="Sub-Category"
-                                  aria-label="Recipient's username"
-                                  aria-describedby="basic-addon2"
-                                  value={cat.tempSubTopicName}
-                                  onChange={e => _updateSubTopicName(e.target.value, cat.id)}
-                                />
+                                <div className="position-relative align-items-center">
+                                  <FormControl
+                                    className="yg-font-size"
+                                    placeholder="Sub-Category"
+                                    aria-label="Recipient's username"
+                                    aria-describedby="basic-addon2"
+                                    value={cat.tempSubTopicName}
+                                    onChange={e => _updateSubTopicName(e.target.value, cat.id)}
+                                  />
+                                  <i
+                                    className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                    style={{
+                                      right: 5,
+                                      top: 0,
+                                      fontSize: '20px',
+                                      cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                      _editSubCategory()
+                                    }}
+                                  />
+                                </div>
                                 <Button
                                   onClick={() => {
-                                    debugger
                                     if (cat.tempSubTopicName) {
                                       _updateSubCategoryAPI(
                                         cat.tempSubTopicName,
@@ -843,7 +869,11 @@ const NewsItem = ({
                           id="mybtn"
                           className="btn yg-font-size "
                           onClick={() => {
-                            setSubTopicAdd(true)
+                            if (_checkIsEditSubTopicOpen()) {
+                              toast.error('Please close the current Sub category edit')
+                            } else {
+                              setSubTopicAdd(true)
+                            }
                           }}
                         >
                           Add Sub-Topic
@@ -851,14 +881,28 @@ const NewsItem = ({
                       )}
                       {isSubTopicAdd && (
                         <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <FormControl
-                            className="yg-font-size"
-                            placeholder="Sub-Category"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={newSubTopicName}
-                            onChange={e => SetNewSubTopicName(e.target.value)}
-                          />
+                          <div className="position-relative align-items-center">
+                            <FormControl
+                              className="yg-font-size"
+                              placeholder="Sub-Category"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={newSubTopicName}
+                              onChange={e => SetNewSubTopicName(e.target.value)}
+                            />
+                            <i
+                              className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                              style={{
+                                right: 5,
+                                top: 0,
+                                fontSize: '20px',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                setSubTopicAdd(false)
+                              }}
+                            />
+                          </div>
                           <Button
                             onClick={() => {
                               setSubTopicAdd(false)
@@ -1145,7 +1189,9 @@ const NewsItem = ({
                 {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
-                    <a href={data ? data.attachment_link : ''}>Read attached file</a>
+                    <a target="_blank" href={data ? data.attachment_link : ''}>
+                      Read attached file
+                    </a>
                   </>
                 )}
                 {data.attachment_link == '' && (
@@ -1184,13 +1230,21 @@ function AddCategoryModal({
   getCategoryAndSubCategory,
 }) {
   const [categoryName, setCategoryName] = useState(preloadedCategoryData?.category_name)
-  const [imageFile, SetImageFile] = useState(preloadedCategoryData?.image_link)
+  const [imageFile, SetImageFile] = useState(
+    preloadedCategoryData?.image_link ? preloadedCategoryData?.image_link : null
+  )
   const [catImg, setCatImg] = useState(preloadedCategoryData?.image_link)
   const imageFileInputRef = useRef()
 
   useEffect(() => {
     _setImage()
-  }, [])
+  }, [imageFile])
+
+  useEffect(() => {
+    setCategoryName(preloadedCategoryData?.category_name)
+    SetImageFile(preloadedCategoryData?.image_link ? preloadedCategoryData?.image_link : null)
+    setCatImg(preloadedCategoryData?.image_link)
+  }, [preloadedCategoryData])
 
   const handleClose = () => setShow(false)
 
@@ -1247,13 +1301,21 @@ function AddCategoryModal({
       })
   }
 
-  const _setImage = () => {
-    if (imageFile && imageFile != '') {
-      if (!typeof imageFile == 'string') {
-        setCatImg(window.URL.createObjectURL(imageFile))
-      } else {
-        setCatImg(imageFile)
-      }
+  const _setImage = (image = null) => {
+    let finalImage = imageFile
+    if (image) {
+      finalImage = image
+    }
+    if (typeof finalImage == 'string' && finalImage != '') {
+      setCatImg(finalImage)
+      return
+    }
+    if (finalImage && !(typeof finalImage == 'string')) {
+      setCatImg(window.URL.createObjectURL(finalImage))
+    } else if (finalImage == null) {
+      setCatImg(placeholder)
+    } else {
+      setCatImg(imageFile)
     }
   }
 
@@ -1288,7 +1350,7 @@ function AddCategoryModal({
             onChange={e => {
               console.log(e.target.files[0])
               SetImageFile(e.target.files[0])
-              _setImage()
+              _setImage(e.target.files[0])
             }}
           />
           <div className="d-flex justify-content-center">

@@ -129,7 +129,11 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               style={{
                 cursor: 'pointer',
               }}
-              onClick={() => imageFileInputRef.current.click()}
+              onClick={() => {
+                disabledInput
+                  ? toast.warning('Please open the user in edit view to change Profile')
+                  : imageFileInputRef.current.click()
+              }}
               src={profilePicture}
               onError={() => setProfilePicture(placeholder)}
             />

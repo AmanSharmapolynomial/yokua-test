@@ -30,6 +30,7 @@ import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
 import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
 import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 import ProductLine from '../screens/ProductLine/ProductLine'
+import Tokachu from '../screens/Admin Screens/Tokachu/Tokachu'
 
 const Routing = () => {
   // get User Login Info

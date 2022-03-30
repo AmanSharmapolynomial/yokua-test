@@ -89,3 +89,161 @@
   padding: 4px !important;
   margin: 0px !important;
 }
+
+
+
+
+
+.yk-sign-up-dropdn button{background-color: #ffffff; color: #000000; font-size: 24px !important;}
+.yk-sign-up-dropdn .dropdown{background-color: none !important; background: none !important; box-shadow: none !important;}
+.yk-sign-up-dropdn button:hover{background-color: #ffffff; color: #000000;}
+.yk-sign-up-dropdn button:focus{background-color: #ffffff !important; color: #000000 !important; box-shadow: none !important;}
+.yk-sign-up-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{background-color: #ffffff !important; color: #000000 !important; box-shadow: none !important;}
+.yk-sign-up-dropdn .dropdown-submenu>a:after{display: none !important;}
+.yk-sign-up-dropdn .btn-arrow{min-width: 40px; border: none;}
+.yk-sign-up-dropdn .dropdown-menu{min-width: 250px; margin-left: 0 !important;}
+.yk-sign-up-dropdn .fa-chevron-right{float: right;}
+.yk-sign-up-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle
+.yk-sign-up-dropdn .dropdown-submenu { margin-right:0px; left: 0 !important;
+  position: relative; background-color: #ffffff !important;
+}
+
+.yk-sign-up-dropdn .yg-font-size-r{margin-left: 0 !important;  padding: 0.25rem 1.5rem !important;}
+.dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin-right: 4px; float: right;}
+
+.yk-sign-up-dropdn .dropdown-item{font-size: 0.8rem; margin-right: 0;}
+
+
+
+.yk-sign-up-dropdn .btn-group{ border:  1px solid #000000; border-radius: 5px; width: 100%;;}
+.yk-sign-up-dropdn .dropdown-item a{color: #000000;}
+.yk-sign-up-dropdn .dropdown-item:focus{background-color:#ffffff;}
+.yk-sign-up-dropdn .dropdown-item a:focus{background-color:#ffffff;}
+.yk-sign-up-dropdn .dropdown-submenu .dropdown-item{font-size: 24px; color: #000000; font-size: 0.8rem !important;}
+
+.yk-sign-up-dropdn .btn{background-color: #ffffff !important; color: #000000 !important; font-size: 0.8rem !important;}
+.yk-sign-up-dropdn .dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #ccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu:hover>a:after {
+  border-left-color: #fff;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu.pull-left {
+  float: none;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+
+.bt-m{background-color: #000000 !important;}
+.yk-sign-up-dropdn .dropdown
+.yk-sign-up-dropdn .dropdown{min-width: 411px; min-height: 50px; text-align: left; border: none; background-color: #ffffff !important; box-shadow: none !important;}
+
+/* .yk-sign-up-dropdn button{background-color: #ffffff; color: #000000; font-size: 24px !important;}
+.yk-sign-up-dropdn button:hover{background-color: #EFEFEF; color: #000000;}
+.yk-sign-up-dropdn button:focus{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
+.yk-sign-up-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
+.yk-sign-up-dropdn .dropdown-submenu>a:after{display: none !important;}
+.yk-sign-up-dropdn .btn-arrow{min-width: 40px; border: none;}
+.yk-sign-up-dropdn .dropdown-menu{min-width: 250px;}
+.yk-sign-up-dropdn .fa-chevron-right{float: right;}
+.yk-sign-up-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle
+.yk-sign-up-dropdn .dropdown-submenu {
+    position: relative;
+}
+
+.yk-sign-up-dropdn .btn-group{ border:  1px solid #000000; border-radius: 5px;}
+.yk-sign-up-dropdn .dropdown-item a{color: #000000;}
+.yk-sign-up-dropdn .dropdown-item:focus{background-color:#EFEFEF;}
+.yk-sign-up-dropdn .dropdown-item a:focus{background-color:#EFEFEF;}
+.yk-sign-up-dropdn .dropdown-submenu .dropdown-item{font-size: 24px; color: #000000;}
+
+.yk-sign-up-dropdn .dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu.pull-left {
+    float: none;
+}
+
+.yk-sign-up-dropdn .dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+.yk-sign-up-dropdn .btn-main{min-width: 411px; min-height: 50px; text-align: left; border: none;} */
+
+
+.btn-main{background-color: #ffffff !important; border: none !important;}
+
+.btn-sm{border: none !important; }
+
+.yg-dropdown-overwrtie {
+  width: 100%;
+    flex-direction: column;
+    background-color: white;
+    padding: 0.5rem 0rem;
+    margin: 0 3%;
+}

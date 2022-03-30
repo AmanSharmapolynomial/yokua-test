@@ -377,9 +377,6 @@ const ProfileSettingScreen = () => {
                 }}
                 onClick={async () => {
                   // delete user APi Call and the logout
-                  // document.body.scrollTop = 0
-                  // document.documentElement.scrollTop = 0
-                  // document.body.style.overflow = 'hidden'
                   setOpenSimpleDeleteModal(true)
                 }}
               >
@@ -436,7 +433,6 @@ const ProfileSettingScreen = () => {
 
                 if (password && passwordRetype) {
                   if (password == passwordRetype) {
-                    // c                    toast.success(afterUpdateNewsMsg.data.message)
                     const payloadPassword = {
                       new_password1: password,
                       new_password2: passwordRetype,
@@ -450,7 +446,7 @@ const ProfileSettingScreen = () => {
 
                     // toast.success(afterPassChangeMsg.data.detail)
                   } else {
-                    toast.error('Password and retype password do not match')
+                    toast.error('Password and retype password does not match')
                   }
                 }
 
