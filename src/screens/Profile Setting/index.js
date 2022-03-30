@@ -114,6 +114,8 @@ const ProfileSettingScreen = () => {
     setProfilePicture(avatar)
   }
 
+  const _updateProfileSettings = () => {}
+
   return (
     <>
       <Header isLogedIn={getToken()} />
