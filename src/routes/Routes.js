@@ -23,13 +23,12 @@ import NewsScreen from '../screens/News Screen/NewsScreen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
 import Footer from '../components/Footer'
 import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
-import ProductList from '../screens/Admin Screens/Product Lines/Product List'
-import SubProductList from '../screens/Admin Screens/Product Lines/Sub Products'
-import ProductDetail from '../screens/Admin Screens/Product Lines/Product Detail'
 import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
 import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
 import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 import ProductLine from '../screens/ProductLine/ProductLine'
+import SubProduct from '../screens/ProductLine/SubProduct'
+import ProductDetail from '../screens/ProductLine/ProductDetail'
 
 const Routing = () => {
   // get User Login Info
@@ -52,7 +51,7 @@ const Routing = () => {
             path="login"
             element={
               <React.Fragment>
-                <div className="bg-landing flex-fill row align-items-center justify-content-center">
+                <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                   <div className="col">
                     <InfoComponent />
                     <SignIn />
@@ -65,7 +64,7 @@ const Routing = () => {
           <Route
             path="register"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <SignUp />
                 </div>
@@ -75,7 +74,7 @@ const Routing = () => {
           <Route
             path="forgot-password"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <Forgot />
                 </div>
@@ -85,7 +84,7 @@ const Routing = () => {
           <Route
             path="reset-password"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <ResetPasswordModal />
                 </div>
@@ -95,7 +94,7 @@ const Routing = () => {
           <Route
             path="reset-password/:uid/:token"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <ChnagePassword />
                 </div>
@@ -106,7 +105,7 @@ const Routing = () => {
           <Route
             path="verification-email"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <VerificationEmail />
                 </div>
@@ -116,7 +115,7 @@ const Routing = () => {
           <Route
             path="verification-email/:uid/:token"
             element={
-              <div className="bg-landing flex-fill row align-items-center justify-content-center">
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
                 <div className="col">
                   <VerificationEmail />
                 </div>
@@ -137,11 +136,11 @@ const Routing = () => {
 
           <Route path="user/company-names" element={<CompanyNames />} />
 
-          <Route path="products" element={<ProductList />} />
+          {/* <Route path="products" element={<ProductList />} /> */}
           <Route path="rotameter" element={<Rotameter />} />
           <Route path="approved-tokuchus" element={<ApprovedTokuchus />} />
-          <Route path="sub-products/:id" element={<SubProductList />} />
-          <Route path="product-detail/:id" element={<ProductDetail />} />
+          {/* <Route path="sub-products/:id" element={<SubProductList />} />
+          <Route path="product-detail/:id" element={<ProductDetail />} /> */}
           <Route
             path="user/approval-request"
             element={
@@ -171,6 +170,22 @@ const Routing = () => {
           element={
             <PrivateRoute>
               <ProductLine />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product-lines/sub-product"
+          element={
+            <PrivateRoute>
+              <SubProduct />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product-lines/product-detail"
+          element={
+            <PrivateRoute>
+              <ProductDetail />
             </PrivateRoute>
           }
         />

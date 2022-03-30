@@ -21,7 +21,6 @@ API.interceptors.response.use(null, e => {
   // if ((e.response.status > 400 && e.response.status !== 401) || e.code === 'ECONNABORTED') {
   //   throw new Error(e)
   // }
-  debugger
   console.log(e.response)
 
   if (e.response.status === 401) {

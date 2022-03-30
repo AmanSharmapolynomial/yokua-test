@@ -780,7 +780,6 @@ const NewsItem = ({
                                 />
                                 <Button
                                   onClick={() => {
-                                    debugger
                                     if (cat.tempSubTopicName) {
                                       _updateSubCategoryAPI(
                                         cat.tempSubTopicName,
@@ -1322,7 +1321,6 @@ function AddCategoryModal({
             id="mybtn"
             className="btn btn-background mr-4"
             onClick={() => {
-              debugger
               setCategoryName('')
               SetImageFile(null)
               setShow(p => false)
@@ -1333,7 +1331,6 @@ function AddCategoryModal({
           <button
             className="btn"
             onClick={() => {
-              debugger
               if (preloadedCategoryData) {
                 EditCategory()
               } else {

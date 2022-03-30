@@ -43,7 +43,6 @@ const ChnagePassword = () => {
           new_password2: confirmPassword,
         })
           .then(data => {
-            debugger
             navigate('/auth/login')
             toast.success(data.data?.message)
           })

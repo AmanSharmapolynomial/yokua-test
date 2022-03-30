@@ -18,7 +18,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
 
   return (
     <header
-      className="header sticky-top"
+      className="header sticky-top mb-auto"
       style={
         {
           // height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '6vh',
@@ -27,18 +27,19 @@ const Header = ({ isLogedIn, isAdmin }) => {
         }
       }
     >
-      <div className="col">
-        <div className="row header-container px-4 py-2">
-          <div className="header__logo col-12 col-md-2">
-            {/* Logo */}
-            <img src={Yokogawa} alt="logo" />
-            {/* <span className="logo__name">YOKOGAWA</span>
+      <div className="row mx-5">
+        <div className="col">
+          <div className="row header-container py-2">
+            <div className="header__logo col-12 col-md-2">
+              {/* Logo */}
+              <img src={Yokogawa} alt="logo" />
+              {/* <span className="logo__name">YOKOGAWA</span>
             <span className="logo__tagline">Co-innovating tommorow</span> */}
-          </div>
-          <div className="header__title col-12 col-md-8 mr-md-auto text-center my-2 my-md-0">
-            FLOW CENTER PAGES
-          </div>
-          {/* {isLogedIn && (
+            </div>
+            <div className="header__title col-12 col-md-8 mr-md-auto text-center my-2 my-md-0">
+              FLOW CENTER PAGES
+            </div>
+            {/* {isLogedIn && (
             <i
               className="fa-solid fa-bars"
               style={{
@@ -53,26 +54,30 @@ const Header = ({ isLogedIn, isAdmin }) => {
             />
           )}
           {isLogedIn && renderPhoneNav && <PhoneNav />} */}
+            {isLogedIn && (
+              <div className="col-auto">
+                <button
+                  className="logout-btn"
+                  onClick={() => {
+                    toast.success('Log out successfully')
+                    removeToken()
+                    removeUserRole()
+                    navigate('/auth/login')
+                  }}
+                >
+                  Log out
+                </button>
+              </div>
+            )}
+          </div>
           {isLogedIn && (
-            <button
-              className="logout-btn"
-              style={{
-                padding: '0.2rem 0.5rem',
-                cursor: 'pointer',
-                zIndex: '1000',
-              }}
-              onClick={() => {
-                toast.success('Log out successfully')
-                removeToken()
-                removeUserRole()
-                navigate('/auth/login')
-              }}
-            >
-              Log out
-            </button>
+            <div className="row">
+              <div className="col p-0">
+                <Navbar isAdmin={isAdmin} />
+              </div>
+            </div>
           )}
         </div>
-        {isLogedIn && <Navbar isAdmin={isAdmin} />}
       </div>
     </header>
   )

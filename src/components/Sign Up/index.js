@@ -104,7 +104,6 @@ const SignUp = () => {
   const register = async e => {
     // setLoading(true)
     e.preventDefault()
-    debugger
     if (selectedTopic.length < 2) {
       toast.error('Please select the company')
       return
@@ -295,7 +294,7 @@ const SignUp = () => {
               <span>
                 <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
               </span>
-              <span className="checkbox-text mx-auto">Accept the term and conditions</span>
+              <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
             </div>
           </div>
 

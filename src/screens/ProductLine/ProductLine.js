@@ -12,31 +12,20 @@ import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
-import placeholder from '../../assets/placeholder.png'
-import editIcon from '../../assets/Icon awesome-edit.png'
+import ProductCard from '../../components/ProductCard/productcard'
+import { Link, Router } from 'react-router-dom'
 
 const ProductLine = () => {
   const navigate = useNavigate()
   const { setLoading } = useLoading()
-  const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
-  const [isCheckListActivated, setCheckListActivated] = useState(false)
-
-  const [categoryFilter, setCategoryFilter] = useState(null)
   const [archivedFilter, setArchivedFilter] = useState(false)
-
-  const [backendData, setBackendData] = useState()
-
   const [isLoading, setIsLoading] = useState(false)
-  const [newNews, setNewNews] = useState(false)
-  const [totalPages, setTotalPages] = useState(1)
-  const [pageNoCall, setPageNoCall] = useState(1)
-  const [isArchived] = useState(false)
   const [productList, setProductList] = useState([])
 
   const getProductList = () => {
     setIsLoading(true)
     API.post('products/list_view', {
-      is_archived: isArchived,
+      is_archived: archivedFilter,
     })
       .then(res => {
         // const staticProductLine = [
@@ -61,7 +50,6 @@ const ProductLine = () => {
 
         if (res.status === 200 && res.data !== undefined) {
           setProductList(res.data)
-          console.log(res.data)
         }
         setIsLoading(false)
       })
@@ -71,40 +59,54 @@ const ProductLine = () => {
       })
   }
 
+  const updateProduct = async id => {
+    const payload = {
+      id: id,
+      product_name: 'Vortex-Yewflo',
+      description: 'A paragraph of text',
+    }
+
+    if (payload.email_id != '') {
+      const afterAddOrDeleteMsg = await API.post('products/add/product', payload)
+      if (data.imageFile) {
+        const formData = new FormData()
+
+        formData.append('image', data.imageFile)
+        formData.append('email', data.email)
+        await API.post('auth/update_avatar', formData)
+          .then(data => {
+            setReloadData(true)
+          })
+          .catch(error => {
+            // toast.error('Error while updating Avatar')
+          })
+      }
+      toast.success(afterAddOrDeleteMsg.data.message)
+    } else {
+      toast.error('Enter E-Mail')
+    }
+    setReloadTable(!reloadTable)
+  }
+
   const renderRow = () => {
     let rows = []
     let col = []
     productList.forEach((item, index) => {
-      //0 total 3
       col.push(
-        <div
-          key={item.id}
-          className={`col-12 col-md card ${index % 2 === 0 ? 'mr-md-5' : 'ms-md-5'} px-2 py-3`}
-        >
-          <div className="row">
-            <div className="col">
-              <div className="row">
-                <div className="col-6">
-                  <div className="img-box thumb rounded d-flex">
-                    <img className="img" src={item.image_link ? item.image_link : placeholder} />
-                  </div>
-                  <div className="border text-center rounded mt-2">{item.name}</div>
-                </div>
-                <div className="col-6 d-flex align-items-center">{item.description}</div>
-              </div>
-            </div>
-            <span className="col-auto d-none d-md-block">
-              <img src={editIcon} />
-            </span>
-          </div>
-        </div>
+        <ProductCard
+          index={index}
+          item={item}
+          onClick={() => {
+            navigate('/product-lines/sub-product', { state: item })
+          }}
+        />
       )
       if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-        rows.push(<div className="row mt-5">{col}</div>)
+        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
         col = []
       } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
         col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-        rows.push(<div className="row mt-5">{col}</div>)
+        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
         col = []
       }
     })
@@ -113,7 +115,7 @@ const ProductLine = () => {
 
   useEffect(() => {
     getProductList()
-  }, [])
+  }, [archivedFilter])
 
   return (
     <>
@@ -123,7 +125,7 @@ const ProductLine = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="col center py-3 px-5">
+      <div className="col center py-md-3 px-md-5">
         <PrimaryHeading title={'Product Lines'} />
         {isLoading ? (
           <div className="col text-center">Loading....</div>
@@ -158,7 +160,7 @@ const ProductLine = () => {
               )}
           </div>
         )} */}
-        {productList.length > 0 && (
+        {/* {productList.length > 0 && (
           <div className="pagination">
             <Pagination
               total={totalPages * 10}
@@ -168,27 +170,27 @@ const ProductLine = () => {
               style={{ border: 'none' }}
             />
           </div>
-        )}
-        <div className="archived-filter">
+        )} */}
+        <div className="archived-filter mt-5 mb-5">
           {archivedFilter ? (
             <button
-              className="btn ml-3"
+              className="btn"
               style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(false)
               }}
             >
-              Live News
+              Live Product
             </button>
           ) : (
             <button
-              className="btn ml-3"
+              className="btn"
               style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(true)
               }}
             >
-              News Archive
+              Product Archive
             </button>
           )}
         </div>

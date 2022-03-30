@@ -33,7 +33,7 @@ function App() {
   // const userDetails = useStoreState(state => state.userDetails)
 
   return (
-    <div className="container-fluid p-0 vh-100 row m-0">
+    <div className="container-fluid p-0 vh-100 m-0 d-flex flex-column">
       <Routing />
       {loading && (
         <LoaderContainer>
