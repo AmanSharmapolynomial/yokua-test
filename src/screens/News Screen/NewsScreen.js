@@ -152,6 +152,7 @@ const NewsScreen = () => {
               <div className="filter-actions">
                 <div className="filter-icons" style={{ marginLeft: '2rem' }}>
                   <img
+                    className={categoryFilter === null ? 'greyed' : null}
                     src={Filtermg}
                     onClick={() => {
                       setShowFilterDropdown1(!showFilterDropdown1)
@@ -190,7 +191,7 @@ const NewsScreen = () => {
                             }
                           }}
                         >
-                          {category.sub_category_name}
+                          {category.category_name}
                         </span>
                       ))}
                   </div>
@@ -198,6 +199,7 @@ const NewsScreen = () => {
                 <div className="filter-icons" style={{ marginLeft: '12rem' }}>
                   {backendData?.sub_categories?.length > 0 && (
                     <img
+                      className={subCategoryFilter === null ? 'greyed' : null}
                       src={Filtermg}
                       onClick={() => {
                         if (categoryFilter) {
