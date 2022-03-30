@@ -694,17 +694,19 @@ const NewsItem = ({
                       ))}
                       <Dropdown.Divider />
                       {!isTopicAdd && (
-                        <button
-                          style={{ marginLeft: '2rem' }}
-                          className="btn yg-font-size"
-                          onClick={() => {
-                            setToggleDropDown(1)
-                            setShowCategoryModal(true)
-                            setPreloadedCategoryData(null)
-                          }}
-                        >
-                          Add Topic
-                        </button>
+                        <div className="col d-flex justify-content-center">
+                          <button
+                            style={{ marginLeft: '2rem' }}
+                            className="btn yg-font-size"
+                            onClick={() => {
+                              setToggleDropDown(1)
+                              setShowCategoryModal(true)
+                              setPreloadedCategoryData(null)
+                            }}
+                          >
+                            Add Topic
+                          </button>
+                        </div>
                       )}
                       {isTopicAdd && (
                         <InputGroup className="mb-3 yg-font-size p-1 ">
@@ -864,20 +866,21 @@ const NewsItem = ({
                         })}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
-                        <button
-                          style={{ marginLeft: '1.2rem' }}
-                          id="mybtn"
-                          className="btn yg-font-size "
-                          onClick={() => {
-                            if (_checkIsEditSubTopicOpen()) {
-                              toast.error('Please close the current Sub category edit')
-                            } else {
-                              setSubTopicAdd(true)
-                            }
-                          }}
-                        >
-                          Add Sub-Topic
-                        </button>
+                        <div className="col d-flex justify-content-center">
+                          <button
+                            id="mybtn"
+                            className="btn yg-font-size "
+                            onClick={() => {
+                              if (_checkIsEditSubTopicOpen()) {
+                                toast.error('Please close the current Sub category edit')
+                              } else {
+                                setSubTopicAdd(true)
+                              }
+                            }}
+                          >
+                            Add Sub-Topic
+                          </button>
+                        </div>
                       )}
                       {isSubTopicAdd && (
                         <InputGroup className="mb-3 yg-font-size p-1 ">
@@ -924,52 +927,9 @@ const NewsItem = ({
                   </Dropdown>
                 </>
               ) : (
-                <>
-                  <Dropdown
-                    ref={topicRef}
-                    // show={toggleDropDown == 1}
-                    onClick={() => {
-                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
-                    }}
-                    size="sm"
-                    autoClose={'outside'}
-                    className="yk-dropdown-holder"
-                    style={{
-                      width: '12rem',
-                    }}
-                  >
-                    <Dropdown.Toggle
-                      disabled={data.sub_category.length <= 1}
-                      size={'sm'}
-                      className="yg-custom-dropdown"
-                      color="red"
-                      id="dropdown-basic"
-                      style={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {data?.sub_category &&
-                        data.sub_category.length > 0 &&
-                        data.sub_category[0].sub_category_name}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu
-                      style={{
-                        maxHeight: '14rem',
-                        overflowY: 'scroll',
-                      }}
-                    >
-                      {data.sub_category?.map((cat, index) => (
-                        <Dropdown.Item key={index} className="yg-font-size">
-                          <span>{cat.sub_category_name}</span>
-                        </Dropdown.Item>
-                      ))}
-                      <Dropdown.Divider />
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </>
+                <span className="news-sub-category">
+                  {data?.sub_category ? data?.sub_category[0]['sub_category_name'] : ''}
+                </span>
               )}
             </div>
           </div>

@@ -273,7 +273,7 @@ form input {
 }
 
 .yk-dropdown-holder-subtopic {
-  z-index: 0;
+  /* z-index: 0; */
   text-overflow: ellipsis;
 }
 
@@ -299,4 +299,9 @@ form input {
 .yk-attached-file {
   display: flex;
   text-align: end;
+}
+
+.news-sub-category {
+  font-weight: 500;
+  font-size: 0.8rem;
 }
