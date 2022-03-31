@@ -112,7 +112,7 @@ export default ({ tableObject }) => {
   return (
 
     <>
-      <div className='float-right text-primary mt-5'>
+      <div className='position-absolute text-primary' style={{zIndex:"4", right:"0", marginTop:"-36px",}}>
         <i className="fa-solid fa-pen-to-square" ></i>
         <i className="fa-solid fa-trash"></i>
       </div>
