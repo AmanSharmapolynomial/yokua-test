@@ -121,13 +121,13 @@ export default () => {
 
   return (
     <>
-      <div className="row mx-5">
-        <div className="profile-setting-container col center py-md-3">
+      <div className="tokachu-main row mx-5">
+        <div className="profile-setting-container col center md-3">
           <PrimaryHeading title={'Approved Tokachu'} backgroundImage={'yk-back-image-news'} />
           <div className="container">
             <div className="toku-dropdn">
               <div className="row">
-                <div className="dropdown">
+                <div className="dropdown p-0">
                   <div className="btn-group">
                     <button
                       className="btn btn-secondary btn-main btn-sm"
@@ -206,7 +206,7 @@ export default () => {
 
                                       <div className="col d-flex justify-content-center">
                                         <button
-                                          style={{ marginLeft: '2rem' }}
+                                
                                           className="btn yg-font-size"
                                           onClick={() => {}}
                                         >
@@ -220,7 +220,7 @@ export default () => {
 
                             <div className="col d-flex justify-content-center">
                               <button
-                                style={{ marginLeft: '2rem' }}
+                         
                                 className="btn yg-font-size"
                                 onClick={() => {}}
                               >
@@ -233,7 +233,7 @@ export default () => {
 
                       <div className="col d-flex justify-content-center">
                         <button
-                          style={{ marginLeft: '2rem' }}
+                        
                           className="btn yg-font-size"
                           onClick={() => {}}
                         >

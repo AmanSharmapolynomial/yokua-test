@@ -12,12 +12,14 @@
     position: relative;
 }
 
-.dropdown-item.active, .dropdown-item:active{background-color:#EFEFEF !important;}
+.tokachu-main .profile-setting-container{padding-bottom: 30% !important;}
+.toku-dropdn button.yg-font-size{font-size: 0.8rem !important; padding: 8px 16px !important; margin: 30px 0px !important;}
+.dropdown-item.active, .dropdown-item:active{background-color:#EFEFEF !important; }
 
 
 
 .toku-dropdn .dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin: 0 0 0 6px  !important;}
-.toku-dropdn .dropdown{  box-shadow: none !important;}
+.toku-dropdn .dropdown{box-shadow: none !important; position: inherit !important; margin-top: 40px !important; z-index: 1000; margin-bottom: 100px;}
 .toku-dropdn .dropdown-menu{margin: 0 !important;}
 .toku-dropdn .dropdown-menu.show{left: -414px !important; top: 1px !important; }
 .toku-dropdn .dropdown-item a{color: #000000;}
@@ -26,9 +28,9 @@
 .toku-dropdn .dropdown-submenu .dropdown-item{font-size: 24px; color: #000000;}
 
 .toku-dropdn .dropdown-submenu>.dropdown-menu {
-    top: 0;
+    top: auto;
     left: 100%;
-    margin-top: -6px;
+    margin-top: -48px !important;
     margin-left: -1px;
     -webkit-border-radius: 0 6px 6px 6px;
     -moz-border-radius: 0 6px 6px;
