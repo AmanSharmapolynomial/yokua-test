@@ -24,7 +24,7 @@ import DataTable from 'react-data-table-component'
  * ]}
  *
  */
-export default ({ tableObject }) => {
+export default ({ tableObject, setShowDeleteModal }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [numberOfColumns, setNumberOfColumns] = useState(0)
@@ -66,7 +66,6 @@ export default ({ tableObject }) => {
     const tableColumns = []
     tableObject.table_data?.map((column, index) => {
       const tempColumnName = column.column_name
-      debugger
       tableColumns.push({
         name: column.column_name,
         selector: row => row[tempColumnName],
@@ -83,8 +82,6 @@ export default ({ tableObject }) => {
   const _setTableData = () => {
     const tableData = tableObject.table_data
     const finalTableData = []
-    console.log(tableData)
-    debugger
     tableData &&
       tableData[0]?.values?.map((item, index) => {
         const tableRowObject = {
@@ -110,12 +107,21 @@ export default ({ tableObject }) => {
   }, [tableObject])
 
   return (
-
     <>
-      <div className='position-absolute text-primary' style={{zIndex:"4", right:"0", marginTop:"-36px",}}>
-        <i className="fa-solid fa-pen-to-square" ></i>
-        <i className="fa-solid fa-trash"></i>
-      </div>
+      {tableObject != {} && (
+        <div
+          className="position-absolute text-primary"
+          style={{ zIndex: '4', right: '0', marginTop: '-36px' }}
+        >
+          <i className="fa-solid fa-pen-to-square"></i>
+          <i
+            className="fa-solid fa-trash"
+            onClick={() => {
+              setShowDeleteModal(true)
+            }}
+          ></i>
+        </div>
+      )}
 
       <DataTable
         pagination
@@ -123,9 +129,9 @@ export default ({ tableObject }) => {
         columns={tableHeader}
         data={tableRows}
         customStyles={customStyles}
-      // conditionalRowStyles={conditionalRowStyles}
-      // selectableRows
-      // onSelectedRowsChange={selectedRowsActionUA}
+        // conditionalRowStyles={conditionalRowStyles}
+        // selectableRows
+        // onSelectedRowsChange={selectedRowsActionUA}
       />
     </>
   )

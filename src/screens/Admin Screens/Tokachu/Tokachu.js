@@ -23,7 +23,7 @@ export default () => {
 
   const [isArchived, setIsArchived] = useState(false)
   const [products, setProducts] = useState([])
-  const [tableDetails, setTableDetails] = useState({})
+  const [tableDetails, setTableDetails] = useState(null)
   const [pageDetails, setPageDetails] = useState([])
 
   const [subProductLoading, setSubProductLoading] = useState(false)
@@ -84,22 +84,32 @@ export default () => {
       page_id: productItemId,
     })
       .then(data => {
-        setPageDetails(data.data)
-        setTableDetails(data.data[0].components[0])
-        console.log(data.data[0].components[0])
+        if (data.data.length < 1) {
+          setPageDetails({})
+          setTableDetails({})
+        } else {
+          setPageDetails(data.data)
+          setTableDetails(data.data[0].components[0])
+        }
       })
       .catch(err => {})
   }
 
-  const _deleteComponent = (sectionId, componentId) => {
-    API.post('tokuchu/page/delete_component', {
-      section_id: sectionId,
-      component_id: componentId,
-    })
-      .then(data => {
-        toast.success('Component Deleted Successfully')
+  const _deleteComponent = () => {
+    const sectionId = tableDetails?.id
+    const componentId = pageDetails[0]?.id
+    if (sectionId && componentId) {
+      API.post('tokuchu/page/delete_component', {
+        section_id: sectionId,
+        component_id: componentId,
       })
-      .catch(err => {})
+        .then(data => {
+          toast.success('Component Deleted Successfully')
+        })
+        .catch(err => {})
+    } else {
+      toast.error('Can not delete empty table')
+    }
   }
 
   const _createSection = (pageId, sectionName, orderIndex = 1) => {
@@ -246,7 +256,7 @@ export default () => {
         key={'Tokachu Delete'}
         show={showDeleteModal}
         setShow={setShowDeleteModal}
-        data={currentDeleteId}
+        data={''}
         req={'Table'}
         title={'Are you sure you want to delete this Table'}
         saveAndExit={() => setShowDeleteModal(false)}
@@ -338,7 +348,7 @@ export default () => {
                                         <li
                                           className="dropdown-item"
                                           key={prod.name}
-                                          onClick={() => _getDetails()}
+                                          onClick={() => _getDetails(prod.id)}
                                         >
                                           <a>{prod.name}</a>
                                         </li>
@@ -394,12 +404,9 @@ export default () => {
               </div>
             </div>
           </div>
-
-          <Table
-            tableObject={tableDetails}
-            setShowDeleteModal={setShowDeleteModal}
-            setCurrentDeleteId={setCurrentDeleteId}
-          />
+          {tableDetails && (
+            <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+          )}
         </div>
       </div>
     </>
