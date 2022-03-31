@@ -203,11 +203,6 @@ const NewsScreen = () => {
                       src={Filtermg}
                       onClick={() => {
                         if (categoryFilter) {
-                          if (showFilterDropdown2) {
-                            toast.success('Sub Category filter applied')
-                          } else {
-                            toast.success('Sub Category filter removed')
-                          }
                           setShowFilterDropdown2(!showFilterDropdown2)
                         } else {
                           toast.success('Please select the Category filter first.')
@@ -235,8 +230,10 @@ const NewsScreen = () => {
                             }}
                             onClick={() => {
                               if (subCategoryFilter == category.id) {
+                                toast.success('Sub Category Field Removed.')
                                 setSubCategoryFilter(null)
                               } else {
+                                toast.success('Sub Category Field Applied.')
                                 setSubCategoryFilter(category.id)
                               }
                             }}
