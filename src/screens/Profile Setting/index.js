@@ -139,6 +139,7 @@ const ProfileSettingScreen = () => {
             <div className="profile-setting__info">
               <div>
                 <input
+                  accept="image/*"
                   type="file"
                   id="avatar"
                   ref={imageFileInputRef}

@@ -57,45 +57,42 @@ const ChnagePassword = () => {
 
   return (
     <>
-      <div className="signIn-container mx-auto col-4">
+      <div className="signIn-container mx-auto col-10 col-md-4 my-5">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
           style={{
             position: 'relative',
           }}
         >
-          <input
-            type={passwordVisible ? 'text' : 'password'}
-            className="input-field input-field__password"
-            name="password"
-            value={password}
-            placeholder="Password"
-            onChange={e => setPassword(e.target.value)}
-          />
-          <i
-            className={passwordVisible ? 'fa-eye fa-solid ' : 'fa-eye-slash fa-solid '}
-            style={{
-              position: 'absolute',
-              left: '250px',
-              top: '12px',
-            }}
-            onClick={() => setPasswordVisible(!passwordVisible)}
-          ></i>
+          <div className="row align-items-center input-field mx-auto">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              className="input-field__password flex-fill"
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={e => setPassword(e.target.value)}
+            />
+            <i
+              className={passwordVisible ? 'fa-eye fa-solid ' : 'fa-eye-slash fa-solid '}
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            />
+          </div>
 
-          <input
-            type={confirmVisible ? 'text' : 'password'}
-            className="input-field input-field__password"
-            name="confirm-password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-          />
-
-          <i
-            className={confirmVisible ? 'fa-eye fa-solid first' : 'fa-eye-slash fa-solid first'}
-            onClick={() => setConfirmVisible(!confirmVisible)}
-          ></i>
-
+          <div className="row align-items-center input-field mx-auto">
+            <input
+              type={confirmVisible ? 'text' : 'password'}
+              className="input-field__password flex-fill"
+              name="confirm-password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+            />
+            <i
+              className={confirmVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
+              onClick={() => setConfirmVisible(!confirmVisible)}
+            />
+          </div>
           <button
             onClick={e => {
               if (uid && token) {

@@ -582,9 +582,9 @@ const NewsItem = ({
         getCategoryAndSubCategory={getCategoryAndSubCategory}
         setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
       />
-      <div className="single-news-item col-12" key={data ? data.id : Math.random()}>
+      <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
-          <div className="flex-setup col-10">
+          <div className="col-10">
             <div className="row">
               <div
                 className="dot-adjust col-auto mx-1"
@@ -621,17 +621,17 @@ const NewsItem = ({
                   ></div>
                 )}
               </div>
-
-              <div className="news-img rounded mx-3 col-3">
-                {editView ? (
-                  <>
+              <div className="col-3">
+                <div className="news-img rounded mx-3">
+                  {editView ? (
+                    <>
+                      <img src={catImg} onError={_onErrorImage} />
+                    </>
+                  ) : (
                     <img src={catImg} onError={_onErrorImage} />
-                  </>
-                ) : (
-                  <img src={catImg} onError={_onErrorImage} />
-                )}
+                  )}
+                </div>
               </div>
-
               <div className="news-text col-auto">
                 <div className="news-info">
                   <span className="date">
@@ -942,11 +942,12 @@ const NewsItem = ({
                   <textarea
                     ref={newsDescRef}
                     style={{
-                      minWidth: '100%',
-                      minHeight: '24  vh',
-                      marginTop: '1rem',
-                      height: '188px',
-                      resize: 'none',
+                      flex: 1,
+                      // minWidth: '100%',
+                      // minHeight: '24  vh',
+                      // marginTop: '1rem',
+                      // height: '188px',
+                      // resize: 'none',
                     }}
                     placeholder="Enter description"
                     onChange={e => {

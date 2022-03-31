@@ -378,7 +378,7 @@ const NewsScreen = () => {
           <div className="archived-filter">
             {archivedFilter ? (
               <button
-                className="btn ml-3"
+                className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
                   setArchivedFilter(false)
@@ -388,7 +388,7 @@ const NewsScreen = () => {
               </button>
             ) : (
               <button
-                className="btn ml-3"
+                className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
                   setArchivedFilter(true)

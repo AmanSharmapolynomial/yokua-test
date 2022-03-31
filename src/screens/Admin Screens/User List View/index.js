@@ -418,28 +418,6 @@ const UserListView = () => {
   return (
     <div className="row mx-5">
       <div className="col user-list-view">
-        {openBasicDeleteModal && (
-          <DeleteModal
-            setShow={setOpenBasicDeleteModal}
-            show={openBasicDeleteModal}
-            title={'Are you sure want to delete this user?'}
-            runDelete={deleteSingleUser}
-            saveAndExit={saveAndExitModal}
-            data={deleteEmail}
-            req={'User'}
-          />
-        )}
-        {openModal && (
-          <UserDetailsModal
-            key={backendData[dataToChange]?.id}
-            title={modelTitle}
-            DetailsModal
-            data={backendData[dataToChange]}
-            change={changeModal}
-            saveAndExit={saveAndExitModal}
-          />
-        )}
-
         <SecondaryHeading title={'Users list view'} />
 
         <div className="filter-actions">
@@ -604,6 +582,27 @@ const UserListView = () => {
           />
         </div>
       </div>
+      {openBasicDeleteModal && (
+        <DeleteModal
+          setShow={setOpenBasicDeleteModal}
+          show={openBasicDeleteModal}
+          title={'Are you sure want to delete this user?'}
+          runDelete={deleteSingleUser}
+          saveAndExit={saveAndExitModal}
+          data={deleteEmail}
+          req={'User'}
+        />
+      )}
+      {openModal && (
+        <UserDetailsModal
+          key={backendData[dataToChange]?.id}
+          title={modelTitle}
+          DetailsModal
+          data={backendData[dataToChange]}
+          change={changeModal}
+          saveAndExit={saveAndExitModal}
+        />
+      )}
     </div>
   )
 }
