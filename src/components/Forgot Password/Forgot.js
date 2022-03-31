@@ -29,12 +29,7 @@ const Forgot = () => {
 
   return (
     <>
-      <div
-        className="signIn-container mx-auto col-10 col-md-4"
-        style={{
-          marginBottom: '320px',
-        }}
-      >
+      <div className="signIn-container mx-auto col-10 col-md-4">
         <div className="container-head">
           <span className="position-absolute float-left">
             <i

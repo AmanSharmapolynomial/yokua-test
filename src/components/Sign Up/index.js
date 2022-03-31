@@ -106,7 +106,6 @@ const SignUp = () => {
   const register = async e => {
     // setLoading(true)
     e.preventDefault()
-    debugger
     if (selectedTopic.length < 2 || selectedTopic.toLowerCase() == 'company') {
       toast.error('Please select the company')
       return
@@ -301,6 +300,14 @@ const SignUp = () => {
                 </InputGroup>
               )}
             </Dropdown.Menu>
+          </Dropdown>
+          <div className="col-12">
+            <div className="row text-center d-flex justify-content-center align-items-center">
+              <span>
+                <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
+              </span>
+              <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
+            </div>
           </Dropdown> */}
           <div className="checkbox">
             <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />

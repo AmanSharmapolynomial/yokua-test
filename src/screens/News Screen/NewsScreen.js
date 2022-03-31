@@ -36,7 +36,6 @@ const NewsScreen = () => {
   const [readNews, setNewsRead] = useState([])
 
   const _updateNewsRead = id => {
-    debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
     if (isAlreadyAdded > -1) {
@@ -145,254 +144,260 @@ const NewsScreen = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="profile-setting-container">
-        <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
-        <div className="filter-and-read-container">
-          <div className="filter-container">
-            <div className="filter-actions">
-              <div className="filter-icons" style={{ marginLeft: '2rem' }}>
-                <img
-                  src={Filtermg}
-                  onClick={() => {
-                    setShowFilterDropdown1(!showFilterDropdown1)
-                  }}
-                  ref={ref1}
-                />
-                <div
-                  className="filter-dropdown dropdown"
-                  style={{
-                    display: showFilterDropdown1 ? 'flex' : 'none',
-                  }}
-                >
-                  {backendData &&
-                    backendData.categories.map((category, index) => (
-                      <span
-                        key={index}
-                        className="dropdown-element"
-                        ref={filter1Ref}
-                        style={
-                          categoryFilter == category.id
-                            ? {
-                                fontWeight: 'bold',
-                              }
-                            : {
-                                fontWeight: '300',
-                              }
-                        }
-                        onClick={() => {
-                          if (categoryFilter == category.id) {
-                            toast.success('Category filter removed')
-                            setCategoryFilter(null)
-                            setSubCategoryFilter(null)
-                          } else {
-                            toast.success('Category filter Applied')
-                            setCategoryFilter(category.id)
-                          }
-                        }}
-                      >
-                        {category.category_name}
-                      </span>
-                    ))}
-                </div>
-              </div>
-              <div className="filter-icons" style={{ marginLeft: '12rem' }}>
-                {backendData?.sub_categories?.length > 0 && (
+      <div className="row mx-5">
+        <div className="profile-setting-container col center py-md-3">
+          <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
+          <div className="filter-and-read-container py-3">
+            <div className="filter-container">
+              <div className="filter-actions">
+                <div className="filter-icons">
                   <img
+                    className={categoryFilter === null ? 'greyed' : null}
                     src={Filtermg}
                     onClick={() => {
-                      if (categoryFilter) {
-                        if (showFilterDropdown2) {
-                          toast.success('Sub Category filter applied')
-                        } else {
-                          toast.success('Sub Category filter removed')
-                        }
-                        setShowFilterDropdown2(!showFilterDropdown2)
-                      } else {
-                        toast.success('Please select the Category filter first.')
-                      }
+                      setShowFilterDropdown1(!showFilterDropdown1)
                     }}
-                    ref={ref2}
+                    ref={ref1}
                   />
-                )}
-                <div
-                  className="filter-dropdown dropdown"
-                  style={{
-                    display: showFilterDropdown2 ? 'flex' : 'none',
-                  }}
-                >
-                  {backendData &&
-                    backendData.sub_categories
-                      .filter(item => item.category_id == categoryFilter)
-                      .map((category, index) => (
+                  <div
+                    className="filter-dropdown dropdown"
+                    style={{
+                      display: showFilterDropdown1 ? 'flex' : 'none',
+                    }}
+                  >
+                    {backendData &&
+                      backendData.categories.map((category, index) => (
                         <span
                           key={index}
                           className="dropdown-element"
-                          ref={filter2Ref}
-                          style={{
-                            fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
-                          }}
+                          ref={filter1Ref}
+                          style={
+                            categoryFilter == category.id
+                              ? {
+                                  fontWeight: 'bold',
+                                }
+                              : {
+                                  fontWeight: '300',
+                                }
+                          }
                           onClick={() => {
-                            if (subCategoryFilter == category.id) {
+                            if (categoryFilter == category.id) {
+                              toast.success('Category filter removed')
+                              setCategoryFilter(null)
                               setSubCategoryFilter(null)
                             } else {
-                              setSubCategoryFilter(category.id)
+                              toast.success('Category filter Applied')
+                              setCategoryFilter(category.id)
                             }
                           }}
                         >
-                          {category.sub_category_name}
+                          {category.category_name}
                         </span>
                       ))}
+                  </div>
+                </div>
+                <div className="filter-icons" style={{ marginLeft: '12rem' }}>
+                  {backendData?.sub_categories?.length > 0 && (
+                    <img
+                      className={subCategoryFilter === null ? 'greyed' : null}
+                      src={Filtermg}
+                      onClick={() => {
+                        if (categoryFilter) {
+                          if (showFilterDropdown2) {
+                            toast.success('Sub Category filter applied')
+                          } else {
+                            toast.success('Sub Category filter removed')
+                          }
+                          setShowFilterDropdown2(!showFilterDropdown2)
+                        } else {
+                          toast.success('Please select the Category filter first.')
+                        }
+                      }}
+                      ref={ref2}
+                    />
+                  )}
+                  <div
+                    className="filter-dropdown dropdown"
+                    style={{
+                      display: showFilterDropdown2 ? 'flex' : 'none',
+                    }}
+                  >
+                    {backendData &&
+                      backendData.sub_categories
+                        .filter(item => item.category_id == categoryFilter)
+                        .map((category, index) => (
+                          <span
+                            key={index}
+                            className="dropdown-element"
+                            ref={filter2Ref}
+                            style={{
+                              fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                            }}
+                            onClick={() => {
+                              if (subCategoryFilter == category.id) {
+                                setSubCategoryFilter(null)
+                              } else {
+                                setSubCategoryFilter(category.id)
+                              }
+                            }}
+                          >
+                            {category.sub_category_name}
+                            Something
+                          </span>
+                        ))}
+                  </div>
                 </div>
               </div>
             </div>
+            <button
+              className="btn"
+              onClick={() => {
+                markAsReadAction(readNews)
+              }}
+            >
+              Mark as Read
+            </button>
           </div>
-          <button
-            className="btn"
-            onClick={() => {
-              markAsReadAction(readNews)
-            }}
-          >
-            Mark as Read
-          </button>
-        </div>
-        {isLoading ? (
-          <span>Loading....</span>
-        ) : (
-          <div className="news-container-list">
-            {newsData.length > 0 ? (
-              newsData.map((news, index) => {
-                console.log(news)
-                if (news && Object.keys(news).length > 1) {
-                  return (
-                    <NewsItem
-                      setCheckListActivated={setCheckListActivated}
-                      isCheckListActivated={isCheckListActivated}
-                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                      setNewsUnderEdit={setNewsUnderEdit}
-                      setCategoryFilter={() => {
-                        if (categoryFilter) {
-                          toast.success('Category filter removed')
-                          setCategoryFilter(null)
+          {isLoading ? (
+            <span>Loading....</span>
+          ) : (
+            <div className="col">
+              <div className="row d-flex justify-content-center">
+                {newsData.length > 0 ? (
+                  newsData.map((news, index) => {
+                    if (news && Object.keys(news).length > 1) {
+                      return (
+                        <NewsItem
+                          setCheckListActivated={setCheckListActivated}
+                          isCheckListActivated={isCheckListActivated}
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          setCategoryFilter={() => {
+                            if (categoryFilter) {
+                              toast.success('Category filter removed')
+                              setCategoryFilter(null)
+                            } else {
+                              toast.success('Category filter applied')
+                              setCategoryFilter(news?.category_id)
+                            }
+                          }}
+                          categoryFilter={categoryFilter}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          data={news}
+                          changeType={'View'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          key={index}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    } else {
+                      return (
+                        <NewsItem
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          getAllNews={() => getAllNews(payload)}
+                          cancelAddNews={id => cancelAddNews(id)}
+                          data={{}}
+                          changeType={'Add'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          saveAndExitAdd={saveAndExitAdd}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    }
+                  })
+                ) : (
+                  <>
+                    {backendData?.news_letters.length < 1 ? (
+                      <span>No Records Found</span>
+                    ) : (
+                      <span> You're all caught up with the News </span>
+                    )}
+                  </>
+                )}
+
+                {/*{newNews ? (*/}
+                {/*  <NewsItem*/}
+                {/*    data={undefined}*/}
+                {/*    changeType={true}*/}
+                {/*    category={backendData.categories}*/}
+                {/*    subCategory={backendData.sub_categories}*/}
+                {/*    saveAndExitAdd={saveAndExitAdd}*/}
+                {/*    setIsLoading={setIsLoading}*/}
+                {/*  />*/}
+                {/*) : (*/}
+                {/*  <></>*/}
+                {/*)}*/}
+
+                {(getUserRoles() == 'PMK Administrator' ||
+                  getUserRoles() == 'PMK Content Manager' ||
+                  getUserRoles() == 'Technical Administrator') &&
+                  !archivedFilter && (
+                    <div
+                      className="add_row mt-3"
+                      onClick={() => {
+                        if (!isAnyNewsUnderEdit) {
+                          setNewsUnderEdit(true)
+                          setNewsData([...newsData, { id: Math.random() }])
                         } else {
-                          toast.success('Category filter applied')
-                          setCategoryFilter(news?.category_id)
+                          toast.error('Please finish current news edit.')
                         }
                       }}
-                      categoryFilter={categoryFilter}
-                      updateNewsRead={() => _updateNewsRead(news.id)}
-                      readNews={readNews}
-                      data={news}
-                      changeType={'View'}
-                      tempCategory={backendData.categories}
-                      tempSubCategory={backendData.sub_categories}
-                      key={index}
-                      setIsLoading={setIsLoading}
-                      refreshPage={() => getAllNews(payload)}
-                    />
-                  )
-                } else {
-                  return (
-                    <NewsItem
-                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                      setNewsUnderEdit={setNewsUnderEdit}
-                      updateNewsRead={() => _updateNewsRead(news.id)}
-                      readNews={readNews}
-                      getAllNews={() => getAllNews(payload)}
-                      cancelAddNews={id => cancelAddNews(id)}
-                      data={{}}
-                      changeType={'Add'}
-                      tempCategory={backendData.categories}
-                      tempSubCategory={backendData.sub_categories}
-                      saveAndExitAdd={saveAndExitAdd}
-                      setIsLoading={setIsLoading}
-                      refreshPage={() => getAllNews(payload)}
-                    />
-                  )
-                }
-              })
-            ) : (
-              <>
-                {backendData?.news_letters.length < 1 ? (
-                  <span>No Records Found</span>
-                ) : (
-                  <span> You're all caught up with the News </span>
-                )}
-              </>
-            )}
-
-            {/*{newNews ? (*/}
-            {/*  <NewsItem*/}
-            {/*    data={undefined}*/}
-            {/*    changeType={true}*/}
-            {/*    category={backendData.categories}*/}
-            {/*    subCategory={backendData.sub_categories}*/}
-            {/*    saveAndExitAdd={saveAndExitAdd}*/}
-            {/*    setIsLoading={setIsLoading}*/}
-            {/*  />*/}
-            {/*) : (*/}
-            {/*  <></>*/}
-            {/*)}*/}
-
-            {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') &&
-              !archivedFilter && (
-                <div
-                  className="add_row"
-                  onClick={() => {
-                    if (!isAnyNewsUnderEdit) {
-                      setNewsUnderEdit(true)
-                      setNewsData([...newsData, { id: Math.random() }])
-                    } else {
-                      toast.error('Please finish current news edit.')
-                    }
-                  }}
-                >
-                  <img
-                    src={Plusicon}
-                    style={{
-                      width: '22px',
-                      marginRight: '12px',
-                    }}
-                  />
-                  Add
-                </div>
-              )}
-          </div>
-        )}
-        {newsData.length > 0 && (
-          <div className="pagination">
-            <Pagination
-              total={totalPages * 10}
-              showQuickJumper
-              showSizeChanger={false}
-              onChange={onChange}
-              style={{ border: 'none' }}
-            />
-          </div>
-        )}
-        <div className="archived-filter">
-          {archivedFilter ? (
-            <button
-              className="btn ml-3"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(false)
-              }}
-            >
-              Live News
-            </button>
-          ) : (
-            <button
-              className="btn ml-3"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(true)
-              }}
-            >
-              News Archive
-            </button>
+                    >
+                      <img
+                        src={Plusicon}
+                        style={{
+                          width: '22px',
+                          marginRight: '12px',
+                        }}
+                      />
+                      Add
+                    </div>
+                  )}
+              </div>
+            </div>
           )}
+          {newsData.length > 0 && (
+            <div className="pagination">
+              <Pagination
+                total={totalPages * 10}
+                showQuickJumper
+                showSizeChanger={false}
+                onChange={onChange}
+                style={{ border: 'none' }}
+              />
+            </div>
+          )}
+          <div className="archived-filter">
+            {archivedFilter ? (
+              <button
+                className="btn ml-3"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(false)
+                }}
+              >
+                Live News
+              </button>
+            ) : (
+              <button
+                className="btn ml-3"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setArchivedFilter(true)
+                }}
+              >
+                News Archive
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
