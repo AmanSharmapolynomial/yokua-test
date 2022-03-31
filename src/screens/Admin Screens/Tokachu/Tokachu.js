@@ -1,291 +1,254 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/api'
-import '../Tokachu/Tokachu.css'
+import './Tokachu.css'
+import Table from '../../../components/TableComponent/Table'
+import PrimaryHeading from '../../../components/Primary Headings'
 
 export default () => {
   const [isArchieved, setIsArchived] = useState(false)
   const [products, setProducts] = useState([])
-  const [subProducts, setSubProducts] = useState([])
-  const [productItems, setProductItems] = useState([])
+  const [tableDetails, setTableDetails] = useState({})
+  const [pageDetails, setPageDetails] = useState([])
+
+  const [subProductLoading, setSubProductLoading] = useState(false)
+  const [productItemLoading, setProductItemLoading] = useState(false)
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
       is_archived: isArchieved,
     })
       .then(data => {
-        console.log(data.data)
-        setProducts(data.data)
+        const updated = createEmptySubProducts(data.data)
+        setProducts(updated)
       })
       .catch(err => console.log(err))
   }
 
   const _getSubProducts = (productId = 1) => {
-    API.post('tokuchu/list_view/sub_products/', {
-      product_id: productId,
-      is_archived: isArchieved,
-    })
-      .then(data => {
-        setSubProducts(data.data)
+    const updatedProducts = products
+    const currentProduct = updatedProducts.find(item => item.id === productId)
+    if (!subProductLoading && currentProduct.subProducts.length < 1) {
+      setSubProductLoading(true)
+      API.post('tokuchu/list_view/sub_products/', {
+        product_id: productId,
+        is_archived: isArchieved,
       })
-      .catch(err => console.log(err))
+        .then(data => {
+          setSubProductLoading(false)
+          assignSubProducts(data.data, productId)
+        })
+        .catch(err => {
+          setSubProductLoading(false)
+        })
+    }
   }
 
-  const _getProductItems = subProductId => {
-    API.post('tokuchu/list_view/sub_products_item/', {
-      sub_product_id: subProductId,
-      is_archived: isArchieved,
+  const _getProductItems = (subProductId = 1, productId) => {
+    const updatedProducts = products
+    const currentProduct = updatedProducts.find(item => item.id === productId)
+    const currentItem = currentProduct.subProducts.find(item => item.id === subProductId)
+    if (!productItemLoading && currentItem.productItems.length < 1) {
+      setProductItemLoading(true)
+      API.post('tokuchu/list_view/sub_products_item/', {
+        sub_product_id: subProductId,
+        is_archived: isArchieved,
+      })
+        .then(data => {
+          assignProductItems(data.data, productId, subProductId)
+          setProductItemLoading(false)
+        })
+        .catch(err => {
+          setProductItemLoading(false)
+        })
+    }
+  }
+
+  const _getDetails = (productItemId = 5) => {
+    API.post('tokuchu/details/', {
+      page_id: productItemId,
     })
       .then(data => {
-        setProductItems(data.data)
+        setPageDetails(data.data)
+        setTableDetails(data.data[0].components[0])
+        console.log(data.data[0].components[0])
       })
-      .catch(err => console.log(err))
+      .catch(err => {})
+  }
+
+  const createEmptySubProducts = (p = []) => {
+    const temp = p
+    temp.forEach((item, index) => {
+      item.subProducts = []
+    })
+    return temp
+  }
+
+  const assignSubProducts = (data, productId) => {
+    const updatedProducts = products
+    updatedProducts.forEach(item => {
+      if (item.id == productId) {
+        item.subProducts = createEmptyProductItems(data)
+      }
+    })
+    setProducts([...updatedProducts])
+  }
+
+  const createEmptyProductItems = (p = []) => {
+    const temp = p
+    temp.forEach((item, index) => {
+      item.productItems = []
+    })
+    return temp
+  }
+
+  const assignProductItems = (data, productId, subProductId) => {
+    const updatedProducts = products
+    const currentProduct = products.find(item => item.id == productId)
+
+    currentProduct.subProducts.forEach(item => {
+      if (item.id === subProductId) {
+        item.productItems = data
+      }
+    })
+    updatedProducts[updatedProducts.findIndex(i => i.id === productId)] = currentProduct
+
+    setProducts([...updatedProducts])
   }
 
   useEffect(() => {
     _getProducts()
   }, [])
 
-  // return (
-  //   <div className="container">
-  //     <div className="toku-dropdn">
-  //       <div className="row">
-  //         <div className="dropdown">
-  //           <div className="btn-group">
-  //             <button className="btn btn-secondary btn-main btn-sm" type="button" data-toggle="dropdown">
-  //               Choose your Product line
-  //             </button>
-  //             <button
-  //               type="button"
-  //               className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
-  //               data-toggle="dropdown"
-  //               aria-haspopup="true"
-  //               aria-expanded="false"
-  //             >
-  //               <span className="sr-only">Toggle Dropdown</span>
-  //             </button>
-  //             <ul className="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-  //               <li className="dropdown-submenu">
-  //                 <a className="dropdown-item" tabIndex="-1">
-  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-  //                 </a>
-  //                 <ul className="dropdown-menu">
-  //                   <li className="dropdown-item">
-  //                     <a tabIndex="-1">RAMC - all <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-  //                   </li>
-  //                   <li className="dropdown-submenu">
-  //                     <ul className="dropdown-menu">
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                       <li className="dropdown-submenu">
-  //                         <a className="dropdown-item">another level</a>
-  //                         <ul className="dropdown-menu">
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                         </ul>
-  //                       </li>
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                     </ul>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>RAMC01 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>RAMC02 <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i></a>
-  //                   </li>
-  //                 </ul>
-  //               </li>
+  return (
+    <>
+      <div className="row mx-5">
+        <div className="profile-setting-container col center py-md-3">
+          <PrimaryHeading title={'Approved Tokachu'} backgroundImage={'yk-back-image-news'} />
+          <div className="container">
+            <div className="toku-dropdn">
+              <div className="row">
+                <div className="dropdown">
+                  <div className="btn-group">
+                    <button
+                      className="btn btn-secondary btn-main btn-sm"
+                      type="button"
+                      data-toggle="dropdown"
+                    >
+                      Choose your Product line
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <span className="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul
+                      className="dropdown-menu multi-level"
+                      role="menu"
+                      aria-labelledby="dropdownMenu"
+                    >
+                      {products.map((item, index) => (
+                        <li
+                          className="dropdown-submenu"
+                          key={item.name}
+                          onMouseEnter={() => {
+                            _getSubProducts(item.id)
+                          }}
+                        >
+                          <a className="dropdown-item" tabIndex="-1">
+                            {item.name}{' '}
+                            <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                          </a>
+                          <ul className="dropdown-menu">
+                            {subProductLoading && (
+                              <li className="dropdown-submenu">
+                                <li className="dropdown-submenu">
+                                  <a className="dropdown-item">Please wait Fetching ..</a>
+                                </li>
+                              </li>
+                            )}
 
-  //               <li className="dropdown-submenu">
-  //                 <a className="dropdown-item" tabIndex="-1">
-  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-  //                 </a>
-  //                 <ul className="dropdown-menu">
-  //                   <li className="dropdown-item">
-  //                     <a tabIndex="-1">Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-submenu">
-  //                     <ul className="dropdown-menu">
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                       <li className="dropdown-submenu">
-  //                         <a className="dropdown-item">another level</a>
-  //                         <ul className="dropdown-menu">
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                         </ul>
-  //                       </li>
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                     </ul>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                 </ul>
-  //               </li>
+                            {item.subProducts.length > 0 &&
+                              item.subProducts.map((sub, i) => (
+                                <li
+                                  className="dropdown-submenu"
+                                  key={i}
+                                  onMouseEnter={() => {
+                                    _getProductItems(sub.id, item.id)
+                                  }}
+                                >
+                                  <li className="dropdown-submenu">
+                                    <a className="dropdown-item">
+                                      {sub.name}
+                                      <i
+                                        className="fa fa-chevron-right mt-1"
+                                        aria-hidden="true"
+                                      ></i>
+                                    </a>
+                                    <ul className="dropdown-menu">
+                                      {productItemLoading && (
+                                        <li className="dropdown-item" key={'Sub Fetching'}>
+                                          <a>Please wait Fetching</a>
+                                        </li>
+                                      )}
+                                      {sub.productItems.map(prod => (
+                                        <li
+                                          className="dropdown-item"
+                                          key={prod.name}
+                                          onClick={() => _getDetails()}
+                                        >
+                                          <a>{prod.name}</a>
+                                        </li>
+                                      ))}
 
-  //               <li className="dropdown-submenu">
-  //                 <a className="dropdown-item" tabIndex="-1">
-  //                   RAMC <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-  //                 </a>
-  //                 <ul className="dropdown-menu">
-  //                   <li className="dropdown-item">
-  //                     <a tabIndex="-1">Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-submenu">
-  //                     <ul className="dropdown-menu">
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                       <li className="dropdown-submenu">
-  //                         <a className="dropdown-item">another level</a>
-  //                         <ul className="dropdown-menu">
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                         </ul>
-  //                       </li>
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                     </ul>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                 </ul>
-  //               </li>
+                                      <div className="col d-flex justify-content-center">
+                                        <button
+                                          style={{ marginLeft: '2rem' }}
+                                          className="btn yg-font-size"
+                                          onClick={() => {}}
+                                        >
+                                          Add
+                                        </button>
+                                      </div>
+                                    </ul>
+                                  </li>
+                                </li>
+                              ))}
 
-  //               <li className="dropdown-submenu">
-  //                 <a className="dropdown-item" tabIndex="-1">
-  //                   RAMC<i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
-  //                 </a>
-  //                 <ul className="dropdown-menu">
-  //                   <li className="dropdown-item">
-  //                     <a tabIndex="-1">Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-submenu">
-  //                     <ul className="dropdown-menu">
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                       <li className="dropdown-submenu">
-  //                         <a className="dropdown-item">another level</a>
-  //                         <ul className="dropdown-menu">
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                           <li className="dropdown-item">
-  //                             <a>4th level</a>
-  //                           </li>
-  //                         </ul>
-  //                       </li>
-  //                       <li className="dropdown-item">
-  //                         <a>3rd level</a>
-  //                       </li>
-  //                     </ul>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                   <li className="dropdown-item">
-  //                     <a>Second level</a>
-  //                   </li>
-  //                 </ul>
-  //               </li>
-  //             </ul>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // )
-
-  return(
-    <ul id="tokachu">
-
-        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Choose your Product line <span class="float-right"><i class="fa fa-caret-down" aria-hidden="true"></i></span></a>
-            <ul class="dd shadow-sm  mb-5 bg-white rounded">
-
-                <li><a class="tokachu-dropdwn border-0" href="#" tabindex="1">Coriolis - Rotamass <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                    <ul class="sub-sm shadow-sm mb-4 bg-white rounded">
-
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-
-
-                            <ul class="sub-three shadow-sm mb-4">
-                                <li><a href="#">Menu31</a></li>
-                                <li><a href="#">Menu32</a></li>
-                                <li><a href="#">Menu33</a></li>
-                                <li><a href="#">Menu34</a></li>
-                            </ul>
-
-
+                            <div className="col d-flex justify-content-center">
+                              <button
+                                style={{ marginLeft: '2rem' }}
+                                className="btn yg-font-size"
+                                onClick={() => {}}
+                              >
+                                Add
+                              </button>
+                            </div>
+                          </ul>
                         </li>
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                      ))}
 
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-
-
-
+                      <div className="col d-flex justify-content-center">
+                        <button
+                          style={{ marginLeft: '2rem' }}
+                          className="btn yg-font-size"
+                          onClick={() => {}}
+                        >
+                          Add
+                        </button>
+                      </div>
                     </ul>
-                </li>
-
-                <li><a class="tokachu-dropdwn border-0" href="#" tabindex="1">Coriolis - Rotamass <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                    <ul class="sub-sm shadow-sm mb-4 bg-white rounded">
-
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-
-                        <li><a class="tokachu-dropdwn" href="#" tabindex="1">Menu1 <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
-
-
-
-                    </ul>
-                </li>
-
-
-            </ul>
-        </li>
-
-
-    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Table tableObject={tableDetails} />
+        </div>
+      </div>
+    </>
   )
 }
-
-
-

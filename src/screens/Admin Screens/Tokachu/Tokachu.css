@@ -1,11 +1,11 @@
-/* 
+
 .toku-dropdn button{background-color: #ffffff; color: #000000; font-size: 24px !important;}
 .toku-dropdn button:hover{background-color: #EFEFEF; color: #000000;}
 .toku-dropdn button:focus{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
 .toku-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{background-color: #EFEFEF !important; color: #000000 !important; box-shadow: none !important;}
 .toku-dropdn .dropdown-submenu>a:after{display: none !important;}
 .toku-dropdn .btn-arrow{width: 40px; background-color: #ffffff !important; border: 1px solid #000000 !important; color: #000000 !important; display: grid !important; place-items: center !important; }
-.toku-dropdn .dropdown-menu{min-width: 250px;}
+.toku-dropdn .dropdown-menu{min-width: 456px;}
 .toku-dropdn .fa-chevron-right{float: right;}
 .toku-dropdn .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle
 .toku-dropdn .dropdown-submenu {
@@ -19,7 +19,7 @@
 .toku-dropdn .dropdown-toggle-split::after, .dropup .dropdown-toggle-split::after, .dropright .dropdown-toggle-split::after{margin: 0 0 0 6px  !important;}
 .toku-dropdn .dropdown{  box-shadow: none !important;}
 .toku-dropdn .dropdown-menu{margin: 0 !important;}
-.toku-dropdn .dropdown-menu.show{left: -209px !important; top: 1px !important; }
+.toku-dropdn .dropdown-menu.show{left: -414px !important; top: 1px !important; }
 .toku-dropdn .dropdown-item a{color: #000000;}
 .toku-dropdn .dropdown-item:focus{background-color:#EFEFEF;}
 .toku-dropdn .dropdown-item a:focus{background-color:#EFEFEF;}
@@ -73,15 +73,15 @@
 
 
 
- */
 
 
 
 
 
- #tokachu,
+
+ /* #tokachu,
  #tokachu ul {
-   
+
      list-style: none;
      margin: 0;
      padding: 0;
@@ -176,21 +176,18 @@
      padding-right: 10px;
  }
 
- /*hover styles*/
  #tokachu li:hover>a {
      background-color: #ffffff;
      color: #000000;
  }
 
- /*focus styles*/
  #tokachu li a:focus {
      outline-width: 0;
  }
- 
+
 
  .sub-three{left: 251px !important; }
 
- /*popups*/
  #tokachu li a:active+ul.dd,
  #tokachu li a:focus+ul.dd,
  #tokachu li ul.dd:hover {
@@ -217,4 +214,4 @@
  #tokachu .sub-sub-sm {
      left: 251px !important;
      width: 250px !important;
- }
+ } */

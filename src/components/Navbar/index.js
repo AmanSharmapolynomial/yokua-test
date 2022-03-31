@@ -7,10 +7,16 @@ import './style.css'
 
 const Navbar = ({ isAdmin }) => {
   const [renderDropdown, setRenderDropdown] = useState(false)
+  const [isProductLineDropdown, setProductLineDropdown] = useState(false)
 
   const navDropdownAdminData = [
     { name: 'User Management', url: '/admin/user/list-view' },
     { name: 'Event Management', url: '/admin/user/list-view' },
+  ]
+
+  const productLineDropdown = [
+    { name: 'Approved Tokachu', url: '/admin/approved-tokuchus' },
+    { name: 'Product Line', url: '/admin/user/list-view' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
@@ -54,10 +60,26 @@ const Navbar = ({ isAdmin }) => {
             <Link to="/news">News</Link>
           </li>
           <li className="nav-item border-left border-right">
+            <li
+              className="nav-item border-left"
+              onClick={() => {
+                setProductLineDropdown(!isProductLineDropdown)
+              }}
+              style={{
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+            >
+              <a>Product Line</a>
+              <i className="fa-solid fa-caret-down " />
+              <NavDropdown
+                data={productLineDropdown}
+                style={{ position: 'absolute' }}
+                icon={true}
+                renderDropdown={isProductLineDropdown}
+              />
+            </li>
             {/* <Link to="/admin/products">Product Lines</Link> */}
-            <Link to="/product-lines">Product Lines</Link>
-
-            <i className="fa-solid fa-caret-down " />
           </li>
 
           <li className="nav-item border-right">
