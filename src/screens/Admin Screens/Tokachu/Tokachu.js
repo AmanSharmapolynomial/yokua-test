@@ -3,6 +3,7 @@ import API from '../../../utils/api'
 import './Tokachu.css'
 import Table from '../../../components/TableComponent/Table'
 import PrimaryHeading from '../../../components/Primary Headings'
+import { toast } from 'react-toastify'
 
 export default () => {
   const [isArchieved, setIsArchived] = useState(false)
@@ -71,6 +72,96 @@ export default () => {
         setPageDetails(data.data)
         setTableDetails(data.data[0].components[0])
         console.log(data.data[0].components[0])
+      })
+      .catch(err => {})
+  }
+
+  const _deleteComponent = (sectionId, componentId) => {
+    API.post('tokuchu/page/delete_component', {
+      section_id: sectionId,
+      component_id: componentId,
+    })
+      .then(data => {
+        toast.success('Component Deleted Successfully')
+      })
+      .catch(err => {})
+  }
+
+  const _createSection = (pageId, sectionName, orderIndex = 1) => {
+    API.post('tokuchu/create_section', {
+      page_id: pageId,
+      section_name: sectionName,
+      order_index: orderIndex,
+    })
+      .then(data => {
+        toast.success('Section created Successfully')
+      })
+      .catch(err => {})
+  }
+
+  /**
+   *
+   * @param archieveType : ['sub product', 'product', 'sub product item', 'page', 'section', 'component']
+   * @param id
+   * @private
+   */
+  const _setArchive = (archieveType, id) => {
+    API.post('tokuchu/set_archive', {
+      archive_type: archieveType,
+      id: id,
+    })
+      .then(data => {
+        toast.success('Archieved Successfully')
+      })
+      .catch(err => {})
+  }
+
+  const _addProduct = name => {
+    API.post('tokuchu/add_product', {
+      product_name: [name],
+    })
+      .then(data => {
+        toast.success('Product added Successfully')
+      })
+      .catch(err => {})
+  }
+
+  const _addSubProduct = (name, productId) => {
+    API.post('tokuchu/add_sub_product', {
+      sub_product_name: name,
+      product_id: productId,
+    })
+      .then(data => {
+        toast.success('Sub Product added Successfully')
+      })
+      .catch(err => {})
+  }
+
+  const _addSubProductItem = (name, subProductId) => {
+    API.post('tokuchu/add_sub_product_item', {
+      sub_product_item_name: name,
+      sub_product_id: subProductId,
+    })
+      .then(data => {
+        toast.success('Sub Product Item added Successfully')
+      })
+      .catch(err => {})
+  }
+
+  const _updateTableData = (image, data = {}, columnName = [], tableId, actionType = 'add_row') => {
+    const formData = new FormData()
+    if (image) {
+      formData.append('file', image)
+    }
+    const payload = {
+      table_id: tableId,
+      action_type: actionType,
+    }
+
+    formData.append('data', payload)
+    API.post('tokuchu/page/update_table_data', formData)
+      .then(data => {
+        toast.success('New row added Successfully')
       })
       .catch(err => {})
   }
