@@ -638,107 +638,103 @@ const NewsItem = ({
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
                   </span>
                   {editView ? (
-                    <>
-                      <Dropdown
-                        ref={topicRef}
-                        // show={toggleDropDown == 1}
-                        onClick={() => {
-                          toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
-                        }}
-                        size="sm"
-                        autoClose={'outside'}
-                        className="yk-dropdown-holder"
+                    <Dropdown
+                      ref={topicRef}
+                      onClick={() => {
+                        toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+                      }}
+                      size="sm"
+                      autoClose={'outside'}
+                      className="yk-dropdown-holder"
+                      style={{
+                        width: '12rem',
+                      }}
+                    >
+                      <Dropdown.Toggle
+                        size={'sm'}
+                        className="yg-custom-dropdown"
+                        color="red"
+                        id="dropdown-basic"
                         style={{
-                          width: '12rem',
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
                         }}
                       >
-                        <Dropdown.Toggle
-                          size={'sm'}
-                          className="yg-custom-dropdown"
-                          color="red"
-                          id="dropdown-basic"
-                          style={{
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {selectedTopic}
-                        </Dropdown.Toggle>
+                        {selectedTopic}
+                      </Dropdown.Toggle>
 
-                        <Dropdown.Menu
-                          style={{
-                            maxHeight: '14rem',
-                            overflowY: 'scroll',
-                          }}
-                        >
-                          {category.map((cat, index) => (
-                            <Dropdown.Item key={index} className="yg-font-size">
-                              <div className="d-flex justify-content-between p-1">
-                                <span onClick={() => handleSelectTopic(cat)}>
-                                  {cat.category_name}
-                                </span>
-                                <i
-                                  className="fa-solid fa-pen-to-square"
-                                  style={{
-                                    alignSelf: 'flex-end',
-                                    color: 'var(--bgColor2)',
-                                    fontSize: '20px',
-                                    cursor: 'pointer',
-                                  }}
-                                  onClick={() => {
-                                    setPreloadedCategoryData(p => cat)
-                                    setToggleDropDown(1)
-                                    setShowCategoryModal(true)
-                                    // change box to edit version
-                                  }}
-                                />
-                              </div>
-                            </Dropdown.Item>
-                          ))}
-                          <Dropdown.Divider />
-                          {!isTopicAdd && (
-                            <div className="col d-flex justify-content-center">
-                              <button
-                                style={{ marginLeft: '2rem' }}
-                                className="btn yg-font-size"
+                      <Dropdown.Menu
+                        style={{
+                          maxHeight: '14rem',
+                          overflowY: 'scroll',
+                        }}
+                      >
+                        {category.map((cat, index) => (
+                          <Dropdown.Item key={index} className="yg-font-size">
+                            <div className="d-flex justify-content-between p-1">
+                              <span onClick={() => handleSelectTopic(cat)}>
+                                {cat.category_name}
+                              </span>
+                              <i
+                                className="fa-solid fa-pen-to-square"
+                                style={{
+                                  alignSelf: 'flex-end',
+                                  color: 'var(--bgColor2)',
+                                  fontSize: '20px',
+                                  cursor: 'pointer',
+                                }}
                                 onClick={() => {
+                                  setPreloadedCategoryData(p => cat)
                                   setToggleDropDown(1)
                                   setShowCategoryModal(true)
-                                  setPreloadedCategoryData(null)
+                                  // change box to edit version
                                 }}
-                              >
-                                Add Topic
-                              </button>
-                            </div>
-                          )}
-                          {isTopicAdd && (
-                            <InputGroup className="mb-3 yg-font-size p-1 ">
-                              <FormControl
-                                className="yg-font-size"
-                                placeholder="Category"
-                                aria-label="Recipient's username"
-                                aria-describedby="basic-addon2"
-                                value={newTopicName}
-                                onChange={e => SetNewTopicName(e.target.value)}
                               />
-                              <Button
-                                onClick={() => {
-                                  setIsTopicAdd(false)
-                                  AddNewCategoryCall(null, newTopicName)
-                                  setToggleDropDown(0)
-                                }}
-                                variant="outline-secondary"
-                                className="yg-font-size"
-                                id="button-addon2"
-                              >
-                                Save
-                              </Button>
-                            </InputGroup>
-                          )}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </>
+                            </div>
+                          </Dropdown.Item>
+                        ))}
+                        <Dropdown.Divider />
+                        {!isTopicAdd && (
+                          <div className="col d-flex justify-content-center">
+                            <button
+                              className="btn yg-font-size"
+                              onClick={() => {
+                                setToggleDropDown(1)
+                                setShowCategoryModal(true)
+                                setPreloadedCategoryData(null)
+                              }}
+                            >
+                              Add Topic
+                            </button>
+                          </div>
+                        )}
+                        {isTopicAdd && (
+                          <InputGroup className="mb-3 yg-font-size p-1 ">
+                            <FormControl
+                              className="yg-font-size"
+                              placeholder="Category"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={newTopicName}
+                              onChange={e => SetNewTopicName(e.target.value)}
+                            />
+                            <Button
+                              onClick={() => {
+                                setIsTopicAdd(false)
+                                AddNewCategoryCall(null, newTopicName)
+                                setToggleDropDown(0)
+                              }}
+                              variant="outline-secondary"
+                              className="yg-font-size"
+                              id="button-addon2"
+                            >
+                              Save
+                            </Button>
+                          </InputGroup>
+                        )}
+                      </Dropdown.Menu>
+                    </Dropdown>
                   ) : (
                     <span onClick={setCategoryFilter} className="news-category">
                       {data ? data.category_name : ''}

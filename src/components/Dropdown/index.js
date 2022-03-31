@@ -13,7 +13,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   return (
     <div className="role-dropdown" ref={ref}>
       <div className="has-dropdown" onClick={() => setShowRoleDropdown(!showRoleDropdown)}>
-        {value} <i className="fa-solid fa-sort-down " />
+        {value} <i className="fa-solid fa-sort-down" />
       </div>
 
       <div

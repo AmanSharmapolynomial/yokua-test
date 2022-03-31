@@ -88,16 +88,17 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                       {item.company_name}
                       <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
                     </a>
-                    <ul className="dropdown-menu">
-                      {item.company_divisions.map((subc, index) => (
-                        <li
-                          className="dropdown-item"
-                          onClick={() => setSelectedCompany(subc.sub_div_name)}
-                        >
-                          <a tabIndex="-1">{subc.sub_div_name}</a>
-                        </li>
-                      ))}
-                      <li className="dropdown-item">
+                    {item.company_divisions.length > 0 && (
+                      <ul className="dropdown-menu">
+                        {item.company_divisions.map((subc, index) => (
+                          <li
+                            className="dropdown-item"
+                            onClick={() => setSelectedCompany(subc.sub_div_name)}
+                          >
+                            <a tabIndex="-1">{subc.sub_div_name}</a>
+                          </li>
+                        ))}
+                        {/* <li className="dropdown-item">
                         {!isSubTopicAdd && (
                           <Dropdown.Item
                             className="yg-font-size-r"
@@ -134,8 +135,9 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                             </Button>
                           </InputGroup>
                         )}
-                      </li>
-                    </ul>
+                      </li> */}
+                      </ul>
+                    )}
                   </li>
                 ))}
 

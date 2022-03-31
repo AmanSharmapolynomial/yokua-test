@@ -251,8 +251,8 @@ form input {
 .yk-dropdown-holder {
   padding: 0rem 1rem !important;
   /* width: 100%; */
-  position: relative !important;
-  z-index: 100;
+  /* position: relative !important; */
+  /* z-index: 100; */
   flex: 0 !important;
 }
 

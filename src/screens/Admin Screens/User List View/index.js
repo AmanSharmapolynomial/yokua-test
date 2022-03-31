@@ -203,10 +203,9 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
-      page_index: 1,
+      page_index: pageNoCall,
       sort_by: sortMethod.key,
     }
-    setPageNoCall(1)
     _getUserList(payload)
   }, [reloadTable, filterActive, pageNoCall, sortMethod])
 

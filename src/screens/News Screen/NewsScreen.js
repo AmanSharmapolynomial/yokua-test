@@ -92,7 +92,7 @@ const NewsScreen = () => {
       setTotalPages(data.data.total_pages)
     })
   }
-
+  console.log(totalPages)
   const markAsReadAction = array => {
     const markAsPayload = {
       news_id: array,
@@ -364,7 +364,7 @@ const NewsScreen = () => {
           {newsData.length > 0 && (
             <div className="pagination">
               <Pagination
-                total={totalPages}
+                total={totalPages * 10}
                 showQuickJumper
                 showSizeChanger={false}
                 onChange={onChange}
