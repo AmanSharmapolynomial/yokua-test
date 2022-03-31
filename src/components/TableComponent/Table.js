@@ -110,15 +110,23 @@ export default ({ tableObject }) => {
   }, [tableObject])
 
   return (
-    <DataTable
-      pagination
-      fixedHeader
-      columns={tableHeader}
-      data={tableRows}
-      customStyles={customStyles}
+
+    <>
+      <div className='float-right text-primary mt-5'>
+        <i className="fa-solid fa-pen-to-square" ></i>
+        <i className="fa-solid fa-trash"></i>
+      </div>
+
+      <DataTable
+        pagination
+        fixedHeader
+        columns={tableHeader}
+        data={tableRows}
+        customStyles={customStyles}
       // conditionalRowStyles={conditionalRowStyles}
       // selectableRows
       // onSelectedRowsChange={selectedRowsActionUA}
-    />
+      />
+    </>
   )
 }
