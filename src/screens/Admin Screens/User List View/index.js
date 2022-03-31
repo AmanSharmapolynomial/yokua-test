@@ -557,7 +557,6 @@ const UserListView = () => {
         </div>
         <div className="user-list-view-table">
           <DataTable
-            onSort={_handleSort}
             columns={columns}
             data={contentRow}
             selectableRows
