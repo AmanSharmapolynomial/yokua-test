@@ -941,14 +941,6 @@ const NewsItem = ({
                 {editView ? (
                   <textarea
                     ref={newsDescRef}
-                    style={{
-                      flex: 1,
-                      // minWidth: '100%',
-                      // minHeight: '24  vh',
-                      // marginTop: '1rem',
-                      // height: '188px',
-                      // resize: 'none',
-                    }}
                     placeholder="Enter description"
                     onChange={e => {
                       setNewsDesc(e.target.value)
