@@ -30,8 +30,8 @@ const Header = ({ isLogedIn, isAdmin }) => {
             </div>
           </div>
           {isLogedIn && (
-            <div className="row justify-content-center">
-              <div className="col-auto">
+            <div className="row">
+              <div className="col">
                 <Navbar isAdmin={isAdmin} isLogedIn={isLogedIn} />
               </div>
             </div>

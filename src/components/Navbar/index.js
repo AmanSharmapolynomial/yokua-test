@@ -39,7 +39,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   }
 
   return (
-    <div className="row">
+    <div className="row d-flex justify-content-center">
       <nav className="navbar navbar-expand-md">
         <button
           className="navbar-toggler"
@@ -56,15 +56,15 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         </button>
         <div className="collapse navbar-collapse" id="navbar">
           <ul className="navbar-nav">
-            <li className="nav-item">
+            <li className="nav-item px-md-3">
               <a className="nav-link">Home</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-md-3">
               <Link className="nav-link" to="/news">
                 News
               </Link>
             </li>
-            <li className="nav-item dropdown">
+            <li className="nav-item dropdown px-md-3">
               <Link
                 to="/product-lines"
                 className="nav-link dropdown-toggle"
@@ -79,7 +79,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               </Link>
             </li>
 
-            <li className="nav-item dropdown">
+            <li className="nav-item dropdown px-md-3">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"
@@ -93,20 +93,20 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               </a>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item px-md-3">
               <a className="nav-link">Training</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-md-3">
               <a className="nav-link">Data History</a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item px-md-3">
               <Link className="nav-link" to="/profile">
                 Profile Setting
               </Link>
             </li>
             {getUserRoles() == 'Technical Administrator' ||
             getUserRoles() == 'PMK Administrator' ? (
-              <li className="nav-item dropdown">
+              <li className="nav-item dropdown px-md-3">
                 <a
                   className="nav-link dropdown-toggle"
                   href="#"
@@ -145,7 +145,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         </div>
       </div> */}
       </nav>
-      {isLogedIn && (
+      {/* {isLogedIn && (
         <div className="col-auto">
           <button
             className="logout-btn"
@@ -159,7 +159,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             Log out
           </button>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

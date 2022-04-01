@@ -414,7 +414,7 @@ const ProfileSettingScreen = () => {
                       tempNLArray.push(obj)
                     }
                   })
-                  const payload = {
+                  let payload = {
                     news_letter: tempNLArray,
                   }
                   if (
