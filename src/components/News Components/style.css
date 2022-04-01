@@ -47,6 +47,7 @@
   /* max-width: 15rem; */
   /* min-width: 200px; */
   overflow: hidden;
+  height: 12rem !important;
   /* height: 200px; */
   /* max-height: 130px; */
 }
@@ -109,13 +110,13 @@
   border: none;
 }
 .news-desc {
-  margin: 0 1rem;
+  /* margin: 0 1rem;
   min-width: 20vw;
-  width: 30vw;
-  flex: 1;
+  width: 30vw; */
+  /* flex: 1;
   height: 212px;
   overflow-y: auto;
-  max-width: 60vw;
+  max-width: 60vw; */
 }
 
 /* width */
@@ -250,8 +251,8 @@ form input {
 .yk-dropdown-holder {
   padding: 0rem 1rem !important;
   /* width: 100%; */
-  position: relative !important;
-  z-index: 100;
+  /* position: relative !important; */
+  /* z-index: 100; */
   flex: 0 !important;
 }
 
@@ -304,4 +305,8 @@ form input {
 .news-sub-category {
   font-weight: 500;
   font-size: 0.8rem;
+}
+.news-desc > textarea {
+  width: 100%;
+  height: 100%;
 }

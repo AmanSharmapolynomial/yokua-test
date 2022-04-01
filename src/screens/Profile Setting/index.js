@@ -139,6 +139,7 @@ const ProfileSettingScreen = () => {
             <div className="profile-setting__info">
               <div>
                 <input
+                  accept="image/*"
                   type="file"
                   id="avatar"
                   ref={imageFileInputRef}
@@ -391,71 +392,6 @@ const ProfileSettingScreen = () => {
                 className="btn"
                 style={{ color: 'white' }}
                 onClick={async () => {
-                  if (
-                    name &&
-                    validator.isAlpha(name.split(' ')[0]) &&
-                    validator.isAlpha(name.split(' ')[1]) &&
-                    name.length >= 5
-                  ) {
-                    if (name && name != '') {
-                      const payloadName = {
-                        full_name: name,
-                      }
-
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
-                      toast.success(afterUpdateMsg.data.message)
-                    }
-                  } else {
-                    if (editMode1) {
-                      toast.error(
-                        'Name should be atleast 5 letters and must contain only letters A-Z or a-z'
-                      )
-                    }
-                  }
-                  if (email && validator.isEmail(email)) {
-                    if (email && email != '') {
-                      const payloadEmail = {
-                        email,
-                      }
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
-                      console.log(afterUpdateMsg.data.message)
-                      toast.success(afterUpdateMsg.data.message)
-                    }
-                  } else {
-                    if (editMode2) {
-                      toast.error('Please enter email in proper format - abc@xyz.com')
-                    }
-                  }
-                  if (address && address != '') {
-                    const payloadAddress = {
-                      company: address,
-                    }
-                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
-                    toast.success(afterUpdateMsg.data.message)
-                  }
-
-                  if (password && passwordRetype) {
-                    if (password == passwordRetype) {
-                      const payloadPassword = {
-                        new_password1: password,
-                        new_password2: passwordRetype,
-                      }
-                      console.log(payloadPassword)
-                      const afterPassChangeMsg = await API.post(
-                        '/auth/password-change/',
-                        payloadPassword
-                      )
-                      toast.success(afterPassChangeMsg.data.message)
-
-                      // toast.success(afterPassChangeMsg.data.detail)
-                    } else {
-                      toast.error('Password and retype password does not match')
-                    }
-                  }
-
-                  // call for news letter changes
-
-                  // /auth/profile_settings/
                   const tempNLArray = []
                   profileData.news_letter.map((nl, index) => {
                     let diff = true
@@ -478,11 +414,73 @@ const ProfileSettingScreen = () => {
                       tempNLArray.push(obj)
                     }
                   })
-                  const payloadNews = {
-                    news_letter: tempNLArray,
+                  if (
+                    name &&
+                    validator.isAlpha(name.split(' ')[0]) &&
+                    validator.isAlpha(name.split(' ')[1]) &&
+                    name.length >= 5
+                  ) {
+                    if (name && name != '') {
+                      const payloadName = {
+                        full_name: name,
+                        news_letter: tempNLArray,
+                      }
+
+                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
+                      setName(undefined)
+                      toast.success(afterUpdateMsg.data.message)
+                    }
+                  } else {
+                    if (editMode1) {
+                      toast.error(
+                        'Name should be atleast 5 letters and must contain only letters A-Z or a-z'
+                      )
+                    }
                   }
-                  const afterUpdateNewsMsg = await API.post('auth/profile_settings/', payloadNews)
-                  toast.success(afterUpdateNewsMsg.data.message)
+                  if (email && validator.isEmail(email)) {
+                    if (email && email != '') {
+                      const payloadEmail = {
+                        email,
+                        news_letter: tempNLArray,
+                      }
+                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
+                      setEmail(undefined)
+                      toast.success(afterUpdateMsg.data.message)
+                    }
+                  } else {
+                    if (editMode2) {
+                      toast.error('Please enter email in proper format - abc@xyz.com')
+                    }
+                  }
+                  if (address && address != '') {
+                    const payloadAddress = {
+                      company: address,
+                      news_letter: tempNLArray,
+                    }
+                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
+                    setAddress(undefined)
+                    toast.success(afterUpdateMsg.data.message)
+                  }
+
+                  if (password && passwordRetype) {
+                    if (password == passwordRetype) {
+                      const payloadPassword = {
+                        new_password1: password,
+                        new_password2: passwordRetype,
+                      }
+                      console.log(payloadPassword)
+                      const afterPassChangeMsg = await API.post(
+                        '/auth/password-change/',
+                        payloadPassword
+                      )
+                      setPassword(undefined)
+                      toast.success(afterPassChangeMsg.data.message)
+
+                      // toast.success(afterPassChangeMsg.data.detail)
+                    } else {
+                      toast.error('Password and retype password does not match')
+                    }
+                  }
                   setReloadData(!reloadData)
                 }}
               >

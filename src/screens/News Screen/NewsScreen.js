@@ -92,7 +92,7 @@ const NewsScreen = () => {
       setTotalPages(data.data.total_pages)
     })
   }
-
+  console.log(totalPages)
   const markAsReadAction = array => {
     const markAsPayload = {
       news_id: array,
@@ -230,10 +230,10 @@ const NewsScreen = () => {
                             }}
                             onClick={() => {
                               if (subCategoryFilter == category.id) {
-                                toast.success('Sub Category Field Removed.')
+                                toast.success('Sub Category filter removed')
                                 setSubCategoryFilter(null)
                               } else {
-                                toast.success('Sub Category Field Applied.')
+                                toast.success('Sub Category filter applied')
                                 setSubCategoryFilter(category.id)
                               }
                             }}
@@ -338,7 +338,7 @@ const NewsScreen = () => {
                   getUserRoles() == 'Technical Administrator') &&
                   !archivedFilter && (
                     <div
-                      className="add_row mt-3"
+                      className="add_row"
                       onClick={() => {
                         if (!isAnyNewsUnderEdit) {
                           setNewsUnderEdit(true)
@@ -375,7 +375,7 @@ const NewsScreen = () => {
           <div className="archived-filter">
             {archivedFilter ? (
               <button
-                className="btn ml-3"
+                className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
                   setArchivedFilter(false)
@@ -385,7 +385,7 @@ const NewsScreen = () => {
               </button>
             ) : (
               <button
-                className="btn ml-3"
+                className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
                   setArchivedFilter(true)
