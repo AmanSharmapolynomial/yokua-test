@@ -71,8 +71,11 @@ a {
   padding-left: 0.8rem;
 }
 
-.nav-link {
+.nav-link,
+.logout-btn {
   color: white !important;
+  font-size: 0.8rem;
+  font-weight: normal !important;
 }
 
 @media (min-width: 768px) {
