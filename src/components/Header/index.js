@@ -17,44 +17,30 @@ const Header = ({ isLogedIn, isAdmin }) => {
   const [renderPhoneNav, setrenderPhoneNav] = useState(false)
 
   return (
-    <header
-      className="header sticky-top mb-auto"
-      style={
-        {
-          // height: isLogedIn ? (width < 820 ? '10vh' : '16vh') : '6vh',
-          // maxHeight: '10rem',
-          // minHeight: isLogedIn ? (width > 820 ? '9rem' : '5rem') : '5rem',
-        }
-      }
-    >
+    <header className="header sticky-top mb-auto">
       <div className="row mx-5">
         <div className="col">
           <div className="row header-container py-2">
-            <div className="header__logo col-12 col-md-2">
-              {/* Logo */}
+            <div className="header__logo col-12 col-md-4">
               <img src={Yokogawa} alt="logo" />
-              {/* <span className="logo__name">YOKOGAWA</span>
-            <span className="logo__tagline">Co-innovating tommorow</span> */}
             </div>
-            <div className="header__title col-12 col-md-8 mr-md-auto text-center my-2 my-md-0">
+            <div className="header__title col-12 col-md-4 mr-md-auto text-center my-2 my-md-0">
               FLOW CENTER PAGES
             </div>
+            <div className="col-4">
+              <div className="input-group search float-right">
+                <span className="input-group-addon">
+                  <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="What are you looking for?"
+                  className="search_input"
+                  autoComplete={false}
+                ></input>
+              </div>
+            </div>
             {/* {isLogedIn && (
-            <i
-              className="fa-solid fa-bars"
-              style={{
-                color: 'white',
-                zIndex: '100000',
-                cursor: 'pointer',
-                position: 'relative',
-              }}
-              onClick={() => {
-                setrenderPhoneNav(!renderPhoneNav)
-              }}
-            />
-          )}
-          {isLogedIn && renderPhoneNav && <PhoneNav />} */}
-            {isLogedIn && (
               <div className="col-auto">
                 <button
                   className="logout-btn"
@@ -68,11 +54,11 @@ const Header = ({ isLogedIn, isAdmin }) => {
                   Log out
                 </button>
               </div>
-            )}
+            )} */}
           </div>
           {isLogedIn && (
-            <div className="row">
-              <div className="col p-0">
+            <div className="row justify-content-center">
+              <div className="col-auto">
                 <Navbar isAdmin={isAdmin} />
               </div>
             </div>

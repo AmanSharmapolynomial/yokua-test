@@ -103,20 +103,18 @@ const UserListView = () => {
     },
     {
       name: (
-        <div className="role-dropdown" style={{ zIndex: 100 }}>
-          <div className="has-dropdown" onClick={() => setShowDropDown(!showSortDropDown)}>
-            <img
-              style={{ width: '14px', height: '14px' }}
-              src={require('../../../assets/Rearrange order.png')}
-            />
-          </div>
+        <div className="dropdown">
+          <img
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style={{ width: '14px', height: '14px' }}
+            className="dropdown-toggle"
+            src={require('../../../assets/Rearrange order.png')}
+          />
 
-          <div
-            className="role-dropdown-sort dropdown mt-2"
-            style={{
-              display: showSortDropDown ? 'flex' : 'none',
-            }}
-          >
+          <div className="dropdown-menu">
             {customeSortDown.map((element, index) => (
               <span
                 style={{
@@ -124,7 +122,7 @@ const UserListView = () => {
                   fontWeight: element.key == sortMethod.key ? '600' : '400',
                 }}
                 key={index}
-                className="dropdown-element "
+                className="dropdown-item filter-item"
                 onClick={() => {
                   setSortMethod(element)
                   setShowDropDown(false)

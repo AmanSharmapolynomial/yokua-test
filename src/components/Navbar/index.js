@@ -34,9 +34,8 @@ const Navbar = ({ isAdmin }) => {
     })
   }
 
-  const searchNavRef = useRef()
   return (
-    <nav className="navbar navbar-expand-md p-0">
+    <nav className="navbar navbar-expand-md">
       <button
         className="navbar-toggler"
         type="button"
@@ -53,67 +52,64 @@ const Navbar = ({ isAdmin }) => {
       <div className="collapse navbar-collapse" id="navbar">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <a>Home</a>
+            <a className="nav-link">Home</a>
           </li>
           <li className="nav-item">
-            <Link to="/news">News</Link>
+            <Link className="nav-link" to="/news">
+              News
+            </Link>
           </li>
-          <li className="nav-item border-left border-right">
-            <li
-              className="nav-item border-left dropdown"
-              onClick={() => {
-                setProductLineDropdown(!isProductLineDropdown)
-              }}
-              style={{
-                position: 'relative',
-                cursor: 'pointer',
-              }}
+          <li className="nav-item dropdown">
+            <Link
+              to="/product-lines"
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
             >
-              <a>Product Line</a>
-              <i className="fa-solid fa-caret-down " />
-              <NavDropdown
-                data={productLineDropdown}
-                style={{ position: 'absolute' }}
-                icon={true}
-                renderDropdown={isProductLineDropdown}
-              />
-            </li>
-            {/* <Link to="/admin/products">Product Lines</Link> */}
+              Product Lines
+            </Link>
           </li>
 
-          <li className="nav-item border-right">
-            <a>RYG Information</a>
-            <i className="fa-solid fa-caret-down " />
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              RYG Information
+            </a>
           </li>
 
           <li className="nav-item">
-            <a>Training</a>
+            <a className="nav-link">Training</a>
           </li>
           <li className="nav-item">
-            <a>Data History</a>
+            <a className="nav-link">Data History</a>
           </li>
           <li className="nav-item">
-            <Link to="/profile">Profile Setting</Link>
+            <Link className="nav-link" to="/profile">
+              Profile Setting
+            </Link>
           </li>
           {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
-            <li
-              className="nav-item border-left border-right dropdown"
-              onClick={() => {
-                setRenderDropdown(!renderDropdown)
-              }}
-              style={{
-                position: 'relative',
-                cursor: 'pointer',
-              }}
-            >
+            <li className="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
                 role="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                data-display="static"
               >
                 Admin Management
               </a>
@@ -121,7 +117,6 @@ const Navbar = ({ isAdmin }) => {
                 data={navDropdownAdminData}
                 // style={{ position: 'absolute' }}
                 icon={true}
-                renderDropdown={renderDropdown}
               />
             </li>
           ) : (
@@ -129,7 +124,7 @@ const Navbar = ({ isAdmin }) => {
           )}
         </ul>
       </div>
-      <div className="col-auto">
+      {/* <div className="col-auto">
         <div className="input-group search">
           <span className="input-group-addon">
             <i className="fa-solid fa-magnifying-glass" />
@@ -142,7 +137,7 @@ const Navbar = ({ isAdmin }) => {
             autoComplete={false}
           ></input>
         </div>
-      </div>
+      </div> */}
     </nav>
   )
 }
