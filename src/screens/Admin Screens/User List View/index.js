@@ -203,10 +203,9 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
-      page_index: 1,
+      page_index: pageNoCall,
       sort_by: sortMethod.key,
     }
-    setPageNoCall(1)
     _getUserList(payload)
   }, [reloadTable, filterActive, pageNoCall, sortMethod])
 
@@ -416,7 +415,171 @@ const UserListView = () => {
   const ref = useDetectClickOutside({ onTriggered: closeDropdown })
 
   return (
-    <div className="user-list-view">
+    <div className="row mx-5">
+      <div className="col user-list-view">
+        <SecondaryHeading title={'Users list view'} />
+
+        <div className="filter-actions">
+          <div className="filter-icons" ref={ref}>
+            <img
+              src={Filtermg}
+              onClick={() => {
+                setShowFilterDropdown(!showFilterDropdown)
+              }}
+            />
+
+            <div
+              className="filter-dropdown dropdown"
+              style={{
+                display: showFilterDropdown ? 'flex' : 'none',
+              }}
+            >
+              <span
+                className="dropdown-element"
+                ref={filter1Ref}
+                onClick={() => {
+                  if (filterActive == 'active') {
+                    filterTable('')
+                    filter1Ref.current.style.fontWeight = '300'
+                  } else {
+                    filterTable('active')
+                    filter1Ref.current.style.fontWeight = 'bold'
+                    filter2Ref.current.style.fontWeight = '300'
+                  }
+                }}
+              >
+                Active
+              </span>
+              <span
+                className="dropdown-element"
+                ref={filter2Ref}
+                onClick={() => {
+                  if (filterActive == 'inactive') {
+                    filterTable('')
+                    filter2Ref.current.style.fontWeight = '300'
+                  } else {
+                    filterTable('inactive')
+                    filter2Ref.current.style.fontWeight = 'bold'
+                    filter1Ref.current.style.fontWeight = '300'
+                  }
+                }}
+              >
+                Inactive
+              </span>
+            </div>
+            {getUserRoles() == 'PMK Administrator' && (
+              <i
+                className="fa-solid fa-trash"
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  deleteUser()
+                  setReloadTable(!reloadTable)
+                }}
+              />
+            )}
+          </div>
+          <div className="filter-actions mgt">
+            <div className="filter-checkbox d-flex align-items-center">
+              <input
+                type="checkbox"
+                ref={filterFromCheckbox1Ref}
+                value="PMK Administrator"
+                onChange={e => {
+                  if (e.target.checked) {
+                    setFilterCheckboxPMK(true)
+                    setReloadTable(!reloadTable)
+                  } else {
+                    setFilterCheckboxPMK(false)
+                    setReloadTable(!reloadTable)
+                  }
+                }}
+              />
+              &nbsp; PMK Administrator
+            </div>
+            <div className="filter-checkbox d-flex align-items-center">
+              <input
+                type="checkbox"
+                ref={filterFromCheckbox2Ref}
+                value="Content Manager"
+                onChange={e => {
+                  if (e.target.checked) {
+                    setFilterCheckboxCM(true)
+                    setReloadTable(!reloadTable)
+                  } else {
+                    setFilterCheckboxCM(false)
+                    setReloadTable(!reloadTable)
+                  }
+                }}
+              />
+              &nbsp; Content Manager
+            </div>
+            <div className="filter-checkbox d-flex align-items-center">
+              <input
+                type="checkbox"
+                ref={filterFromCheckbox3Ref}
+                value="User"
+                onChange={e => {
+                  if (e.target.checked) {
+                    setFilterCheckboxUser(true)
+                    setReloadTable(!reloadTable)
+                  } else {
+                    setFilterCheckboxUser(false)
+                    setReloadTable(!reloadTable)
+                  }
+                }}
+              />
+              &nbsp; User
+            </div>
+          </div>
+        </div>
+        <div className="user-list-view-table">
+          <DataTable
+            columns={columns}
+            data={contentRow}
+            selectableRows
+            customStyles={customStyles}
+            conditionalRowStyles={conditionalRowStyles}
+            onSelectedRowsChange={selectedRowsAction}
+          />
+
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div
+              className="add_row"
+              style={{ fontSize: '1rem', background: 'none' }}
+              onClick={() => {
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+                document.body.style.overflow = 'hidden'
+                setChangeModal('Add')
+                setOpenModal(true)
+                setModalTitle('Add/Update user dialog')
+              }}
+            >
+              <img
+                src={Plusicon}
+                style={{
+                  width: '1rem',
+                  marginRight: '0.2rem',
+                }}
+                className={'mr-2'}
+              />
+              {'Add'}
+            </div>
+          )}
+        </div>
+        {/* <Pagination noOfPages={10} /> */}
+        <div className="pagination">
+          <Pagination
+            showQuickJumper
+            current={pageNoCall}
+            showSizeChanger={false}
+            total={totalPages * 10}
+            onChange={onChange}
+            style={{ border: 'none' }}
+          />
+        </div>
+      </div>
       {openBasicDeleteModal && (
         <DeleteModal
           setShow={setOpenBasicDeleteModal}
@@ -438,169 +601,6 @@ const UserListView = () => {
           saveAndExit={saveAndExitModal}
         />
       )}
-
-      <SecondaryHeading title={'Users list view'} />
-
-      <div className="filter-actions">
-        <div className="filter-icons" ref={ref}>
-          <img
-            src={Filtermg}
-            onClick={() => {
-              setShowFilterDropdown(!showFilterDropdown)
-            }}
-          />
-
-          <div
-            className="filter-dropdown dropdown"
-            style={{
-              display: showFilterDropdown ? 'flex' : 'none',
-            }}
-          >
-            <span
-              className="dropdown-element"
-              ref={filter1Ref}
-              onClick={() => {
-                if (filterActive == 'active') {
-                  filterTable('')
-                  filter1Ref.current.style.fontWeight = '300'
-                } else {
-                  filterTable('active')
-                  filter1Ref.current.style.fontWeight = 'bold'
-                  filter2Ref.current.style.fontWeight = '300'
-                }
-              }}
-            >
-              Active
-            </span>
-            <span
-              className="dropdown-element"
-              ref={filter2Ref}
-              onClick={() => {
-                if (filterActive == 'inactive') {
-                  filterTable('')
-                  filter2Ref.current.style.fontWeight = '300'
-                } else {
-                  filterTable('inactive')
-                  filter2Ref.current.style.fontWeight = 'bold'
-                  filter1Ref.current.style.fontWeight = '300'
-                }
-              }}
-            >
-              Inactive
-            </span>
-          </div>
-          {getUserRoles() == 'PMK Administrator' && (
-            <i
-              className="fa-solid fa-trash"
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                deleteUser()
-                setReloadTable(!reloadTable)
-              }}
-            />
-          )}
-        </div>
-        <div className="filter-actions mgt">
-          <div className="filter-checkbox d-flex align-items-center">
-            <input
-              type="checkbox"
-              ref={filterFromCheckbox1Ref}
-              value="PMK Administrator"
-              onChange={e => {
-                if (e.target.checked) {
-                  setFilterCheckboxPMK(true)
-                  setReloadTable(!reloadTable)
-                } else {
-                  setFilterCheckboxPMK(false)
-                  setReloadTable(!reloadTable)
-                }
-              }}
-            />
-            &nbsp; PMK Administrator
-          </div>
-          <div className="filter-checkbox d-flex align-items-center">
-            <input
-              type="checkbox"
-              ref={filterFromCheckbox2Ref}
-              value="Content Manager"
-              onChange={e => {
-                if (e.target.checked) {
-                  setFilterCheckboxCM(true)
-                  setReloadTable(!reloadTable)
-                } else {
-                  setFilterCheckboxCM(false)
-                  setReloadTable(!reloadTable)
-                }
-              }}
-            />
-            &nbsp; Content Manager
-          </div>
-          <div className="filter-checkbox d-flex align-items-center">
-            <input
-              type="checkbox"
-              ref={filterFromCheckbox3Ref}
-              value="User"
-              onChange={e => {
-                if (e.target.checked) {
-                  setFilterCheckboxUser(true)
-                  setReloadTable(!reloadTable)
-                } else {
-                  setFilterCheckboxUser(false)
-                  setReloadTable(!reloadTable)
-                }
-              }}
-            />
-            &nbsp; User
-          </div>
-        </div>
-      </div>
-      <div className="user-list-view-table">
-        <DataTable
-          onSort={_handleSort}
-          columns={columns}
-          data={contentRow}
-          selectableRows
-          customStyles={customStyles}
-          conditionalRowStyles={conditionalRowStyles}
-          onSelectedRowsChange={selectedRowsAction}
-        />
-
-        {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
-          <div
-            className="add_row"
-            style={{ fontSize: '1rem', background: 'none' }}
-            onClick={() => {
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
-              document.body.style.overflow = 'hidden'
-              setChangeModal('Add')
-              setOpenModal(true)
-              setModalTitle('Add/Update user dialog')
-            }}
-          >
-            <img
-              src={Plusicon}
-              style={{
-                width: '1rem',
-                marginRight: '0.2rem',
-              }}
-              className={'mr-2'}
-            />
-            {'Add'}
-          </div>
-        )}
-      </div>
-      {/* <Pagination noOfPages={10} /> */}
-      <div className="pagination">
-        <Pagination
-          showQuickJumper
-          current={pageNoCall}
-          showSizeChanger={false}
-          total={totalPages * 10}
-          onChange={onChange}
-          style={{ border: 'none' }}
-        />
-      </div>
     </div>
   )
 }

@@ -11,6 +11,21 @@
   /* width: 12rem; */
 }
 
+.vh2 {
+  font-size: 2vh;
+  font-weight: 500;
+  /* width: 12rem; */
+}
+
+.light-grey {
+  color: grey;
+}
+
+.text-bold {
+  font-weight: 500;
+  font-size: 4vh;
+}
+
 .thumb > img {
   object-fit: contain;
   aspect-ratio: 1;

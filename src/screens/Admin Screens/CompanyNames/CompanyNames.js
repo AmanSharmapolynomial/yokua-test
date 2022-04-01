@@ -105,7 +105,12 @@ export default () => {
                       <>
                         <a
                           className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
-                          style={{ fontSize: '1rem', padding: '1.17rem', marginLeft: '10px' }}
+                          style={{
+                            fontSize: '1rem',
+                            padding: '1.17rem',
+                            marginLeft: '10px',
+                            textDecoration: 'none',
+                          }}
                         >
                           {item.sub_div_name}
                           <i

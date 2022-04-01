@@ -36,11 +36,13 @@
 
 .role-dropdown {
   left: 22px;
+  position: absolute !important;
+  z-index: 10000000;
 }
 .dropdown {
-  position: absolute !important;
+  /* position: absolute !important; */
   flex-direction: column;
-  z-index: 10000000;
+  /* z-index: 10000000; */
   background-color: white;
   padding: 1rem;
   width: max-content;
@@ -84,4 +86,7 @@ option {
 
 .dropdown {
   display: flex;
+}
+.dropdown-menu.show {
+  background: white !important;
 }

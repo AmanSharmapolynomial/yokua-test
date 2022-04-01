@@ -4,7 +4,7 @@ import './style.css'
 const SecondaryHeading = ({ title }) => {
   return (
     <>
-      <h2 className="secondary-heading h4">{title}</h2>
+      <h2 className="secondary-heading h4 mt-4">{title}</h2>
     </>
   )
 }

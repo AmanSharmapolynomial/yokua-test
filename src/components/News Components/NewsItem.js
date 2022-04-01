@@ -582,561 +582,511 @@ const NewsItem = ({
         getCategoryAndSubCategory={getCategoryAndSubCategory}
         setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
       />
-      <div className="single-news-item" key={data ? data.id : Math.random()}>
-        <div className="flex-setup">
-          <div
-            className="dot-adjust"
-            onClick={() => {
-              // call here the mark as read api
-              // const payloadRead = {
-              //   news_id: [1],
-              // }
-              // const markRead = API.post('/news/mark_read', payloadRead)
-              // setReadState(false)
-            }}
-          >
-            {isCheckListActivated && !data?.news_read && (
-              <>
-                <input
-                  style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
-                  type="checkbox"
-                  checked={readNews.includes(data.id) ? true : false}
-                  onChange={() => updateNewsRead()}
-                />
-              </>
-            )}
-            {isCheckListActivated && data?.news_read && (
-              <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
-            )}
-
-            {!isCheckListActivated && (
+      <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
+        <div className="row">
+          <div className="col-10">
+            <div className="row">
               <div
-                className="read-dot"
-                onClick={() =>
-                  _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
-                }
-                style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
-              ></div>
-            )}
-          </div>
+                className="dot-adjust col-auto mx-1"
+                onClick={() => {
+                  // call here the mark as read api
+                  // const payloadRead = {
+                  //   news_id: [1],
+                  // }
+                  // const markRead = API.post('/news/mark_read', payloadRead)
+                  // setReadState(false)
+                }}
+              >
+                {isCheckListActivated && !data?.news_read && (
+                  <>
+                    <input
+                      style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
+                      type="checkbox"
+                      checked={readNews.includes(data.id) ? true : false}
+                      onChange={() => updateNewsRead()}
+                    />
+                  </>
+                )}
+                {isCheckListActivated && data?.news_read && (
+                  <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+                )}
 
-          <div className="news-img">
-            {editView ? (
-              <>
-                <img src={catImg} onError={_onErrorImage} />
-              </>
-            ) : (
-              <img src={catImg} onError={_onErrorImage} />
-            )}
-          </div>
-
-          <div className="news-text">
-            <div className="news-info">
-              <span className="date">
-                {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
-              </span>
-              {editView ? (
-                <>
-                  <Dropdown
-                    ref={topicRef}
-                    // show={toggleDropDown == 1}
-                    onClick={() => {
-                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
-                    }}
-                    size="sm"
-                    autoClose={'outside'}
-                    className="yk-dropdown-holder"
-                    style={{
-                      width: '12rem',
-                    }}
-                  >
-                    <Dropdown.Toggle
-                      size={'sm'}
-                      className="yg-custom-dropdown"
-                      color="red"
-                      id="dropdown-basic"
-                      style={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {selectedTopic}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu
-                      style={{
-                        maxHeight: '14rem',
-                        overflowY: 'scroll',
-                      }}
-                    >
-                      {category.map((cat, index) => (
-                        <Dropdown.Item key={index} className="yg-font-size">
-                          <div className="d-flex justify-content-between p-1">
-                            <span onClick={() => handleSelectTopic(cat)}>{cat.category_name}</span>
-                            <i
-                              className="fa-solid fa-pen-to-square"
-                              style={{
-                                alignSelf: 'flex-end',
-                                color: 'var(--bgColor2)',
-                                fontSize: '20px',
-                                cursor: 'pointer',
-                              }}
-                              onClick={() => {
-                                setPreloadedCategoryData(p => cat)
-                                setToggleDropDown(1)
-                                setShowCategoryModal(true)
-                                // change box to edit version
-                              }}
-                            />
-                          </div>
-                        </Dropdown.Item>
-                      ))}
-                      <Dropdown.Divider />
-                      {!isTopicAdd && (
-                        <button
-                          style={{ marginLeft: '2rem' }}
-                          className="btn yg-font-size"
-                          onClick={() => {
-                            setToggleDropDown(1)
-                            setShowCategoryModal(true)
-                            setPreloadedCategoryData(null)
-                          }}
-                        >
-                          Add Topic
-                        </button>
-                      )}
-                      {isTopicAdd && (
-                        <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <FormControl
-                            className="yg-font-size"
-                            placeholder="Category"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            value={newTopicName}
-                            onChange={e => SetNewTopicName(e.target.value)}
-                          />
-                          <Button
-                            onClick={() => {
-                              setIsTopicAdd(false)
-                              AddNewCategoryCall(null, newTopicName)
-                              setToggleDropDown(0)
-                            }}
-                            variant="outline-secondary"
-                            className="yg-font-size"
-                            id="button-addon2"
-                          >
-                            Save
-                          </Button>
-                        </InputGroup>
-                      )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </>
-              ) : (
-                <span onClick={setCategoryFilter} className="news-category">
-                  {data ? data.category_name : ''}
-                </span>
-              )}
-
-              {editView ? (
-                <>
-                  <Dropdown
-                    ref={subTopicRef}
+                {!isCheckListActivated && (
+                  <div
+                    className="read-dot"
                     onClick={() =>
-                      toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
+                      _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
                     }
-                    size="sm"
-                    autoClose={'outside'}
-                    className={
-                      toggleDropDown == 1
-                        ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
-                        : 'yk-dropdown-holder mt-3'
-                    }
-                    style={{
-                      width: '12rem',
-                    }}
-                  >
-                    <Dropdown.Toggle
-                      size={'sm'}
-                      className="yg-custom-dropdown"
-                      color="red"
-                      id="dropdown-basic"
+                    style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
+                  ></div>
+                )}
+              </div>
+              <div className="col-3">
+                <div className="news-img rounded mx-3">
+                  {editView ? (
+                    <>
+                      <img src={catImg} onError={_onErrorImage} />
+                    </>
+                  ) : (
+                    <img src={catImg} onError={_onErrorImage} />
+                  )}
+                </div>
+              </div>
+              <div className="news-text col-auto">
+                <div className="news-info">
+                  <span className="date">
+                    {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
+                  </span>
+                  {editView ? (
+                    <Dropdown
+                      ref={topicRef}
+                      onClick={() => {
+                        toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+                      }}
+                      size="sm"
+                      autoClose={'outside'}
+                      className="yk-dropdown-holder"
                       style={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
+                        width: '12rem',
                       }}
                     >
-                      {_getSelectedItems()}
-                    </Dropdown.Toggle>
+                      <Dropdown.Toggle
+                        size={'sm'}
+                        className="yg-custom-dropdown"
+                        color="red"
+                        id="dropdown-basic"
+                        style={{
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {selectedTopic}
+                      </Dropdown.Toggle>
 
-                    <Dropdown.Menu
-                      style={{
-                        maxHeight: '14rem',
-                        overflowY: 'scroll',
-                      }}
-                    >
-                      {subCategory
-                        .filter(item => item.category_id == categoryID)
-                        .map((cat, index) => {
-                          if (cat.isEdit) {
-                            return (
-                              <InputGroup className="mb-3 yg-font-size p-1 ">
-                                <div className="position-relative align-items-center">
-                                  <FormControl
-                                    className="yg-font-size"
-                                    placeholder="Sub-Category"
-                                    aria-label="Recipient's username"
-                                    aria-describedby="basic-addon2"
-                                    value={cat.tempSubTopicName}
-                                    onChange={e => _updateSubTopicName(e.target.value, cat.id)}
-                                  />
-                                  <i
-                                    className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
-                                    style={{
-                                      right: 5,
-                                      top: 0,
-                                      fontSize: '20px',
-                                      cursor: 'pointer',
-                                    }}
-                                    onClick={() => {
-                                      _editSubCategory()
-                                    }}
-                                  />
-                                </div>
-                                <Button
-                                  onClick={() => {
-                                    if (cat.tempSubTopicName) {
-                                      _updateSubCategoryAPI(
-                                        cat.tempSubTopicName,
-                                        cat.id,
-                                        categoryID
-                                      )
-                                      _handleChecked(false)
-                                    } else {
-                                      toast.error('Please provide Sub Category title')
-                                    }
-                                  }}
-                                  variant="outline-secondary"
-                                  className="yg-font-size"
-                                  id="button-addon2"
-                                >
-                                  Save
-                                </Button>
-                              </InputGroup>
-                            )
-                          }
-
-                          return (
-                            <div className="d-flex justify-content-between p-1 ">
-                              <label
-                                className="yg-font-size"
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyItems: 'center',
-                                }}
-                              >
-                                <input
-                                  style={{ marginRight: '8px' }}
-                                  type="checkbox"
-                                  checked={cat.isChecked}
-                                  onChange={() => _handleChecked(cat.id)}
-                                />
-                                {cat.sub_category_name}
-                              </label>
+                      <Dropdown.Menu
+                        style={{
+                          maxHeight: '14rem',
+                          overflowY: 'scroll',
+                        }}
+                      >
+                        {category.map((cat, index) => (
+                          <Dropdown.Item key={index} className="yg-font-size">
+                            <div className="d-flex justify-content-between p-1">
+                              <span onClick={() => handleSelectTopic(cat)}>
+                                {cat.category_name}
+                              </span>
                               <i
                                 className="fa-solid fa-pen-to-square"
                                 style={{
-                                  paddingTop: '2px',
+                                  alignSelf: 'flex-end',
                                   color: 'var(--bgColor2)',
                                   fontSize: '20px',
                                   cursor: 'pointer',
                                 }}
                                 onClick={() => {
-                                  _editSubCategory(cat)
+                                  setPreloadedCategoryData(p => cat)
+                                  setToggleDropDown(1)
+                                  setShowCategoryModal(true)
                                   // change box to edit version
                                 }}
                               />
                             </div>
-                          )
-                        })}
-                      <Dropdown.Divider />
-                      {!isSubTopicAdd && (
-                        <button
-                          style={{ marginLeft: '1.2rem' }}
-                          id="mybtn"
-                          className="btn yg-font-size "
-                          onClick={() => {
-                            if (_checkIsEditSubTopicOpen()) {
-                              toast.error('Please close the current Sub category edit')
-                            } else {
-                              setSubTopicAdd(true)
-                            }
-                          }}
-                        >
-                          Add Sub-Topic
-                        </button>
-                      )}
-                      {isSubTopicAdd && (
-                        <InputGroup className="mb-3 yg-font-size p-1 ">
-                          <div className="position-relative align-items-center">
+                          </Dropdown.Item>
+                        ))}
+                        <Dropdown.Divider />
+                        {!isTopicAdd && (
+                          <div className="col d-flex justify-content-center">
+                            <button
+                              className="btn yg-font-size"
+                              onClick={() => {
+                                setToggleDropDown(1)
+                                setShowCategoryModal(true)
+                                setPreloadedCategoryData(null)
+                              }}
+                            >
+                              Add Topic
+                            </button>
+                          </div>
+                        )}
+                        {isTopicAdd && (
+                          <InputGroup className="mb-3 yg-font-size p-1 ">
                             <FormControl
                               className="yg-font-size"
-                              placeholder="Sub-Category"
+                              placeholder="Category"
                               aria-label="Recipient's username"
                               aria-describedby="basic-addon2"
-                              value={newSubTopicName}
-                              onChange={e => SetNewSubTopicName(e.target.value)}
+                              value={newTopicName}
+                              onChange={e => SetNewTopicName(e.target.value)}
                             />
-                            <i
-                              className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
-                              style={{
-                                right: 5,
-                                top: 0,
-                                fontSize: '20px',
-                                cursor: 'pointer',
-                              }}
+                            <Button
                               onClick={() => {
-                                setSubTopicAdd(false)
+                                setIsTopicAdd(false)
+                                AddNewCategoryCall(null, newTopicName)
+                                setToggleDropDown(0)
                               }}
-                            />
-                          </div>
-                          <Button
-                            onClick={() => {
-                              setSubTopicAdd(false)
-                              if (newSubTopicName.length != 0) {
-                                AddNewSubCategoryCall(newSubTopicName, categoryID)
-                              } else {
-                                toast.error('Please provide Sub Category title')
+                              variant="outline-secondary"
+                              className="yg-font-size"
+                              id="button-addon2"
+                            >
+                              Save
+                            </Button>
+                          </InputGroup>
+                        )}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : (
+                    <span onClick={setCategoryFilter} className="news-category">
+                      {data ? data.category_name : ''}
+                    </span>
+                  )}
+
+                  {editView ? (
+                    <>
+                      <Dropdown
+                        ref={subTopicRef}
+                        onClick={() =>
+                          toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
+                        }
+                        size="sm"
+                        autoClose={'outside'}
+                        className={
+                          toggleDropDown == 1
+                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
+                            : 'yk-dropdown-holder mt-3'
+                        }
+                        style={{
+                          width: '12rem',
+                        }}
+                      >
+                        <Dropdown.Toggle
+                          size={'sm'}
+                          className="yg-custom-dropdown"
+                          color="red"
+                          id="dropdown-basic"
+                          style={{
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {_getSelectedItems()}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu
+                          style={{
+                            maxHeight: '14rem',
+                            overflowY: 'scroll',
+                          }}
+                        >
+                          {subCategory
+                            .filter(item => item.category_id == categoryID)
+                            .map((cat, index) => {
+                              if (cat.isEdit) {
+                                return (
+                                  <InputGroup className="mb-3 yg-font-size p-1 ">
+                                    <div className="position-relative align-items-center">
+                                      <FormControl
+                                        className="yg-font-size"
+                                        placeholder="Sub-Category"
+                                        aria-label="Recipient's username"
+                                        aria-describedby="basic-addon2"
+                                        value={cat.tempSubTopicName}
+                                        onChange={e => _updateSubTopicName(e.target.value, cat.id)}
+                                      />
+                                      <i
+                                        className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                        style={{
+                                          right: 5,
+                                          top: 0,
+                                          fontSize: '20px',
+                                          cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                          _editSubCategory()
+                                        }}
+                                      />
+                                    </div>
+                                    <Button
+                                      onClick={() => {
+                                        if (cat.tempSubTopicName) {
+                                          _updateSubCategoryAPI(
+                                            cat.tempSubTopicName,
+                                            cat.id,
+                                            categoryID
+                                          )
+                                          _handleChecked(false)
+                                        } else {
+                                          toast.error('Please provide Sub Category title')
+                                        }
+                                      }}
+                                      variant="outline-secondary"
+                                      className="yg-font-size"
+                                      id="button-addon2"
+                                    >
+                                      Save
+                                    </Button>
+                                  </InputGroup>
+                                )
                               }
-                            }}
-                            variant="outline-secondary"
-                            className="yg-font-size"
-                            id="button-addon2"
-                          >
-                            Save
-                          </Button>
-                        </InputGroup>
-                      )}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </>
-              ) : (
-                <>
-                  <Dropdown
-                    ref={topicRef}
-                    // show={toggleDropDown == 1}
-                    onClick={() => {
-                      toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
+
+                              return (
+                                <div className="d-flex justify-content-between p-1 ">
+                                  <label
+                                    className="yg-font-size"
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyItems: 'center',
+                                    }}
+                                  >
+                                    <input
+                                      style={{ marginRight: '8px' }}
+                                      type="checkbox"
+                                      checked={cat.isChecked}
+                                      onChange={() => _handleChecked(cat.id)}
+                                    />
+                                    {cat.sub_category_name}
+                                  </label>
+                                  <i
+                                    className="fa-solid fa-pen-to-square"
+                                    style={{
+                                      paddingTop: '2px',
+                                      color: 'var(--bgColor2)',
+                                      fontSize: '20px',
+                                      cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                      _editSubCategory(cat)
+                                      // change box to edit version
+                                    }}
+                                  />
+                                </div>
+                              )
+                            })}
+                          <Dropdown.Divider />
+                          {!isSubTopicAdd && (
+                            <div className="col d-flex justify-content-center">
+                              <button
+                                id="mybtn"
+                                className="btn yg-font-size "
+                                onClick={() => {
+                                  if (_checkIsEditSubTopicOpen()) {
+                                    toast.error('Please close the current Sub category edit')
+                                  } else {
+                                    setSubTopicAdd(true)
+                                  }
+                                }}
+                              >
+                                Add Sub-Topic
+                              </button>
+                            </div>
+                          )}
+                          {isSubTopicAdd && (
+                            <InputGroup className="mb-3 yg-font-size p-1 ">
+                              <div className="position-relative align-items-center">
+                                <FormControl
+                                  className="yg-font-size"
+                                  placeholder="Sub-Category"
+                                  aria-label="Recipient's username"
+                                  aria-describedby="basic-addon2"
+                                  value={newSubTopicName}
+                                  onChange={e => SetNewSubTopicName(e.target.value)}
+                                />
+                                <i
+                                  className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                  style={{
+                                    right: 5,
+                                    top: 0,
+                                    fontSize: '20px',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={() => {
+                                    setSubTopicAdd(false)
+                                  }}
+                                />
+                              </div>
+                              <Button
+                                onClick={() => {
+                                  setSubTopicAdd(false)
+                                  if (newSubTopicName.length != 0) {
+                                    AddNewSubCategoryCall(newSubTopicName, categoryID)
+                                  } else {
+                                    toast.error('Please provide Sub Category title')
+                                  }
+                                }}
+                                variant="outline-secondary"
+                                className="yg-font-size"
+                                id="button-addon2"
+                              >
+                                Save
+                              </Button>
+                            </InputGroup>
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <span className="news-sub-category">
+                      {data?.sub_category ? data?.sub_category[0]['sub_category_name'] : ''}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="news-desc col">
+                {editView ? (
+                  <textarea
+                    ref={newsDescRef}
+                    placeholder="Enter description"
+                    onChange={e => {
+                      setNewsDesc(e.target.value)
                     }}
-                    size="sm"
-                    autoClose={'outside'}
-                    className="yk-dropdown-holder"
+                  />
+                ) : (
+                  <p
                     style={{
-                      width: '12rem',
+                      marginTop: '1rem',
                     }}
                   >
-                    <Dropdown.Toggle
-                      size={'sm'}
-                      className="yg-custom-dropdown"
-                      color="red"
-                      id="dropdown-basic"
-                      style={{
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {data?.sub_category &&
-                        data.sub_category.length > 0 &&
-                        data.sub_category[0].sub_category_name}
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu
-                      style={{
-                        maxHeight: '14rem',
-                        overflowY: 'scroll',
-                      }}
-                    >
-                      {data.sub_category?.map((cat, index) => (
-                        <Dropdown.Item key={index} className="yg-font-size">
-                          <span>{cat.sub_category_name}</span>
-                        </Dropdown.Item>
-                      ))}
-                      <Dropdown.Divider />
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </>
-              )}
+                    {data ? data.description : ''}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-          <div className="news-desc">
-            {editView ? (
-              <textarea
-                ref={newsDescRef}
-                style={{
-                  minWidth: '100%',
-                  minHeight: '24  vh',
-                  marginTop: '1rem',
-                  height: '188px',
-                  resize: 'none',
-                }}
-                placeholder="Enter description"
-                onChange={e => {
-                  setNewsDesc(e.target.value)
-                }}
-              />
-            ) : (
-              <p
-                style={{
-                  marginTop: '1rem',
-                }}
-              >
-                {data ? data.description : ''}
-              </p>
-            )}
-          </div>
-        </div>
 
-        <div
-          className="edit-delete-cta"
-          style={{
-            marginTop: '0rem',
-          }}
-        >
-          <div className="yk-news-edit-icons mb-5">
-            {editView
-              ? hasPermission && (
-                  <i
-                    className="fa-solid fa-floppy-disk yk-icon-hover"
-                    style={{
-                      color: 'var(--bgColor2)',
-                      fontSize: '20px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={async () => {
-                      // add save value to a payload
-                      // call the save or edit api here
-                      uploadNews()
-                      // call the upsert News API here
-                      // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
-                      //   console.log(afterUpdateNewsMsg)
-                    }}
-                  />
-                )
-              : hasPermission && (
-                  <i
-                    className="fa-solid fa-pen-to-square"
-                    style={{
-                      color: 'var(--bgColor2)',
-                      fontSize: '20px',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => {
-                      _handleEditView()
-                      // change box to edit version
-                    }}
-                  />
-                )}
-            {editView && hasPermission ? (
-              <i
-                className="fa-solid fa-xmark yk-icon-hover"
-                style={{
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setNewsUnderEdit(false)
-                  setEditView(false)
-                  cancelAddNews(data.id)
-                  setIsNewCatAdded(false)
-                  setIsNewSubCatAdded(false)
-                }}
-              />
-            ) : (
-              hasPermission && (
+          <div className="col-2 d-flex align-items-end flex-column">
+            <div className="yk-news-edit-icons mb-5">
+              {editView
+                ? hasPermission && (
+                    <i
+                      className="fa-solid fa-floppy-disk yk-icon-hover"
+                      style={{
+                        color: 'var(--bgColor2)',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={async () => {
+                        // add save value to a payload
+                        // call the save or edit api here
+                        uploadNews()
+                        // call the upsert News API here
+                        // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
+                        //   console.log(afterUpdateNewsMsg)
+                      }}
+                    />
+                  )
+                : hasPermission && (
+                    <i
+                      className="fa-solid fa-pen-to-square"
+                      style={{
+                        color: 'var(--bgColor2)',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        _handleEditView()
+                        // change box to edit version
+                      }}
+                    />
+                  )}
+              {editView && hasPermission ? (
                 <i
-                  className="fa-solid fa-trash"
+                  className="fa-solid fa-xmark yk-icon-hover"
                   style={{
-                    color: '#CD2727',
                     fontSize: '20px',
                     cursor: 'pointer',
                   }}
-                  onClick={e => {
-                    // call the delete news API here
-                    setDeleteNewsArr([data.id])
-
-                    setDeleteModal(true)
+                  onClick={() => {
+                    setNewsUnderEdit(false)
+                    setEditView(false)
+                    cancelAddNews(data.id)
+                    setIsNewCatAdded(false)
+                    setIsNewSubCatAdded(false)
                   }}
                 />
-              )
-            )}
-          </div>
-
-          <div className="yk-attached-file">
-            {editView ? (
-              hasPermission && (
-                <>
-                  <div
-                    className="inputfile-box "
+              ) : (
+                hasPermission && (
+                  <i
+                    className="fa-solid fa-trash"
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column-reverse',
+                      color: '#CD2727',
+                      fontSize: '20px',
+                      cursor: 'pointer',
                     }}
-                  >
-                    <div>
-                      <i
-                        className="fa-solid fa-paperclip yk-icon-hover"
-                        style={{ fontSize: '22px' }}
-                        onClick={() => fileInputRef.current.click()}
-                      />
-                      <input
-                        accept="application/pdf"
-                        type="file"
-                        id="file"
-                        ref={fileInputRef}
-                        className="inputfile yk-icon-hover"
-                        onChange={e => {
-                          console.log(e.target.files[0])
-                          setFileInput(e.target.files[0])
-                        }}
-                      />
-                    </div>
+                    onClick={e => {
+                      // call the delete news API here
+                      setDeleteNewsArr([data.id])
+
+                      setDeleteModal(true)
+                    }}
+                  />
+                )
+              )}
+            </div>
+
+            <div className="yk-attached-file">
+              {editView ? (
+                hasPermission && (
+                  <>
                     <div
+                      className="inputfile-box "
                       style={{
                         display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        flexDirection: 'column-reverse',
                       }}
                     >
-                      <p
-                        className="yk-span"
-                        style={{
-                          fontSize: '16px',
-                        }}
-                      >
-                        {fileInput?.name}
-                      </p>
-                      {fileInput && (
+                      <div>
                         <i
-                          className="fa-solid fa-xmark yk-icon-hover"
-                          style={{
-                            fontSize: '22px',
-                            cursor: 'pointer',
-                            alignSelf: 'baseline',
-                          }}
-                          onClick={() => {
-                            setFileInput(null)
+                          className="fa-solid fa-paperclip yk-icon-hover"
+                          style={{ fontSize: '22px' }}
+                          onClick={() => fileInputRef.current.click()}
+                        />
+                        <input
+                          accept="application/pdf"
+                          type="file"
+                          id="file"
+                          ref={fileInputRef}
+                          className="inputfile yk-icon-hover"
+                          onChange={e => {
+                            console.log(e.target.files[0])
+                            setFileInput(e.target.files[0])
                           }}
                         />
-                      )}
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <p
+                          className="yk-span"
+                          style={{
+                            fontSize: '16px',
+                          }}
+                        >
+                          {fileInput?.name}
+                        </p>
+                        {fileInput && (
+                          <i
+                            className="fa-solid fa-xmark yk-icon-hover"
+                            style={{
+                              fontSize: '22px',
+                              cursor: 'pointer',
+                              alignSelf: 'baseline',
+                            }}
+                            onClick={() => {
+                              setFileInput(null)
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* <label
+                    {/* <label
                     htmlFor="file"
                     style={{
                       display: 'flex',
@@ -1162,7 +1112,7 @@ const NewsItem = ({
                     }}
                   /> */}
 
-                  {/* <span
+                    {/* <span
                     // className='yk-span'
                     style={{
                       fontSize: '0.7rem',
@@ -1182,36 +1132,37 @@ const NewsItem = ({
                       />
                     )}
                   </span> */}
-                </>
-              )
-            ) : (
-              <div className="attachment-icon mb-4">
-                {data.attachment_link != '' && (
-                  <>
-                    <i className="fa-solid fa-file" />
-                    <a target="_blank" href={data ? data.attachment_link : ''}>
-                      Read attached file
-                    </a>
                   </>
-                )}
-                {data.attachment_link == '' && (
-                  <>
-                    <i className="fa-solid fa-file" />
-                    <a
-                      style={{
-                        pointerEvents: 'none',
-                        cursor: 'default',
-                      }}
-                      onClick={() => {
-                        toast.warning('File not available')
-                      }}
-                    >
-                      File Not Available
-                    </a>
-                  </>
-                )}
-              </div>
-            )}
+                )
+              ) : (
+                <div className="attachment-icon mb-4">
+                  {data.attachment_link != '' && (
+                    <>
+                      <i className="fa-solid fa-file" />
+                      <a target="_blank" href={data ? data.attachment_link : ''}>
+                        Read attached file
+                      </a>
+                    </>
+                  )}
+                  {data.attachment_link == '' && (
+                    <>
+                      <i className="fa-solid fa-file" />
+                      <a
+                        style={{
+                          pointerEvents: 'none',
+                          cursor: 'default',
+                        }}
+                        onClick={() => {
+                          toast.warning('File not available')
+                        }}
+                      >
+                        File Not Available
+                      </a>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1384,7 +1335,6 @@ function AddCategoryModal({
             id="mybtn"
             className="btn btn-background mr-4"
             onClick={() => {
-              debugger
               setCategoryName('')
               SetImageFile(null)
               setShow(p => false)
@@ -1395,7 +1345,6 @@ function AddCategoryModal({
           <button
             className="btn"
             onClick={() => {
-              debugger
               if (preloadedCategoryData) {
                 EditCategory()
               } else {
