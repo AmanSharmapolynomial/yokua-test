@@ -414,6 +414,9 @@ const ProfileSettingScreen = () => {
                       tempNLArray.push(obj)
                     }
                   })
+                  const payload = {
+                    news_letter: tempNLArray,
+                  }
                   if (
                     name &&
                     validator.isAlpha(name.split(' ')[0]) &&
@@ -421,14 +424,10 @@ const ProfileSettingScreen = () => {
                     name.length >= 5
                   ) {
                     if (name && name != '') {
-                      const payloadName = {
+                      payload = {
                         full_name: name,
-                        news_letter: tempNLArray,
+                        ...payload,
                       }
-
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
-                      setName(undefined)
-                      toast.success(afterUpdateMsg.data.message)
                     }
                   } else {
                     if (editMode1) {
@@ -439,13 +438,7 @@ const ProfileSettingScreen = () => {
                   }
                   if (email && validator.isEmail(email)) {
                     if (email && email != '') {
-                      const payloadEmail = {
-                        email,
-                        news_letter: tempNLArray,
-                      }
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
-                      setEmail(undefined)
-                      toast.success(afterUpdateMsg.data.message)
+                      payload = { email, ...payload }
                     }
                   } else {
                     if (editMode2) {
@@ -453,13 +446,10 @@ const ProfileSettingScreen = () => {
                     }
                   }
                   if (address && address != '') {
-                    const payloadAddress = {
+                    payload = {
                       company: address,
-                      news_letter: tempNLArray,
+                      ...payload,
                     }
-                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
-                    setAddress(undefined)
-                    toast.success(afterUpdateMsg.data.message)
                   }
 
                   if (password && passwordRetype) {
@@ -481,6 +471,11 @@ const ProfileSettingScreen = () => {
                       toast.error('Password and retype password does not match')
                     }
                   }
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
+                  setName(undefined)
+                  setEmail(undefined)
+                  setAddress(undefined)
+                  toast.success(afterUpdateMsg.data.message)
                   setReloadData(!reloadData)
                 }}
               >
