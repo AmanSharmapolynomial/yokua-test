@@ -6,7 +6,7 @@ import Yokogawa from '../../assets/Yokogawa png.png'
 const Header = ({ isLogedIn, isAdmin }) => {
   return (
     <header className="header sticky-top mb-auto">
-      <div className="row mx-5">
+      <div className="row mx-5 h-100">
         <div className="col">
           <div className="row header-container py-2">
             <div className="header__logo col-12 col-md-4">
@@ -16,14 +16,14 @@ const Header = ({ isLogedIn, isAdmin }) => {
               FLOW CENTER PAGES
             </div>
             <div className="col-4">
-              <div className="input-group search float-right">
+              <div className="input-group search float-right px-3">
                 <span className="input-group-addon">
                   <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
                 </span>
                 <input
                   type="text"
                   placeholder="What are you looking for?"
-                  className="search_input"
+                  className="search_input ml-3"
                   autoComplete={false}
                 ></input>
               </div>

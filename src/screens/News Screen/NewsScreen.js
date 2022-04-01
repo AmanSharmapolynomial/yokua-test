@@ -14,13 +14,9 @@ import { useLoading } from '../../utils/LoadingContext'
 
 const NewsScreen = () => {
   const { setLoading } = useLoading()
-  const filter1Ref = useRef()
-  const filter2Ref = useRef()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
   const [isCheckListActivated, setCheckListActivated] = useState(false)
 
-  const [showFilterDropdown1, setShowFilterDropdown1] = useState()
-  const [showFilterDropdown2, setShowFilterDropdown2] = useState()
   const [categoryFilter, setCategoryFilter] = useState(null)
   const [subCategoryFilter, setSubCategoryFilter] = useState(null)
   const [archivedFilter, setArchivedFilter] = useState(false)
@@ -123,18 +119,6 @@ const NewsScreen = () => {
     setPageNoCall(pageNumber)
   }
 
-  const closeDropdown1 = () => {
-    setShowFilterDropdown1(false)
-  }
-
-  const ref1 = useDetectClickOutside({ onTriggered: closeDropdown1 })
-
-  const closeDropdown2 = () => {
-    setShowFilterDropdown2(false)
-  }
-
-  const ref2 = useDetectClickOutside({ onTriggered: closeDropdown2 })
-
   return (
     <>
       <Header
@@ -143,7 +127,7 @@ const NewsScreen = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5">
+      <div className="row mx-5 h-100">
         <div className="profile-setting-container col center py-md-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
           <div className="filter-and-read-container py-3">
@@ -162,7 +146,6 @@ const NewsScreen = () => {
                           : 'dropdown-toggle filter-icon'
                       }
                       src={Filtermg}
-                      ref={ref1}
                     />
                     <div
                       className="dropdown-menu"
@@ -176,7 +159,6 @@ const NewsScreen = () => {
                           <span
                             key={index}
                             className="dropdown-item filter-item"
-                            ref={filter1Ref}
                             style={
                               categoryFilter == category.id
                                 ? {
@@ -224,7 +206,6 @@ const NewsScreen = () => {
                             toast.success('Please select the Category filter first.')
                           }
                         }}
-                        ref={ref2}
                       />
                     )}
                     {/* <div
@@ -247,7 +228,6 @@ const NewsScreen = () => {
                             <span
                               key={index}
                               className="dropdown-item filter-item"
-                              ref={filter2Ref}
                               style={{
                                 fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
                               }}
@@ -386,7 +366,7 @@ const NewsScreen = () => {
             </div>
           )}
           {newsData.length > 0 && (
-            <div className="pagination">
+            <div className="pagination my-3">
               <Pagination
                 total={totalPages * 10}
                 showQuickJumper

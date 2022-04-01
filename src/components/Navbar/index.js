@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { getUserRoles } from '../../utils/token'
@@ -6,11 +6,10 @@ import NavDropdown from './navDropdown'
 import { removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
 import './style.css'
+import API from '../../utils/api'
 
 const Navbar = ({ isAdmin, isLogedIn }) => {
-  const navigate = useNavigate()
-  const [renderDropdown, setRenderDropdown] = useState(false)
-  const [isProductLineDropdown, setProductLineDropdown] = useState(false)
+  const [unreadNewsCount, setUnreadNewsCount] = useState(0)
 
   const navDropdownAdminData = [
     { name: 'User Management', url: '/admin/user/list-view' },
@@ -38,48 +37,88 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
     })
   }
 
-  return (
-    <div className="row d-flex justify-content-center">
-      <nav className="navbar navbar-expand-md">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbar"
-          aria-controls="#navbar"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon">
-            <i className="fas fa-bars" style={{ color: '#fff' }} />
-          </span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbar">
-          <ul className="navbar-nav">
-            <li className="nav-item px-md-3">
-              <a className="nav-link">Home</a>
-            </li>
-            <li className="nav-item px-md-3">
-              <Link className="nav-link" to="/news">
-                News
-              </Link>
-            </li>
-            <li className="nav-item dropdown px-md-3">
-              <Link
-                to="/product-lines"
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Product Lines
-              </Link>
-            </li>
+  const getUnreadNewsCount = async () => {
+    try {
+      const response = await API.get('/news/unread_count')
+      setUnreadNewsCount(response.data.message)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getUnreadNewsCount()
+  }, [])
 
-            <li className="nav-item dropdown px-md-3">
+  return (
+    <nav className="navbar navbar-expand-md justify-content-center px-0">
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbar"
+        aria-controls="#navbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon">
+          <i className="fas fa-bars" style={{ color: '#fff' }} />
+        </span>
+      </button>
+      <div
+        className="collapse navbar-collapse justify-content-between align-items-center w-100"
+        id="navbar"
+      >
+        <ul className="navbar-nav mx-auto text-md-center text-left">
+          <li className="nav-item px-2">
+            <a className="nav-link">Home</a>
+          </li>
+          <li className="nav-item px-2">
+            <Link className="nav-link" to="/news">
+              News
+            </Link>
+          </li>
+          <li className="nav-item dropdown px-2">
+            <Link
+              to="/product-lines"
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Product Lines
+            </Link>
+          </li>
+
+          <li className="nav-item dropdown px-2">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              RYG Information
+            </a>
+          </li>
+
+          <li className="nav-item px-2">
+            <a className="nav-link">Training</a>
+          </li>
+          <li className="nav-item px-2">
+            <a className="nav-link">Data History</a>
+          </li>
+          <li className="nav-item px-2">
+            <Link className="nav-link" to="/profile">
+              Profile Setting
+            </Link>
+          </li>
+          {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
+            <li className="nav-item dropdown px-2">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"
@@ -88,49 +127,37 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
+                data-display="static"
               >
-                RYG Information
+                Admin Management
               </a>
+              <NavDropdown
+                data={navDropdownAdminData}
+                // style={{ position: 'absolute' }}
+                icon={true}
+              />
             </li>
-
-            <li className="nav-item px-md-3">
-              <a className="nav-link">Training</a>
-            </li>
-            <li className="nav-item px-md-3">
-              <a className="nav-link">Data History</a>
-            </li>
-            <li className="nav-item px-md-3">
-              <Link className="nav-link" to="/profile">
-                Profile Setting
-              </Link>
-            </li>
-            {getUserRoles() == 'Technical Administrator' ||
-            getUserRoles() == 'PMK Administrator' ? (
-              <li className="nav-item dropdown px-md-3">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  data-display="static"
-                >
-                  Admin Management
-                </a>
-                <NavDropdown
-                  data={navDropdownAdminData}
-                  // style={{ position: 'absolute' }}
-                  icon={true}
-                />
-              </li>
-            ) : (
-              ''
-            )}
+          ) : (
+            ''
+          )}
+        </ul>
+        {isLogedIn && (
+          <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+            <button
+              className="logout-btn"
+              onClick={() => {
+                toast.success('Log out successfully')
+                removeToken()
+                removeUserRole()
+                navigate('/auth/login')
+              }}
+            >
+              Log out
+            </button>
           </ul>
-        </div>
-        {/* <div className="col-auto">
+        )}
+      </div>
+      {/* <div className="col-auto">
         <div className="input-group search">
           <span className="input-group-addon">
             <i className="fa-solid fa-magnifying-glass" />
@@ -144,23 +171,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           ></input>
         </div>
       </div> */}
-      </nav>
-      {/* {isLogedIn && (
-        <div className="col-auto">
-          <button
-            className="logout-btn"
-            onClick={() => {
-              toast.success('Log out successfully')
-              removeToken()
-              removeUserRole()
-              navigate('/auth/login')
-            }}
-          >
-            Log out
-          </button>
-        </div>
-      )} */}
-    </div>
+    </nav>
   )
 }
 

@@ -29,8 +29,6 @@ const UserListView = () => {
   const { loading, setLoading } = useLoading()
 
   // states
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false)
-  const [showDeleteDropdown, setShowDeleteDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [modelTitle, setModalTitle] = useState('View User')
   const [changeModal, setChangeModal] = useState('')
@@ -253,7 +251,7 @@ const UserListView = () => {
           getUserRoles() == 'Technical Administrator') && (
           <div className="edit-icons" key={index}>
             <i
-              className="fa-solid fa-pen-to-square"
+              className="fa-solid fa-pen-to-square mx-2"
               data={dropdownData}
               style={{
                 color: 'var(--bgColor2)',
@@ -270,7 +268,7 @@ const UserListView = () => {
               }}
             />
             <i
-              className="fa-solid fa-trash"
+              className="fa-solid fa-trash mx-2"
               style={{
                 color: '#CD2727',
               }}
@@ -406,68 +404,71 @@ const UserListView = () => {
     setPageNoCall(pageNumber)
   }
 
-  const closeDropdown = () => {
-    setShowFilterDropdown(false)
-  }
-
-  const ref = useDetectClickOutside({ onTriggered: closeDropdown })
-
   return (
     <div className="row mx-5">
       <div className="col user-list-view">
         <SecondaryHeading title={'Users list view'} />
 
         <div className="filter-actions">
-          <div className="filter-icons" ref={ref}>
-            <img
-              src={Filtermg}
-              onClick={() => {
-                setShowFilterDropdown(!showFilterDropdown)
-              }}
-            />
+          <div className="filter-icons">
+            <div className="dropdown">
+              <img
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                className={
+                  filterActive === ''
+                    ? 'dropdown-toggle greyed filter-icon'
+                    : 'dropdown-toggle filter-icon'
+                }
+                src={Filtermg}
+              />
 
-            <div
-              className="filter-dropdown dropdown"
-              style={{
-                display: showFilterDropdown ? 'flex' : 'none',
-              }}
-            >
-              <span
-                className="dropdown-element"
-                ref={filter1Ref}
-                onClick={() => {
-                  if (filterActive == 'active') {
-                    filterTable('')
-                    filter1Ref.current.style.fontWeight = '300'
-                  } else {
-                    filterTable('active')
-                    filter1Ref.current.style.fontWeight = 'bold'
-                    filter2Ref.current.style.fontWeight = '300'
-                  }
+              <div
+                className="dropdown-menu"
+                style={{
+                  overflowY: 'scroll',
+                  maxHeight: '10rem',
                 }}
               >
-                Active
-              </span>
-              <span
-                className="dropdown-element"
-                ref={filter2Ref}
-                onClick={() => {
-                  if (filterActive == 'inactive') {
-                    filterTable('')
-                    filter2Ref.current.style.fontWeight = '300'
-                  } else {
-                    filterTable('inactive')
-                    filter2Ref.current.style.fontWeight = 'bold'
-                    filter1Ref.current.style.fontWeight = '300'
-                  }
-                }}
-              >
-                Inactive
-              </span>
+                <span
+                  className="dropdown-item"
+                  ref={filter1Ref}
+                  onClick={() => {
+                    if (filterActive == 'active') {
+                      filterTable('')
+                      filter1Ref.current.style.fontWeight = '300'
+                    } else {
+                      filterTable('active')
+                      filter1Ref.current.style.fontWeight = 'bold'
+                      filter2Ref.current.style.fontWeight = '300'
+                    }
+                  }}
+                >
+                  Active
+                </span>
+                <span
+                  className="dropdown-item"
+                  ref={filter2Ref}
+                  onClick={() => {
+                    if (filterActive == 'inactive') {
+                      filterTable('')
+                      filter2Ref.current.style.fontWeight = '300'
+                    } else {
+                      filterTable('inactive')
+                      filter2Ref.current.style.fontWeight = 'bold'
+                      filter1Ref.current.style.fontWeight = '300'
+                    }
+                  }}
+                >
+                  Inactive
+                </span>
+              </div>
             </div>
             {getUserRoles() == 'PMK Administrator' && (
               <i
-                className="fa-solid fa-trash"
+                className="fa-solid fa-trash mx-2"
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                   deleteUser()
@@ -530,7 +531,7 @@ const UserListView = () => {
             </div>
           </div>
         </div>
-        <div className="user-list-view-table">
+        <div className="user-list-view-table mt-3">
           <DataTable
             columns={columns}
             data={contentRow}
@@ -567,7 +568,7 @@ const UserListView = () => {
           )}
         </div>
         {/* <Pagination noOfPages={10} /> */}
-        <div className="pagination">
+        <div className="pagination my-3">
           <Pagination
             showQuickJumper
             current={pageNoCall}

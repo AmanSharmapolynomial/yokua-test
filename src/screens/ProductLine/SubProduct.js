@@ -80,7 +80,7 @@ const SubProduct = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5">
+      <div className="row mx-5 h-100">
         <div className="col center py-3">
           <div className="row">
             <div className="col-12 col-md-6 border rounded py-2">

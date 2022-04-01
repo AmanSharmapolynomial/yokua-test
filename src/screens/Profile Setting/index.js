@@ -119,7 +119,7 @@ const ProfileSettingScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-5">
+      <div className="row mx-5 h-100">
         {openSimpleDeleteModal && (
           <DeleteModal
             show={openSimpleDeleteModal}
@@ -452,13 +452,13 @@ const ProfileSettingScreen = () => {
                     }
                   }
 
-                  if (password && passwordRetype) {
-                    if (password == passwordRetype) {
+                  if (password || passwordRetype) {
+                    if (password === passwordRetype) {
                       const payloadPassword = {
                         new_password1: password,
                         new_password2: passwordRetype,
                       }
-                      console.log(payloadPassword)
+
                       const afterPassChangeMsg = await API.post(
                         '/auth/password-change/',
                         payloadPassword

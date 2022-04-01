@@ -125,7 +125,7 @@ const ProductLine = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5">
+      <div className="row mx-5 h-100">
         <div className="col center py-md-3">
           <PrimaryHeading title={'Product Lines'} />
           {isLoading ? (

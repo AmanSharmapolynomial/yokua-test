@@ -4,7 +4,12 @@ body,
 html {
   height: 100% !important;
 }
-
+#root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
 body {
   font-family: 'Poppins' !important;
   -webkit-font-smoothing: antialiased;

@@ -271,7 +271,7 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="tokachu-main row mx-5">
+      <div className="tokachu-main row mx-5 h-100">
         <div className="profile-setting-container col center md-3">
           <PrimaryHeading title={'Approved Tokachu'} backgroundImage={'yk-back-image-news'} />
           <div className="container">

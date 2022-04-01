@@ -181,7 +181,7 @@ const NewsItem = ({
       }
       setDataID(data.id)
     }
-  }, [editView, categoryFilter])
+  }, [editView, categoryFilter, data])
 
   const saveAndExitModal = () => {
     setDeleteModal(false)
@@ -625,10 +625,10 @@ const NewsItem = ({
                 <div className="news-img rounded mx-3">
                   {editView ? (
                     <>
-                      <img src={catImg} onError={_onErrorImage} />
+                      <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
                     </>
                   ) : (
-                    <img src={catImg} onError={_onErrorImage} />
+                    <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
                   )}
                 </div>
               </div>
@@ -992,7 +992,7 @@ const NewsItem = ({
                   )}
               {editView && hasPermission ? (
                 <i
-                  className="fa-solid fa-xmark yk-icon-hover"
+                  className="fa-solid fa-xmark yk-icon-hover mx-2"
                   style={{
                     fontSize: '20px',
                     cursor: 'pointer',
@@ -1008,7 +1008,7 @@ const NewsItem = ({
               ) : (
                 hasPermission && (
                   <i
-                    className="fa-solid fa-trash"
+                    className="fa-solid fa-trash mx-2"
                     style={{
                       color: '#CD2727',
                       fontSize: '20px',

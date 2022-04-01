@@ -19,7 +19,6 @@ const UserApprovalScreen = () => {
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
   const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
-  const [rejectMsg, setRejectMsg] = useState()
   const [rejectionData, setRejectionData] = useState()
   const [acceptData, setAcceptData] = useState()
   const [deleteDomainData, setDeleteDomainData] = useState()
@@ -55,7 +54,6 @@ const UserApprovalScreen = () => {
       page_index: pageCallUserApproval,
     })
     setTotalPageUserApproval(listUserApprovalData.data.total_pages)
-    console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
     listUserApprovalData.data.page_data.map((data, index) => {
@@ -320,12 +318,12 @@ const UserApprovalScreen = () => {
     setReloadTable(!reloadTable)
   }
 
-  const rejectSingleRequest = async data => {
-    if (rejectMsg) {
+  const rejectSingleRequest = async (data, rejectText) => {
+    if (rejectText) {
       const payload = {
         email_id: [data.email],
         status: changeModal == 'Accepted' ? 'activate' : 'deactivate',
-        msg: rejectMsg,
+        msg: rejectText,
       }
       // server is giving internal error
       const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
@@ -351,13 +349,12 @@ const UserApprovalScreen = () => {
   }
 
   return (
-    <div className="row mx-5">
+    <div className="row mx-5 h-100">
       <div className="col user-approval-screen">
         {openARModal && (
           <AcceptRejectModal
             change={changeModal}
             saveAndExit={saveAndExitModal}
-            setRejectMsg={setRejectMsg}
             rejectSingleRequest={rejectSingleRequest}
             rejectionData={rejectionData}
             acceptData={acceptData}
@@ -418,7 +415,7 @@ const UserApprovalScreen = () => {
               </button>
             </div>
           </div>
-          <div className="user-list-view-table aprroval-table">
+          <div className="user-list-view-table aprroval-table mt-3">
             {isLoading ? (
               <div
                 style={{
@@ -441,7 +438,7 @@ const UserApprovalScreen = () => {
                   onSelectedRowsChange={selectedRowsActionUA}
                   selectableRowDisabled={rowDisabledCriteria}
                 />
-                <div className="pagination">
+                <div className="pagination my-3">
                   <Pagination
                     current={pageCallUserApproval}
                     key={'userApproval'}
@@ -546,7 +543,7 @@ const UserApprovalScreen = () => {
                         conditionalRowStyles={conditionalRowStyles}
                         onSelectedRowsChange={selectedRowsActionDUL}
                       />
-                      <div className="pagination">
+                      <div className="pagination my-3">
                         <Pagination
                           current={pageNoCall}
                           key={'domainUser'}
