@@ -1,10 +1,14 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { getUserRoles } from '../../utils/token'
 import NavDropdown from './navDropdown'
+import { removeToken, removeUserRole } from '../../utils/token'
+import { toast } from 'react-toastify'
 import './style.css'
 
-const Navbar = ({ isAdmin }) => {
+const Navbar = ({ isAdmin, isLogedIn }) => {
+  const navigate = useNavigate()
   const [renderDropdown, setRenderDropdown] = useState(false)
   const [isProductLineDropdown, setProductLineDropdown] = useState(false)
 
@@ -35,71 +39,46 @@ const Navbar = ({ isAdmin }) => {
   }
 
   return (
-    <nav className="navbar navbar-expand-md">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
-        aria-controls="#navbar"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon">
-          <i className="fas fa-bars" style={{ color: '#fff' }} />
-        </span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbar">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <a className="nav-link">Home</a>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/news">
-              News
-            </Link>
-          </li>
-          <li className="nav-item dropdown">
-            <Link
-              to="/product-lines"
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Product Lines
-            </Link>
-          </li>
+    <div className="row">
+      <nav className="navbar navbar-expand-md">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar"
+          aria-controls="#navbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon">
+            <i className="fas fa-bars" style={{ color: '#fff' }} />
+          </span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbar">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link">Home</a>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/news">
+                News
+              </Link>
+            </li>
+            <li className="nav-item dropdown">
+              <Link
+                to="/product-lines"
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Product Lines
+              </Link>
+            </li>
 
-          <li className="nav-item dropdown">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              RYG Information
-            </a>
-          </li>
-
-          <li className="nav-item">
-            <a className="nav-link">Training</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link">Data History</a>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/profile">
-              Profile Setting
-            </Link>
-          </li>
-          {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -109,22 +88,49 @@ const Navbar = ({ isAdmin }) => {
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                data-display="static"
               >
-                Admin Management
+                RYG Information
               </a>
-              <NavDropdown
-                data={navDropdownAdminData}
-                // style={{ position: 'absolute' }}
-                icon={true}
-              />
             </li>
-          ) : (
-            ''
-          )}
-        </ul>
-      </div>
-      {/* <div className="col-auto">
+
+            <li className="nav-item">
+              <a className="nav-link">Training</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link">Data History</a>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/profile">
+                Profile Setting
+              </Link>
+            </li>
+            {getUserRoles() == 'Technical Administrator' ||
+            getUserRoles() == 'PMK Administrator' ? (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-display="static"
+                >
+                  Admin Management
+                </a>
+                <NavDropdown
+                  data={navDropdownAdminData}
+                  // style={{ position: 'absolute' }}
+                  icon={true}
+                />
+              </li>
+            ) : (
+              ''
+            )}
+          </ul>
+        </div>
+        {/* <div className="col-auto">
         <div className="input-group search">
           <span className="input-group-addon">
             <i className="fa-solid fa-magnifying-glass" />
@@ -138,7 +144,23 @@ const Navbar = ({ isAdmin }) => {
           ></input>
         </div>
       </div> */}
-    </nav>
+      </nav>
+      {isLogedIn && (
+        <div className="col-auto">
+          <button
+            className="logout-btn"
+            onClick={() => {
+              toast.success('Log out successfully')
+              removeToken()
+              removeUserRole()
+              navigate('/auth/login')
+            }}
+          >
+            Log out
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
 

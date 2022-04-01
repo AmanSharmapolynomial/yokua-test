@@ -1,21 +1,9 @@
 import { useStoreState } from 'easy-peasy'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { Navigate } from 'react-router'
-import { removeToken, removeUserRole } from '../../utils/token'
 import Navbar from '../Navbar'
-import PhoneNav from '../Navbar/PhoneNav'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
-import { toast } from 'react-toastify'
 const Header = ({ isLogedIn, isAdmin }) => {
-  // fetch state
-  // const userDetails = useStoreState(state => state.userDetails)
-  const width = window.outerWidth
-
-  const navigate = useNavigate()
-  const [renderPhoneNav, setrenderPhoneNav] = useState(false)
-
   return (
     <header className="header sticky-top mb-auto">
       <div className="row mx-5">
@@ -40,26 +28,11 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 ></input>
               </div>
             </div>
-            {/* {isLogedIn && (
-              <div className="col-auto">
-                <button
-                  className="logout-btn"
-                  onClick={() => {
-                    toast.success('Log out successfully')
-                    removeToken()
-                    removeUserRole()
-                    navigate('/auth/login')
-                  }}
-                >
-                  Log out
-                </button>
-              </div>
-            )} */}
           </div>
           {isLogedIn && (
             <div className="row justify-content-center">
               <div className="col-auto">
-                <Navbar isAdmin={isAdmin} />
+                <Navbar isAdmin={isAdmin} isLogedIn={isLogedIn} />
               </div>
             </div>
           )}
