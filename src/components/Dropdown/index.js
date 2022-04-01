@@ -17,7 +17,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
       </div>
 
       <div
-        className="role-dropdown dropdown"
+        className="nav-item dropdown"
         style={{
           display: showRoleDropdown ? 'flex' : 'none',
         }}

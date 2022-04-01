@@ -16,22 +16,23 @@ const NavDropdown = ({ data, icon, renderDropdown }) => {
   }, [renderDropdown])
 
   return (
-    <div className="role-dropdown" ref={ref}>
-      <div
-        className="role-dropdown dropdown"
-        style={{
-          display: showRoleDropdown ? 'flex' : 'none',
-          lineHeight: '20px',
-        }}
-      >
-        {renderDropdown &&
-          data.map((element, index) => (
-            <Link to={element.url} key={index}>
-              <span className="dropdown-element">{element.name}</span>
-            </Link>
-          ))}
-      </div>
+    // <div className="role-dropdown" ref={ref}>
+    <div
+      className="dropdown-menu"
+      aria-labelledby="navbarDropdown"
+      // style={{
+      //   display: showRoleDropdown ? 'flex' : 'none',
+      //   lineHeight: '20px',
+      // }}
+    >
+      {renderDropdown &&
+        data.map((element, index) => (
+          <Link to={element.url} key={index}>
+            <span className="dropdown-item">{element.name}</span>
+          </Link>
+        ))}
     </div>
+    // </div>
   )
 }
 

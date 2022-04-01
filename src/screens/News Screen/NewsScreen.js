@@ -92,7 +92,6 @@ const NewsScreen = () => {
       setTotalPages(data.data.total_pages)
     })
   }
-  console.log(totalPages)
   const markAsReadAction = array => {
     const markAsPayload = {
       news_id: array,
@@ -151,97 +150,122 @@ const NewsScreen = () => {
             <div className="filter-container">
               <div className="filter-actions">
                 <div className="filter-icons">
-                  <img
-                    className={categoryFilter === null ? 'greyed' : null}
-                    src={Filtermg}
-                    onClick={() => {
-                      setShowFilterDropdown1(!showFilterDropdown1)
-                    }}
-                    ref={ref1}
-                  />
-                  <div
-                    className="filter-dropdown dropdown"
-                    style={{
-                      display: showFilterDropdown1 ? 'flex' : 'none',
-                    }}
-                  >
-                    {backendData &&
-                      backendData.categories.map((category, index) => (
-                        <span
-                          key={index}
-                          className="dropdown-element"
-                          ref={filter1Ref}
-                          style={
-                            categoryFilter == category.id
-                              ? {
-                                  fontWeight: 'bold',
-                                }
-                              : {
-                                  fontWeight: '300',
-                                }
-                          }
-                          onClick={() => {
-                            if (categoryFilter == category.id) {
-                              toast.success('Category filter removed')
-                              setCategoryFilter(null)
-                              setSubCategoryFilter(null)
-                            } else {
-                              toast.success('Category filter Applied')
-                              setCategoryFilter(category.id)
+                  <div className="dropdown">
+                    <img
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      className={
+                        categoryFilter === null
+                          ? 'dropdown-toggle greyed filter-icon'
+                          : 'dropdown-toggle filter-icon'
+                      }
+                      src={Filtermg}
+                      ref={ref1}
+                    />
+                    <div
+                      className="dropdown-menu"
+                      style={{
+                        overflowY: 'scroll',
+                        maxHeight: '10rem',
+                      }}
+                    >
+                      {backendData &&
+                        backendData.categories.map((category, index) => (
+                          <span
+                            key={index}
+                            className="dropdown-item filter-item"
+                            ref={filter1Ref}
+                            style={
+                              categoryFilter == category.id
+                                ? {
+                                    fontWeight: 'bold',
+                                  }
+                                : {
+                                    fontWeight: '300',
+                                  }
                             }
-                          }}
-                        >
-                          {category.category_name}
-                        </span>
-                      ))}
+                            onClick={() => {
+                              if (categoryFilter == category.id) {
+                                toast.success('Category filter removed')
+                                setCategoryFilter(null)
+                                setSubCategoryFilter(null)
+                              } else {
+                                toast.success('Category filter Applied')
+                                setCategoryFilter(category.id)
+                              }
+                            }}
+                          >
+                            {category.category_name}
+                          </span>
+                        ))}
+                    </div>
                   </div>
                 </div>
                 <div className="filter-icons" style={{ marginLeft: '12rem' }}>
-                  {backendData?.sub_categories?.length > 0 && (
-                    <img
-                      className={subCategoryFilter === null ? 'greyed' : null}
-                      src={Filtermg}
-                      onClick={() => {
-                        if (categoryFilter) {
-                          setShowFilterDropdown2(!showFilterDropdown2)
-                        } else {
-                          toast.success('Please select the Category filter first.')
+                  <div className="dropdown">
+                    {backendData?.sub_categories?.length > 0 && (
+                      <img
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        className={
+                          subCategoryFilter === null
+                            ? 'dropdown-toggle greyed filter-icon'
+                            : 'dropdown-toggle filter-icon'
                         }
-                      }}
-                      ref={ref2}
-                    />
-                  )}
-                  <div
+                        src={Filtermg}
+                        onClick={() => {
+                          if (!categoryFilter) {
+                            // setShowFilterDropdown2(!showFilterDropdown2)
+                            // } else {
+                            toast.success('Please select the Category filter first.')
+                          }
+                        }}
+                        ref={ref2}
+                      />
+                    )}
+                    {/* <div
                     className="filter-dropdown dropdown"
                     style={{
                       display: showFilterDropdown2 ? 'flex' : 'none',
                     }}
-                  >
-                    {backendData &&
-                      backendData.sub_categories
-                        .filter(item => item.category_id == categoryFilter)
-                        .map((category, index) => (
-                          <span
-                            key={index}
-                            className="dropdown-element"
-                            ref={filter2Ref}
-                            style={{
-                              fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
-                            }}
-                            onClick={() => {
-                              if (subCategoryFilter == category.id) {
-                                toast.success('Sub Category filter removed')
-                                setSubCategoryFilter(null)
-                              } else {
-                                toast.success('Sub Category filter applied')
-                                setSubCategoryFilter(category.id)
-                              }
-                            }}
-                          >
-                            {category.sub_category_name}
-                            Something
-                          </span>
-                        ))}
+                  > */}
+                    <div
+                      className="dropdown-menu"
+                      style={{
+                        overflowY: 'scroll',
+                        maxHeight: '10rem',
+                      }}
+                    >
+                      {backendData &&
+                        backendData.sub_categories
+                          .filter(item => item.category_id == categoryFilter)
+                          .map((category, index) => (
+                            <span
+                              key={index}
+                              className="dropdown-item filter-item"
+                              ref={filter2Ref}
+                              style={{
+                                fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                              }}
+                              onClick={() => {
+                                if (subCategoryFilter == category.id) {
+                                  toast.success('Sub Category filter removed')
+                                  setSubCategoryFilter(null)
+                                } else {
+                                  toast.success('Sub Category filter applied')
+                                  setSubCategoryFilter(category.id)
+                                }
+                              }}
+                            >
+                              {category.sub_category_name}
+                              Something
+                            </span>
+                          ))}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getUserRoles } from '../../utils/token'
-import Dropdown from '../Dropdown'
 import NavDropdown from './navDropdown'
 import './style.css'
 
@@ -61,7 +60,7 @@ const Navbar = ({ isAdmin }) => {
           </li>
           <li className="nav-item border-left border-right">
             <li
-              className="nav-item border-left"
+              className="nav-item border-left dropdown"
               onClick={() => {
                 setProductLineDropdown(!isProductLineDropdown)
               }}
@@ -98,7 +97,7 @@ const Navbar = ({ isAdmin }) => {
           </li>
           {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
             <li
-              className="nav-item border-left border-right"
+              className="nav-item border-left border-right dropdown"
               onClick={() => {
                 setRenderDropdown(!renderDropdown)
               }}
@@ -107,11 +106,20 @@ const Navbar = ({ isAdmin }) => {
                 cursor: 'pointer',
               }}
             >
-              <a>Admin Management</a>
-              <i className="fa-solid fa-caret-down " />
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Admin Management
+              </a>
               <NavDropdown
                 data={navDropdownAdminData}
-                style={{ position: 'absolute' }}
+                // style={{ position: 'absolute' }}
                 icon={true}
                 renderDropdown={renderDropdown}
               />

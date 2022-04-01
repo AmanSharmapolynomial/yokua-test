@@ -101,6 +101,7 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
+  background: white;
 }
 
 /* Handle */
