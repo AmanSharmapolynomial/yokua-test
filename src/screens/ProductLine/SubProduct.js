@@ -47,6 +47,12 @@ const SubProduct = () => {
       })
   }
 
+  const updateSubProduct = async payload => {
+    const response = await API.post('products/add/sub_product', payload)
+    getProductList()
+    toast.success(response.data.message)
+  }
+
   const renderRow = () => {
     let rows = []
     let col = []
@@ -59,6 +65,9 @@ const SubProduct = () => {
           subProduct={true}
           onClick={() => {
             navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+          }}
+          onUpdate={payload => {
+            updateSubProduct(payload)
           }}
         />
       )
@@ -86,7 +95,7 @@ const SubProduct = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5 h-100">
+      <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
           <div className="row">
             <div className="col-12 col-md-6 border rounded py-2">

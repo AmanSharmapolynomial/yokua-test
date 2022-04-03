@@ -119,7 +119,7 @@ const ProfileSettingScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-5 h-100">
+      <div className="row mx-2 mx-md-5 h-100">
         {openSimpleDeleteModal && (
           <DeleteModal
             show={openSimpleDeleteModal}

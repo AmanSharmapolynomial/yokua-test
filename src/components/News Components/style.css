@@ -28,8 +28,8 @@
 }
 
 .read-dot {
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1rem;
+  height: 1rem;
   border: 1px solid var(--bgColor2);
   border-radius: 100%;
   background-color: #004f9b;
@@ -47,7 +47,7 @@
   /* max-width: 15rem; */
   /* min-width: 200px; */
   overflow: hidden;
-  height: 12rem !important;
+  height: auto !important;
   /* height: 200px; */
   /* max-height: 130px; */
 }
@@ -66,9 +66,6 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-  min-height: 10rem;
-  max-width: 320px;
-  margin-top: 1rem;
 }
 .news-info > .date {
   margin-bottom: 1rem;
@@ -81,7 +78,6 @@
   text-decoration: underline;
   cursor: pointer;
   text-transform: capitalize;
-  width: 200px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -99,7 +95,7 @@
   font-size: 16px;
   border-radius: 30px;
   display: block;
-  width: 150px;
+  /* width: 150px; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -309,4 +305,18 @@ form input {
 .news-desc > textarea {
   width: 100%;
   height: 100%;
+}
+
+@media (min-width: 768px) {
+  .news-img {
+    height: 12rem !important;
+  }
+  .read-dot {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .p-md-auto {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
 }

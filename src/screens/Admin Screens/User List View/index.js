@@ -405,7 +405,7 @@ const UserListView = () => {
   }
 
   return (
-    <div className="row mx-5">
+    <div className="row mx-2 mx-md-5 h-100">
       <div className="col user-list-view">
         <SecondaryHeading title={'Users list view'} />
 

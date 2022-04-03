@@ -584,10 +584,10 @@ const NewsItem = ({
       />
       <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
-          <div className="col-10">
+          <div className="col-12 col-md-10">
             <div className="row">
               <div
-                className="dot-adjust col-auto mx-1"
+                className="dot-adjust col-auto mx-md-1"
                 onClick={() => {
                   // call here the mark as read api
                   // const payloadRead = {
@@ -621,8 +621,8 @@ const NewsItem = ({
                   ></div>
                 )}
               </div>
-              <div className="col-3">
-                <div className="news-img rounded mx-3">
+              <div className="col-3 p-sm-0 p-md-auto">
+                <div className="news-img rounded mx-md-3">
                   {editView ? (
                     <>
                       <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
@@ -632,7 +632,7 @@ const NewsItem = ({
                   )}
                 </div>
               </div>
-              <div className="news-text col-auto">
+              <div className="col-auto">
                 <div className="news-info">
                   <span className="date">
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
@@ -933,7 +933,7 @@ const NewsItem = ({
                   )}
                 </div>
               </div>
-              <div className="news-desc col">
+              <div className="news-desc col-12 col-md-auto">
                 {editView ? (
                   <textarea
                     ref={newsDescRef}
@@ -943,19 +943,13 @@ const NewsItem = ({
                     }}
                   />
                 ) : (
-                  <p
-                    style={{
-                      marginTop: '1rem',
-                    }}
-                  >
-                    {data ? data.description : ''}
-                  </p>
+                  <p>{data ? data.description : ''}</p>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="col-2 d-flex align-items-end flex-column">
+          <div className="col-2 align-items-end flex-column d-none d-md-flex">
             <div className="yk-news-edit-icons mb-5">
               {editView
                 ? hasPermission && (

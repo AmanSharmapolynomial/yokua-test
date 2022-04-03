@@ -28,26 +28,6 @@ const ProductLine = () => {
       is_archived: archivedFilter,
     })
       .then(res => {
-        // const staticProductLine = [
-        //   {
-        //     id: -1,
-        //     name: 'Rotameter',
-        //     image_link: '',
-        //     is_archived: false,
-        //     isStatic: true,
-        //     route: 'rotameter',
-        //   },
-        //   {
-        //     id: -2,
-        //     name: 'Approved Tokuchus',
-        //     image_link: '',
-        //     is_archived: false,
-        //     isStatic: true,
-        //     route: 'approved-tokuchus',
-        //   },
-        // ]
-        // const data = [...res.data, ...staticProductLine]
-
         if (res.status === 200 && res.data !== undefined) {
           setProductList(res.data)
         }
@@ -59,35 +39,11 @@ const ProductLine = () => {
       })
   }
 
-  const updateProduct = async id => {
-    const payload = {
-      id: id,
-      product_name: 'Vortex-Yewflo',
-      description: 'A paragraph of text',
-    }
-
-    if (payload.email_id != '') {
-      const afterAddOrDeleteMsg = await API.post('products/add/product', payload)
-      if (data.imageFile) {
-        const formData = new FormData()
-
-        formData.append('image', data.imageFile)
-        formData.append('email', data.email)
-        await API.post('auth/update_avatar', formData)
-          .then(data => {
-            setReloadData(true)
-          })
-          .catch(error => {
-            // toast.error('Error while updating Avatar')
-          })
-      }
-      toast.success(afterAddOrDeleteMsg.data.message)
-    } else {
-      toast.error('Enter E-Mail')
-    }
-    setReloadTable(!reloadTable)
+  const updateProduct = async payload => {
+    const response = await API.post('products/add/product', payload)
+    getProductList()
+    toast.success(response.data.message)
   }
-
   const renderRow = () => {
     let rows = []
     let col = []
@@ -99,6 +55,9 @@ const ProductLine = () => {
           item={item}
           onClick={() => {
             navigate('/product-lines/sub-product', { state: item })
+          }}
+          onUpdate={payload => {
+            updateProduct(payload)
           }}
         />
       )
@@ -126,7 +85,7 @@ const ProductLine = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5 h-100">
+      <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-md-3">
           <PrimaryHeading title={'Product Lines'} />
           {isLoading ? (

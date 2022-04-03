@@ -349,7 +349,7 @@ const UserApprovalScreen = () => {
   }
 
   return (
-    <div className="row mx-5 h-100">
+    <div className="row mx-2 mx-md-5 h-100">
       <div className="col user-approval-screen">
         {openARModal && (
           <AcceptRejectModal

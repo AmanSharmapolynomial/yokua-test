@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import DataTable from 'react-data-table-component'
+import Plusicon from '../../assets/Group 331.png'
+import accept from '../../assets/Icon ionic-md-checkmark-circle.png'
+import decline from '../../assets/Icon ionic-md-close-circle.png'
+import { Image } from 'react-bootstrap'
+import API from '../../utils/api'
+import { toast } from 'react-toastify'
 
 /**
  *
@@ -24,11 +30,11 @@ import DataTable from 'react-data-table-component'
  * ]}
  *
  */
-export default ({ tableObject, setShowDeleteModal }) => {
+export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
-  const [numberOfColumns, setNumberOfColumns] = useState(0)
-  const [numberOfRows, setNumberOfRows] = useState(0)
+  const [isEditable, setIsEditable] = useState(false)
+  const inputRef = useRef([])
   const customStyles = {
     rows: {
       style: {
@@ -54,11 +60,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
     },
   }
 
-  const _totalNumberOfRowsAndColumns = () => {
-    setNumberOfColumns(tableObject?.length)
-    setNumberOfRows(tableObject?.values?.length)
-  }
-
   const _setTableHeaders = () => {
     const tableColumns = []
     tableObject?.map((column, index) => {
@@ -72,7 +73,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
         filterable: column.is_filterable,
       })
     })
-    console.log(tableColumns)
     setTableHeader([...tableColumns])
   }
 
@@ -85,14 +85,71 @@ export default ({ tableObject, setShowDeleteModal }) => {
           id: item.id,
         }
 
-        tableData?.map((tableC, tableI) => {
+        tableData?.map(column_name => {
           const tempObject = new Object()
-          tempObject[tableC['column_name']] = tableC.values[index].value
+          tempObject[column_name['column_name']] = column_name.values[index].value
           Object.assign(tableRowObject, tempObject)
         })
         finalTableData.push(tableRowObject)
       })
     setTableRows([...finalTableData])
+  }
+
+  const callAddRowAPI = async () => {
+    let data = []
+    tableObject.forEach(col => {
+      // let values = []
+      // col.values.forEach(val => {
+      //   values.push(val.value)
+      // })
+      data.push({ column_name: col.column_name /*, values*/ })
+    })
+
+    inputRef.current.forEach((input, idx) => {
+      data[idx] = { ...data[idx], values: [/*...data[idx].values,*/ input.value] }
+    })
+
+    const payload = {
+      table_id: tableObject[0].table_id,
+      action_type: 'add_row',
+      data: data,
+    }
+    const response = await API.post('/products/page/update_table_data', payload)
+    toast.success(response.data.message)
+    onRefresh()
+    setIsEditable(false)
+  }
+
+  const renderDummyRow = () => {
+    return (
+      <div className="add-row">
+        {tableObject.map((ele, idx) => (
+          <div className="dummy-col">
+            <input ref={el => (inputRef.current[idx] = el)} />
+            {tableObject.length === idx + 1 && (
+              <>
+                <Image
+                  role={'button'}
+                  src={decline}
+                  className="ml-2"
+                  onClick={() => {
+                    setIsEditable(false)
+                  }}
+                />
+                <Image
+                  role={'button'}
+                  src={accept}
+                  className="mx-2"
+                  onClick={() => {
+                    callAddRowAPI()
+                  }}
+                />
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    )
   }
 
   useEffect(() => {
@@ -127,6 +184,26 @@ export default ({ tableObject, setShowDeleteModal }) => {
           // selectableRows
           // onSelectedRowsChange={selectedRowsActionUA}
         />
+        {isEditable ? (
+          renderDummyRow()
+        ) : (
+          <div
+            role={'button'}
+            className="add-row"
+            onClick={() => {
+              setIsEditable(true)
+            }}
+          >
+            <img
+              src={Plusicon}
+              style={{
+                width: '16px',
+                marginRight: '12px',
+              }}
+            />
+            Add
+          </div>
+        )}
       </div>
     </>
   )

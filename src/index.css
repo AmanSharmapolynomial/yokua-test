@@ -99,6 +99,27 @@ body {
   filter: grayscale(1);
   opacity: 0.5;
 }
+.add-row {
+  height: 48px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+  border-top: 1px solid lightgrey;
+}
+.dummy-col {
+  flex: 1;
+  display: flex;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: inherit;
+  padding-block: 0.6rem;
+}
+.dummy-col > img {
+  width: 16px;
+  height: 16px;
+  align-self: center;
+}
 /* tablet view */
 ::-webkit-scrollbar {
   height: 2px;

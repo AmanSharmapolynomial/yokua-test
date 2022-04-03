@@ -6,7 +6,7 @@ import Yokogawa from '../../assets/Yokogawa png.png'
 const Header = ({ isLogedIn, isAdmin }) => {
   return (
     <header className="header sticky-top mb-auto">
-      <div className="row mx-5 h-100">
+      <div className="row mx-2 mx-md-5 h-100">
         <div className="col">
           <div className="row header-container py-2">
             <div className="header__logo col-12 col-md-4">

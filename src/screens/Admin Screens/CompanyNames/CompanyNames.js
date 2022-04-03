@@ -50,7 +50,7 @@ export default () => {
   const [showDelete, setDelete] = useState(false)
   const [currentDeleteId, setCurrentDeleteId] = useState(0)
   return (
-    <div className="row mx-5 h-100">
+    <div className="row mx-2 mx-md-5 h-100">
       <div className="col user-list-view">
         <SecondaryHeading title={'Company Name'} />
         <div className="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
