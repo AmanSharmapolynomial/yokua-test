@@ -1,16 +1,25 @@
 import { useStoreState } from 'easy-peasy'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import Navbar from '../Navbar'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
 const Header = ({ isLogedIn, isAdmin }) => {
+  const navigate = useNavigate()
   return (
     <header className="header sticky-top mb-auto">
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col">
           <div className="row header-container py-2">
             <div className="header__logo col-12 col-md-4">
-              <img src={Yokogawa} alt="logo" />
+              <img
+                src={Yokogawa}
+                alt="logo"
+                role={'button'}
+                onClick={() => {
+                  navigate('/')
+                }}
+              />
             </div>
             <div className="header__title col-12 col-md-4 mr-md-auto text-center my-2 my-md-0">
               FLOW CENTER PAGES

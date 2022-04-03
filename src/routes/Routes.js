@@ -30,6 +30,8 @@ import ProductLine from '../screens/ProductLine/ProductLine'
 import SubProduct from '../screens/ProductLine/SubProduct'
 import ProductDetail from '../screens/ProductLine/ProductDetail'
 import Tokachu from '../screens/Admin Screens/Tokachu/Tokachu'
+import Impressum from '../components/Impressum'
+import PrivacyPolicy from '../components/PrivacyPolicy'
 
 const Routing = () => {
   // get User Login Info
@@ -207,6 +209,32 @@ const Routing = () => {
           ) : (
             <Route path="*" element={<Navigate to="/profile" />} />
           )} */}
+        <Route
+          path="/impressum"
+          element={
+            <>
+              <Header />
+              <div className="d-flex justify-content-center h-100">
+                <div className="col">
+                  <Impressum />
+                </div>
+              </div>
+            </>
+          }
+        />
+        <Route
+          path="/privacy-policy"
+          element={
+            <>
+              <Header />
+              <div className="d-flex justify-content-center h-100">
+                <div className="col">
+                  <PrivacyPolicy />
+                </div>
+              </div>
+            </>
+          }
+        />
       </Routes>
       <Footer />
     </React.Fragment>

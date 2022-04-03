@@ -120,6 +120,9 @@ body {
   height: 16px;
   align-self: center;
 }
+.font-8 {
+  font-size: 0.8rem;
+}
 /* tablet view */
 ::-webkit-scrollbar {
   height: 8px;

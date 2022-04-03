@@ -9,6 +9,7 @@ import './style.css'
 import API from '../../utils/api'
 
 const Navbar = ({ isAdmin, isLogedIn }) => {
+  const navigate = useNavigate()
   const [unreadNewsCount, setUnreadNewsCount] = useState(0)
 
   const navDropdownAdminData = [
