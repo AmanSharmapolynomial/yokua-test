@@ -122,8 +122,8 @@ body {
 }
 /* tablet view */
 ::-webkit-scrollbar {
-  height: 2px;
-  width: 2px;
+  height: 8px;
+  width: 8px;
 }
 
 /* Track */
