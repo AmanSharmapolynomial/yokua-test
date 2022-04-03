@@ -82,4 +82,10 @@ a {
   .navbar-expand-md .navbar-nav .dropdown-menu {
     margin-top: 4.8rem;
   }
+  .nav-link,
+  .logout-btn {
+    color: white !important;
+    font-size: 1vw;
+    font-weight: normal !important;
+  }
 }

@@ -94,6 +94,7 @@ const ProductLine = () => {
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
+          key={item.id}
           index={index}
           item={item}
           onClick={() => {

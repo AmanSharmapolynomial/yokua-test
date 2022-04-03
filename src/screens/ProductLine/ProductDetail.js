@@ -47,7 +47,7 @@ const ProductDetail = () => {
     let rows = []
     let col = []
     productList.forEach((item, index) => {
-      col.push(<ProductCard index={index} item={item} subProduct={true} />)
+      col.push(<ProductCard index={index} item={item} subProduct={true} key={item.id} />)
       if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
         rows.push(<div className="row mt-5">{col}</div>)
         col = []

@@ -18,7 +18,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
 
   const productLineDropdown = [
     { name: 'Approved Tokachu', url: '/admin/approved-tokuchus' },
-    { name: 'Product Line', url: '/admin/user/list-view' },
+    { name: 'Product Line', url: '/product-lines' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
@@ -69,17 +69,16 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         id="navbar"
       >
         <ul className="navbar-nav mx-auto text-md-center text-left">
-          <li className="nav-item px-2">
+          <li className="nav-item px-lg-2">
             <a className="nav-link">Home</a>
           </li>
-          <li className="nav-item px-2">
+          <li className="nav-item px-lg-2">
             <Link className="nav-link" to="/news">
               News
             </Link>
           </li>
-          <li className="nav-item dropdown px-2">
-            <Link
-              to="/product-lines"
+          <li className="nav-item dropdown px-lg-2">
+            <a
               className="nav-link dropdown-toggle"
               href="#"
               id="navbarDropdown"
@@ -89,10 +88,17 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               aria-expanded="false"
             >
               Product Lines
-            </Link>
+            </a>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              {productLineDropdown.map((element, index) => (
+                <Link to={element.url} key={index} className="dropdown-item">
+                  {element.name}
+                </Link>
+              ))}
+            </div>
           </li>
 
-          <li className="nav-item dropdown px-2">
+          <li className="nav-item dropdown px-lg-2">
             <a
               className="nav-link dropdown-toggle"
               href="#"
@@ -106,19 +112,19 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </a>
           </li>
 
-          <li className="nav-item px-2">
+          <li className="nav-item px-lg-2">
             <a className="nav-link">Training</a>
           </li>
-          <li className="nav-item px-2">
+          <li className="nav-item px-lg-2">
             <a className="nav-link">Data History</a>
           </li>
-          <li className="nav-item px-2">
+          <li className="nav-item px-md-2">
             <Link className="nav-link" to="/profile">
               Profile Setting
             </Link>
           </li>
           {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-2">
+            <li className="nav-item dropdown px-lg-2">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"
@@ -142,7 +148,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           )}
         </ul>
         {isLogedIn && (
-          <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+          <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
             <button
               className="logout-btn"
               onClick={() => {

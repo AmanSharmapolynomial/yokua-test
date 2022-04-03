@@ -1,0 +1,9 @@
+textarea {
+  resize: none !important;
+}
+input {
+  width: 100%;
+}
+.img-thumbnail {
+  object-fit: cover;
+}

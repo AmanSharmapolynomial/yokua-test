@@ -15,7 +15,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
             <div className="header__title col-12 col-md-4 mr-md-auto text-center my-2 my-md-0">
               FLOW CENTER PAGES
             </div>
-            <div className="col-4">
+            <div className="col-4 d-none d-md-block">
               <div className="input-group search float-right px-3">
                 <span className="input-group-addon">
                   <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />

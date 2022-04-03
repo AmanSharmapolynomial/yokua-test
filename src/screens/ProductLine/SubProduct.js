@@ -32,7 +32,13 @@ const SubProduct = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductList(res.data)
+          console.log(res.data.length)
+          if (res.data.length === 1 && res.data[0].sub_product_name === 'proxy') {
+            const item = res.data[0]
+            navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+          } else {
+            setProductList(res.data)
+          }
         }
         setIsLoading(false)
       })
@@ -48,6 +54,7 @@ const SubProduct = () => {
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
+          key={item.id}
           index={index}
           item={item}
           subProduct={true}
