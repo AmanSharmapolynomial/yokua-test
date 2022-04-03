@@ -50,21 +50,18 @@ export default ({ tableObject, setShowDeleteModal }) => {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
         fontSize: '0.8rem',
-        borderBottomStyle: 'solid',
-        borderBottomColor: 'black',
-        borderBottomWidth: '1px',
       },
     },
   }
 
   const _totalNumberOfRowsAndColumns = () => {
-    setNumberOfColumns(tableObject?.table_data?.length)
-    setNumberOfRows(tableObject?.table_data?.values?.length)
+    setNumberOfColumns(tableObject?.length)
+    setNumberOfRows(tableObject?.values?.length)
   }
 
   const _setTableHeaders = () => {
     const tableColumns = []
-    tableObject.table_data?.map((column, index) => {
+    tableObject?.map((column, index) => {
       const tempColumnName = column.column_name
       tableColumns.push({
         name: column.column_name,
@@ -80,7 +77,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
   }
 
   const _setTableData = () => {
-    const tableData = tableObject.table_data
+    const tableData = tableObject
     const finalTableData = []
     tableData &&
       tableData[0]?.values?.map((item, index) => {
@@ -95,7 +92,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
         })
         finalTableData.push(tableRowObject)
       })
-    console.log(finalTableData)
     setTableRows([...finalTableData])
   }
 
@@ -109,30 +105,29 @@ export default ({ tableObject, setShowDeleteModal }) => {
   return (
     <>
       {tableObject != {} && (
-        <div
-          className="position-absolute text-primary"
-          style={{ zIndex: '4', right: '0', marginTop: '-36px' }}
-        >
-          <i className="fa-solid fa-pen-to-square"></i>
+        <div className="ml-auto mt-4">
+          <i className="fa-solid fa-pen-to-square mr-2"></i>
           <i
-            className="fa-solid fa-trash"
+            className="fa-solid fa-trash ml-2"
             onClick={() => {
               setShowDeleteModal(true)
             }}
           ></i>
         </div>
       )}
-
-      <DataTable
-        pagination
-        fixedHeader
-        columns={tableHeader}
-        data={tableRows}
-        customStyles={customStyles}
-        // conditionalRowStyles={conditionalRowStyles}
-        // selectableRows
-        // onSelectedRowsChange={selectedRowsActionUA}
-      />
+      <div className="border w-100">
+        <DataTable
+          pagination={false}
+          paginationPerPage={false}
+          fixedHeader
+          columns={tableHeader}
+          data={tableRows}
+          customStyles={customStyles}
+          // conditionalRowStyles={conditionalRowStyles}
+          // selectableRows
+          // onSelectedRowsChange={selectedRowsActionUA}
+        />
+      </div>
     </>
   )
 }

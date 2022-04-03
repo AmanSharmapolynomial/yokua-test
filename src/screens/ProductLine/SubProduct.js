@@ -32,7 +32,6 @@ const SubProduct = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          console.log(res.data.length)
           if (res.data.length === 1 && res.data[0].sub_product_name === 'proxy') {
             const item = res.data[0]
             navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
@@ -93,6 +92,7 @@ const SubProduct = () => {
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span
+                  role="button"
                   className="col-6 light-grey"
                   onClick={() => {
                     navigate(-1)
@@ -101,7 +101,15 @@ const SubProduct = () => {
                   Previous page
                 </span>
                 <span className="col-6">
-                  <u>Product Lines</u> {'>'} {state.name}
+                  <u
+                    role="button"
+                    onClick={() => {
+                      navigate('/product-lines')
+                    }}
+                  >
+                    Product Lines
+                  </u>
+                  {'>'} {state.name}
                 </span>
               </div>
             </div>

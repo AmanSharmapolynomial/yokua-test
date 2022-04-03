@@ -13,8 +13,7 @@ import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
-
-import ProductCard from '../../components/ProductCard/productcard'
+import Table from '../../components/TableComponent/Table'
 
 const ProductDetail = () => {
   const navigate = useNavigate()
@@ -22,9 +21,9 @@ const ProductDetail = () => {
   const { setLoading } = useLoading()
   const [archivedFilter, setArchivedFilter] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [productList, setProductList] = useState([])
+  const [productDetail, setProductDetail] = useState([])
 
-  const getProductList = () => {
+  const getProductDetails = () => {
     setIsLoading(true)
     API.post('products/details/', {
       is_archived: archivedFilter,
@@ -32,8 +31,7 @@ const ProductDetail = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductList(res.data)
-          console.log(res.data)
+          setProductDetail(res.data)
         }
         setIsLoading(false)
       })
@@ -43,26 +41,36 @@ const ProductDetail = () => {
       })
   }
 
-  const renderRow = () => {
-    let rows = []
-    let col = []
-    productList.forEach((item, index) => {
-      col.push(<ProductCard index={index} item={item} subProduct={true} key={item.id} />)
-      if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-        rows.push(<div className="row mt-5">{col}</div>)
-        col = []
-      } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-        col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-        rows.push(<div className="row mt-5">{col}</div>)
-        col = []
-      }
-    })
-    return rows
+  const renderType = ele => {
+    if (ele.type === 'binary') {
+      return (
+        <div className="col-12 mt-4">
+          <div className="row">
+            <span className="flex-fill">{ele.title}</span>
+            <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
+              Download
+            </a>
+          </div>
+        </div>
+      )
+    } else if (ele.type === 'table') {
+      return <Table tableObject={ele.table_data} setShowDeleteModal={false} />
+    }
   }
 
+  const renderComponents = () =>
+    productDetail.map((item, index) => (
+      <div className="col-12 mt-5">
+        <div className="row">
+          <span className="text-bold">{item.sectionName}</span>
+        </div>
+        <div className="row">{item.components.map((ele, idx) => renderType(ele))}</div>
+      </div>
+    ))
+
   useEffect(() => {
-    getProductList()
-  }, [archivedFilter])
+    getProductDetails()
+  }, [])
 
   return (
     <>
@@ -78,6 +86,7 @@ const ProductDetail = () => {
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span
+                  role="button"
                   className="col-6 light-grey"
                   onClick={() => {
                     navigate(-1)
@@ -86,40 +95,24 @@ const ProductDetail = () => {
                   Previous page
                 </span>
                 <span className="col-6">
-                  <u>Product Lines</u> {'>'} {state.name}
+                  <u
+                    role="button"
+                    onClick={e => {
+                      navigate('/product-lines')
+                    }}
+                  >
+                    Product Lines
+                  </u>
+                  {'>'} {state.sub_product_name}
                 </span>
               </div>
             </div>
           </div>
-          <div className="row mt-5 text-bold">{state.name}</div>
           {isLoading ? (
             <div className="col text-center">Loading....</div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="row">{renderComponents()}</div>
           )}
-          <div className="archived-filter mt-5">
-            {archivedFilter ? (
-              <button
-                className="btn"
-                style={{ display: 'grid', placeItems: 'center' }}
-                onClick={() => {
-                  setArchivedFilter(false)
-                }}
-              >
-                Live Product
-              </button>
-            ) : (
-              <button
-                className="btn"
-                style={{ display: 'grid', placeItems: 'center' }}
-                onClick={() => {
-                  setArchivedFilter(true)
-                }}
-              >
-                Product Archive
-              </button>
-            )}
-          </div>
         </div>
       </div>
     </>

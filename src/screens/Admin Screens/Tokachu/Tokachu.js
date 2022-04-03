@@ -405,7 +405,7 @@ export default () => {
             </div>
           </div>
           {tableDetails && (
-            <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+            <Table tableObject={tableDetails?.table_data} setShowDeleteModal={setShowDeleteModal} />
           )}
         </div>
       </div>

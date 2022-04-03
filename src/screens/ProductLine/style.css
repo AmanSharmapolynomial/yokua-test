@@ -23,10 +23,23 @@
 
 .text-bold {
   font-weight: 500;
-  font-size: 4vh;
+  font-size: 1.4rem;
 }
 
 .thumb > img {
   object-fit: contain;
   aspect-ratio: 1;
+}
+
+.bordered-btn {
+  background-color: var(--bgColor2) !important;
+  padding-block: 0.2rem !important;
+  color: white !important;
+  padding-inline: 1rem !important;
+  border: 1px solid black !important;
+  font-size: 0.6rem !important;
+}
+
+.bordered-btn:hover {
+  text-decoration: none !important;
 }

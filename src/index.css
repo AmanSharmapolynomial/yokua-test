@@ -101,7 +101,8 @@ body {
 }
 /* tablet view */
 ::-webkit-scrollbar {
-  width: 7px;
+  height: 2px;
+  width: 2px;
 }
 
 /* Track */
@@ -112,4 +113,5 @@ body {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #004f9b;
+  border-radius: 64px;
 }
