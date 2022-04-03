@@ -78,6 +78,11 @@ a {
   font-weight: normal !important;
 }
 
+.font-6 {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+}
+
 @media (min-width: 768px) {
   .navbar-expand-md .navbar-nav .dropdown-menu {
     margin-top: 4.8rem;

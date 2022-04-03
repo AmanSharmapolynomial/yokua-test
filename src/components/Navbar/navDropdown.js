@@ -7,7 +7,7 @@ const NavDropdown = ({ data }) => {
   return (
     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
       {data.map((element, index) => (
-        <Link to={element.url} key={index} className="dropdown-item">
+        <Link to={element.url} key={index} className="dropdown-item font-6">
           {element.name}
         </Link>
       ))}
