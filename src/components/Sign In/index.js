@@ -62,42 +62,40 @@ const SignIn = () => {
     <div className="signIn-container mx-auto my-5 col-10 col-md-4 order-1 order-md-12">
       <h3 className="container__heading mt-4">Sign In with E-mail</h3>
       <form className="forum" type="submit" onSubmit={SignIn}>
-        <div className="row d-flex justify-content-center">
-          <input
-            type="email"
-            required={true}
-            onChange={e => setEmail(e.target.value)}
-            className="input-field input-field__email"
-            placeholder="E-Mail"
-          />
-          <div className="row align-items-center input-field mx-auto">
-            <span className="flex-fill">
-              <input
-                type={passwordVisible ? 'text' : 'password'}
-                name="Password"
-                className="input-field__password"
-                onChange={e => setPassword(e.target.value)}
-                required={true}
-                placeholder="Password"
-              />
-            </span>
-            <span>
-              <i
-                className={passwordVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              />
-            </span>
-          </div>
-          <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
-            Incorrect Password
+        <input
+          type="email"
+          required={true}
+          onChange={e => setEmail(e.target.value)}
+          className="input-field input-field__email"
+          placeholder="E-Mail"
+        />
+        <div className="row align-items-center input-field">
+          <span className="flex-fill">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              name="Password"
+              className="input-field__password"
+              onChange={e => setPassword(e.target.value)}
+              required={true}
+              placeholder="Password"
+            />
           </span>
-          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Sign In'}
-          </button>
-          <Link to="/auth/forgot-password" className="forgot-link">
-            Forgot your password?
-          </Link>
+          <span>
+            <i
+              className={passwordVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            />
+          </span>
         </div>
+        <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
+          Incorrect Password
+        </span>
+        <button type="submit" className="submit-btn px-4" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </button>
+        <Link to="/auth/forgot-password" className="forgot-link">
+          Forgot your password?
+        </Link>
       </form>
     </div>
   )
