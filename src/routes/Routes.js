@@ -104,7 +104,14 @@ const Routing = () => {
               </div>
             }
           />
-          <Route path="terms-privacy" element={<TermsPolicy />} />
+          <Route
+            path="terms-privacy"
+            element={
+              <div className="bg-landing d-flex align-items-center justify-content-center h-100">
+                <TermsPolicy />
+              </div>
+            }
+          />
           <Route
             path="verification-email"
             element={

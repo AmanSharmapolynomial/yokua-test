@@ -64,30 +64,34 @@ const ChnagePassword = () => {
             position: 'relative',
           }}
         >
-          <div className="row align-items-center input-field mx-auto">
-            <input
-              type={passwordVisible ? 'text' : 'password'}
-              className="input-field__password flex-fill"
-              name="password"
-              value={password}
-              placeholder="Password"
-              onChange={e => setPassword(e.target.value)}
-            />
+          <div className="row align-items-center input-field">
+            <span className="flex-fill">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                className="input-field__password"
+                name="password"
+                value={password}
+                placeholder="Password"
+                onChange={e => setPassword(e.target.value)}
+              />
+            </span>
             <i
               className={passwordVisible ? 'fa-eye fa-solid ' : 'fa-eye-slash fa-solid '}
               onClick={() => setPasswordVisible(!passwordVisible)}
             />
           </div>
 
-          <div className="row align-items-center input-field mx-auto">
-            <input
-              type={confirmVisible ? 'text' : 'password'}
-              className="input-field__password flex-fill"
-              name="confirm-password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-            />
+          <div className="row align-items-center input-field">
+            <span className="flex-fill">
+              <input
+                type={confirmVisible ? 'text' : 'password'}
+                className="input-field__password"
+                name="confirm-password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+              />
+            </span>
             <i
               className={confirmVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
               onClick={() => setConfirmVisible(!confirmVisible)}
