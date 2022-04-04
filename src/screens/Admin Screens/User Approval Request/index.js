@@ -31,6 +31,8 @@ const UserApprovalScreen = () => {
   const [totalPageUserApproval, setTotalPageUserApproval] = useState(1)
   const [pageCallUserApproval, setPageCallUserApproval] = useState(1)
 
+  const [selectedCheckBox, setSelectedCheckbox] = useState('')
+
   const onChangeUserApproval = number => {
     setPageCallUserApproval(number)
   }
@@ -136,7 +138,9 @@ const UserApprovalScreen = () => {
     setIsLoading(false)
   }, [reloadTable, DULfilter, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
-  const rowDisabledCriteria = row => row.type == 'notification'
+  const rowDisabledCriteria = row => {
+    return selectedCheckBox !== '' && row.type !== selectedCheckBox
+  }
 
   const columnsApprovalTable = [
     {
@@ -341,6 +345,14 @@ const UserApprovalScreen = () => {
 
   const selectedRowsActionUA = ({ selectedRows }) => {
     // do anything with selected rows
+    if (selectedRows[0] !== undefined) {
+      if (selectedRows[0].type !== selectedCheckBox) {
+        setSelectedCheckbox(selectedRows[0].type)
+      }
+    } else {
+      setSelectedCheckbox('')
+    }
+
     setSelectedRowsState(selectedRows)
   }
 
@@ -392,7 +404,10 @@ const UserApprovalScreen = () => {
           <div className="btn-container mb-2 row">
             <div className="col-auto">
               <button
-                className="action-btn btn accept-request "
+                disabled={selectedCheckBox !== 'approval'}
+                className={`action-btn btn accept-request ${
+                  selectedCheckBox !== 'approval' ? 'greyed' : null
+                }`}
                 onClick={() => {
                   if (selectedRowsState.length > 0) {
                     acceptAllRequest()
@@ -404,7 +419,10 @@ const UserApprovalScreen = () => {
                 Accept Request
               </button>
               <button
-                className="action-btn btn"
+                disabled={selectedCheckBox !== 'notification'}
+                className={`action-btn btn ${
+                  selectedCheckBox !== 'notification' ? 'greyed' : null
+                }`}
                 onClick={() => {
                   const a = API.get('admin/clear_notification')
                   console.log(a)

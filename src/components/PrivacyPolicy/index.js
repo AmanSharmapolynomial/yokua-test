@@ -154,6 +154,8 @@ const PrivacyPolicy = () => {
           unenforceable, such portion shall be deemed severable and shall not affect the validity
           and enforceability of any remaining portion.
         </div>
+        <br></br>
+        <br></br>
         <div className="row py-md-3 text-center h2 weight-bold">
           <div className="col">Data protection statement</div>
         </div>
