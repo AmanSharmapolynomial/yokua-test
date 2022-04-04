@@ -13,6 +13,7 @@ import Header from '../../components/Header'
 
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
+import { faL } from '@fortawesome/free-solid-svg-icons'
 
 const ProfileSettingScreen = () => {
   const { loading, setLoading } = useLoading()
@@ -470,9 +471,11 @@ const ProfileSettingScreen = () => {
                     }
                   }
                   const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
-                  setName(undefined)
-                  setEmail(undefined)
-                  setAddress(undefined)
+                  setName()
+                  setEmail()
+                  setAddress()
+                  setEditMode1(false)
+                  setEditMode2(false)
                   toast.success(afterUpdateMsg.data.message)
                   setReloadData(!reloadData)
                 }}
