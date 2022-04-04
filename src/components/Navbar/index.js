@@ -76,31 +76,33 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           <li className="nav-item px-3">
             <Link className="nav-link" to="/news">
               News
-              <svg
-                className="ml-2"
-                xmlns="http://www.w3.org/2000/svg"
-                width="19.313"
-                height="19.313"
-                viewBox="0 0 19.313 19.313"
-              >
-                <path
-                  id="Icon_feather-message-circle"
-                  data-name="Icon feather-message-circle"
-                  d="M13.616,3.5h.5l.055,0a9.146,9.146,0,0,1,8.638,8.638q0,.028,0,.055v.481a9.18,9.18,0,0,1-9.175,9.175h-.021a9.11,9.11,0,0,1-3.7-.79l-5.1,1.7A1,1,0,0,1,3.551,21.5l1.7-5.1A9.179,9.179,0,0,1,13.616,3.5Zm.474,2h-.474a7.17,7.17,0,0,0-6.4,10.379,1,1,0,0,1,.056.767L6.081,20.231l3.585-1.195a1,1,0,0,1,.767.056,7.094,7.094,0,0,0,3.183.758h.018a7.184,7.184,0,0,0,7.178-7.173v-.455A7.148,7.148,0,0,0,14.09,5.5Z"
-                  transform="translate(-3.5 -3.5)"
-                  fill="#fff"
-                />
-                <text
-                  x="50%"
-                  y="50%"
-                  dominant-baseline="middle"
-                  text-anchor="middle"
-                  fill="#fff"
-                  fontSize={10}
+              {unreadNewsCount !== 0 && (
+                <svg
+                  className="ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="19.313"
+                  height="19.313"
+                  viewBox="0 0 19.313 19.313"
                 >
-                  {unreadNewsCount}
-                </text>
-              </svg>
+                  <path
+                    id="Icon_feather-message-circle"
+                    data-name="Icon feather-message-circle"
+                    d="M13.616,3.5h.5l.055,0a9.146,9.146,0,0,1,8.638,8.638q0,.028,0,.055v.481a9.18,9.18,0,0,1-9.175,9.175h-.021a9.11,9.11,0,0,1-3.7-.79l-5.1,1.7A1,1,0,0,1,3.551,21.5l1.7-5.1A9.179,9.179,0,0,1,13.616,3.5Zm.474,2h-.474a7.17,7.17,0,0,0-6.4,10.379,1,1,0,0,1,.056.767L6.081,20.231l3.585-1.195a1,1,0,0,1,.767.056,7.094,7.094,0,0,0,3.183.758h.018a7.184,7.184,0,0,0,7.178-7.173v-.455A7.148,7.148,0,0,0,14.09,5.5Z"
+                    transform="translate(-3.5 -3.5)"
+                    fill="#fff"
+                  />
+                  <text
+                    x="50%"
+                    y="50%"
+                    dominant-baseline="middle"
+                    text-anchor="middle"
+                    fill="#fff"
+                    fontSize={10}
+                  >
+                    {unreadNewsCount}
+                  </text>
+                </svg>
+              )}
             </Link>
           </li>
           <li className="nav-item dropdown px-3">
