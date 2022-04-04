@@ -76,6 +76,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           <li className="nav-item px-3">
             <Link className="nav-link" to="/news">
               News
+              <span className="msg-bubble"></span>
             </Link>
           </li>
           <li className="nav-item dropdown px-3">

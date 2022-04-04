@@ -158,6 +158,7 @@ const NewsScreen = () => {
                               setSubCategoryFilter(null)
                             } else {
                               toast.success('Category filter Applied')
+                              setPageNoCall(1)
                               setCategoryFilter(category.id)
                             }
                           }}
@@ -220,6 +221,7 @@ const NewsScreen = () => {
                                 setSubCategoryFilter(null)
                               } else {
                                 toast.success('Sub Category filter applied')
+                                setPageNoCall(1)
                                 setSubCategoryFilter(category.id)
                               }
                             }}
