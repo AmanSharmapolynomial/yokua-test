@@ -53,7 +53,7 @@ export default () => {
     <div className="row mx-2 mx-md-5 h-100">
       <div className="col user-list-view">
         <SecondaryHeading title={'Company Name'} />
-        <div className="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
+        <div className="col-4 mt-5" style={{ paddingBottom: '5rem' }}>
           <div className="row yk-h-bg py-3">
             <p className="d-flex align-items-center px-3 h6">Company name</p>
           </div>

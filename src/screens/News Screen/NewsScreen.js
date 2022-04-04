@@ -11,9 +11,11 @@ import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
+import { useNavigate } from 'react-router'
 
 const NewsScreen = () => {
   const { setLoading } = useLoading()
+  const navigate = useNavigate()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
   const [isCheckListActivated, setCheckListActivated] = useState(false)
 
@@ -80,6 +82,7 @@ const NewsScreen = () => {
       .then(data => {
         setCheckListActivated(false)
         getAllNews(payload)
+        navigate(0)
       })
       .catch(error => {
         console.log('Something went wrong', error)

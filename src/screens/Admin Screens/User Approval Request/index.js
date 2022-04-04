@@ -134,7 +134,7 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
+  }, [reloadTable, DULfilter, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
   const rowDisabledCriteria = row => row.type == 'notification'
 
