@@ -474,6 +474,8 @@ const ProfileSettingScreen = () => {
                   setName()
                   setEmail()
                   setAddress()
+                  setPassword()
+                  setPasswordRetype()
                   setEditMode1(false)
                   setEditMode2(false)
                   toast.success(afterUpdateMsg.data.message)
