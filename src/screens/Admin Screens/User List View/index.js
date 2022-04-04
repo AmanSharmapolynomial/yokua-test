@@ -409,7 +409,7 @@ const UserListView = () => {
       <div className="col user-list-view">
         <SecondaryHeading title={'Users list view'} />
 
-        <div className="filter-actions">
+        <div className="col filter-actions">
           <div className="filter-icons">
             <div className="dropdown">
               <img
@@ -477,9 +477,10 @@ const UserListView = () => {
               />
             )}
           </div>
-          <div className="filter-actions mgt">
-            <div className="filter-checkbox d-flex align-items-center">
+          <div className="row">
+            <div className="col-auto filter-checkbox d-flex align-items-center">
               <input
+                className="w-auto mr-2"
                 type="checkbox"
                 ref={filterFromCheckbox1Ref}
                 value="PMK Administrator"
@@ -493,10 +494,11 @@ const UserListView = () => {
                   }
                 }}
               />
-              &nbsp; PMK Administrator
+              PMK Administrator
             </div>
-            <div className="filter-checkbox d-flex align-items-center">
+            <div className="col-auto filter-checkbox d-flex align-items-center">
               <input
+                className="w-auto mr-2"
                 type="checkbox"
                 ref={filterFromCheckbox2Ref}
                 value="Content Manager"
@@ -510,10 +512,11 @@ const UserListView = () => {
                   }
                 }}
               />
-              &nbsp; Content Manager
+              Content Manager
             </div>
-            <div className="filter-checkbox d-flex align-items-center">
+            <div className="col-auto filter-checkbox d-flex align-items-center">
               <input
+                className="w-auto mr-2"
                 type="checkbox"
                 ref={filterFromCheckbox3Ref}
                 value="User"
@@ -527,7 +530,7 @@ const UserListView = () => {
                   }
                 }}
               />
-              &nbsp; User
+              User
             </div>
           </div>
         </div>

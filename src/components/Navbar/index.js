@@ -70,15 +70,15 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         id="navbar"
       >
         <ul className="navbar-nav mx-auto text-md-center text-left">
-          <li className="nav-item px-lg-2">
+          <li className="nav-item px-3">
             <a className="nav-link">Home</a>
           </li>
-          <li className="nav-item px-lg-2">
+          <li className="nav-item px-3">
             <Link className="nav-link" to="/news">
               News
             </Link>
           </li>
-          <li className="nav-item dropdown px-lg-2">
+          <li className="nav-item dropdown px-3">
             <a
               className="nav-link dropdown-toggle"
               href="#"
@@ -99,7 +99,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </div>
           </li>
 
-          <li className="nav-item dropdown px-lg-2">
+          <li className="nav-item dropdown px-3">
             <a
               className="nav-link dropdown-toggle"
               href="#"
@@ -113,19 +113,19 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </a>
           </li>
 
-          <li className="nav-item px-lg-2">
+          <li className="nav-item px-3">
             <a className="nav-link">Training</a>
           </li>
-          <li className="nav-item px-lg-2">
+          <li className="nav-item px-3">
             <a className="nav-link">Data History</a>
           </li>
-          <li className="nav-item px-md-2">
+          <li className="nav-item px-3">
             <Link className="nav-link" to="/profile">
               Profile Setting
             </Link>
           </li>
           {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-lg-2">
+            <li className="nav-item dropdown px-3">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"

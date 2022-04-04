@@ -57,14 +57,6 @@ const NewsScreen = () => {
       page_index: pageNoCall,
     }
     getAllNews(payload)
-
-    // const getAllNews = await API.post('news/', payload)
-    //
-    // console.log(getAllNews)
-    // if (getAllNews.status == 200) {
-    //   setBackendData(getAllNews.data)
-    // }
-    // setTotalPages(getAllNews.data.total_pages)
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
   const getAllNews = payload => {
@@ -374,6 +366,7 @@ const NewsScreen = () => {
                 className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
+                  setPageNoCall(1)
                   setArchivedFilter(false)
                 }}
               >
@@ -384,6 +377,7 @@ const NewsScreen = () => {
                 className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
+                  setPageNoCall(1)
                   setArchivedFilter(true)
                 }}
               >

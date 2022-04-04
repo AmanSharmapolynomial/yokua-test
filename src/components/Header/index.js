@@ -25,17 +25,19 @@ const Header = ({ isLogedIn, isAdmin }) => {
               FLOW CENTER PAGES
             </div>
             <div className="col-4 d-none d-md-block">
-              <div className="input-group search float-right px-3">
-                <span className="input-group-addon">
-                  <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
-                </span>
-                <input
-                  type="text"
-                  placeholder="What are you looking for?"
-                  className="search_input ml-3"
-                  autoComplete={false}
-                ></input>
-              </div>
+              {isLogedIn && (
+                <div className="input-group search float-right px-3">
+                  <span className="input-group-addon">
+                    <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="What are you looking for?"
+                    className="search_input ml-3"
+                    autoComplete={false}
+                  ></input>
+                </div>
+              )}
             </div>
           </div>
           {isLogedIn && (

@@ -933,7 +933,7 @@ const NewsItem = ({
                   )}
                 </div>
               </div>
-              <div className="news-desc col-12 col-md-auto">
+              <div className="news-desc col-12 col-md">
                 {editView ? (
                   <textarea
                     ref={newsDescRef}
