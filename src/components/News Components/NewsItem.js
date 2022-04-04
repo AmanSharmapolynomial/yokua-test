@@ -632,7 +632,7 @@ const NewsItem = ({
                   )}
                 </div>
               </div>
-              <div className="col-auto">
+              <div className="col col-md-2">
                 <div className="news-info">
                   <span className="date">
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
