@@ -1,5 +1,6 @@
 {
   "name": "yokogawa-client-service",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://yokogawa-flow-center.herokuapp.com/",

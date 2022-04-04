@@ -14,12 +14,12 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
 
   const navDropdownAdminData = [
     { name: 'User Management', url: '/admin/user/list-view' },
-    { name: 'Event Management', url: '#' },
+    { name: 'Event Management', url: '/admin/user/list-view' },
   ]
 
   const productLineDropdown = [
-    { name: 'Approved Tokachu', url: '#' },
-    { name: 'Product Line', url: '#' },
+    { name: 'Approved Tokachu', url: '/admin/approved-tokuchus' },
+    { name: 'Product Line', url: '/product-lines' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
