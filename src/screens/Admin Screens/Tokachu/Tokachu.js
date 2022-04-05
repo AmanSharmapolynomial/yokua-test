@@ -248,6 +248,7 @@ export default () => {
 
   useEffect(() => {
     _getProducts()
+    _getDetails()
   }, [needToReload])
 
   return (
