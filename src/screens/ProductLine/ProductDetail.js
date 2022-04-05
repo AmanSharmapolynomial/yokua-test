@@ -21,6 +21,7 @@ const ProductDetail = () => {
   const components = [
     {
       title: 'Add Table',
+      type: 'table',
       content: [
         { label: 'Table Name', type: 'input' },
         { label: 'Add Number of Columns', type: 'input' },
@@ -185,37 +186,57 @@ const ProductDetail = () => {
                   data-parent="#accordionExample"
                 >
                   <div class="card-body">
-                    {item?.content?.map(contentItem => {
-                      if (contentItem.type === 'input') {
-                        return (
-                          <div className="row">
-                            <div className="input-group mb-3">
-                              <div className="input-group-prepend">
-                                <span
-                                  className="input-group-text font-8 font-weight-bold"
-                                  id="basic-addon1"
-                                >
-                                  {contentItem.label}
-                                </span>
+                    {item?.content?.map((contentItem, contentIndex) => {
+                      if (item.type === 'table') {
+                        if (contentItem.type === 'input') {
+                          return (
+                            <div className="row">
+                              <div className="input-group mb-3">
+                                <div className="input-group-prepend">
+                                  <span
+                                    className="input-group-text font-8 font-weight-bold"
+                                    id="basic-addon1"
+                                  >
+                                    {contentItem.label}
+                                  </span>
+                                </div>
+                                <input
+                                  type="number"
+                                  min={0}
+                                  max={10}
+                                  className="form-control"
+                                  aria-label={contentItem.label}
+                                  aria-describedby="basic-addon1"
+                                />
                               </div>
-                              <input
-                                type="number"
-                                min={0}
-                                max={10}
-                                className="form-control"
-                                aria-label={contentItem.label}
-                                aria-describedby="basic-addon1"
-                              />
-                              <div className="row">
-                                {columneNames.map((item, index) => (
-                                  <div className=""></div>
-                                ))}
-                              </div>
+                              {contentIndex + 1 === item.content.length && (
+                                <div className="col font-8">
+                                  <div className="row">
+                                    {columneNames.map((item, index) => (
+                                      <div className={`${index === 0 ? 'col-4' : 'col-2'}`}>
+                                        {item}
+                                      </div>
+                                    ))}
+                                  </div>
+                                  <div className="row d-flex align-items-center mt-2">
+                                    {columneNames.map((item, index) =>
+                                      index === 0 ? (
+                                        <input className={`${index === 0 ? 'col-4' : 'col-2'}`} />
+                                      ) : (
+                                        <input
+                                          type="checkbox"
+                                          className={`${index === 0 ? 'col-4' : 'col-2'}`}
+                                        />
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        )
-                      } else {
-                        return null
+                          )
+                        } else {
+                          return null
+                        }
                       }
                     })}
                   </div>
