@@ -121,7 +121,7 @@ body {
   align-self: center;
 }
 .font-8 {
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
 }
 /* tablet view */
 ::-webkit-scrollbar {

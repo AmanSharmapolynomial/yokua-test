@@ -43,3 +43,6 @@
 .bordered-btn:hover {
   text-decoration: none !important;
 }
+.accordian-title[aria-expanded='true'] .fa-angle-right {
+  transform: rotate(-90deg);
+}
