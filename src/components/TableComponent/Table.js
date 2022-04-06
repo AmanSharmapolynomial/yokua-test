@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
@@ -29,6 +29,7 @@ import API from '../../../src/utils/api'
  */
 
 export default ({ tableObject, setShowDeleteModal }) => {
+  const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [numberOfColumns, setNumberOfColumns] = useState(0)
@@ -36,10 +37,9 @@ export default ({ tableObject, setShowDeleteModal }) => {
   const [needToReload, setNeedToReload] = useState(false)
 
   const [editModeData, setEditModeData] = useState([])
-  const [filedChanged, setFieldChanged] = useState(false)
 
-  const [emptyNewRow, setEmptyNewRow] = useState({})
-  let [rowName, setRowName] = useState({})
+  const [emptyNewRow, setEmptyNewRow] = useState(null)
+  const [rowName, setRowName] = useState({})
   const [isEdit, setEdit] = useState(false)
   const customStyles = {
     rows: {
@@ -68,48 +68,54 @@ export default ({ tableObject, setShowDeleteModal }) => {
       },
     },
   }
+  const imageFileInputRef = useRef()
 
-  function handleChange(name, value) {
+  const handleChange = (name, value) => {
     const updatedRowName = rowName
     updatedRowName[name] = value
     setRowName({ ...updatedRowName })
   }
 
-  const handleEditChange = (name, value, rowIndex) => {
-    const updatedTableData = editModeData
-    updatedTableData.forEach((c, i) => {
-      if (rowIndex == i) {
-        c[name] = value
-      }
-    })
-    setEditModeData([...updatedTableData])
-    setFieldChanged(!filedChanged)
-
-    const updatedRows = updatedTableData
-    updatedRows.forEach((c, i) => {
-      Object.entries(c).forEach(([key, v]) => {
-        debugger
-        if (typeof v == 'string') {
-          c[key] = (
-            <>
-              <input
-                key={Math.random().toString()}
-                id={v}
-                type="text"
-                value={v}
-                onChange={e => handleEditChange(key, e.target.value, i)}
-              ></input>
-            </>
-          )
-        }
-      })
-    })
-    setTableRows(p => {
-      debugger
-      console.log(p)
-      return updatedRows
-    })
-  }
+  // Not usable in current context in updated Flow
+  // const handleEditChange = (name, value, rowIndex) => {
+  //   const updatedTableData = editModeData
+  //   updatedTableData.forEach((c, i) => {
+  //     if (rowIndex == i) {
+  //       c[name] = value
+  //     }
+  //   })
+  //   setEditModeData([...updatedTableData])
+  //   setFieldChanged(!filedChanged)
+  //
+  //   const updatedRows = updatedTableData
+  //   updatedRows.forEach((c, i) => {
+  //       Object.entries(c).forEach(
+  //         ([key, v]) => {
+  //           debugger
+  //           if (typeof v == 'string') {
+  //             c[key] = (
+  //               <>
+  //                 <input
+  //                   key={Math.random().toString()}
+  //                   id={v}
+  //                   type='text'
+  //                   value={v}
+  //                   onChange={e => {
+  //                   }}
+  //                 ></input>
+  //               </>
+  //             )
+  //           }
+  //         })
+  //     },
+  //   )
+  //   setTableRows((p) => {
+  //     debugger
+  //     console.log(p)
+  //     return updatedRows
+  //   })
+  //
+  // }
 
   const _totalNumberOfRowsAndColumns = () => {
     setNumberOfColumns(tableObject?.table_data?.length)
@@ -140,7 +146,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
   const _setTableData = (isAddNewRow = false) => {
     const tableData = tableObject.table_data
     const finalTableData = []
-    let toAddInEdit = true
     tableData &&
       tableData[0]?.values?.map((item, index) => {
         const tableRowObject = {
@@ -148,28 +153,26 @@ export default ({ tableObject, setShowDeleteModal }) => {
         }
 
         tableData?.map((tableC, tableI) => {
-          const tempObject = new Object()
-
-          if (isEdit) {
-            toAddInEdit = false
+          const tempObject = {}
+          if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
-              <input
-                type="text"
-                value={tableC.values[index].value}
-                onChange={e => handleEditChange(tableC['column_name'], e.target.value, tableI)}
-              ></input>
+              <>
+                <i className="fa-solid fa-file" />
+                <a target="_blank" href={tableC.values[index].value}>
+                  Open file
+                </a>
+              </>
             )
           } else {
-            toAddInEdit = true
             tempObject[tableC['column_name']] = tableC.values[index].value
           }
+
           Object.assign(tableRowObject, tempObject)
         })
         finalTableData.push(tableRowObject)
       })
-    console.log(finalTableData)
-
-    if (isAddNewRow && emptyNewRow != {}) {
+    debugger
+    if (isEdit && emptyNewRow) {
       finalTableData.push(emptyNewRow)
     }
     setTableRows([...finalTableData])
@@ -190,6 +193,63 @@ export default ({ tableObject, setShowDeleteModal }) => {
       .catch(err => {})
   }
 
+  const handleImage = e => {
+    setImageFile(e.event.files[0])
+  }
+
+  const addRow = () => {
+    const tempObject = {
+      isEdit: true,
+      edit: (
+        <div className="edit-icons">
+          <div className="icon reject">
+            <i className="fa-solid fa-xmark reject" onClick={() => _setTableData(false)} />
+          </div>
+          <div className="icon accept">
+            <i
+              className="fa-solid fa-check"
+              onClick={() => {
+                convertData()
+              }}
+            />
+          </div>
+        </div>
+      ),
+    }
+    const rowHandler = {}
+    tableHeader.map((item, index) => {
+      rowHandler[item['name']] = ''
+      if (item['name'] === 'Tokuchu') {
+        tempObject[item['name']] = (
+          <input
+            ref={imageFileInputRef}
+            id={Math.random().toString()}
+            key={Math.random().toString()}
+            type="file"
+            onChange={handleImage}
+          />
+        )
+      } else {
+        tempObject[item['name']] = (
+          <>
+            <input
+              type="text form-control"
+              id={rowName[item['name']] + Math.random().toString()}
+              key={rowName[item['name']] + Math.random().toString()}
+              value={rowName[item['name']]}
+              onChange={e => handleChange(item['name'], e.target.value)}
+            />
+          </>
+        )
+      }
+    })
+
+    setRowName(rowHandler)
+    setEmptyNewRow(tempObject)
+    setNeedToReload(!needToReload)
+    document.body.style.overflow = 'scroll'
+  }
+
   const convertData = () => {
     let dataArray = []
 
@@ -201,12 +261,11 @@ export default ({ tableObject, setShowDeleteModal }) => {
     })
 
     const payload = {
-      table_id: tableRows[0].id,
+      table_id: tableObject.id,
       data: dataArray,
       action_type: 'add_row',
     }
-
-    _updateTableData(`http://www.africau.edu/images/default/sample.pdf`, JSON.stringify(payload))
+    _updateTableData(imageFileInputRef.current.files[0], JSON.stringify(payload))
   }
 
   useEffect(() => {
@@ -220,46 +279,36 @@ export default ({ tableObject, setShowDeleteModal }) => {
     }
   }, [tableObject, isEdit])
 
-  const [temp, setTemp] = useState([
-    {
-      id: 1,
-      title: (
-        <input
-          type="text"
-          value={'1'}
-          onChange={e => tempHandleChange('title', e.target.value, 1)}
-        ></input>
-      ),
-      year: '1988',
-    },
-    {
-      id: 2,
-      title: 'Ghostbusters',
-      year: '1984',
-    },
-  ])
-  const tempHandleChange = (name, value, i) => {}
-
   return (
     <>
-      {tableObject != {} && (
+      {tableObject !== {} && (
         <div
           className="position-absolute text-primary"
           style={{ zIndex: '4', right: '0', marginTop: '-36px' }}
         >
-          <i
-            className="fa-solid fa-pen-to-square"
-            onClick={() => {
-              setEditModeData([...tableRows])
-              setEdit(true)
-            }}
-          ></i>
+          {isEdit ? (
+            <i
+              className="fa-solid fa-pen-to-square"
+              onClick={() => {
+                setEditModeData([...tableRows])
+                setEdit(false)
+              }}
+            />
+          ) : (
+            <i
+              className="fa-solid fa-pen-to-square"
+              onClick={() => {
+                setEditModeData([...tableRows])
+                setEdit(true)
+              }}
+            />
+          )}
           <i
             className="fa-solid fa-trash"
             onClick={() => {
               setShowDeleteModal(true)
             }}
-          ></i>
+          />
         </div>
       )}
 
@@ -268,53 +317,32 @@ export default ({ tableObject, setShowDeleteModal }) => {
         columns={tableHeader}
         data={tableRows}
         customStyles={customStyles}
-
         // conditionalRowStyles={conditionalRowStyles}
         // selectableRows
         // onSelectedRowsChange={selectedRowsActionUA}
       />
 
-      <DataTable
-        fixedHeader
-        columns={[
-          {
-            name: 'Title',
-            selector: row => row.title,
-          },
-          {
-            name: 'Year',
-            selector: row => row.year,
-          },
-        ]}
-        data={temp}
-        customStyles={customStyles}
-
-        // conditionalRowStyles={conditionalRowStyles}
-        // selectableRows
-        // onSelectedRowsChange={selectedRowsActionUA}
-      />
-
-      {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
-        <div
-          className="add_row"
-          style={{ fontSize: '1rem', background: 'none' }}
-          onClick={() => {
-            // document.body.scrollTop = 0
-            // document.documentElement.scrollTop = 0
-            addRow()
-          }}
-        >
-          <img
-            src={Plusicon}
-            style={{
-              width: '1rem',
-              marginRight: '0.2rem',
+      {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
+        isEdit && (
+          <div
+            className="add_row"
+            style={{ fontSize: '1rem', background: 'none' }}
+            onClick={() => {
+              addRow()
             }}
-            className={'mr-2'}
-          />
-          {'Add'}
-        </div>
-      )}
+          >
+            <img
+              src={Plusicon}
+              style={{
+                width: '1rem',
+                marginRight: '0.2rem',
+              }}
+              className={'mr-2'}
+              alt={'icon'}
+            />
+            {'Add'}
+          </div>
+        )}
     </>
   )
 }

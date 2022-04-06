@@ -407,16 +407,16 @@ export default () => {
               </div>
             </div>
           </div>
-          {tableDetails && (
-            <TableTok
-              tableObject={tableDetails}
-              setShowDeleteModal={setShowDeleteModal}
-              updateTableData={_updateTableData}
-            />
-          )}
           {/*{tableDetails && (*/}
-          {/*  <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />*/}
+          {/*  <TableTok*/}
+          {/*    tableObject={tableDetails}*/}
+          {/*    setShowDeleteModal={setShowDeleteModal}*/}
+          {/*    updateTableData={_updateTableData}*/}
+          {/*  />*/}
           {/*)}*/}
+          {tableDetails && (
+            <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+          )}
         </div>
       </div>
     </>
