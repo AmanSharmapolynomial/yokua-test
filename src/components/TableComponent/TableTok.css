@@ -1,0 +1,26 @@
+.yk-table-t .thead-dark {
+    background-color: #004F9B;
+    color: #ffffff;
+}
+
+.yk-table-t .tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    border-color: #000000 !important;
+}
+
+.yk-table-t table {
+    border: 1px solid #000
+}
+
+.yk-table-t th i {
+    visibility: hidden;
+}
+
+.yk-table-t th:hover i {
+    visibility: visible;
+    cursor: pointer;
+}
