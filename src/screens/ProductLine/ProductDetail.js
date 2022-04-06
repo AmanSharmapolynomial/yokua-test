@@ -20,7 +20,6 @@ const ProductDetail = () => {
   const [productDetail, setProductDetail] = useState([])
   const [addComponentData, setAddComponentData] = useState({})
   const [inputBinary, setInputBinary] = useState()
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const components = [
     {
@@ -659,7 +658,19 @@ const ProductDetail = () => {
           {isLoading ? (
             <div className="col text-center">Loading....</div>
           ) : (
-            <div className="row">{renderComponents()}</div>
+            <>
+              <div className="row">{renderComponents()}</div>
+              <div className="row mt-2">
+                <button
+                  className="btn create-domain-btn mx-auto"
+                  onClick={() => {
+                    setIsAddComponentModalVisible(index)
+                  }}
+                >
+                  Add New Section
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>

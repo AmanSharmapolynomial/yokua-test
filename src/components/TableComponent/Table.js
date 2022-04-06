@@ -122,9 +122,9 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   const renderDummyRow = () => {
     return (
-      <div className="add-row">
+      <div className="add-row overflow-auto">
         {tableObject.map((ele, idx) => (
-          <div className="dummy-col">
+          <div className="dummy-col" style={{ minWidth: '100px' }}>
             <input ref={el => (inputRef.current[idx] = el)} />
             {tableObject.length === idx + 1 && (
               <>
