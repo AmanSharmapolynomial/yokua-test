@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component'
 import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
+import { toast } from 'react-toastify'
 
 /**
  *
@@ -328,7 +329,11 @@ export default ({ tableObject, setShowDeleteModal }) => {
             className="add_row"
             style={{ fontSize: '1rem', background: 'none' }}
             onClick={() => {
-              addRow()
+              if (!emptyNewRow) {
+                addRow()
+              } else {
+                toast.error('Please finish current edit.')
+              }
             }}
           >
             <img
