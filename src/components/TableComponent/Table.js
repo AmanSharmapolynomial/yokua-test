@@ -4,6 +4,7 @@ import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
 import { toast } from 'react-toastify'
+import Uploadicon from '../../assets/Icon awesome-file-upload.png'
 
 /**
  *
@@ -158,10 +159,8 @@ export default ({ tableObject, setShowDeleteModal }) => {
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <i className="fa-solid fa-file" />
-                <a target="_blank" href={tableC.values[index].value}>
-                  Open file
-                </a>
+                <img src={Uploadicon} style={{ width: '15px', marginRight: '10px' }} />
+                <a target="_blank" href={tableC.values[index].value}></a>
               </>
             )
           } else {
@@ -234,6 +233,12 @@ export default ({ tableObject, setShowDeleteModal }) => {
         tempObject[item['name']] = (
           <>
             <input
+              style={{
+                borderBottom: '1px solid rgb(0, 79, 155)',
+                borderTop: 'none',
+                borderRight: 'none',
+                borderLeft: 'none',
+              }}
               type="text form-control"
               id={rowName[item['name']] + Math.random().toString()}
               key={rowName[item['name']] + Math.random().toString()}
@@ -289,7 +294,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
         >
           {isEdit ? (
             <i
-              className="fa-solid fa-pen-to-square"
+              className="fa-solid fa-solid fa-bookmark"
               onClick={() => {
                 setEditModeData([...tableRows])
                 setEdit(false)
@@ -298,6 +303,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
           ) : (
             <i
               className="fa-solid fa-pen-to-square"
+              aria-hidden="true"
               onClick={() => {
                 setEditModeData([...tableRows])
                 setEdit(true)
