@@ -46,3 +46,8 @@
 .accordian-title[aria-expanded='true'] .fa-angle-right {
   transform: rotate(-90deg);
 }
+.img-product-line {
+  width: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+}

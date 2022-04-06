@@ -123,6 +123,7 @@ body {
 .font-8 {
   font-size: 0.8rem !important;
 }
+
 /* tablet view */
 ::-webkit-scrollbar {
   height: 8px;

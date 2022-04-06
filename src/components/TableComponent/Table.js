@@ -180,6 +180,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           columns={tableHeader}
           data={tableRows}
           customStyles={customStyles}
+          persistTableHead
           // conditionalRowStyles={conditionalRowStyles}
           // selectableRows
           // onSelectedRowsChange={selectedRowsActionUA}
