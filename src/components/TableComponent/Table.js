@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component'
 import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
+
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -26,12 +27,16 @@ import API from '../../../src/utils/api'
  * ]}
  *
  */
+
 export default ({ tableObject, setShowDeleteModal }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [numberOfColumns, setNumberOfColumns] = useState(0)
   const [numberOfRows, setNumberOfRows] = useState(0)
-  const [needToReload, setNeedToReload] = useState(0)
+  const [needToReload, setNeedToReload] = useState(false)
+
+  const [editModeData, setEditModeData] = useState([])
+  const [filedChanged, setFieldChanged] = useState(false)
 
   const [emptyNewRow, setEmptyNewRow] = useState({})
   let [rowName, setRowName] = useState({})
@@ -70,6 +75,42 @@ export default ({ tableObject, setShowDeleteModal }) => {
     setRowName({ ...updatedRowName })
   }
 
+  const handleEditChange = (name, value, rowIndex) => {
+    const updatedTableData = editModeData
+    updatedTableData.forEach((c, i) => {
+      if (rowIndex == i) {
+        c[name] = value
+      }
+    })
+    setEditModeData([...updatedTableData])
+    setFieldChanged(!filedChanged)
+
+    const updatedRows = updatedTableData
+    updatedRows.forEach((c, i) => {
+      Object.entries(c).forEach(([key, v]) => {
+        debugger
+        if (typeof v == 'string') {
+          c[key] = (
+            <>
+              <input
+                key={Math.random().toString()}
+                id={v}
+                type="text"
+                value={v}
+                onChange={e => handleEditChange(key, e.target.value, i)}
+              ></input>
+            </>
+          )
+        }
+      })
+    })
+    setTableRows(p => {
+      debugger
+      console.log(p)
+      return updatedRows
+    })
+  }
+
   const _totalNumberOfRowsAndColumns = () => {
     setNumberOfColumns(tableObject?.table_data?.length)
     setNumberOfRows(tableObject?.table_data?.values?.length)
@@ -89,7 +130,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
         filterable: column.is_filterable,
       })
     })
-    console.log(tableColumns)
     tableColumns.push({
       name: '',
       selector: row => row.edit,
@@ -100,6 +140,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
   const _setTableData = (isAddNewRow = false) => {
     const tableData = tableObject.table_data
     const finalTableData = []
+    let toAddInEdit = true
     tableData &&
       tableData[0]?.values?.map((item, index) => {
         const tableRowObject = {
@@ -110,16 +151,16 @@ export default ({ tableObject, setShowDeleteModal }) => {
           const tempObject = new Object()
 
           if (isEdit) {
+            toAddInEdit = false
             tempObject[tableC['column_name']] = (
-              <>
-                <input
-                  type="text"
-                  value={tableC.values[index].value}
-                  onChange={e => handleChange(tableC['column_name'], e.target.value)}
-                ></input>
-              </>
+              <input
+                type="text"
+                value={tableC.values[index].value}
+                onChange={e => handleEditChange(tableC['column_name'], e.target.value, tableI)}
+              ></input>
             )
           } else {
+            toAddInEdit = true
             tempObject[tableC['column_name']] = tableC.values[index].value
           }
           Object.assign(tableRowObject, tempObject)
@@ -147,47 +188,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
         toast.success('New row added Successfully')
       })
       .catch(err => {})
-  }
-
-  const addRow = () => {
-    const tempObject = {
-      isEdit: true,
-      edit: (
-        <div className="edit-icons">
-          <div className="icon reject">
-            <i className="fa-solid fa-xmark reject" onClick={() => {}} />
-          </div>
-          <div className="icon accept">
-            <i
-              className="fa-solid fa-check"
-              onClick={() => {
-                convertData()
-              }}
-            />
-          </div>
-        </div>
-      ),
-    }
-    const rowHandler = {}
-    tableHeader.map((item, index) => {
-      rowHandler[item['name']] = ''
-      tempObject[item['name']] = (
-        <>
-          <input
-            type="text form-control"
-            id={rowName[item['name']] + Math.random().toString()}
-            key={rowName[item['name']] + Math.random().toString()}
-            value={rowName[item['name']]}
-            onChange={e => handleChange(item['name'], e.target.value)}
-          ></input>
-        </>
-      )
-    })
-
-    setRowName(rowHandler)
-    setEmptyNewRow(tempObject)
-    setNeedToReload(!needToReload)
-    document.body.style.overflow = 'scroll'
   }
 
   const convertData = () => {
@@ -220,6 +220,26 @@ export default ({ tableObject, setShowDeleteModal }) => {
     }
   }, [tableObject, isEdit])
 
+  const [temp, setTemp] = useState([
+    {
+      id: 1,
+      title: (
+        <input
+          type="text"
+          value={'1'}
+          onChange={e => tempHandleChange('title', e.target.value, 1)}
+        ></input>
+      ),
+      year: '1988',
+    },
+    {
+      id: 2,
+      title: 'Ghostbusters',
+      year: '1984',
+    },
+  ])
+  const tempHandleChange = (name, value, i) => {}
+
   return (
     <>
       {tableObject != {} && (
@@ -230,8 +250,8 @@ export default ({ tableObject, setShowDeleteModal }) => {
           <i
             className="fa-solid fa-pen-to-square"
             onClick={() => {
+              setEditModeData([...tableRows])
               setEdit(true)
-              _setTableData()
             }}
           ></i>
           <i
@@ -244,10 +264,29 @@ export default ({ tableObject, setShowDeleteModal }) => {
       )}
 
       <DataTable
-        pagination
         fixedHeader
         columns={tableHeader}
         data={tableRows}
+        customStyles={customStyles}
+
+        // conditionalRowStyles={conditionalRowStyles}
+        // selectableRows
+        // onSelectedRowsChange={selectedRowsActionUA}
+      />
+
+      <DataTable
+        fixedHeader
+        columns={[
+          {
+            name: 'Title',
+            selector: row => row.title,
+          },
+          {
+            name: 'Year',
+            selector: row => row.year,
+          },
+        ]}
+        data={temp}
         customStyles={customStyles}
 
         // conditionalRowStyles={conditionalRowStyles}
@@ -260,8 +299,8 @@ export default ({ tableObject, setShowDeleteModal }) => {
           className="add_row"
           style={{ fontSize: '1rem', background: 'none' }}
           onClick={() => {
-            document.body.scrollTop = 0
-            document.documentElement.scrollTop = 0
+            // document.body.scrollTop = 0
+            // document.documentElement.scrollTop = 0
             addRow()
           }}
         >

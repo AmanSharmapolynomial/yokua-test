@@ -6,6 +6,7 @@ import PrimaryHeading from '../../../components/Primary Headings'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { FormControl, Modal } from 'react-bootstrap'
+import TableTok from '../../../components/TableComponent/TableTok'
 
 const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
@@ -188,7 +189,7 @@ export default () => {
       .catch(err => {})
   }
 
-  const _updateTableData = (image, data = {}, columnName = [], tableId, actionType = 'add_row') => {
+  const _updateTableData = (image, data = {}, tableId, actionType = 'add_row') => {
     const formData = new FormData()
     if (image) {
       formData.append('file', image)
@@ -196,9 +197,10 @@ export default () => {
     const payload = {
       table_id: tableId,
       action_type: actionType,
+      data: data,
     }
 
-    formData.append('data', payload)
+    formData.append('data', JSON.stringify(payload))
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
         toast.success('New row added Successfully')
@@ -406,8 +408,15 @@ export default () => {
             </div>
           </div>
           {tableDetails && (
-            <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+            <TableTok
+              tableObject={tableDetails}
+              setShowDeleteModal={setShowDeleteModal}
+              updateTableData={_updateTableData}
+            />
           )}
+          {/*{tableDetails && (*/}
+          {/*  <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />*/}
+          {/*)}*/}
         </div>
       </div>
     </>
