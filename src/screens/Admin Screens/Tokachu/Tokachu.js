@@ -357,50 +357,50 @@ export default () => {
                                         </li>
                                       ))}
 
-                                      <div className="col d-flex justify-content-center">
-                                        <button
-                                          className="btn yg-font-size"
-                                          onClick={() => {
-                                            setParentId(sub.id)
-                                            setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)
-                                            setShowAddModal(true)
-                                          }}
-                                        >
-                                          Add
-                                        </button>
-                                      </div>
+                                      {/*<div className="col d-flex justify-content-center">*/}
+                                      {/*  <button*/}
+                                      {/*    className="btn yg-font-size"*/}
+                                      {/*    onClick={() => {*/}
+                                      {/*      setParentId(sub.id)*/}
+                                      {/*      setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)*/}
+                                      {/*      setShowAddModal(true)*/}
+                                      {/*    }}*/}
+                                      {/*  >*/}
+                                      {/*    Add*/}
+                                      {/*  </button>*/}
+                                      {/*</div>*/}
                                     </ul>
                                   </li>
                                 </li>
                               ))}
 
-                            <div className="col d-flex justify-content-center">
-                              <button
-                                className="btn yg-font-size"
-                                onClick={() => {
-                                  setParentId(item.id)
-                                  setCurrentEdit(EDIT_SUB_PRODUCT)
-                                  setShowAddModal(true)
-                                }}
-                              >
-                                Add
-                              </button>
-                            </div>
+                            {/*<div className="col d-flex justify-content-center">*/}
+                            {/*  <button*/}
+                            {/*    className="btn yg-font-size"*/}
+                            {/*    onClick={() => {*/}
+                            {/*      setParentId(item.id)*/}
+                            {/*      setCurrentEdit(EDIT_SUB_PRODUCT)*/}
+                            {/*      setShowAddModal(true)*/}
+                            {/*    }}*/}
+                            {/*  >*/}
+                            {/*    Add*/}
+                            {/*  </button>*/}
+                            {/*</div>*/}
                           </ul>
                         </li>
                       ))}
 
-                      <div className="col d-flex justify-content-center">
-                        <button
-                          className="btn yg-font-size"
-                          onClick={() => {
-                            setCurrentEdit(EDIT_PRODUCT)
-                            setShowAddModal(true)
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
+                      {/*<div className="col d-flex justify-content-center">*/}
+                      {/*  <button*/}
+                      {/*    className="btn yg-font-size"*/}
+                      {/*    onClick={() => {*/}
+                      {/*      setCurrentEdit(EDIT_PRODUCT)*/}
+                      {/*      setShowAddModal(true)*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    Add*/}
+                      {/*  </button>*/}
+                      {/*</div>*/}
                     </ul>
                   </div>
                 </div>
