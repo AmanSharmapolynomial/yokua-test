@@ -328,7 +328,8 @@ const NewsScreen = () => {
                 {(getUserRoles() == 'PMK Administrator' ||
                   getUserRoles() == 'PMK Content Manager' ||
                   getUserRoles() == 'Technical Administrator') &&
-                  !archivedFilter && (
+                  !archivedFilter &&
+                  !isAnyNewsUnderEdit && (
                     <div
                       className="add_row"
                       onClick={() => {

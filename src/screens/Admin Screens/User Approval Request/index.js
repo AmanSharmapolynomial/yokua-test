@@ -241,7 +241,7 @@ const UserApprovalScreen = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
     setOpenDeleteDomainModal(false)
-    document.body.style.overflow = 'scroll'
+    // document.body.style.overflow = 'scroll'
   }
 
   const deleteAllDUL = async () => {
@@ -300,6 +300,7 @@ const UserApprovalScreen = () => {
     setChangeModal('Accepted')
     setOpenARModal(false)
     console.log('accepted', data)
+    setReloadTable(!reloadTable)
   }
 
   const deleteDomain = async data => {

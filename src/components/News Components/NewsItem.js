@@ -221,6 +221,7 @@ const NewsItem = ({
     }
     setSubCategory([...subCategory, tempSubCatObject])
     handleSelectSubTopic(tempSubCatObject)
+    SetNewSubTopicName('')
   }
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
@@ -549,6 +550,35 @@ const NewsItem = ({
     return items.length > 0 ? true : false
   }
 
+  const renderSubCategory = () => {
+    if (data?.sub_category !== undefined) {
+      console.log(data?.sub_category, 'UNDEFINED')
+      return (
+        <div class="dropdown">
+          <div
+            class="dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
+          </div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {data?.sub_category.map((item, index) => {
+              return <div>{item.sub_category_name}</div>
+            })}
+          </div>
+        </div>
+      )
+    } else if (data?.sub_category && data?.sub_category[0] !== undefined) {
+      return data?.sub_category[0]['sub_category_name']
+    } else {
+      return ''
+    }
+  }
+
   return (
     <React.Fragment key={data?.id}>
       <div style={{ width: '400px' }}></div>
@@ -634,7 +664,7 @@ const NewsItem = ({
                       }}
                       size="sm"
                       autoClose={'outside'}
-                      className="yk-dropdown-holder"
+                      className="yk-dropdown-holder border"
                       style={{
                         width: '12rem',
                       }}
@@ -715,7 +745,7 @@ const NewsItem = ({
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
-                              className="yg-font-size"
+                              className="yg-font-size ml-2"
                               id="button-addon2"
                             >
                               Save
@@ -741,8 +771,8 @@ const NewsItem = ({
                         autoClose={'outside'}
                         className={
                           toggleDropDown == 1
-                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
-                            : 'yk-dropdown-holder mt-3'
+                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic border'
+                            : 'yk-dropdown-holder mt-3 border'
                         }
                         style={{
                           width: '12rem',
@@ -810,7 +840,7 @@ const NewsItem = ({
                                         }
                                       }}
                                       variant="outline-secondary"
-                                      className="yg-font-size"
+                                      className="yg-font-size ml-2"
                                       id="button-addon2"
                                     >
                                       Save
@@ -830,7 +860,7 @@ const NewsItem = ({
                                     }}
                                   >
                                     <input
-                                      style={{ marginRight: '8px' }}
+                                      style={{ marginRight: '8px', width: 'auto' }}
                                       type="checkbox"
                                       checked={cat.isChecked}
                                       onChange={() => _handleChecked(cat.id)}
@@ -891,6 +921,7 @@ const NewsItem = ({
                                     cursor: 'pointer',
                                   }}
                                   onClick={() => {
+                                    SetNewSubTopicName('')
                                     setSubTopicAdd(false)
                                   }}
                                 />
@@ -905,7 +936,7 @@ const NewsItem = ({
                                   }
                                 }}
                                 variant="outline-secondary"
-                                className="yg-font-size"
+                                className="yg-font-size ml-2"
                                 id="button-addon2"
                               >
                                 Save
@@ -916,9 +947,7 @@ const NewsItem = ({
                       </Dropdown>
                     </>
                   ) : (
-                    <span className="news-sub-category">
-                      {data?.sub_category ? data?.sub_category[0]['sub_category_name'] : ''}
-                    </span>
+                    <span className="news-sub-category">{renderSubCategory()}</span>
                   )}
                 </div>
               </div>
