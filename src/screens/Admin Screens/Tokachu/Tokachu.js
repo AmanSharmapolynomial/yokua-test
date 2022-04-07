@@ -77,7 +77,7 @@ export default () => {
     }
   }
 
-  const _getDetails = (productItemId = 5) => {
+  const _getDetails = (productItemId = 1) => {
     API.post('tokuchu/details/', {
       page_id: productItemId,
     })
