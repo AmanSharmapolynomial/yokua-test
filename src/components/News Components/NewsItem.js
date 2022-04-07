@@ -302,27 +302,16 @@ const NewsItem = ({
       })
 
       const fileDetails = fileInputRef?.current?.files[0]
-      var bodyFormData = new FormData()
+      let bodyFormData = new FormData()
       bodyFormData.append('data', details)
       if (fileDetails) {
         bodyFormData.append('file', fileDetails)
       }
-      // bodyFormData.append('image', newsI)
 
-      const token = getToken()
-      axios({
-        method: 'post',
-        url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-        data: bodyFormData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(function (response) {
-          //handle success
+      API.post('news/upsert_news', bodyFormData)
+        .then(response => {
+          //  handle success
           setLoading(false)
-
           if (response.status == 200) {
             setNewsUnderEdit(false)
             setEditView(false)
@@ -340,13 +329,14 @@ const NewsItem = ({
             toast.error(response.data.message)
           }
         })
-        .catch(function (response) {
+        .catch(error => {
+          console.log(error)
           setLoading(false)
           setEditView(false)
           setNewsUnderEdit(false)
           //handle error
           if (response.status != 200) {
-            // toast.error(response?.message)
+            response?.message && toast.error(response?.message)
             // toast.error('Session expired')
           }
         })
@@ -1298,11 +1288,11 @@ function AddCategoryModal({
               _setImage(e.target.files[0])
             }}
           />
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center w-100">
             <Image
               thumbnail={true}
-              style={{ maxWidth: '40%' }}
-              src={catImg}
+              style={{ width: '40%' }}
+              src={catImg ? catImg : placeholder}
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
             />

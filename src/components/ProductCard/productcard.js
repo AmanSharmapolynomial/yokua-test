@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import editIcon from '../../assets/Icon awesome-edit.png'
+import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import './productcard.css'
@@ -87,7 +88,7 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
         </div>
         <span className="col-auto d-none d-md-block">
           <img
-            src={editIcon}
+            src={isEditable ? saveIcon : editIcon}
             onClick={e => {
               e.stopPropagation()
               if (isEditable) {
