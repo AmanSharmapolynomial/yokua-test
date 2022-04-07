@@ -180,6 +180,9 @@ export default ({ tableObject, setShowDeleteModal }) => {
 
   const _updateTableData = (image, payload, actionType = 'add_row') => {
     const formData = new FormData()
+    if (!image) {
+      toast.error('Please provide the Tokuchu')
+    }
     if (image) {
       formData.append('file', image)
     }
@@ -258,13 +261,21 @@ export default ({ tableObject, setShowDeleteModal }) => {
 
   const convertData = () => {
     let dataArray = []
-
+    let isBlankValue = false
     const keys = Object.keys(rowName)
     keys.forEach(key => {
+      if (rowName[key] == '' || !rowName[key]) {
+        isBlankValue = true
+      }
       dataArray.push({
         [key]: rowName[key],
       })
     })
+
+    if (isBlankValue) {
+      toast.error('Please fill all the Fields')
+      return
+    }
 
     const payload = {
       table_id: tableObject.id,

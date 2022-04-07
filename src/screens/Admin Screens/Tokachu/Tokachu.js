@@ -250,7 +250,7 @@ export default () => {
 
   useEffect(() => {
     _getProducts()
-    _getDetails()
+    // _getDetails()
   }, [needToReload])
 
   return (
