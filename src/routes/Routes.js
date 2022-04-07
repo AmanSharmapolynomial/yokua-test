@@ -32,6 +32,7 @@ import ProductDetail from '../screens/ProductLine/ProductDetail'
 import Tokachu from '../screens/Admin Screens/Tokachu/Tokachu'
 import Impressum from '../components/Impressum'
 import PrivacyPolicy from '../components/PrivacyPolicy'
+import Contact from '../screens/contact/Contact'
 
 const Routing = () => {
   // get User Login Info
@@ -206,6 +207,15 @@ const Routing = () => {
               <ProfileSettingScreen />
               {/* <Footer/> */}
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="contact"
+          element={
+            <>
+              <Header />
+              <Contact />
+            </>
           }
         />
         {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
