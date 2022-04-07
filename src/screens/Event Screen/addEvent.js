@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import Table from 'react-bootstrap/Table'
 import { useNavigate } from 'react-router'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -14,6 +15,7 @@ import image from '../../assets/Icon feather-image.png'
 import Modal from 'react-modal'
 import CustomeModel from '../../components/Event Module/Modal'
 import PrimaryHeading from '../../components/Primary Headings'
+import CloseIcon from '../../assets/close_modal.png'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
@@ -58,6 +60,8 @@ const AddEventScreen = () => {
   const [blinkMessage, setBlinkMessage] = useState('')
   const [dependOnButton, setDependOnButton] = useState('')
   const [linkModal, setLinkModal] = useState(false)
+  const [registeredAttendeesListModalOpen, setRegisteredAttendeesListModalOpen] = useState(false)
+  const [registeredAttendeesList, setRegisteredAttendeesList] = useState([])
 
   const [classificationLevel, setClassificationLevel] = useState({
     value: 'internal',
@@ -94,9 +98,33 @@ const AddEventScreen = () => {
     }
   }, [])
 
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '32%',
+    },
+  }
+  const customStyles2 = {
+    content: {
+      top: '60%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '60%',
+      height: '60%',
+    },
+  }
+
   const getEventDetailById = async id => {
     await API.get('training/training_view/' + id)
-      .then(data => {
+      .then(async data => {
         //toast.success('')
         if (data.status == 200 || data.status == 201) {
           const result = data.data
@@ -124,6 +152,9 @@ const AddEventScreen = () => {
           setAlinkMessage(result.links['link_a'])
           setBlinkMessage(result.links['link_b'])
           setRequirement(result.requirements)
+
+          //call for get registered attendees
+          await getRegisteredAttendeesForEventByEventId(eventId)
         } else {
           toast.error('Error while getting record')
           navigate('/event/all')
@@ -134,28 +165,26 @@ const AddEventScreen = () => {
         toast.error('Error while getting record')
         navigate('/event/all')
       })
-    // if (
-    //   (eventDetail.status == 200 || eventDetail.status == 201) &&
-    //   eventDetail.data != null
-    // ) {
-    //   console.log(eventDetail)
-    //   setEventDetailById(eventDetail.data)
-    // } else if (eventDetail.status == 500) {
-    //   //toatster
-    //   toast.error('No data found !')
-    //   navigate('/event/all')
-    // }
   }
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '32%',
-    },
+
+  const getRegisteredAttendeesForEventByEventId = async eventId => {
+    await API.get('training/training_registeration_view/' + eventId)
+      .then(async data => {
+        //toast.success('')
+        if (data.status == 200 || data.status == 201) {
+          const result = data.data
+          setRegisteredAttendeesList(result)
+          console.log(result)
+        } else {
+          toast.error('Error while getting record')
+          navigate('/event/all')
+        }
+        //setReloadData(true)
+      })
+      .catch(error => {
+        toast.error('Error while getting record')
+        navigate('/event/all')
+      })
   }
 
   const openModal = e => {
@@ -344,7 +373,9 @@ const AddEventScreen = () => {
                         setIsStartDateOpen(!isStartDateOpen)
                       }}
                     >
-                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                      {registeredAttendeesListModalOpen == false ? (
+                        <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -385,7 +416,7 @@ const AddEventScreen = () => {
                         setIsEndDateOpen(!isEndDateOpen)
                       }}
                     >
-                      {isStartDateOpen == true ? (
+                      {isStartDateOpen == true || registeredAttendeesListModalOpen == true ? (
                         <i
                           class="fa-solid fa-calendar-days"
                           style={{ color: 'rgb(0, 79, 155)', display: 'none' }}
@@ -469,7 +500,10 @@ const AddEventScreen = () => {
                     />
                     <div className="col-md-10">
                       <button
-                        onClick={openModal}
+                        onClick={event => {
+                          event.preventDefault()
+                          setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
+                        }}
                         style={{
                           background: 'rgb(0, 79, 155)',
                           color: 'white',
@@ -532,8 +566,11 @@ const AddEventScreen = () => {
                     <Select
                       options={classificationOption}
                       onChange={event => {
-                        console.log('classification selected:' + event.value)
-                        setClassificationLevel(event.value)
+                        console.log(event.label + ' selected:' + event.value)
+                        setClassificationLevel({
+                          value: event.value,
+                          label: event.label,
+                        })
                       }}
                       selected={classificationLevel}
                       value={classificationLevel}
@@ -1122,6 +1159,66 @@ const AddEventScreen = () => {
               handleSendButton={closeModal}
             />
           )}
+        </Modal>
+      </div>
+
+      {
+        // for Registered attendees list
+      }
+      <div>
+        <Modal
+          isOpen={registeredAttendeesListModalOpen}
+          onRequestClose={() => {
+            registeredAttendeesListModalOpen(false)
+          }}
+          style={customStyles2}
+        >
+          <div>
+            <div style={{ float: 'right' }}>
+              <img
+                style={{
+                  height: '20px',
+                  width: '20px',
+                }}
+                src={CloseIcon}
+                onClick={() => {
+                  console.log('Close modal..')
+                  setRegisteredAttendeesListModalOpen(false)
+                }}
+              />
+            </div>
+            <div>
+              <h4>Registered attendees list</h4>
+              <Table
+                style={{
+                  border: '1px solid',
+                }}
+              >
+                <thead>
+                  <tr style={{ background: 'rgb(0, 79, 155)', color: 'white' }}>
+                    <td>Name</td>
+                    <td>Email Id</td>
+                    <td>User from Internal/External</td>
+                    <td>Register by</td>
+                    <td>Date</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {registeredAttendeesList.map(e => {
+                    return (
+                      <tr>
+                        <td>{e.name}</td>
+                        <td>{e.email_id}</td>
+                        <td>{classificationOption.find(ele => ele.value == e.category).label}</td>
+                        <td>{e.registeredBy}</td>
+                        <td>{e.date}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
         </Modal>
       </div>
     </>

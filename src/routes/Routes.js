@@ -25,10 +25,10 @@ import VerificationEmail from '../components/Modals/VerificationEmail/Verificati
 import AddEventScreen from '../screens/Event Screen/addEvent'
 import Footer from '../components/Footer'
 import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
-
+import { useNavigate } from 'react-router'
 const Routing = () => {
   // get User Login Info
-
+  const navigate = useNavigate()
   return (
     <React.Fragment>
       <div className="container-fluid p-0 vh-100">
@@ -145,14 +145,6 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <AddEventScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="event"
-            element={
-              <PrivateRoute>
-                <EventScreen />
               </PrivateRoute>
             }
           />
