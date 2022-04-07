@@ -1,5 +1,6 @@
 .profile-setting {
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
+  /* margin-left: 55px; */
 }
 .profile-setting__box {
   -webkit-box-shadow: 0px -1px 5px 0.1px rgba(186, 186, 186, 1);
@@ -13,12 +14,13 @@
 .profile-setting-container {
   width: 100%;
   margin-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .profile-setting__info {
   display: flex;
   align-items: center;
-  margin: 2.5rem 0;
+  margin: 25px 0;
 }
 
 .profile-setting__info_img {
@@ -26,6 +28,7 @@
   height: 6rem;
   object-fit: cover;
   border-radius: 100%;
+  margin-right: 10px;
 }
 
 .profile-setting__info_name {
@@ -35,14 +38,14 @@
 }
 
 .profile-setting__info_name > h4 {
-  font-weight: 500;
-  font-size: 1.5rem;
+  font-weight: 171px;
+  font-size: 24px;
   margin: 0;
 }
 
 .profile-setting__info_name > p {
   color: var(--textColor3);
-  font-size: 0.8rem;
+  font-size: 16px;
   margin: 0.3rem 0;
 }
 
@@ -64,9 +67,9 @@
 }
 
 .profile-setting__heading {
-  font-size: 1.5rem;
-  font-weight: 500;
-  padding: 0.6rem 1.8rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  padding: 0.5rem 1.8rem;
   -webkit-box-shadow: 0px -1px 5px 0.1px rgba(186, 186, 186, 1);
   -moz-box-shadow: 0px -1px 5px 0.1px rgba(186, 186, 186, 1);
   box-shadow: 0px -1px 5px 0.1px rgba(186, 186, 186, 1);
@@ -117,12 +120,28 @@
 }
 
 .save-btns {
+  margin-left: 350px;
+}
+
+button > .delete-btn {
+  margin: 0.8rem 1rem 1rem 0rem;
+  height: 2rem;
+  min-width: 8rem;
+  font-size: 0.8rem;
+  font-family: Poppins;
+  font-weight: 400;
+  border: 1px solid rgb(56, 56, 56);
+  border-radius: 3px;
+  background-color: var(--bgColor2);
+  -webkit-box-shadow: 0px 0px 62px -46px rgba(219, 219, 219, 1);
+  -moz-box-shadow: 0px 0px 62px -46px rgba(219, 219, 219, 1);
+  box-shadow: 0px 0px 62px -46px rgba(219, 219, 219, 1);
 }
 
 .save-btns > button {
-  margin: 0.8rem 2rem;
+  margin: 0.8rem 1rem 1rem 0rem;
   height: 2rem;
-  min-width: 18rem;
+  min-width: 8rem;
   font-size: 0.8rem;
   font-family: Poppins;
   font-weight: 400;
@@ -144,16 +163,17 @@
 }
 
 .registered_events {
-  width: 50%;
+  width: 53.75%;
 }
 .last_events {
-  width: 30%;
+  width: 43.75%;
 }
 
 .events_trainings {
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+  margin-bottom: 5rem;
 }
 
 .event_training_heading {
@@ -172,4 +192,14 @@
   display: flex;
   flex-direction: column;
   line-height: 2.4rem;
+}
+
+.ant-pagination-item-link {
+  display: grid !important;
+  place-items: center !important ;
+}
+.add_row {
+  width: 95%;
+  background: #eeeeee;
+  padding: 2rem 0rem !important;
 }

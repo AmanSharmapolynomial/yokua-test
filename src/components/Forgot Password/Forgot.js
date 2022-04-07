@@ -21,7 +21,7 @@ const Forgot = () => {
       const data = await API.post('/auth/password/reset/', forgotPassPayload1)
       toast.success(data.data.detail)
       setIsLoading(false)
-      navigate('/auth/login')
+      navigate('/auth/verification-email')
     } else {
       toast.error('Email is not in proper format - abc@xyz.com')
     }
@@ -29,7 +29,12 @@ const Forgot = () => {
 
   return (
     <>
-      <div className="signIn-container">
+      <div
+        className="signIn-container mx-auto col-4"
+        style={{
+          marginBottom: '320px',
+        }}
+      >
         <div className="container-head">
           <h3 className="container__heading">
             <i
@@ -56,7 +61,7 @@ const Forgot = () => {
             placeholder="E-Mail"
           />
 
-          <button type="submit" className="submit-btn" disabled={isLoading}>
+          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
             {isLoading ? 'Loading...' : 'Send Link'}
           </button>
         </form>

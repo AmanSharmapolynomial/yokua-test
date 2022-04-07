@@ -23,13 +23,15 @@ import NewsScreen from '../screens/News Screen/NewsScreen'
 import EventScreen from '../screens/Event Screen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
 import AddEventScreen from '../screens/Event Screen/addEvent'
+import Footer from '../components/Footer'
+import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
 
 const Routing = () => {
   // get User Login Info
 
   return (
     <React.Fragment>
-      <div className="non_header_content relative">
+      <div className="container-fluid p-0 vh-100">
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route
@@ -38,6 +40,7 @@ const Routing = () => {
               <React.Fragment>
                 <Header />
                 <AuthLayout />
+                {/* <Footer/> */}
               </React.Fragment>
             }
           >
@@ -45,26 +48,48 @@ const Routing = () => {
               path="login"
               element={
                 <React.Fragment>
-                  <InfoComponent />
-                  <SignIn />
+                  <div className="bg-landing h-100 py-5">
+                    <InfoComponent />
+                    <SignIn />
+                  </div>
+                  {/* <Footer/> */}
                 </React.Fragment>
               }
             />
-            <Route path="register" element={<SignUp />} />
-            <Route path="forgot-password" element={<Forgot />} />
+            <Route
+              path="register"
+              element={
+                <div className="bg-landing h-100 py-5">
+                  <SignUp />
+                </div>
+              }
+            />
+            <Route
+              path="forgot-password"
+              element={
+                <div className="bg-landing h-100 py-5 center">
+                  <Forgot />
+                </div>
+              }
+            />
             <Route path="reset-password" element={<ChnagePassword />} />
+            <Route path="reset-password/:uid/:token" element={<ChnagePassword />} />
             <Route path="terms-privacy" element={<TermsPolicy />} />
             <Route path="verification-email" element={<VerificationEmail />} />
+            <Route path="verification-email/:uid/:token" element={<VerificationEmail />} />
           </Route>
           <Route
             path="/admin"
             element={
               <PrivateRoute>
                 <AdminScreens />
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           >
             <Route path="user/list-view" element={<UserListView />} />
+
+            <Route path="user/company-names" element={<CompanyNames />} />
 
             <Route
               path="user/approval-request"
@@ -86,6 +111,7 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <NewsScreen />
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           />
@@ -94,11 +120,12 @@ const Routing = () => {
             element={
               <PrivateRoute>
                 <ProfileSettingScreen />
+                {/* <Footer/> */}
               </PrivateRoute>
             }
           />
           <Route
-            path="event"
+            path="event/all"
             element={
               <PrivateRoute>
                 <EventScreen />
@@ -107,6 +134,14 @@ const Routing = () => {
           />
           <Route
             path="event/add"
+            element={
+              <PrivateRoute>
+                <AddEventScreen />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="event/update/:eventId"
             element={
               <PrivateRoute>
                 <AddEventScreen />

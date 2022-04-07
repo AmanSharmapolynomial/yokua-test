@@ -147,27 +147,30 @@ const UserApprovalScreen = () => {
       name: 'Name',
       selector: row => row.name,
       sortable: true,
-      minWidth: '10rem',
+      minWidth: '12rem',
     },
     {
       name: 'Date',
       selector: row => row.date,
       sortable: true,
+      minWidth: '10rem',
     },
     {
       name: 'E-Mail id',
       selector: row => row.email,
       grow: 2,
-      minWidth: '15rem',
+      minWidth: '12rem',
     },
     {
       name: 'New E-mail id',
-      selecter: row => row.new_email,
+      selector: row => row.new_email,
       grow: 2,
+      minWidth: '12rem',
     },
     {
       name: 'Company',
       selector: row => row.company,
+      minWidth: '10rem',
     },
     {
       name: 'Request for',
@@ -191,17 +194,18 @@ const UserApprovalScreen = () => {
     {
       name: 'Role',
       selector: row => row.role,
+      minWidth: '12rem',
       sortable: true,
     },
     {
       name: 'Company Email id',
       selector: row => row.companyEmail,
-      grow: 2,
       minWidth: '15rem',
     },
     {
       name: 'status',
       selector: row => row.status,
+      maxWidth: '8rem',
     },
   ]
 
@@ -296,7 +300,7 @@ const UserApprovalScreen = () => {
     // admin/delete_whitelisted_domain
     const payload = {
       domain_id: [data.id],
-      delete_associated_users: 'false',
+      delete_associated_users: false,
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
     // toast.success(afterDeleteMsg.data.message)
@@ -367,19 +371,9 @@ const UserApprovalScreen = () => {
       )}
       <SecondaryHeading title={'User Approval Request'} />
       <div className="user-approval-request-table-contents">
-        <div className="btn-container">
+        <div className="btn-container mb-2 ">
           <button
-            className="action-btn btn clear-notification"
-            onClick={() => {
-              const a = API.get('admin/clear_notification')
-              console.log(a)
-              setReloadTable(!reloadTable)
-            }}
-          >
-            Clear Notification
-          </button>
-          <button
-            className="action-btn btn "
+            className="action-btn btn accept-request "
             onClick={() => {
               if (selectedRowsState.length > 0) {
                 acceptAllRequest()
@@ -387,6 +381,16 @@ const UserApprovalScreen = () => {
             }}
           >
             Accept Request
+          </button>
+          <button
+            className="action-btn btn"
+            onClick={() => {
+              const a = API.get('admin/clear_notification')
+              console.log(a)
+              setReloadTable(!reloadTable)
+            }}
+          >
+            Clear Notification
           </button>
         </div>
         <div className="user-list-view-table aprroval-table">
@@ -428,14 +432,13 @@ const UserApprovalScreen = () => {
         </div>
       </div>
       <div className="domain-user-list">
-        <h3>Domain User List</h3>
+        <h2 className="h4">Domain User List</h2>
         <div className="domain-user-list-content">
           <div className="domain-list-content">
             <div
               className="domain-list"
               style={{
                 maxHeight: '27rem',
-                overflow: 'scroll',
               }}
             >
               {domainList.map((data, index) => (
@@ -446,32 +449,39 @@ const UserApprovalScreen = () => {
                   }}
                   key={index}
                   onClick={() => {
+                    setPageNoCall(1)
                     setDULfilter(data.id)
                   }}
                 >
                   <span className="domain-text">{data.domain}</span>
                   <span className="domain-value">({data.count})</span>
-                  {data.id != 1 && data.id != 2 && (
-                    <i
-                      className="fa-solid fa-trash"
-                      style={{
-                        cursor: 'pointer',
-                        color: '#CD2727',
-                      }}
-                      onClick={() => {
-                        // admin/delete_whitelisted_domain
-                        const sendData = {
-                          id: data.id,
-                          name: data.domain,
-                          associated_users: 'false',
-                        }
-                        document.body.scrollTop = 0
-                        document.documentElement.scrollTop = 0
-                        document.body.style.overflow = 'hidden'
-                        setDeleteDomainData(sendData)
-                        setOpenDeleteDomainModal(true)
-                      }}
-                    />
+                  {data.id != 1 && data.id != 2 ? (
+                    <div>
+                      <i
+                        className="fa-solid fa-trash"
+                        style={{
+                          cursor: 'pointer',
+                          color: '#CD2727',
+                        }}
+                        onClick={() => {
+                          // admin/delete_whitelisted_domain
+                          const sendData = {
+                            id: data.id,
+                            name: data.domain,
+                            associated_users: 'false',
+                          }
+                          document.body.scrollTop = 0
+                          document.documentElement.scrollTop = 0
+                          document.body.style.overflow = 'hidden'
+                          setDeleteDomainData(sendData)
+                          setOpenDeleteDomainModal(true)
+                        }}
+                      />
+
+                      <i className="fa-solid fa-caret-right" />
+                    </div>
+                  ) : (
+                    <div style={{ padding: '0px 1.15rem' }}></div>
                   )}
                 </div>
               ))}
@@ -485,7 +495,7 @@ const UserApprovalScreen = () => {
                 setOpenDomainModal(true)
               }}
             >
-              Create new domain
+              Add new domain
             </button>
           </div>
           <div className="domain-user-table-content">
@@ -496,7 +506,6 @@ const UserApprovalScreen = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '5rem 0',
                   }}
                 >
                   Loading...
@@ -527,7 +536,7 @@ const UserApprovalScreen = () => {
             </div>
             <div className="btn-container">
               <button
-                className="action-btn btn"
+                className="action-btn-btn"
                 onClick={() => {
                   if (selectedDULRowsState.length > 0) {
                     deleteAllDUL()

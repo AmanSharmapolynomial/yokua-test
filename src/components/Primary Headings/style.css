@@ -1,23 +1,33 @@
 .heading-container {
   height: 18rem;
-  margin: 1rem 1rem;
+  /* margin: 3.0rem 3.0rem; */
+  margin-left: 60px;
+  margin-right: 80px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  /* background-color: var(--bgColor2); */
+  background-color: var(--bgColor2);
 }
 
 .heading-container > h1 {
-  font-size: 3rem;
   font-weight: 500;
   padding: 3rem 2.6rem;
 }
 
-
 .yk-back-image-profile {
-  background-image: url('/public/assets/calendar\ banner\ \(1\).png');
+  background-image: url('/public/assets/profileSettingsbanner.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .yk-back-image-news {
-  background-image: url('/public/assets/news\ banner.png');
+  background-size: cover;
+  background-position: center;
+  background-image: url('/public/assets/news banner.jpg');
+}
+
+.yk-back-image-event {
+  background-image: url('../../assets/calendar_banner.jpg');
+  background-size: cover;
+  background-position: center;
 }

@@ -17,3 +17,9 @@
     justify-content: center;
     height: 65vh;
 }
+
+
+.ant-pagination-item-link{
+    display: grid !important;
+    place-items: center !important;
+  }

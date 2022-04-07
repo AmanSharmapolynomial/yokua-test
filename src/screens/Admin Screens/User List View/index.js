@@ -15,11 +15,16 @@ import SearchTable from '../../../components/SearchTable'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { useDetectClickOutside } from 'react-detect-click-outside'
+import Plusicon from '../../../assets/Group 331.png'
+import Filtermg from '../../../assets/Icon awesome-filter.png'
+import Deleteimg from '../../../assets/Icon material-delete.png'
 
 const UserListView = () => {
   // states
   const [showFilterDropdown, setShowFilterDropdown] = useState(false)
+  const [showDeleteDropdown, setShowDeleteDropdown] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [modelTitle, setModalTitle] = useState('View User')
   const [changeModal, setChangeModal] = useState('')
   const [filterCheckboxPMK, setFilterCheckboxPMK] = useState(true)
   const [filterCheckboxCM, setFilterCheckboxCM] = useState(true)
@@ -27,7 +32,7 @@ const UserListView = () => {
   const [filterActive, setFilterActive] = useState('')
 
   const [selectedRowsState, setSelectedRowsState] = useState([])
-  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
+  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
@@ -57,12 +62,12 @@ const UserListView = () => {
       minWidth: '10rem',
     },
     {
-      name: 'Permission Level',
+      name: 'Role',
       selector: row => row.role,
       minWidth: '15rem',
     },
     {
-      name: 'Email id',
+      name: 'E-mail',
       selector: row => row.companyEmail,
       grow: 2,
       minWidth: '15rem',
@@ -74,7 +79,7 @@ const UserListView = () => {
             onClick={() => {
               setSortMethod('A to Z')
             }}
-            style={{ width: '20px', height: '20px' }}
+            style={{ width: '14px', height: '14px' }}
             src={require('../../../assets/Rearrange order.png')}
           />
         ) : (
@@ -82,7 +87,7 @@ const UserListView = () => {
             onClick={() => {
               setSortMethod('Z to A')
             }}
-            style={{ width: '20px', height: '20px' }}
+            style={{ width: '14px', height: '14px' }}
             src={require('../../../assets/Rearrange order.png')}
           />
         ),
@@ -118,8 +123,26 @@ const UserListView = () => {
       content_manager: filterCheckboxCM,
       user: filterCheckboxUser,
       filter: filterActive,
+      page_index: 1,
+    }
+
+    _getUserList(payload)
+  }, [reloadTable, filterActive, sortMethod])
+
+  useEffect(async () => {
+    setIsLoading(true)
+    const payload = {
+      pmk_admin: filterCheckboxPMK,
+      content_manager: filterCheckboxCM,
+      user: filterCheckboxUser,
+      filter: filterActive,
       page_index: pageNoCall,
     }
+
+    _getUserList(payload)
+  }, [pageNoCall])
+
+  const _getUserList = async payload => {
     const listuserdata = await API.post('admin/list_users', payload)
     console.log(listuserdata)
     let sortedArray = listuserdata.data.page_data.sort(function (a, b) {
@@ -143,6 +166,7 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
+              setModalTitle('View User Detail')
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
@@ -176,6 +200,8 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
+                setModalTitle('Update user dialog')
+
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
@@ -201,7 +227,7 @@ const UserListView = () => {
     setBackendData(sortedArray)
     setContentRow(contentRowData)
     setIsLoading(false)
-  }, [reloadTable, filterActive, sortMethod, pageNoCall])
+  }
 
   const conditionalRowStyles = [
     {
@@ -251,7 +277,6 @@ const UserListView = () => {
   }
 
   const deleteUser = async () => {
-    debugger
     // write delete user api call here
     if (selectedRowsState.length > 0) {
       const deleteUserEmails = []
@@ -327,6 +352,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
+          title={modelTitle}
           DetailsModal
           data={backendData[dataToChange]}
           change={changeModal}
@@ -334,16 +360,17 @@ const UserListView = () => {
         />
       )}
 
-      <SecondaryHeading title={'User list view'} />
+      <SecondaryHeading title={'Users list view'} />
 
       <div className="filter-actions">
         <div className="filter-icons" ref={ref}>
-          <i
-            className="fa-solid fa-filter has-dropdown"
+          <img
+            src={Filtermg}
             onClick={() => {
               setShowFilterDropdown(!showFilterDropdown)
             }}
           />
+
           <div
             className="filter-dropdown dropdown"
             style={{
@@ -395,7 +422,7 @@ const UserListView = () => {
           )}
         </div>
         <div className="filter-actions mgt">
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox1Ref}
@@ -410,9 +437,9 @@ const UserListView = () => {
                 }
               }}
             />
-            PMK Administrator
+            &nbsp; PMK Administrator
           </div>
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox2Ref}
@@ -427,9 +454,9 @@ const UserListView = () => {
                 }
               }}
             />
-            PMK Content Manager
+            &nbsp; Content Manager
           </div>
-          <div className="filter-checkbox">
+          <div className="filter-checkbox d-flex align-items-center">
             <input
               type="checkbox"
               ref={filterFromCheckbox3Ref}
@@ -443,8 +470,8 @@ const UserListView = () => {
                   setReloadTable(!reloadTable)
                 }
               }}
-            />{' '}
-            User
+            />
+            &nbsp; User
           </div>
         </div>
       </div>
@@ -474,21 +501,25 @@ const UserListView = () => {
         {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
           <div
             className="add_row"
+            style={{ fontSize: '1rem', background: 'none' }}
             onClick={() => {
               document.body.scrollTop = 0
               document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)
+              setModalTitle('Add/Update user dialog')
             }}
           >
-            <i
-              className="fa-solid fa-plus"
+            <img
+              src={Plusicon}
               style={{
-                backgroundColor: 'var(--bgColor2)',
+                width: '1rem',
+                marginRight: '0.2rem',
               }}
-            />{' '}
-            Add / Update
+              className={'mr-2'}
+            />
+            {'Add'}
           </div>
         )}
       </div>

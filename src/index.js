@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals'
 import { createStore, StoreProvider } from 'easy-peasy'
 import model from './model'
 import { BrowserRouter as Router } from 'react-router-dom'
+import Footer from './components/Footer/index'
+import { LoadingProvider } from './utils/LoadingContext'
 
 const store = createStore(model)
 
@@ -13,7 +15,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <StoreProvider store={store}>
-        <App />
+        <LoadingProvider>
+          <App />
+        </LoadingProvider>
+        <Footer />
       </StoreProvider>
     </Router>
   </React.StrictMode>,

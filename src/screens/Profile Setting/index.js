@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
-import PrimaryHeading from '../../components/Primary Headings/index'
+import PrimaryHeading from '../../components/Primary Headings'
+import moment from 'moment'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
@@ -9,7 +10,12 @@ import validator from 'validator'
 import CustomCheckbox from '../../components/Profile/CustomCheckbox'
 import Header from '../../components/Header'
 
+import placeholder from '../../components/News Components/placeholder.png'
+import { useLoading } from '../../utils/LoadingContext'
+
 const ProfileSettingScreen = () => {
+  const { loading, setLoading } = useLoading()
+
   const [profileData, setProfileData] = useState({})
   const [name, setName] = useState()
   const nameRef = useRef()
@@ -39,14 +45,19 @@ const ProfileSettingScreen = () => {
 
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
+  const [profilePicture, setProfilePicture] = useState(placeholder)
 
   useEffect(async () => {
     // call profile data
     setIsLoading(true)
+    setLoading(true)
     const backendData = await API.get('/auth/profile_settings/')
-    console.log(backendData)
     setProfileData(backendData.data)
+    _setProfilePicture(
+      backendData.data.basic_profile?.avatar ? backendData.data.basic_profile?.avatar : placeholder
+    )
     setIsLoading(false)
+    setLoading(false)
   }, [reloadData])
 
   useEffect(() => {
@@ -91,10 +102,15 @@ const ProfileSettingScreen = () => {
     API.post('auth/update_avatar', formData)
       .then(data => {
         toast.success('Avatar updated successfully')
+        setReloadData(true)
       })
       .catch(error => {
-        toast.error('Errow while updating Avatar')
+        // toast.error('Error while updating Avatar')
       })
+  }
+
+  const _setProfilePicture = avatar => {
+    setProfilePicture(avatar)
   }
 
   return (
@@ -102,6 +118,8 @@ const ProfileSettingScreen = () => {
       <Header isLogedIn={getToken()} />
       {openSimpleDeleteModal && (
         <DeleteModal
+          show={openSimpleDeleteModal}
+          setShow={setOpenSimpleDeleteModal}
           req={'Account'}
           saveAndExit={saveAndExit}
           title={'Are you sure want to delete this Account?'}
@@ -109,9 +127,9 @@ const ProfileSettingScreen = () => {
           data={profileData.basic_profile?.email}
         />
       )}
-      <div className="profile-setting-container">
+      <div className="profile-setting-container pb-5">
         <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
-        <div className="profile-setting">
+        <div className="profile-setting px-5">
           <div className="profile-setting__info">
             <div>
               <input
@@ -130,22 +148,23 @@ const ProfileSettingScreen = () => {
                   cursor: 'pointer',
                 }}
                 onClick={() => imageFileInputRef.current.click()}
-                src={
-                  imageFile
-                    ? window.URL.createObjectURL(imageFile)
-                    : profileData.basic_profile?.avatar
-                }
+                src={profilePicture}
+                onError={() => setProfilePicture(placeholder)}
               />
             </div>
 
             <div className="profile-setting__info_name">
               <h4 className="name">{profileData.basic_profile?.full_name}</h4>
-              <p className="details">FCP user since April 2017</p>
+              <p className="details">
+                {`FCP user since ${moment(profileData.basic_profile?.date_joined).format(
+                  'MMM Do YYYY'
+                )}`}{' '}
+              </p>
             </div>
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">BASIC PROFILE</h1>
+            <h1 className="profile-setting__heading py-3">BASIC PROFILE</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 {/* src\assets\Icon ionic-ios-person.png */}
@@ -157,6 +176,9 @@ const ProfileSettingScreen = () => {
                   type="text"
                   disabled={disabledInputName}
                   ref={nameRef}
+                  style={{
+                    textTransform: 'capitalize',
+                  }}
                   onChange={e => {
                     setEditMode1(true)
                     setName(e.target.value)
@@ -236,7 +258,7 @@ const ProfileSettingScreen = () => {
           </div>
 
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">CHANGE PASSWORD</h1>
+            <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
             <div className="profile-setting__basic-profile-edit">
               <div className="edit_input">
                 <img
@@ -321,7 +343,7 @@ const ProfileSettingScreen = () => {
             </div>
           </div>
           <div className="profile-setting__basic-profile profile-setting__box">
-            <h1 className="profile-setting__heading">SALES NEWS BY ROTA YOKOGAWA</h1>
+            <h1 className="profile-setting__heading py-3">SALES NEWS BY ROTA YOKOGAWA</h1>
             <div className="sales-news_background">
               {isLoading ? (
                 <span>Loading...</span>
@@ -352,9 +374,9 @@ const ProfileSettingScreen = () => {
                 }}
                 onClick={async () => {
                   // delete user APi Call and the logout
-                  document.body.scrollTop = 0
-                  document.documentElement.scrollTop = 0
-                  document.body.style.overflow = 'hidden'
+                  // document.body.scrollTop = 0
+                  // document.documentElement.scrollTop = 0
+                  // document.body.style.overflow = 'hidden'
                   setOpenSimpleDeleteModal(true)
                 }}
               >
@@ -418,10 +440,12 @@ const ProfileSettingScreen = () => {
                     }
                     console.log(payloadPassword)
                     const afterPassChangeMsg = await API.post(
-                      '/auth/password/change/',
+                      '/auth/password-change/',
                       payloadPassword
                     )
-                    toast.success(afterPassChangeMsg.data.detail)
+                    toast.success(afterUpdateNewsMsg.data.message)
+
+                    // toast.success(afterPassChangeMsg.data.detail)
                   } else {
                     toast.error('Password and retype password do not match')
                   }
@@ -455,9 +479,8 @@ const ProfileSettingScreen = () => {
                 const payloadNews = {
                   news_letter: tempNLArray,
                 }
-                console.log(payloadNews)
                 const afterUpdateNewsMsg = await API.post('auth/profile_settings/', payloadNews)
-                console.log(afterUpdateNewsMsg.data)
+                toast.success(afterUpdateNewsMsg.data.message)
                 setReloadData(!reloadData)
               }}
             >
@@ -467,7 +490,7 @@ const ProfileSettingScreen = () => {
 
           <div className="events_trainings">
             <div className="profile-setting__basic-profile profile-setting__box registered_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 You are registered for the following events & trainings
               </h1>
               {isLoading ? (
@@ -491,7 +514,7 @@ const ProfileSettingScreen = () => {
               )}
             </div>
             <div className="profile-setting__basic-profile profile-setting__box last_events">
-              <h1 className="profile-setting__heading event_training_heading">
+              <h1 className="profile-setting__heading py-3 event_training_heading">
                 Last participated event
               </h1>
               {isLoading ? (

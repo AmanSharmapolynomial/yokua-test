@@ -6,13 +6,16 @@ import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
-
+import Filtermg from '../../assets/Icon awesome-filter.png'
+import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 
 const NewsScreen = () => {
   const filter1Ref = useRef()
   const filter2Ref = useRef()
+  const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
+  const [isCheckListActivated, setCheckListActivated] = useState(false)
 
   const [showFilterDropdown1, setShowFilterDropdown1] = useState()
   const [showFilterDropdown2, setShowFilterDropdown2] = useState()
@@ -27,6 +30,20 @@ const NewsScreen = () => {
   const [newNews, setNewNews] = useState(false)
   const [totalPages, setTotalPages] = useState(1)
   const [pageNoCall, setPageNoCall] = useState(1)
+
+  const [readNews, setNewsRead] = useState([])
+
+  const _updateNewsRead = id => {
+    debugger
+    const updatedReadNews = readNews
+    const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
+    if (isAlreadyAdded > -1) {
+      updatedReadNews.splice(isAlreadyAdded, 1)
+    } else {
+      updatedReadNews.push(id)
+    }
+    setNewsRead(p => [...updatedReadNews])
+  }
 
   let payload = {
     category_id: parseInt(categoryFilter),
@@ -78,6 +95,7 @@ const NewsScreen = () => {
     }
     API.post('/news/mark_read', markAsPayload)
       .then(data => {
+        setCheckListActivated(false)
         getAllNews(payload)
       })
       .catch(error => {
@@ -86,10 +104,12 @@ const NewsScreen = () => {
   }
 
   const saveAndExitAdd = () => {
+    setNewsUnderEdit(false)
     setNewNews(false)
   }
 
   const cancelAddNews = id => {
+    setNewsUnderEdit(false)
     const updatedNewsData = newsData
     const index = updatedNewsData.findIndex(item => item.id == id)
     updatedNewsData.splice(index, 1)
@@ -126,9 +146,10 @@ const NewsScreen = () => {
           <div className="filter-container">
             <div className="filter-actions">
               <div className="filter-icons">
-                <i
-                  className="fa-solid fa-filter has-dropdown"
+                <img
+                  src={Filtermg}
                   onClick={() => {
+                    debugger
                     setShowFilterDropdown1(!showFilterDropdown1)
                   }}
                   ref={ref1}
@@ -168,15 +189,15 @@ const NewsScreen = () => {
                     ))}
                 </div>
               </div>
-              <div className="filter-icons">
+              <div className="filter-icons" style={{ marginLeft: '120px' }}>
                 {backendData?.sub_categories?.length > 0 && (
-                  <i
-                    className="fa-solid fa-filter has-dropdown"
+                  <img
+                    src={Filtermg}
                     onClick={() => {
                       if (categoryFilter) {
                         setShowFilterDropdown2(!showFilterDropdown2)
                       } else {
-                        toast('Please select the Category filter first.')
+                        toast.success('Please select the Category filter first.')
                       }
                     }}
                     ref={ref2}
@@ -218,11 +239,7 @@ const NewsScreen = () => {
           <button
             className="btn"
             onClick={() => {
-              const payloadArr = []
-              newsData.map(news => {
-                payloadArr.push(news.id)
-              })
-              markAsReadAction(payloadArr)
+              markAsReadAction(readNews)
             }}
           >
             Mark as Read
@@ -238,6 +255,13 @@ const NewsScreen = () => {
                 if (news && Object.keys(news).length > 1) {
                   return (
                     <NewsItem
+                      setCheckListActivated={setCheckListActivated}
+                      isCheckListActivated={isCheckListActivated}
+                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                      setNewsUnderEdit={setNewsUnderEdit}
+                      setCategoryFilter={() => setCategoryFilter(news?.category_id)}
+                      updateNewsRead={() => _updateNewsRead(news.id)}
+                      readNews={readNews}
                       data={news}
                       changeType={'View'}
                       tempCategory={backendData.categories}
@@ -250,6 +274,10 @@ const NewsScreen = () => {
                 } else {
                   return (
                     <NewsItem
+                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                      setNewsUnderEdit={setNewsUnderEdit}
+                      updateNewsRead={() => _updateNewsRead(news.id)}
+                      readNews={readNews}
                       getAllNews={() => getAllNews(payload)}
                       cancelAddNews={id => cancelAddNews(id)}
                       data={{}}
@@ -264,7 +292,13 @@ const NewsScreen = () => {
                 }
               })
             ) : (
-              <span> You're all caught up with the News </span>
+              <>
+                {backendData?.news_letters.length < 1 ? (
+                  <span>No Records Found</span>
+                ) : (
+                  <span> You're all caught up with the News </span>
+                )}
+              </>
             )}
 
             {/*{newNews ? (*/}
@@ -286,15 +320,21 @@ const NewsScreen = () => {
               <div
                 className="add_row"
                 onClick={() => {
-                  setNewsData([...newsData, { id: Math.random() }])
+                  if (!isAnyNewsUnderEdit) {
+                    setNewsUnderEdit(true)
+                    setNewsData([...newsData, { id: Math.random() }])
+                  } else {
+                    toast.error('Please finish current news edit.')
+                  }
                 }}
               >
-                <i
-                  className="fa-solid fa-plus"
+                <img
+                  src={Plusicon}
                   style={{
-                    backgroundColor: 'var(--bgColor2)',
+                    width: '22px',
+                    marginRight: '12px',
                   }}
-                />{' '}
+                />
                 Add
               </div>
             )}
@@ -311,10 +351,11 @@ const NewsScreen = () => {
             />
           </div>
         )}
-        <div className="archived-filter">
+        <div className="archived-filter ">
           {archivedFilter ? (
             <button
-              className="btn"
+              className="btn ml-3"
+              style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(false)
               }}
@@ -323,7 +364,8 @@ const NewsScreen = () => {
             </button>
           ) : (
             <button
-              className="btn"
+              className="btn ml-3"
+              style={{ display: 'grid', placeItems: 'center' }}
               onClick={() => {
                 setArchivedFilter(true)
               }}

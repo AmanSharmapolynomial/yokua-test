@@ -1,7 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import '../style.css'
 
 const ResetPasswordModal = ({ change, data, saveAndExit }) => {
+  useEffect(() => {}, [])
+
   // refs
   const nameRef = useRef()
   const emailRef = useRef()

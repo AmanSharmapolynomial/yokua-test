@@ -20,6 +20,13 @@ const NewsItem = ({
   setIsLoading,
   cancelAddNews,
   refreshPage,
+  updateNewsRead,
+  readNews,
+  setCategoryFilter,
+  isAnyNewsUnderEdit,
+  setNewsUnderEdit,
+  setCheckListActivated,
+  isCheckListActivated,
 }) => {
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
@@ -61,23 +68,40 @@ const NewsItem = ({
   const topicRef = useRef()
 
   const handleSelectTopic = cat => {
+    setAllSelectChecked(false)
     // setToggleDropDown(0)
+    topicRef.current.click()
     setSelectedTopic(cat.category_name)
     setCategoryID(cat.id)
+    setSelectedSubTopic('Select Sub-Topic')
+
+    setSubCategoryID(0)
+    if (cat.image_link && cat.image_link != '') {
+      if (typeof cat.image_link == 'string') {
+        setCatImg(cat.image_link)
+      } else {
+        setCatImg(window.URL.createObjectURL(cat.image_link))
+      }
+    }
   }
   const handleSelectSubTopic = cat => {
-    subTopicRef.current.click()
     setToggleDropDown(0)
     setSelectedSubTopic(cat.sub_category_name)
     setSubCategoryID(cat.id)
   }
 
   const _handleEditView = () => {
-    setEditView(true)
-    setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
-    setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
-    setCategoryID(data.category_id)
-    setSubCategoryID(data.sub_category_id)
+    if (!isAnyNewsUnderEdit) {
+      _checkBoxEditView()
+      setNewsUnderEdit(true)
+      setEditView(true)
+      setSelectedTopic(category.find(cat => cat.id == data.category_id).category_name)
+      // setSelectedSubTopic(subCategory.find(cat => cat.id == data.sub_category_id).sub_category_name)
+      setCategoryID(data.category_id)
+      setSubCategoryID(data.sub_category_id)
+    } else {
+      toast.error('Please finish current news edit.')
+    }
   }
 
   // refs for fields in edit VIew
@@ -141,7 +165,8 @@ const NewsItem = ({
 
   const saveAndExitModal = () => {
     setDeleteModal(false)
-    setEditView('')
+    setEditView(false)
+    setNewsUnderEdit(false)
     // document.body.style.overflow = 'scroll'
   }
 
@@ -154,41 +179,336 @@ const NewsItem = ({
     refreshPage()
   }
 
+  const [isNewCatAdded, setIsNewCatAdded] = useState(false)
+  const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
+
   const AddNewCategoryCall = async (image, categoryName) => {
-    const payload = {
-      // change here to form data
-      image,
-      data: {
-        category_name: categoryName,
-      },
+    setIsNewCatAdded(true)
+    const tempCatObject = {
+      category_name: categoryName,
+      id: Math.random(10000, 200000),
+      image_link: image,
     }
-    const afterAddMsg = await API.post('news/add_category', payload)
-    getCategoryAndSubCategory()
-    console.log(afterAddMsg)
+    setCategory([...category, tempCatObject])
+    handleSelectTopic(tempCatObject)
   }
 
   const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
-    const payload = {
+    setIsNewSubCatAdded(true)
+    const tempSubCatObject = {
+      id: Math.random(10000, 200000),
       sub_category_name: categoryName,
-      parent_category_id: parentCatId,
+      category_id: parentCatId,
+      isChecked: true,
     }
-    debugger
-    const afterAddMsg = await API.post('news/add_subcategory', payload)
-    getCategoryAndSubCategory()
-    console.log(afterAddMsg)
+    setSubCategory([...subCategory, tempSubCatObject])
+    handleSelectSubTopic(tempSubCatObject)
   }
-
-  console.log(fileInput?.name)
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
+  const uploadCategory = () => {
+    return new Promise((resolve, reject) => {
+      if (isNewCatAdded) {
+        const formData = new FormData()
+        const data = {
+          category_name: category[category.length - 1].category_name,
+        }
+        formData.append('image', category[category.length - 1].image_link)
+        formData.append('data', JSON.stringify(data))
+
+        API.post('news/add_category', formData)
+          .then(data => {
+            setIsLoading(false)
+
+            resolve(data)
+          })
+          .catch(error => {
+            setIsLoading(false)
+
+            reject(error)
+          })
+      } else {
+        resolve(null)
+      }
+    })
+  }
+
+  const uploadSubCategory = (categoryId, parentId) => {
+    return new Promise((resolve, reject) => {
+      if (isNewSubCatAdded) {
+        const subPayload = {
+          sub_category_name: categoryId,
+          parent_category_id: parentId,
+        }
+        API.post('news/add_subcategory', subPayload)
+          .then(data => {
+            setIsLoading(false)
+
+            resolve(data)
+          })
+          .catch(error => {
+            setIsLoading(false)
+
+            reject(error)
+          })
+      } else {
+        resolve(null)
+      }
+    })
+  }
+
+  const uploadNewNews = (catId, subCatId) => {
+    const subCategoryIds = []
+    if (isNewSubCatAdded) {
+      subCategoryIds.push(subCatId)
+    }
+    subCategory
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (cat.isChecked) {
+          subCategoryIds.push(cat.id)
+        }
+      })
+
+    if (isNewSubCatAdded) {
+      subCategoryIds.pop()
+    }
+
+    if (!catId || catId == 0) {
+      toast.error('Please select Topic')
+      return
+    } else if (subCategoryIds.length < 1) {
+      toast.error('Please select Sub Topic')
+      return
+    } else {
+      const details = JSON.stringify({
+        news_id: dataID || null,
+        category_id: catId,
+        description: newsDesc,
+        sub_category_id: subCategoryIds,
+      })
+
+      const fileDetails = fileInputRef?.current?.files[0]
+      var bodyFormData = new FormData()
+      bodyFormData.append('data', details)
+      if (fileDetails) {
+        bodyFormData.append('file', fileDetails)
+      }
+      // bodyFormData.append('image', newsI)
+
+      const token = getToken()
+      axios({
+        method: 'post',
+        url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
+        data: bodyFormData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(function (response) {
+          //handle success
+          console.log(response)
+          setIsLoading(false)
+
+          if (response.status == 200) {
+            setNewsUnderEdit(false)
+            setEditView(false)
+            refreshPage()
+            toast.success(response.data.message)
+            if (!changeType) {
+            } else if (changeType == 'Add') {
+              // window.location.reload()
+              saveAndExitAdd()
+              setEditView(false)
+            }
+          } else {
+            setEditView(false)
+            setNewsUnderEdit(false)
+            toast.error(response.data.message)
+          }
+        })
+        .catch(function (response) {
+          setEditView(false)
+          setNewsUnderEdit(false)
+          //handle error
+          console.log('Error', response)
+          if (response.status != 200) {
+            // toast.error(response?.message)
+            toast.error('Session expired')
+          }
+          setIsLoading(false)
+        })
+    }
+  }
+
+  const uploadNews = async () => {
+    debugger
+    if (newsDescRef.current.value == '') {
+      toast.error('Enter some description to add or edit news')
+      return
+    } else {
+      if (isNewCatAdded) {
+        uploadCategory().then(data => {
+          setIsLoading(false)
+          if (data) {
+            setCategoryID(data.data.id)
+            if (isNewSubCatAdded) {
+              uploadSubCategory(
+                subCategory[subCategory.length - 1].sub_category_name,
+                data.data.id
+              ).then(subData => {
+                if (subData) {
+                  setSubCategoryID(subData.data.id)
+                  uploadNewNews(data.data.id, subData.data.id)
+                }
+              })
+            } else {
+              uploadNewNews(data.data.id, 0)
+            }
+          } else {
+            console.log('Error Occured')
+          }
+        })
+      } else if (isNewSubCatAdded) {
+        uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
+          subData => {
+            if (subData) {
+              setSubCategoryID(subData.data.id)
+              uploadNewNews(categoryID, subData.data.id)
+            }
+          }
+        )
+      } else {
+        uploadNewNews(categoryID, 0)
+      }
+    }
+  }
+
+  const _getNewsReadColor = () => {
+    if (editView) {
+      return true
+    }
+    if (data?.news_read) {
+      return false
+    }
+    if (readNews.includes(data?.id)) {
+      return false
+    }
+    return true
+  }
+
+  const [isAllSelectChecked, setAllSelectChecked] = useState(false)
+  const _handleAllChecked = isChecked => {
+    setAllSelectChecked(isChecked)
+    const updatedSubcategpry = subCategory
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        cat.isChecked = isChecked
+      })
+
+    setSubCategory(updatedSubcategpry)
+  }
+
+  const _handleChecked = id => {
+    const updatedSubcategpry = subCategory
+    let AllSelected = true
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (cat.id == id) {
+          cat.isChecked = !cat.isChecked
+          if (!cat.isChecked) {
+            setAllSelectChecked(false)
+          }
+        }
+
+        if (!cat.isChecked) {
+          AllSelected = false
+        }
+      })
+
+    setSubCategory(updatedSubcategpry)
+
+    if (AllSelected) {
+      setAllSelectChecked(true)
+    }
+  }
+
+  useEffect(() => {
+    _checkAllChecked()
+  }, [subCategory, isAllSelectChecked])
+
+  useEffect(() => {
+    _checkBoxEditView()
+  }, [editView])
+
+  const _checkAllChecked = () => {
+    const updatedSubcategpry = subCategory
+    let AllSelected = true
+    updatedSubcategpry
+      .filter(item => item.category_id == categoryID)
+      .forEach((cat, index) => {
+        if (!cat.isChecked) {
+          AllSelected = false
+        }
+      })
+
+    if (AllSelected) {
+      setAllSelectChecked(true)
+    } else {
+      setAllSelectChecked(false)
+    }
+  }
+
+  const _getSelectedItems = () => {
+    let commaSeparated = ''
+    subCategory
+      .filter(item => item.category_id == categoryID && item.isChecked)
+      .forEach((cat, index) => {
+        commaSeparated += ' ' + cat.sub_category_name + ','
+      })
+    if (commaSeparated != '') {
+      return commaSeparated.slice(0, -1)
+    } else {
+      return 'Select Sub Category'
+    }
+  }
+
+  const _checkBoxEditView = () => {
+    const updatedSubcategpry = subCategory
+    const tempCat = subCategory
+    tempCat.forEach((cat, index) => {
+      cat.isChecked = false
+    })
+    setSubCategory(tempCat)
+    if (data?.sub_category?.length > 0) {
+      data.sub_category.map(x => {
+        updatedSubcategpry
+          .filter(item => item.category_id == categoryID)
+          .forEach((cat, index) => {
+            if (x.sub_category_id == cat.id) {
+              cat.isChecked = true
+            }
+          })
+      })
+    }
+
+    setSubCategory(() => [...updatedSubcategpry])
+  }
+
   return (
     <React.Fragment>
+      <div style={{ width: '400px' }}></div>
+
       <DeleteModal
         show={deleteModal}
         setShow={setDeleteModal}
         req={'News'}
         title={'Are you sure you want to delete this news?'}
+        isBold={true}
         saveAndExit={saveAndExitModal}
         runDelete={deleteNews}
         data={deleteNewsArr}
@@ -198,7 +518,9 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
+        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
       />
+
       <div className="single-news-item" key={data ? data.id : Math.random()}>
         <div className="flex-setup">
           <div
@@ -212,18 +534,29 @@ const NewsItem = ({
               // setReadState(false)
             }}
           >
-            <div
-              className="read-dot"
-              style={
-                !editView
-                  ? {
-                      backgroundColor: '',
-                    }
-                  : {
-                      backgroundColor: readState ? 'var(--bgColor2)' : '',
-                    }
-              }
-            ></div>
+            {isCheckListActivated && !data?.news_read && (
+              <>
+                <input
+                  style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
+                  type="checkbox"
+                  checked={readNews.includes(data.id) ? true : false}
+                  onChange={() => updateNewsRead()}
+                />
+              </>
+            )}
+            {isCheckListActivated && data?.news_read && (
+              <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+            )}
+
+            {!isCheckListActivated && (
+              <div
+                className="read-dot"
+                onClick={() =>
+                  _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
+                }
+                style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
+              ></div>
+            )}
           </div>
 
           <div className="news-img">
@@ -240,7 +573,7 @@ const NewsItem = ({
                   }}
                 /> */}
                 <img
-                  src={category && category.find(cat => cat.id == categoryID)?.image_link}
+                  src={catImg}
                   onError={_onErrorImage}
                   // onClick={() => imageFileInputRef.current.click()}
                 />
@@ -262,14 +595,13 @@ const NewsItem = ({
                     ref={topicRef}
                     // show={toggleDropDown == 1}
                     onClick={() => {
-                      debugger
                       toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
                     }}
                     size="sm"
-                    // autoClose={'outside'}
+                    autoClose={'outside'}
                     className="yk-dropdown-holder"
                     style={{
-                      overflow: 'visible',
+                      width: '12rem',
                     }}
                   >
                     <Dropdown.Toggle
@@ -277,11 +609,21 @@ const NewsItem = ({
                       className="yg-custom-dropdown"
                       color="red"
                       id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
                       {selectedTopic}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
                       {category.map((cat, index) => (
                         <Dropdown.Item
                           key={index}
@@ -294,8 +636,8 @@ const NewsItem = ({
                       <Dropdown.Divider />
                       {!isTopicAdd && (
                         <button
-                          id="mybtn"
-                          className="btn yg-font-size m-2"
+                          style={{ marginLeft: '2rem' }}
+                          className="btn yg-font-size"
                           onClick={() => {
                             setToggleDropDown(1)
                             setShowCategoryModal(true)
@@ -324,7 +666,7 @@ const NewsItem = ({
                             className="yg-font-size"
                             id="button-addon2"
                           >
-                            Add
+                            Save
                           </Button>
                         </InputGroup>
                       )}
@@ -347,18 +689,85 @@ const NewsItem = ({
                   </select> */}
                 </>
               ) : (
-                <span className="news-category">{data ? data.category_name : ''}</span>
+                <span onClick={setCategoryFilter} className="news-category">
+                  {data ? data.category_name : ''}
+                </span>
               )}
 
               {editView ? (
                 <>
+                  {/* <div class="dropdown yk-dropdown-holder">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                      Dropdown button
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                      {subCategory
+                        .filter(item => item.category_id == categoryID)
+                        .map((cat, index) => (
+
+                          <label className='yg-font-size' style={{ display: 'flex', alignItems: 'center', justifyItems: 'center' }}>
+                            <input
+                              style={{ marginRight: '8px' }}
+                              type="checkbox"
+                              defaultChecked={false}
+                              onChange={() => setChecked(!checked)}
+                            />
+                            {cat.sub_category_name}
+                          </label>
+
+                        ))}
+                      {!isSubTopicAdd && (
+                        <button
+                          style={{ marginLeft: '33px' }}
+                          id="mybtn"
+                          className="btn yg-font-size "
+                          onClick={() => {
+                            setSubTopicAdd(true)
+                          }}
+                        >
+                          Add Sub-Topic
+                        </button>
+                      )}
+                      {isSubTopicAdd && (
+                        <InputGroup className="mb-3 yg-font-size p-1 ">
+                          <FormControl
+                            className="yg-font-size"
+                            placeholder="Sub-Category"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            value={newSubTopicName}
+                            onChange={e => SetNewSubTopicName(e.target.value)}
+                          />
+                          <Button
+                            onClick={() => {
+                              if (newSubTopicName.length != 0) {
+                                setSubTopicAdd(false)
+                                AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              } else {
+                                toast.error('Please provide Sub Category title')
+                              }
+                            }}
+                            variant="outline-secondary"
+                            className="yg-font-size"
+                            id="button-addon2"
+                          >
+                            Save
+                          </Button>
+                        </InputGroup>
+                      )}
+
+
+                    </div>
+                  </div> */}
+
                   <Dropdown
                     ref={subTopicRef}
                     // show={toggleDropDown == 2}
-                    // onClick={() =>
-                    //   toggleDropDown == 2 ? setToggleDropDown(0): setToggleDropDown(2)
-                    //   // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
-                    // }
+                    onClick={
+                      () => (toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2))
+                      // toggleDropDown == 2 && (isSubTopicAdd || newSubTopicName != '') ? setToggleDropDown(0) : setToggleDropDown(2)
+                    }
                     size="sm"
                     autoClose={'outside'}
                     className={
@@ -366,33 +775,56 @@ const NewsItem = ({
                         ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
                         : 'yk-dropdown-holder mt-3'
                     }
+                    style={{
+                      width: '12rem',
+                    }}
                   >
                     <Dropdown.Toggle
                       size={'sm'}
                       className="yg-custom-dropdown"
                       color="red"
                       id="dropdown-basic"
+                      style={{
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
-                      {selectedSubTopic}
+                      {_getSelectedItems()}
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
+                    <Dropdown.Menu
+                      style={{
+                        maxHeight: '14rem',
+                        overflowY: 'scroll',
+                      }}
+                    >
                       {subCategory
                         .filter(item => item.category_id == categoryID)
                         .map((cat, index) => (
-                          <Dropdown.Item
-                            key={index}
+                          <label
                             className="yg-font-size"
-                            onClick={() => handleSelectSubTopic(cat)}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyItems: 'center',
+                            }}
                           >
+                            <input
+                              style={{ marginRight: '8px' }}
+                              type="checkbox"
+                              checked={cat.isChecked}
+                              onChange={() => _handleChecked(cat.id)}
+                            />
                             {cat.sub_category_name}
-                          </Dropdown.Item>
+                          </label>
                         ))}
                       <Dropdown.Divider />
                       {!isSubTopicAdd && (
                         <button
+                          style={{ marginLeft: '1.2rem' }}
                           id="mybtn"
-                          className="btn yg-font-size m-2"
+                          className="btn yg-font-size "
                           onClick={() => {
                             setSubTopicAdd(true)
                           }}
@@ -413,13 +845,17 @@ const NewsItem = ({
                           <Button
                             onClick={() => {
                               setSubTopicAdd(false)
-                              AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              if (newSubTopicName.length != 0) {
+                                AddNewSubCategoryCall(newSubTopicName, categoryID)
+                              } else {
+                                toast.error('Please provide Sub Category title')
+                              }
                             }}
                             variant="outline-secondary"
                             className="yg-font-size"
                             id="button-addon2"
                           >
-                            Add
+                            Save
                           </Button>
                         </InputGroup>
                       )}
@@ -442,7 +878,17 @@ const NewsItem = ({
                   </select> */}
                 </>
               ) : (
-                <span className="news-info-text">{data ? data.sub_category_name : ''}</span>
+                <>
+                  {data && data.sub_category && (
+                    <select>
+                      {data.sub_category.map((item, index) => (
+                        <option selected={index == 0} value={item.id} className="news-info-text">
+                          {item.sub_category_name}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -452,10 +898,12 @@ const NewsItem = ({
                 ref={newsDescRef}
                 style={{
                   minWidth: '100%',
-                  minHeight: '15vh',
+                  minHeight: '24  vh',
                   marginTop: '1rem',
+                  height: '188px',
+                  resize: 'none',
                 }}
-                placeholder="Start writing ......"
+                placeholder="Enter description"
                 onChange={e => {
                   setNewsDesc(e.target.value)
                 }}
@@ -475,7 +923,7 @@ const NewsItem = ({
         <div
           className="edit-delete-cta"
           style={{
-            marginTop: '1rem',
+            marginTop: '0rem',
           }}
         >
           <div className="yk-news-edit-icons mb-5">
@@ -488,77 +936,13 @@ const NewsItem = ({
                       fontSize: '20px',
                       cursor: 'pointer',
                     }}
-                    onClick={() => {
+                    onClick={async () => {
                       // add save value to a payload
                       // call the save or edit api here
-                      if (newsDescRef.current.value == '') {
-                        toast.error('Enter some description to add or edit news')
-                      } else {
-                        setIsLoading(true)
-                        if (categoryID == null) {
-                          // call category add api
-                        } else {
-                          if (subCategoryID == null) {
-                            // call subcategory add api
-                          } else {
-                            const details = JSON.stringify({
-                              news_id: dataID || null,
-                              category_id: categoryID,
-                              sub_category_id: subCategoryID,
-                              description: newsDesc,
-                            })
-                            const fileDetails = fileInputRef?.current?.files[0]
-                            var bodyFormData = new FormData()
-                            bodyFormData.append('data', details)
-                            if (fileDetails) {
-                              bodyFormData.append('file', fileDetails)
-                            }
-                            // bodyFormData.append('image', newsI)
-                            const token = getToken()
-                            axios({
-                              method: 'post',
-                              url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-                              data: bodyFormData,
-                              headers: {
-                                'Content-Type': 'multipart/form-data',
-                                Authorization: `Bearer ${token}`,
-                              },
-                            })
-                              .then(function (response) {
-                                //handle success
-                                console.log(response)
-                                setIsLoading(false)
-                                if (response.status == 200) {
-                                  toast.success(response.data.message)
-                                } else {
-                                  toast.error(response.data.message)
-                                }
-                              })
-                              .catch(function (response) {
-                                //handle error
-                                console.log('Error', response)
-                                if (response.status != 200) {
-                                  // toast.error(response?.message)
-                                  toast.error('Something went wrong')
-                                }
-                                setIsLoading(false)
-                              })
-                          }
-                        }
-
-                        console.log(bodyFormData.getAll('file'))
-                        //   file: fileInput ? fileInput : '',
-                      }
-                      console.log(bodyFormData.getAll('file'))
+                      uploadNews()
                       // call the upsert News API here
                       // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
                       //   console.log(afterUpdateNewsMsg)
-                      if (!changeType) {
-                        setEditView(false)
-                      } else if (changeType == 'Add') {
-                        // window.location.reload()
-                        saveAndExitAdd()
-                      }
                     }}
                   />
                 )
@@ -584,8 +968,11 @@ const NewsItem = ({
                   cursor: 'pointer',
                 }}
                 onClick={() => {
+                  setNewsUnderEdit(false)
                   setEditView(false)
                   cancelAddNews(data.id)
+                  setIsNewCatAdded(false)
+                  setIsNewSubCatAdded(false)
                 }}
               />
             ) : (
@@ -611,19 +998,65 @@ const NewsItem = ({
           <div className="yk-attached-file">
             {editView ? (
               hasPermission && (
-                <div className="inputfile-box ">
-                  <input
-                    accept="application/pdf"
-                    type="file"
-                    id="file"
-                    ref={fileInputRef}
-                    className="inputfile yk-icon-hover"
-                    onChange={e => {
-                      console.log(e.target.files[0])
-                      setFileInput(e.target.files[0])
+                <>
+                  <div
+                    className="inputfile-box "
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column-reverse',
                     }}
-                  />
-                  <label
+                  >
+                    <div>
+                      <i
+                        className="fa-solid fa-paperclip yk-icon-hover"
+                        style={{ fontSize: '22px' }}
+                        onClick={() => fileInputRef.current.click()}
+                      />
+                      <input
+                        accept="application/pdf"
+                        type="file"
+                        id="file"
+                        ref={fileInputRef}
+                        className="inputfile yk-icon-hover"
+                        onChange={e => {
+                          console.log(e.target.files[0])
+                          setFileInput(e.target.files[0])
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <p
+                        className="yk-span"
+                        style={{
+                          fontSize: '16px',
+                        }}
+                      >
+                        {fileInput?.name}
+                      </p>
+                      {fileInput && (
+                        <i
+                          className="fa-solid fa-xmark yk-icon-hover"
+                          style={{
+                            fontSize: '22px',
+                            cursor: 'pointer',
+                            alignSelf: 'baseline',
+                          }}
+                          onClick={() => {
+                            setFileInput(null)
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* <label
                     htmlFor="file"
                     style={{
                       display: 'flex',
@@ -636,7 +1069,20 @@ const NewsItem = ({
                       <i className="fa-solid fa-paperclip" style={{ fontSize: '22px' }} />
                     </span>
                   </label>
-                  <span
+                    
+                  <input
+                    accept="application/pdf"
+                    type="file"
+                    id="file"
+                    ref={fileInputRef}
+                    className="inputfile yk-icon-hover"
+                    onChange={e => {
+                      console.log(e.target.files[0])
+                      setFileInput(e.target.files[0])
+                    }}
+                  /> */}
+
+                  {/* <span
                     // className='yk-span'
                     style={{
                       fontSize: '0.7rem',
@@ -655,17 +1101,15 @@ const NewsItem = ({
                         }}
                       />
                     )}
-                  </span>
-                </div>
+                  </span> */}
+                </>
               )
             ) : (
-              <div className="attachment-icon">
+              <div className="attachment-icon mb-4">
                 {data.attachment_link != '' && (
                   <>
                     <i className="fa-solid fa-file" />
-                    <a download href={data ? data.attachment_link : ''}>
-                      Read attached file
-                    </a>
+                    <a href={data ? data.attachment_link : ''}>Read attached file</a>
                   </>
                 )}
                 {data.attachment_link == '' && (
@@ -695,7 +1139,7 @@ const NewsItem = ({
 
 export default NewsItem
 
-function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
+function AddCategoryModal({ show, setShow, getCategoryAndSubCategory, setTempCategoryObject }) {
   const [categoryName, setCategoryName] = useState('')
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
@@ -714,19 +1158,18 @@ function AddCategoryModal({ show, setShow, getCategoryAndSubCategory }) {
       toast.error('Category Name Required')
       return
     }
-    const data = {
-      category_name: categoryName,
-    }
-    const formData = new FormData()
-    formData.append('image', image)
-    formData.append('data', JSON.stringify(data))
 
-    const afterAddMsg = await API.post('news/add_category', formData)
+    // const formData = new FormData()
+    // formData.append('image', image)
+    // formData.append('data', JSON.stringify(data))
+
+    // const afterAddMsg = await API.post('news/add_category', formData)
+    setTempCategoryObject(image, categoryName)
+
     setCategoryName('')
     SetImageFile(null)
     setShow(false)
-    getCategoryAndSubCategory()
-    console.log(afterAddMsg)
+    // getCategoryAndSubCategory()
   }
 
   return (

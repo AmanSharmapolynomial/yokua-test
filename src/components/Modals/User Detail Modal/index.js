@@ -2,8 +2,19 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import '../style.css'
 import validator from 'validator'
+import placeholder from '../../News Components/placeholder.png'
 
-const UserDetailsModal = ({ change, data, saveAndExit }) => {
+import Select from 'react-select'
+const options = [
+  { value: 'User', label: 'User' },
+  { value: 'PMK Content Manager', label: 'PMK Content Manager' },
+  { value: 'PMK Administrator', label: 'PMK Administrator' },
+]
+
+const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
+  const [profilePicture, setProfilePicture] = useState(
+    data?.avatar_link ? data?.avatar_link : placeholder
+  )
   // refs
   let emailRef = useRef()
   let firstNameRef = useRef()
@@ -27,6 +38,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
   const [disabledInput, setDisabledInput] = useState(false)
 
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
 
   useEffect(() => {
     if (change == 'View') {
@@ -39,12 +51,16 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
       emailRef.current.value = data.email
       firstNameRef.current.value = data.first_name
       lastNameRef.current.value = data.last_name
-      roleRef.current.value = data.role
+      // roleRef.current.value = data.role
       companyRef.current.value = data.company_name
       setEmail(data.email)
       setFirstName(data.first_name)
       setLastName(data.last_name)
       setRole(data.role)
+      setSelectedOption({
+        value: data?.role ? data.role : 'User',
+        label: data?.role ? data.role : 'User',
+      })
       setCompany(data.company_name)
     }
   }, [])
@@ -61,7 +77,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             }}
           />
         )}
-        <h3 className="modal-heading">Add / Update User</h3>
+        <h3 className="modal-heading">{title}</h3>
         <div
           className="modal-content flex-row"
           style={{
@@ -69,7 +85,14 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
           }}
         >
           <div className="user-img">
-            <img src="/logo512.png" />
+            <img
+              // className="profile-setting__info_img"
+              // style={{
+              //   cursor: 'pointer',
+              // }}
+              src={profilePicture}
+              onError={() => setProfilePicture(placeholder)}
+            />
           </div>
           <div className="user-details-form">
             <div className="input-field-container">
@@ -98,22 +121,16 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
             </div>
             <div className="input-field-container">
               <label className="input-label">Permission Level</label>
-              <div className="select-icon">
-                <select
-                  disabled={disabledInput}
-                  className="input-text select-role"
-                  ref={roleRef}
-                  onChange={e => {
-                    setRole(e.target.value)
-                  }}
-                >
-                  <option>User</option>
-                  <option>PMK Content Manager</option>
-                  <option>PMK Administrator</option>
-                </select>
-                <i className="fa-solid fa-caret-down drop-icon" aria-hidden="true" />
-              </div>
+
+              <Select
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={options}
+                style={{ width: '100px' }}
+                className="yg-custom-dropdowns"
+              />
             </div>
+
             <div className="input-field-container">
               <label className="input-label">E-Mail id</label>
               <input
@@ -223,7 +240,7 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
         {change != 'View' && (
           <div className="domain-modal-cta">
             <button
-              className="cancel-domain btn"
+              className="cancel-domain btn col-6 text-center"
               onClick={() => {
                 saveAndExit()
               }}
@@ -231,16 +248,22 @@ const UserDetailsModal = ({ change, data, saveAndExit }) => {
               Cancel
             </button>
             <button
-              className="btn"
+              className="btn col-6 text-center"
               onClick={() => {
+                if (selectedOption == null || selectedOption.value == null) {
+                  toast.error('Please select the permission')
+                  return
+                }
                 if (email != '' && email && firstName && lastName) {
                   const saveData = {
                     email: email,
                     firstName: firstName,
                     lastName: lastName,
-                    role: role,
+                    role: selectedOption.value,
                     company_name: company,
-                    password: password,
+                  }
+                  if (password && password.length > 1) {
+                    saveData['password'] = password
                   }
                   if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
                     if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {

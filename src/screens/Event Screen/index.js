@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import Table from 'react-bootstrap/Table'
-import PrimaryHeading from '../../components/Event/PrimaryHeading'
-import AddEventScreen from './addEvent'
+import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import { toast } from 'react-toastify'
@@ -122,31 +121,37 @@ const EventScreen = () => {
     <>
       <Header isLogedIn={getToken()} />
       <div className="event-screen-header">
-        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-profile'} />
+        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
       </div>
       {eventList.length > 0 ? (
-        <div className="calenderDiv">
-          <Calendar
-            //minDate={new Date()}
-            formatShortWeekday={(locale, value) =>
-              ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
-            }
-            tileContent={({ date, view }) => {
-              let calenderDate = moment(date).format('yyyy-MM-DD').toString()
-              //console.log(calenderDate)
-              let dataList = eventList.filter(e => e.start_date === calenderDate)
-              return dataList.length > 0 ? (
-                <div>
-                  <p className="eventPTag">{dataList[0].description}</p>{' '}
-                </div>
-              ) : null
+        <div className="calenderDiv" style={{ marginTop: '10px' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
             }}
-          />
+          >
+            <Calendar
+              //minDate={new Date()}
+              formatShortWeekday={(locale, value) =>
+                ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
+              }
+              tileContent={({ date, view }) => {
+                let calenderDate = moment(date).format('yyyy-MM-DD').toString()
+                //console.log(calenderDate)
+                let dataList = eventList.filter(e => e.start_date === calenderDate)
+                return dataList.length > 0 ? (
+                  <div>
+                    <textarea className="eventPTag" disabled={true}>
+                      {dataList[0].description}
+                    </textarea>
+                  </div>
+                ) : null
+              }}
+            />
+          </div>
 
-          <br />
-          <br />
-
-          <div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Table
               responsive="sm"
               style={{
@@ -229,7 +234,11 @@ const EventScreen = () => {
                         </div>
                       </td>
                       <td className="tdWidth">
-                        <div>
+                        <div
+                          onClick={() => {
+                            navigate('/event/update/' + e.id)
+                          }}
+                        >
                           <img
                             src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
                             style={{
@@ -272,36 +281,47 @@ const EventScreen = () => {
             </Table>
           </div>
 
-          <div>
-            <button
-              onClick={() => {
-                openModalForMultipleEvent()
-              }}
-              style={{
-                background: 'rgb(0, 79, 155)',
-                color: 'white',
-                border: '1px solid black',
-                borderRadius: '3px',
-                float: 'right',
-              }}
-            >
-              Delete
-            </button>
-            <br />
-            <br />
-            <button
-              onClick={() => {
-                navigate('/event/add')
-              }}
-              style={{
-                background: 'rgb(0, 79, 155)',
-                color: 'white',
-                border: '1px solid black',
-                borderRadius: '3px',
-              }}
-            >
-              RYG Event creation
-            </button>
+          <div
+            className="row"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              marginLeft: '10%',
+              marginBottom: '4%',
+              marginRight: '10%',
+            }}
+          >
+            <div>
+              <button
+                onClick={() => {
+                  openModalForMultipleEvent()
+                }}
+                style={{
+                  background: 'rgb(0, 79, 155)',
+                  color: 'white',
+                  border: '1px solid black',
+                  borderRadius: '3px',
+                  float: 'right',
+                }}
+              >
+                Delete
+              </button>
+            </div>
+            <div style={{ marginTop: '5%' }}>
+              <button
+                onClick={() => {
+                  navigate('/event/add')
+                }}
+                style={{
+                  background: 'rgb(0, 79, 155)',
+                  color: 'white',
+                  border: '1px solid black',
+                  borderRadius: '3px',
+                }}
+              >
+                RYG Event creation
+              </button>
+            </div>
           </div>
           <br />
           <br />

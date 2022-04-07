@@ -11,9 +11,10 @@ const PrimaryHeading = ({ heading, title, backgroundImage }) => {
           width: 'max-content',
           padding: '0.5rem 1rem',
           marginLeft: '2rem',
-          fontSize: '1.5rem',
+          fontSize: '1.0rem',
           marginBottom: '3rem',
           borderRadius: '4px',
+          backgroundColor: '#004F9B',
         }}
       >
         {title ? title : 'Admin user view list'}
