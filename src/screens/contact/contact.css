@@ -1,0 +1,94 @@
+.yk-adminCcontact .sm-h {
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.yk-adminCcontact .img-box {
+
+    display: grid;
+    place-items: center;
+
+}
+
+.yk-adminCcontact .img-box i {
+    font-size: 7rem;
+    color: #5a5a5a;
+}
+
+.cont-detail i {
+    display: block;
+    font-size: 1vw;
+    color: #004f9b;
+}
+
+.cont-detail span {
+    color: #000000;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+
+.yk-adminCcontact .boxes .box-one {
+
+    width: 100%;
+}
+
+.yk-adminCcontact .boxes .sm-txt {
+    font-size: 1rem
+}
+
+.yk-adminCcontact .boxes p {
+
+    font-weight: 500;
+    line-height: 20px
+}
+
+.h {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.sm-img-box {
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+}
+
+/*--------------gen-product-start--------------*/
+
+.yk-adminCcontact .gen-product {
+    box-shadow: 0px 0px 8px #c4c4c4;
+}
+
+.yk-adminCcontact .gen-product .fa-picture-o {
+    font-size: 30px;
+    color: #5a5a5a;
+}
+
+.yk-adminCcontact .product-item-name i {
+    font-size: 1.5rem;
+    color: #004f9b;
+}
+
+.yk-adminCcontact .product-item-name span {
+    color: #000000;
+}
+
+/*--------------Profile-brief-start--------------*/
+.profile-circle{ width: 8vw; height: 8vw; border-radius:20vw; display: grid; place-items: center;}
+.profile-circle i{font-size: 4vw; color: #004f9b;}
+.profile-con i{font-size: 1.4vw;}
+.profile-con i{line-height: 36px; color: #004f9b;}
+.profile-con span{color: #000000; font-family: 'Roboto', sans-serif;}
+
+/*-----------pmk-product-----------*/
+
+.yk-adminCcontact .pmk-product{box-shadow: 0px 0px 8px #c4c4c4;}
+
+.yk-adminCcontact .pmk-product .sm-img-box i{font-size: 3vw; color:#004f9b;}
+.yk-adminCcontact .pmk-product .pmk-product-detail{ font-size: 1.5rem; color: #000000; line-height: 36px;}
+.yk-adminCcontact .pmk-product .pmk-product-detail i{ font-size: 1.4vw; color:#004f9b;}
+
+/*------------product-handiling-------------*/
+
+.yk-adminCcontact .product-handiling{ box-shadow: 0px 0px 8px #c4c4c4;}

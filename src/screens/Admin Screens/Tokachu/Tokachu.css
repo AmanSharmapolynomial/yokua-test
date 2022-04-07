@@ -25,7 +25,7 @@
 .toku-dropdn .dropdown-item a{color: #000000;}
 .toku-dropdn .dropdown-item:focus{background-color:#EFEFEF;}
 .toku-dropdn .dropdown-item a:focus{background-color:#EFEFEF;}
-.toku-dropdn .dropdown-submenu .dropdown-item{font-size: 24px; color: #000000;}
+.toku-dropdn .dropdown-submenu .dropdown-item{font-size: 1vw; color: #000000;}
 
 .toku-dropdn .dropdown-submenu>.dropdown-menu {
     top: auto;
@@ -71,7 +71,7 @@
     border-radius: 6px 0 6px 6px;
 }
 
-.toku-dropdn .btn-main{min-width: 411px; min-height: 50px; text-align: left; border: 1px solid #000000 !important; color: #000000 !important;}
+.toku-dropdn .btn-main{font-size: 1vw !important; min-width: 411px; min-height: 50px; text-align: left; border: 1px solid #000000 !important; color: #000000 !important;}
 
 
 
