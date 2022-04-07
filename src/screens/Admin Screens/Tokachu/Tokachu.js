@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/api'
 import './Tokachu.css'
-import Table from '../../../components/TableComponent/Table'
+import TokochuTable from '../../../components/TableComponent/TokochuTable'
 import PrimaryHeading from '../../../components/Primary Headings'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { FormControl, Modal } from 'react-bootstrap'
-import TableTok from '../../../components/TableComponent/TableTok'
 
 const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
@@ -42,8 +41,7 @@ export default () => {
   }
 
   const _getSubProducts = (productId = 1) => {
-    const updatedProducts = products
-    const currentProduct = updatedProducts.find(item => item.id === productId)
+    const currentProduct = products.find(item => item.id === productId)
     if (!subProductLoading && currentProduct.subProducts.length < 1) {
       setSubProductLoading(true)
       API.post('tokuchu/list_view/sub_products/', {
@@ -61,8 +59,7 @@ export default () => {
   }
 
   const _getProductItems = (subProductId = 1, productId) => {
-    const updatedProducts = products
-    const currentProduct = updatedProducts.find(item => item.id === productId)
+    const currentProduct = products.find(item => item.id === productId)
     const currentItem = currentProduct.subProducts.find(item => item.id === subProductId)
     if (!productItemLoading && currentItem.productItems.length < 1) {
       setProductItemLoading(true)
@@ -143,11 +140,11 @@ export default () => {
   }
 
   const _addNewItem = (currentEdit, parentId, name) => {
-    if (currentEdit == EDIT_PRODUCT) {
+    if (currentEdit === EDIT_PRODUCT) {
       _addProduct(name)
-    } else if (currentEdit == EDIT_SUB_PRODUCT) {
+    } else if (currentEdit === EDIT_SUB_PRODUCT) {
       _addSubProduct(name, parentId)
-    } else if (currentEdit == EDIT_SUB_PRODUCT_ITEM) {
+    } else if (currentEdit === EDIT_SUB_PRODUCT_ITEM) {
       _addSubProductItem(name, parentId)
     } else {
       console.log('NO SUCH TYPE OF PRODUCT')
@@ -219,7 +216,7 @@ export default () => {
   const assignSubProducts = (data, productId) => {
     const updatedProducts = products
     updatedProducts.forEach(item => {
-      if (item.id == productId) {
+      if (item.id === productId) {
         item.subProducts = createEmptyProductItems(data)
       }
     })
@@ -236,7 +233,7 @@ export default () => {
 
   const assignProductItems = (data, productId, subProductId) => {
     const updatedProducts = products
-    const currentProduct = products.find(item => item.id == productId)
+    const currentProduct = products.find(item => item.id === productId)
 
     currentProduct.subProducts.forEach(item => {
       if (item.id === subProductId) {
@@ -313,7 +310,7 @@ export default () => {
                         >
                           <a className="dropdown-item" tabIndex="-1">
                             {item.name}{' '}
-                            <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                            <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                           </a>
                           <ul className="dropdown-menu">
                             {subProductLoading && (
@@ -336,10 +333,7 @@ export default () => {
                                   <li className="dropdown-submenu">
                                     <a className="dropdown-item">
                                       {sub.name}
-                                      <i
-                                        className="fa fa-chevron-right mt-1"
-                                        aria-hidden="true"
-                                      ></i>
+                                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                                     </a>
                                     <ul className="dropdown-menu">
                                       {productItemLoading && (
@@ -415,7 +409,7 @@ export default () => {
           {/*  />*/}
           {/*)}*/}
           {tableDetails && (
-            <Table tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+            <TokochuTable tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
           )}
         </div>
       </div>
