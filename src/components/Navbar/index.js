@@ -12,7 +12,10 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   const navigate = useNavigate()
   const [unreadNewsCount, setUnreadNewsCount] = useState(0)
 
-  const navDropdownAdminData = [{ name: 'User Management', url: '/admin/user/list-view' }]
+  const navDropdownAdminData = [
+    { name: 'User Management', url: '/admin/user/list-view' },
+    { name: 'Event Management', url: '/admin/user/list-view' },
+  ]
 
   const productLineDropdown = [
     { name: 'Approved Tokachu', url: '/admin/approved-tokuchus' },
@@ -114,13 +117,13 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             >
               Product Lines
             </a>
-            {/* <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               {productLineDropdown.map((element, index) => (
                 <Link to={element.url} key={index} className="dropdown-item font-6">
                   {element.name}
                 </Link>
               ))}
-            </div> */}
+            </div>
           </li>
 
           <li className="nav-item dropdown px-3">
