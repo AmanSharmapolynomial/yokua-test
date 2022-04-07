@@ -59,15 +59,24 @@
   background-color: var(--bgColor2);
 }
 .logout-btn {
-  display: none;
+  display: flex;
+  background: var(--textColor5);
+  border: 1px solid var(--bgColor2);
+  border-radius: 5px;
+  margin: 0;
+  padding: 0 0.8rem !important;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  font-family: Poppins;
   font-weight: 500;
-  font-size: 14px;
-  color: #004f9b;
-  /* margin-right: 80px !important; */
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50rem;
 }
 
 @media (min-width: 970px) {
-  .logout-btn {
+  /* .logout-btn {
     display: flex;
     background: var(--textColor5);
     border: 1px solid var(--bgColor2);
@@ -78,7 +87,7 @@
     justify-content: center;
     height: 2rem;
     font-family: Poppins;
-  }
+  } */
 
   .header-container {
     display: flex;

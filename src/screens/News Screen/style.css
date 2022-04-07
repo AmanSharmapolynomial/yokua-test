@@ -13,3 +13,12 @@
 .archived-filter {
   /* margin: 1rem 1rem 7rem 0rem; */
 }
+.filter-icon {
+  height: auto;
+  width: 1rem;
+}
+
+.filter-item {
+  font-weight: 500;
+  font-size: 0.8rem;
+}

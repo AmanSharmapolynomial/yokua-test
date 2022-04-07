@@ -14,6 +14,7 @@ const CustomCheckbox = ({ info, setCheckedIds, index, checkedIds }) => {
     //  className={index != 0 ? 'edit_sales-news specific' : 'edit_sales-news'}
     <div className={'edit_sales-news'}>
       <input
+        className="w-auto"
         type="checkbox"
         id={'check' + index}
         ref={inputCheckRef}

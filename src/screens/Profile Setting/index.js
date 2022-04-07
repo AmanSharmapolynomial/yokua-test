@@ -13,6 +13,7 @@ import Header from '../../components/Header'
 
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
+import { faL } from '@fortawesome/free-solid-svg-icons'
 
 const ProfileSettingScreen = () => {
   const { loading, setLoading } = useLoading()
@@ -103,7 +104,7 @@ const ProfileSettingScreen = () => {
     API.post('auth/update_avatar', formData)
       .then(data => {
         toast.success('Avatar updated successfully')
-        setReloadData(true)
+        setReloadData(!reloadData)
       })
       .catch(error => {
         // toast.error('Error while updating Avatar')
@@ -114,12 +115,10 @@ const ProfileSettingScreen = () => {
     setProfilePicture(avatar)
   }
 
-  const _updateProfileSettings = () => {}
-
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-5">
+      <div className="row mx-2 mx-md-5 h-100">
         {openSimpleDeleteModal && (
           <DeleteModal
             show={openSimpleDeleteModal}
@@ -414,6 +413,9 @@ const ProfileSettingScreen = () => {
                       tempNLArray.push(obj)
                     }
                   })
+                  let payload = {
+                    news_letter: tempNLArray,
+                  }
                   if (
                     name &&
                     validator.isAlpha(name.split(' ')[0]) &&
@@ -421,14 +423,10 @@ const ProfileSettingScreen = () => {
                     name.length >= 5
                   ) {
                     if (name && name != '') {
-                      const payloadName = {
+                      payload = {
                         full_name: name,
-                        news_letter: tempNLArray,
+                        ...payload,
                       }
-
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadName)
-                      setName(undefined)
-                      toast.success(afterUpdateMsg.data.message)
                     }
                   } else {
                     if (editMode1) {
@@ -439,13 +437,7 @@ const ProfileSettingScreen = () => {
                   }
                   if (email && validator.isEmail(email)) {
                     if (email && email != '') {
-                      const payloadEmail = {
-                        email,
-                        news_letter: tempNLArray,
-                      }
-                      const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadEmail)
-                      setEmail(undefined)
-                      toast.success(afterUpdateMsg.data.message)
+                      payload = { email, ...payload }
                     }
                   } else {
                     if (editMode2) {
@@ -453,22 +445,19 @@ const ProfileSettingScreen = () => {
                     }
                   }
                   if (address && address != '') {
-                    const payloadAddress = {
+                    payload = {
                       company: address,
-                      news_letter: tempNLArray,
+                      ...payload,
                     }
-                    const afterUpdateMsg = await API.post('/auth/profile_settings/', payloadAddress)
-                    setAddress(undefined)
-                    toast.success(afterUpdateMsg.data.message)
                   }
 
-                  if (password && passwordRetype) {
-                    if (password == passwordRetype) {
+                  if (password || passwordRetype) {
+                    if (password === passwordRetype) {
                       const payloadPassword = {
                         new_password1: password,
                         new_password2: passwordRetype,
                       }
-                      console.log(payloadPassword)
+
                       const afterPassChangeMsg = await API.post(
                         '/auth/password-change/',
                         payloadPassword
@@ -481,6 +470,15 @@ const ProfileSettingScreen = () => {
                       toast.error('Password and retype password does not match')
                     }
                   }
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
+                  setName()
+                  setEmail()
+                  setAddress()
+                  setPassword()
+                  setPasswordRetype()
+                  setEditMode1(false)
+                  setEditMode2(false)
+                  toast.success(afterUpdateMsg.data.message)
                   setReloadData(!reloadData)
                 }}
               >

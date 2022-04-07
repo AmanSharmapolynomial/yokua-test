@@ -3,34 +3,14 @@ import { useDetectClickOutside } from 'react-detect-click-outside'
 import { Link } from 'react-router-dom'
 import './style.css'
 
-const NavDropdown = ({ data, icon, renderDropdown }) => {
-  const [showRoleDropdown, setShowRoleDropdown] = useState(false)
-  const closeDropdown = () => {
-    setShowRoleDropdown(false)
-  }
-
-  const ref = useDetectClickOutside({ onTriggered: closeDropdown })
-
-  useEffect(() => {
-    setShowRoleDropdown(renderDropdown)
-  }, [renderDropdown])
-
+const NavDropdown = ({ data }) => {
   return (
-    <div className="role-dropdown" ref={ref}>
-      <div
-        className="role-dropdown dropdown"
-        style={{
-          display: showRoleDropdown ? 'flex' : 'none',
-          lineHeight: '20px',
-        }}
-      >
-        {renderDropdown &&
-          data.map((element, index) => (
-            <Link to={element.url} key={index}>
-              <span className="dropdown-element">{element.name}</span>
-            </Link>
-          ))}
-      </div>
+    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+      {data.map((element, index) => (
+        <Link to={element.url} key={index} className="dropdown-item font-6">
+          {element.name}
+        </Link>
+      ))}
     </div>
   )
 }

@@ -32,7 +32,12 @@ const SubProduct = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductList(res.data)
+          if (res.data.length === 1 && res.data[0].sub_product_name === 'proxy') {
+            const item = res.data[0]
+            navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+          } else {
+            setProductList(res.data)
+          }
         }
         setIsLoading(false)
       })
@@ -42,17 +47,27 @@ const SubProduct = () => {
       })
   }
 
+  const updateSubProduct = async payload => {
+    const response = await API.post('products/add/sub_product', payload)
+    getProductList()
+    toast.success(response.data.message)
+  }
+
   const renderRow = () => {
     let rows = []
     let col = []
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
+          key={item.id}
           index={index}
           item={item}
           subProduct={true}
           onClick={() => {
             navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+          }}
+          onUpdate={payload => {
+            updateSubProduct(payload)
           }}
         />
       )
@@ -80,12 +95,13 @@ const SubProduct = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5">
+      <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
           <div className="row">
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span
+                  role="button"
                   className="col-6 light-grey"
                   onClick={() => {
                     navigate(-1)
@@ -94,7 +110,15 @@ const SubProduct = () => {
                   Previous page
                 </span>
                 <span className="col-6">
-                  <u>Product Lines</u> {'>'} {state.name}
+                  <u
+                    role="button"
+                    onClick={() => {
+                      navigate('/product-lines')
+                    }}
+                  >
+                    Product Lines
+                  </u>
+                  {'>'} {state.name}
                 </span>
               </div>
             </div>

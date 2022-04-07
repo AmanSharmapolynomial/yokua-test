@@ -4,7 +4,6 @@ import { Navigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { removeToken, removeUserRole } from '../../utils/token'
-import NavDropdown from './navDropdown'
 import './style.css'
 
 const PhoneNav = () => {

@@ -11,16 +11,14 @@ import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
+import { useNavigate } from 'react-router'
 
 const NewsScreen = () => {
   const { setLoading } = useLoading()
-  const filter1Ref = useRef()
-  const filter2Ref = useRef()
+  const navigate = useNavigate()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
   const [isCheckListActivated, setCheckListActivated] = useState(false)
 
-  const [showFilterDropdown1, setShowFilterDropdown1] = useState()
-  const [showFilterDropdown2, setShowFilterDropdown2] = useState()
   const [categoryFilter, setCategoryFilter] = useState(null)
   const [subCategoryFilter, setSubCategoryFilter] = useState(null)
   const [archivedFilter, setArchivedFilter] = useState(false)
@@ -53,14 +51,6 @@ const NewsScreen = () => {
     page_index: pageNoCall,
   }
 
-  useEffect(() => {
-    const handleOnScroll = window.addEventListener('scroll', () => {
-      setShowFilterDropdown1(false)
-      setShowFilterDropdown2(false)
-    })
-    return handleOnScroll
-  }, [])
-
   useEffect(async () => {
     payload = {
       category_id: parseInt(categoryFilter),
@@ -69,14 +59,6 @@ const NewsScreen = () => {
       page_index: pageNoCall,
     }
     getAllNews(payload)
-
-    // const getAllNews = await API.post('news/', payload)
-    //
-    // console.log(getAllNews)
-    // if (getAllNews.status == 200) {
-    //   setBackendData(getAllNews.data)
-    // }
-    // setTotalPages(getAllNews.data.total_pages)
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
   const getAllNews = payload => {
@@ -92,7 +74,6 @@ const NewsScreen = () => {
       setTotalPages(data.data.total_pages)
     })
   }
-  console.log(totalPages)
   const markAsReadAction = array => {
     const markAsPayload = {
       news_id: array,
@@ -101,6 +82,7 @@ const NewsScreen = () => {
       .then(data => {
         setCheckListActivated(false)
         getAllNews(payload)
+        navigate(0)
       })
       .catch(error => {
         console.log('Something went wrong', error)
@@ -124,18 +106,6 @@ const NewsScreen = () => {
     setPageNoCall(pageNumber)
   }
 
-  const closeDropdown1 = () => {
-    setShowFilterDropdown1(false)
-  }
-
-  const ref1 = useDetectClickOutside({ onTriggered: closeDropdown1 })
-
-  const closeDropdown2 = () => {
-    setShowFilterDropdown2(false)
-  }
-
-  const ref2 = useDetectClickOutside({ onTriggered: closeDropdown2 })
-
   return (
     <>
       <Header
@@ -144,33 +114,37 @@ const NewsScreen = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-5">
+      <div className="row mx-2 mx-md-5 h-100">
         <div className="profile-setting-container col center py-md-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
-          <div className="filter-and-read-container py-3">
-            <div className="filter-container">
-              <div className="filter-actions">
-                <div className="filter-icons">
+          <div className="row py-3">
+            <div className="filter-actions col-6">
+              <div className="filter-icons">
+                <div className="dropdown">
                   <img
-                    className={categoryFilter === null ? 'greyed' : null}
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    className={
+                      categoryFilter === null
+                        ? 'dropdown-toggle greyed filter-icon'
+                        : 'dropdown-toggle filter-icon'
+                    }
                     src={Filtermg}
-                    onClick={() => {
-                      setShowFilterDropdown1(!showFilterDropdown1)
-                    }}
-                    ref={ref1}
                   />
                   <div
-                    className="filter-dropdown dropdown"
+                    className="dropdown-menu"
                     style={{
-                      display: showFilterDropdown1 ? 'flex' : 'none',
+                      overflowY: 'scroll',
+                      maxHeight: '10rem',
                     }}
                   >
                     {backendData &&
                       backendData.categories.map((category, index) => (
                         <span
                           key={index}
-                          className="dropdown-element"
-                          ref={filter1Ref}
+                          className="dropdown-item filter-item"
                           style={
                             categoryFilter == category.id
                               ? {
@@ -187,6 +161,7 @@ const NewsScreen = () => {
                               setSubCategoryFilter(null)
                             } else {
                               toast.success('Category filter Applied')
+                              setPageNoCall(1)
                               setCategoryFilter(category.id)
                             }
                           }}
@@ -196,25 +171,41 @@ const NewsScreen = () => {
                       ))}
                   </div>
                 </div>
-                <div className="filter-icons" style={{ marginLeft: '12rem' }}>
+              </div>
+              <div className="filter-icons mx-auto">
+                <div className="dropdown">
                   {backendData?.sub_categories?.length > 0 && (
                     <img
-                      className={subCategoryFilter === null ? 'greyed' : null}
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      className={
+                        subCategoryFilter === null
+                          ? 'dropdown-toggle greyed filter-icon'
+                          : 'dropdown-toggle filter-icon'
+                      }
                       src={Filtermg}
                       onClick={() => {
-                        if (categoryFilter) {
-                          setShowFilterDropdown2(!showFilterDropdown2)
-                        } else {
+                        if (!categoryFilter) {
+                          // setShowFilterDropdown2(!showFilterDropdown2)
+                          // } else {
                           toast.success('Please select the Category filter first.')
                         }
                       }}
-                      ref={ref2}
                     />
                   )}
-                  <div
+                  {/* <div
                     className="filter-dropdown dropdown"
                     style={{
                       display: showFilterDropdown2 ? 'flex' : 'none',
+                    }}
+                  > */}
+                  <div
+                    className="dropdown-menu"
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '10rem',
                     }}
                   >
                     {backendData &&
@@ -223,8 +214,7 @@ const NewsScreen = () => {
                         .map((category, index) => (
                           <span
                             key={index}
-                            className="dropdown-element"
-                            ref={filter2Ref}
+                            className="dropdown-item filter-item"
                             style={{
                               fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
                             }}
@@ -234,26 +224,28 @@ const NewsScreen = () => {
                                 setSubCategoryFilter(null)
                               } else {
                                 toast.success('Sub Category filter applied')
+                                setPageNoCall(1)
                                 setSubCategoryFilter(category.id)
                               }
                             }}
                           >
                             {category.sub_category_name}
-                            Something
                           </span>
                         ))}
                   </div>
                 </div>
               </div>
             </div>
-            <button
-              className="btn"
-              onClick={() => {
-                markAsReadAction(readNews)
-              }}
-            >
-              Mark as Read
-            </button>
+            <div className="col-6">
+              <button
+                className="btn float-right"
+                onClick={() => {
+                  markAsReadAction(readNews)
+                }}
+              >
+                Mark as Read
+              </button>
+            </div>
           </div>
           {isLoading ? (
             <span>Loading....</span>
@@ -362,7 +354,7 @@ const NewsScreen = () => {
             </div>
           )}
           {newsData.length > 0 && (
-            <div className="pagination">
+            <div className="pagination my-3">
               <Pagination
                 total={totalPages * 10}
                 showQuickJumper
@@ -378,6 +370,7 @@ const NewsScreen = () => {
                 className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
+                  setPageNoCall(1)
                   setArchivedFilter(false)
                 }}
               >
@@ -388,6 +381,7 @@ const NewsScreen = () => {
                 className="btn"
                 style={{ display: 'grid', placeItems: 'center' }}
                 onClick={() => {
+                  setPageNoCall(1)
                   setArchivedFilter(true)
                 }}
               >

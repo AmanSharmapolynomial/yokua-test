@@ -10,12 +10,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: auto;
 }
 /* .user-list-view {
   width: 100%;
   padding: 0.5rem 2.5rem;
 } */
-
+.user-list-view-table div:first-child {
+  overflow-x: visible !important;
+}
 .lnndaO {
   font-weight: 400;
   font-size: 0.8rem;
