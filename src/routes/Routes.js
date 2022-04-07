@@ -148,6 +148,14 @@ const Routing = () => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="event"
+            element={
+              <PrivateRoute>
+                <EventScreen />
+              </PrivateRoute>
+            }
+          />
           {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
 
           {/* {(getUserRoles() == 'Technical Administrator') |
