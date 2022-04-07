@@ -323,7 +323,7 @@ const SignUp = () => {
       </form>
       <div className="terms">
         {'By signing up, you agree with the '}
-        <Link to="/auth/terms-privacy" className="terms-link">
+        <Link to="/auth/terms-privacy" className="terms-link" target="_blank">
           Terms of Service and Privacy Policy
         </Link>
       </div>

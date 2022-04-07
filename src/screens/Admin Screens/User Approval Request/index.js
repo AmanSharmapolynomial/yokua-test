@@ -343,6 +343,12 @@ const UserApprovalScreen = () => {
     setSelectedDULRowsState(selectedRows)
   }
 
+  const getIsDeleteButtonDisabled = () => {
+    return selectedDULRowsState.some(item => {
+      return item.role === 'Technical Administrator'
+    })
+  }
+
   const selectedRowsActionUA = ({ selectedRows }) => {
     // do anything with selected rows
     if (selectedRows[0] !== undefined) {
@@ -578,7 +584,8 @@ const UserApprovalScreen = () => {
                 <div className="btn-container mt-2 row">
                   <div className="col-auto">
                     <button
-                      className="action-btn-btn"
+                      disabled={getIsDeleteButtonDisabled()}
+                      className={`action-btn-btn${getIsDeleteButtonDisabled() ? ' greyed' : ''}`}
                       onClick={() => {
                         if (selectedDULRowsState.length > 0) {
                           setShow(true)
