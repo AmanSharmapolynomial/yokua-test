@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/api'
 import './Tokachu.css'
-import Table from '../../../components/TableComponent/Table'
+import TokochuTable from '../../../components/TableComponent/TokochuTable'
 import PrimaryHeading from '../../../components/Primary Headings'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
@@ -41,8 +41,7 @@ export default () => {
   }
 
   const _getSubProducts = (productId = 1) => {
-    const updatedProducts = products
-    const currentProduct = updatedProducts.find(item => item.id === productId)
+    const currentProduct = products.find(item => item.id === productId)
     if (!subProductLoading && currentProduct.subProducts.length < 1) {
       setSubProductLoading(true)
       API.post('tokuchu/list_view/sub_products/', {
@@ -60,8 +59,7 @@ export default () => {
   }
 
   const _getProductItems = (subProductId = 1, productId) => {
-    const updatedProducts = products
-    const currentProduct = updatedProducts.find(item => item.id === productId)
+    const currentProduct = products.find(item => item.id === productId)
     const currentItem = currentProduct.subProducts.find(item => item.id === subProductId)
     if (!productItemLoading && currentItem.productItems.length < 1) {
       setProductItemLoading(true)
@@ -142,11 +140,11 @@ export default () => {
   }
 
   const _addNewItem = (currentEdit, parentId, name) => {
-    if (currentEdit == EDIT_PRODUCT) {
+    if (currentEdit === EDIT_PRODUCT) {
       _addProduct(name)
-    } else if (currentEdit == EDIT_SUB_PRODUCT) {
+    } else if (currentEdit === EDIT_SUB_PRODUCT) {
       _addSubProduct(name, parentId)
-    } else if (currentEdit == EDIT_SUB_PRODUCT_ITEM) {
+    } else if (currentEdit === EDIT_SUB_PRODUCT_ITEM) {
       _addSubProductItem(name, parentId)
     } else {
       console.log('NO SUCH TYPE OF PRODUCT')
@@ -188,7 +186,7 @@ export default () => {
       .catch(err => {})
   }
 
-  const _updateTableData = (image, data = {}, columnName = [], tableId, actionType = 'add_row') => {
+  const _updateTableData = (image, data = {}, tableId, actionType = 'add_row') => {
     const formData = new FormData()
     if (image) {
       formData.append('file', image)
@@ -196,9 +194,10 @@ export default () => {
     const payload = {
       table_id: tableId,
       action_type: actionType,
+      data: data,
     }
 
-    formData.append('data', payload)
+    formData.append('data', JSON.stringify(payload))
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
         toast.success('New row added Successfully')
@@ -217,7 +216,7 @@ export default () => {
   const assignSubProducts = (data, productId) => {
     const updatedProducts = products
     updatedProducts.forEach(item => {
-      if (item.id == productId) {
+      if (item.id === productId) {
         item.subProducts = createEmptyProductItems(data)
       }
     })
@@ -234,7 +233,7 @@ export default () => {
 
   const assignProductItems = (data, productId, subProductId) => {
     const updatedProducts = products
-    const currentProduct = products.find(item => item.id == productId)
+    const currentProduct = products.find(item => item.id === productId)
 
     currentProduct.subProducts.forEach(item => {
       if (item.id === subProductId) {
@@ -248,6 +247,7 @@ export default () => {
 
   useEffect(() => {
     _getProducts()
+    // _getDetails()
   }, [needToReload])
 
   return (
@@ -271,9 +271,9 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="tokachu-main row mx-2 mx-md-5 h-100">
+      <div className="tokachu-main row mx-5">
         <div className="profile-setting-container col center md-3">
-          <PrimaryHeading title={'Approved Tokachu'} backgroundImage={'yk-back-image-news'} />
+          <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="container">
             <div className="toku-dropdn">
               <div className="row">
@@ -310,7 +310,7 @@ export default () => {
                         >
                           <a className="dropdown-item" tabIndex="-1">
                             {item.name}{' '}
-                            <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                            <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                           </a>
                           <ul className="dropdown-menu">
                             {subProductLoading && (
@@ -333,10 +333,7 @@ export default () => {
                                   <li className="dropdown-submenu">
                                     <a className="dropdown-item">
                                       {sub.name}
-                                      <i
-                                        className="fa fa-chevron-right mt-1"
-                                        aria-hidden="true"
-                                      ></i>
+                                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                                     </a>
                                     <ul className="dropdown-menu">
                                       {productItemLoading && (
@@ -354,58 +351,65 @@ export default () => {
                                         </li>
                                       ))}
 
-                                      <div className="col d-flex justify-content-center">
-                                        <button
-                                          className="btn yg-font-size"
-                                          onClick={() => {
-                                            setParentId(sub.id)
-                                            setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)
-                                            setShowAddModal(true)
-                                          }}
-                                        >
-                                          Add
-                                        </button>
-                                      </div>
+                                      {/*<div className="col d-flex justify-content-center">*/}
+                                      {/*  <button*/}
+                                      {/*    className="btn yg-font-size"*/}
+                                      {/*    onClick={() => {*/}
+                                      {/*      setParentId(sub.id)*/}
+                                      {/*      setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)*/}
+                                      {/*      setShowAddModal(true)*/}
+                                      {/*    }}*/}
+                                      {/*  >*/}
+                                      {/*    Add*/}
+                                      {/*  </button>*/}
+                                      {/*</div>*/}
                                     </ul>
                                   </li>
                                 </li>
                               ))}
 
-                            <div className="col d-flex justify-content-center">
-                              <button
-                                className="btn yg-font-size"
-                                onClick={() => {
-                                  setParentId(item.id)
-                                  setCurrentEdit(EDIT_SUB_PRODUCT)
-                                  setShowAddModal(true)
-                                }}
-                              >
-                                Add
-                              </button>
-                            </div>
+                            {/*<div className="col d-flex justify-content-center">*/}
+                            {/*  <button*/}
+                            {/*    className="btn yg-font-size"*/}
+                            {/*    onClick={() => {*/}
+                            {/*      setParentId(item.id)*/}
+                            {/*      setCurrentEdit(EDIT_SUB_PRODUCT)*/}
+                            {/*      setShowAddModal(true)*/}
+                            {/*    }}*/}
+                            {/*  >*/}
+                            {/*    Add*/}
+                            {/*  </button>*/}
+                            {/*</div>*/}
                           </ul>
                         </li>
                       ))}
 
-                      <div className="col d-flex justify-content-center">
-                        <button
-                          className="btn yg-font-size"
-                          onClick={() => {
-                            setCurrentEdit(EDIT_PRODUCT)
-                            setShowAddModal(true)
-                          }}
-                        >
-                          Add
-                        </button>
-                      </div>
+                      {/*<div className="col d-flex justify-content-center">*/}
+                      {/*  <button*/}
+                      {/*    className="btn yg-font-size"*/}
+                      {/*    onClick={() => {*/}
+                      {/*      setCurrentEdit(EDIT_PRODUCT)*/}
+                      {/*      setShowAddModal(true)*/}
+                      {/*    }}*/}
+                      {/*  >*/}
+                      {/*    Add*/}
+                      {/*  </button>*/}
+                      {/*</div>*/}
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {/*{tableDetails && (*/}
+          {/*  <TableTok*/}
+          {/*    tableObject={tableDetails}*/}
+          {/*    setShowDeleteModal={setShowDeleteModal}*/}
+          {/*    updateTableData={_updateTableData}*/}
+          {/*  />*/}
+          {/*)}*/}
           {tableDetails && (
-            <Table tableObject={tableDetails?.table_data} setShowDeleteModal={setShowDeleteModal} />
+            <TokochuTable tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
           )}
         </div>
       </div>

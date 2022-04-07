@@ -25,3 +25,10 @@
   background-position: center;
   background-image: url('/public/assets/news banner.jpg');
 }
+
+
+.yk-back-tokuchu-news {
+  background-size: cover;
+  background-position: center;
+  background-image: url('/public/assets/Tokuchu banner.png');
+}
