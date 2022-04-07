@@ -613,13 +613,12 @@ const NewsItem = ({
               </div>
               <div className="col-3 p-sm-0 p-md-auto">
                 <div className="news-img rounded mx-md-3">
-                  {editView ? (
-                    <>
-                      <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
-                    </>
-                  ) : (
-                    <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
-                  )}
+                  <img
+                    src={catImg}
+                    onError={_onErrorImage}
+                    placeholder={placeholder}
+                    style={{ objectFit: 'contain' }}
+                  />
                 </div>
               </div>
               <div className="col col-md-2">
