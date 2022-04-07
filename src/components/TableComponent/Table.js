@@ -298,7 +298,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
 
   return (
     <>
-      {tableObject !== {} && (
+      {tableObject && tableObject !== {} && (
         <div
           className="position-absolute text-primary"
           style={{ zIndex: '4', right: '0', marginTop: '-36px' }}

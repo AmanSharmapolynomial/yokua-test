@@ -276,7 +276,7 @@ export default () => {
       />
       <div className="tokachu-main row mx-5">
         <div className="profile-setting-container col center md-3">
-          <PrimaryHeading title={'Approved Tokachu'} backgroundImage={'yk-back-image-news'} />
+          <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="container">
             <div className="toku-dropdn">
               <div className="row">
