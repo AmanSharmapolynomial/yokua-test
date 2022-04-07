@@ -4,7 +4,7 @@ import './contact.css'
 export default () => {
   return (
     <>
-      <div className="yk-adminCcontact">
+      <div className="yk-admin-contact mt-5">
         <div className="container">
           <div className="row">
             <div className="col-md-3 col-lg-3 col-xl-3">
@@ -55,7 +55,9 @@ export default () => {
 
           <br />
           <br />
+
           {/* <!--------------General Product Question start---------------> */}
+          
           <div className="gen-product p-5">
             <div className="row">
               <div className="col-md-12 col-lg-12 col-xl-12">
@@ -66,7 +68,7 @@ export default () => {
             <br />
 
             <div className="row">
-              <div className="col-md-4 col-lg-4 col-xl-4">
+              <div className="col-md-6 col-lg-6 col-xl-6">
                 <div className="gen-product-item d-flex mb-4">
                   <div className="sm-img-box border border-dark rounded">
                     <i className="fa fa-picture-o" aria-hidden="true"></i>
@@ -87,7 +89,7 @@ export default () => {
                 </div>
               </div>
 
-              <div className="col-md-4 col-lg-4 col-xl-4">
+              <div className="col-md-6 col-lg-6 col-xl-6">
                 <div className="gen-product-item d-flex mb-4">
                   <div className="sm-img-box border border-dark rounded">
                     <i className="fa fa-picture-o" aria-hidden="true"></i>
@@ -99,7 +101,7 @@ export default () => {
                         <div className="sm-h-box border border-dark rounded px-2 py-2">
                           <p className="sm-h m-0">Rotamass Ti</p>
                         </div>
-                        <i className="fa fa-envelope mt-4" aria-hidden="true">
+                        <i className="fa fa-envelope d-flex mt-2" aria-hidden="true">
                           <span className="sm-txt"> Rotamass.info@de.yokogawa.com</span>
                         </i>
                       </div>
@@ -108,26 +110,7 @@ export default () => {
                 </div>
               </div>
 
-              <div className="col-md-4 col-lg-4 col-xl-4">
-                <div className="gen-product-item d-flex mb-4">
-                  <div className="sm-img-box border border-dark rounded">
-                    <i className="fa fa-picture-o" aria-hidden="true"></i>
-                  </div>
-                  &nbsp; &nbsp; &nbsp; &nbsp;
-                  <div>
-                    <div className="Product-item-deatail">
-                      <div className="product-item-name">
-                        <div className="sm-h-box border border-dark rounded px-2 py-2">
-                          <p className="sm-h m-0">Rotamass Ti</p>
-                        </div>
-                        <i className="fa fa-envelope mt-4" aria-hidden="true">
-                          <span className="sm-txt"> Rotamass.info@de.yokogawa.com</span>
-                        </i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
 
             <br />
