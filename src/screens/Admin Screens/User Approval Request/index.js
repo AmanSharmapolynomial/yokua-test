@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import './style.css'
 
-import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import SecondaryHeading from '../../../components/Secondary Heading'
-import Dropdown from '../../../components/Dropdown'
 import DataTable from 'react-data-table-component'
-import ResetPasswordModal from '../../../components/Modals/Reset Password Modal'
 import API from '../../../utils/api'
 import AcceptRejectModal from '../../../components/Modals/AcceptRejectModal/acceptRejectModal'
 import CreateNewDomain from '../../../components/Modals/Create Domian Modal/CreateDomainModal'
-import { toast } from 'react-toastify'
-import { useStoreState } from 'easy-peasy'
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
-import { useDetectClickOutside } from 'react-detect-click-outside'
+import { toast } from 'react-toastify'
+// import DeleteModal from '../../../components/Modals/DeleteModal'
+import Example from '../../../components/Modals/Delete Modal/DeleteModal'
 
 const UserApprovalScreen = () => {
+  const [show, setShow] = useState(false)
   const [openARModal, setOpenARModal] = useState(false)
   const [openDomainModal, setOpenDomainModal] = useState(false)
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
-  const dropdownData = ['PMK Administrator', 'Content Manager', 'User']
-  const [rejectMsg, setRejectMsg] = useState()
+  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
   const [rejectionData, setRejectionData] = useState()
   const [acceptData, setAcceptData] = useState()
   const [deleteDomainData, setDeleteDomainData] = useState()
@@ -33,6 +30,8 @@ const UserApprovalScreen = () => {
 
   const [totalPageUserApproval, setTotalPageUserApproval] = useState(1)
   const [pageCallUserApproval, setPageCallUserApproval] = useState(1)
+
+  const [selectedCheckBox, setSelectedCheckbox] = useState('')
 
   const onChangeUserApproval = number => {
     setPageCallUserApproval(number)
@@ -57,7 +56,6 @@ const UserApprovalScreen = () => {
       page_index: pageCallUserApproval,
     })
     setTotalPageUserApproval(listUserApprovalData.data.total_pages)
-    console.log(listUserApprovalData)
     setIsLoading(true)
     const tempArr = []
     listUserApprovalData.data.page_data.map((data, index) => {
@@ -138,9 +136,11 @@ const UserApprovalScreen = () => {
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)
     setIsLoading(false)
-  }, [reloadTable, DULfilter, openARModal, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
+  }, [reloadTable, DULfilter, openDeleteDomainModal, pageNoCall, pageCallUserApproval])
 
-  const rowDisabledCriteria = row => row.type == 'notification'
+  const rowDisabledCriteria = row => {
+    return selectedCheckBox !== '' && row.type !== selectedCheckBox
+  }
 
   const columnsApprovalTable = [
     {
@@ -215,6 +215,7 @@ const UserApprovalScreen = () => {
       style: {},
     },
   ]
+
   const customStyles = {
     rows: {
       style: {},
@@ -244,6 +245,10 @@ const UserApprovalScreen = () => {
   }
 
   const deleteAllDUL = async () => {
+    if (selectedDULRowsState.length < 1) {
+      toast.error('Please select the Users to Delete')
+      return
+    }
     const dataArray = []
     selectedDULRowsState.map(row => {
       dataArray.push(row.companyEmail)
@@ -275,6 +280,7 @@ const UserApprovalScreen = () => {
       console.log(payload)
       // server is giving internal error
       const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
+      toast.success(afterAcceptMsg.data.message)
       console.log(afterAcceptMsg)
       setReloadTable(!reloadTable)
     } else return
@@ -292,7 +298,7 @@ const UserApprovalScreen = () => {
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
-    setOpenARModal(true)
+    setOpenARModal(false)
     console.log('accepted', data)
   }
 
@@ -316,16 +322,18 @@ const UserApprovalScreen = () => {
     setReloadTable(!reloadTable)
   }
 
-  const rejectSingleRequest = async data => {
-    if (rejectMsg) {
+  const rejectSingleRequest = async (data, rejectText) => {
+    if (rejectText) {
       const payload = {
         email_id: [data.email],
         status: changeModal == 'Accepted' ? 'activate' : 'deactivate',
-        msg: rejectMsg,
+        msg: rejectText,
       }
       // server is giving internal error
       const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
       console.log(afterRejectMsg.data)
+      setReloadTable(!reloadTable)
+    } else {
       setReloadTable(!reloadTable)
     }
   }
@@ -335,8 +343,22 @@ const UserApprovalScreen = () => {
     setSelectedDULRowsState(selectedRows)
   }
 
+  const getIsDeleteButtonDisabled = () => {
+    return selectedDULRowsState.some(item => {
+      return item.role === 'Technical Administrator'
+    })
+  }
+
   const selectedRowsActionUA = ({ selectedRows }) => {
     // do anything with selected rows
+    if (selectedRows[0] !== undefined) {
+      if (selectedRows[0].type !== selectedCheckBox) {
+        setSelectedCheckbox(selectedRows[0].type)
+      }
+    } else {
+      setSelectedCheckbox('')
+    }
+
     setSelectedRowsState(selectedRows)
   }
 
@@ -345,206 +367,238 @@ const UserApprovalScreen = () => {
   }
 
   return (
-    <div className="user-approval-screen">
-      {openARModal && (
-        <AcceptRejectModal
-          change={changeModal}
-          saveAndExit={saveAndExitModal}
-          setRejectMsg={setRejectMsg}
-          rejectSingleRequest={rejectSingleRequest}
-          rejectionData={rejectionData}
-          acceptData={acceptData}
-          acceptSingleRequest={acceptSingleRequest}
+    <div className="row mx-2 mx-md-5 h-100">
+      <div className="col user-approval-screen">
+        {openARModal && (
+          <AcceptRejectModal
+            change={changeModal}
+            saveAndExit={saveAndExitModal}
+            rejectSingleRequest={rejectSingleRequest}
+            rejectionData={rejectionData}
+            acceptData={acceptData}
+            acceptSingleRequest={acceptSingleRequest}
+          />
+        )}
+
+        {openDomainModal && (
+          <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
+        )}
+
+        {openDeleteDomainModal && (
+          <DeleteDomainModal
+            saveAndExit={saveAndExitModal}
+            deleteDomain={deleteDomain}
+            data={deleteDomainData}
+          />
+        )}
+
+        <Example
+          show={show}
+          setShow={setShow}
+          data={null}
+          runDelete={() => {
+            setShow(false)
+            deleteAllDUL()
+          }}
+          req={'Attention'}
+          title={'Are you sure you want to delete Users ?'}
+          saveAndExit={() => setShow(false)}
         />
-      )}
 
-      {openDomainModal && (
-        <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
-      )}
-
-      {openDeleteDomainModal && (
-        <DeleteDomainModal
-          saveAndExit={saveAndExitModal}
-          deleteDomain={deleteDomain}
-          data={deleteDomainData}
-        />
-      )}
-      <SecondaryHeading title={'User Approval Request'} />
-      <div className="user-approval-request-table-contents">
-        <div className="btn-container mb-2 ">
-          <button
-            className="action-btn btn accept-request "
-            onClick={() => {
-              if (selectedRowsState.length > 0) {
-                acceptAllRequest()
-              }
-            }}
-          >
-            Accept Request
-          </button>
-          <button
-            className="action-btn btn"
-            onClick={() => {
-              const a = API.get('admin/clear_notification')
-              console.log(a)
-              setReloadTable(!reloadTable)
-            }}
-          >
-            Clear Notification
-          </button>
-        </div>
-        <div className="user-list-view-table aprroval-table">
-          {isLoading ? (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '5rem 0',
-              }}
-            >
-              Loading...
-            </div>
-          ) : (
-            <>
-              <DataTable
-                columns={columnsApprovalTable}
-                data={contentRowApprovalTable}
-                selectableRows
-                customStyles={customStyles}
-                conditionalRowStyles={conditionalRowStyles}
-                onSelectedRowsChange={selectedRowsActionUA}
-                selectableRowDisabled={rowDisabledCriteria}
-              />
-              <div className="pagination">
-                <Pagination
-                  current={pageCallUserApproval}
-                  key={'userApproval'}
-                  total={totalPageUserApproval * 10}
-                  showQuickJumper
-                  showSizeChanger={false}
-                  onChange={onChangeUserApproval}
-                  style={{ border: 'none' }}
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-      <div className="domain-user-list">
-        <h2 className="h4">Domain User List</h2>
-        <div className="domain-user-list-content">
-          <div className="domain-list-content">
-            <div
-              className="domain-list"
-              style={{
-                maxHeight: '27rem',
-              }}
-            >
-              {domainList.map((data, index) => (
-                <div
-                  className="listed-domain"
-                  style={{
-                    backgroundColor: DULfilter == data.id ? 'var(--bgColor4)' : 'white',
-                  }}
-                  key={index}
-                  onClick={() => {
-                    setPageNoCall(1)
-                    setDULfilter(data.id)
-                  }}
-                >
-                  <span className="domain-text">{data.domain}</span>
-                  <span className="domain-value">({data.count})</span>
-                  {data.id != 1 && data.id != 2 ? (
-                    <div>
-                      <i
-                        className="fa-solid fa-trash"
-                        style={{
-                          cursor: 'pointer',
-                          color: '#CD2727',
-                        }}
-                        onClick={() => {
-                          // admin/delete_whitelisted_domain
-                          const sendData = {
-                            id: data.id,
-                            name: data.domain,
-                            associated_users: 'false',
-                          }
-                          document.body.scrollTop = 0
-                          document.documentElement.scrollTop = 0
-                          document.body.style.overflow = 'hidden'
-                          setDeleteDomainData(sendData)
-                          setOpenDeleteDomainModal(true)
-                        }}
-                      />
-
-                      <i className="fa-solid fa-caret-right" />
-                    </div>
-                  ) : (
-                    <div style={{ padding: '0px 1.15rem' }}></div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <button
-              className="btn create-domain-btn"
-              onClick={() => {
-                document.body.scrollTop = 0
-                document.documentElement.scrollTop = 0
-                document.body.style.overflow = 'hidden'
-                setOpenDomainModal(true)
-              }}
-            >
-              Add new domain
-            </button>
-          </div>
-          <div className="domain-user-table-content">
-            <div className="user-list-view-table">
-              {isLoading ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  Loading...
-                </div>
-              ) : (
-                <>
-                  <DataTable
-                    columns={columnsDomainUserListTable}
-                    data={contentRowDomainUserListTable}
-                    selectableRows
-                    customStyles={customStyles}
-                    conditionalRowStyles={conditionalRowStyles}
-                    onSelectedRowsChange={selectedRowsActionDUL}
-                  />
-                  <div className="pagination">
-                    <Pagination
-                      current={pageNoCall}
-                      key={'domainUser'}
-                      showQuickJumper
-                      showSizeChanger={false}
-                      total={totalPages * 10}
-                      onChange={onChange}
-                      style={{ border: 'none' }}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="btn-container">
+        <SecondaryHeading title={'User Approval Request'} />
+        <div className="user-approval-request-table-contents">
+          <div className="btn-container mb-2 row">
+            <div className="col-auto">
               <button
-                className="action-btn-btn"
+                disabled={selectedCheckBox !== 'approval'}
+                className={`action-btn btn accept-request ${
+                  selectedCheckBox !== 'approval' ? 'greyed' : null
+                }`}
                 onClick={() => {
-                  if (selectedDULRowsState.length > 0) {
-                    deleteAllDUL()
+                  if (selectedRowsState.length > 0) {
+                    acceptAllRequest()
+                  } else {
+                    toast.error('Please select the requests to Accept')
                   }
                 }}
               >
-                Delete
+                Accept Request
               </button>
+              <button
+                disabled={selectedCheckBox !== 'notification'}
+                className={`action-btn btn ${
+                  selectedCheckBox !== 'notification' ? 'greyed' : null
+                }`}
+                onClick={() => {
+                  const a = API.get('admin/clear_notification')
+                  console.log(a)
+                  setReloadTable(!reloadTable)
+                }}
+              >
+                Clear Notification
+              </button>
+            </div>
+          </div>
+          <div className="user-list-view-table aprroval-table mt-3">
+            {isLoading ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '5rem 0',
+                }}
+              >
+                Loading...
+              </div>
+            ) : (
+              <>
+                <DataTable
+                  columns={columnsApprovalTable}
+                  data={contentRowApprovalTable}
+                  selectableRows
+                  customStyles={customStyles}
+                  conditionalRowStyles={conditionalRowStyles}
+                  onSelectedRowsChange={selectedRowsActionUA}
+                  selectableRowDisabled={rowDisabledCriteria}
+                />
+                <div className="pagination my-3">
+                  <Pagination
+                    current={pageCallUserApproval}
+                    key={'userApproval'}
+                    total={totalPageUserApproval * 10}
+                    showQuickJumper
+                    showSizeChanger={false}
+                    onChange={onChangeUserApproval}
+                    style={{ border: 'none' }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="domain-user-list mt-4">
+          <h2 className="h4">Domain User List</h2>
+          <div>
+            <div className="row">
+              <div className="domain-list-content col-4">
+                <div
+                  className="domain-list"
+                  style={{
+                    maxHeight: '27rem',
+                  }}
+                >
+                  {domainList.map((data, index) => (
+                    <div
+                      className="listed-domain"
+                      style={{
+                        backgroundColor: DULfilter == data.id ? 'var(--bgColor4)' : 'white',
+                      }}
+                      key={index}
+                      onClick={() => {
+                        setPageNoCall(1)
+                        setDULfilter(data.id)
+                      }}
+                    >
+                      <span className="domain-text">{data.domain}</span>
+                      <span className="domain-value">({data.count})</span>
+                      {data.id != 1 && data.id != 2 ? (
+                        <div>
+                          <i
+                            className="fa-solid fa-trash"
+                            style={{
+                              cursor: 'pointer',
+                              color: '#CD2727',
+                            }}
+                            onClick={() => {
+                              // admin/delete_whitelisted_domain
+                              const sendData = {
+                                id: data.id,
+                                name: data.domain,
+                                associated_users: 'false',
+                              }
+                              document.body.scrollTop = 0
+                              document.documentElement.scrollTop = 0
+                              document.body.style.overflow = 'hidden'
+                              setDeleteDomainData(sendData)
+                              setOpenDeleteDomainModal(true)
+                            }}
+                          />
+
+                          <i className="fa-solid fa-caret-right" />
+                        </div>
+                      ) : (
+                        <div style={{ padding: '0px 1.15rem' }}></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <button
+                  className="btn create-domain-btn"
+                  onClick={() => {
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
+                    document.body.style.overflow = 'hidden'
+                    setOpenDomainModal(true)
+                  }}
+                >
+                  Add new domain
+                </button>
+              </div>
+              <div className="domain-user-table-content col-8">
+                <div className="user-list-view-table">
+                  {isLoading ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      Loading...
+                    </div>
+                  ) : (
+                    <>
+                      <DataTable
+                        columns={columnsDomainUserListTable}
+                        data={contentRowDomainUserListTable}
+                        selectableRows
+                        customStyles={customStyles}
+                        conditionalRowStyles={conditionalRowStyles}
+                        onSelectedRowsChange={selectedRowsActionDUL}
+                      />
+                      <div className="pagination my-3">
+                        <Pagination
+                          current={pageNoCall}
+                          key={'domainUser'}
+                          showQuickJumper
+                          showSizeChanger={false}
+                          total={totalPages * 10}
+                          onChange={onChange}
+                          style={{ border: 'none' }}
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="btn-container mt-2 row">
+                  <div className="col-auto">
+                    <button
+                      disabled={getIsDeleteButtonDisabled()}
+                      className={`action-btn-btn${getIsDeleteButtonDisabled() ? ' greyed' : ''}`}
+                      onClick={() => {
+                        if (selectedDULRowsState.length > 0) {
+                          setShow(true)
+                        } else {
+                          toast.error('Please select users to Delete.')
+                        }
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,31 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 const AcceptRejectModal = ({
   change,
   saveAndExit,
-  setRejectMsg,
   rejectionData,
   rejectSingleRequest,
   acceptSingleRequest,
   acceptData,
 }) => {
   const [msg, setMsg] = useState(null)
-
+  const inputRef = useRef(null)
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
-        <h3 className="modal-heading">
+        <h3
+          className="modal-heading"
+          style={{
+            marginBottom: 0,
+          }}
+        >
           {change == 'Rejected' ? 'Request Denied' : 'Approval E-Mail change request'}
         </h3>
         <div
           className="modal-content domain-modal"
           style={{
             border: '0',
+            margin: 0,
           }}
         >
           {change == 'Rejected' ? (
             <div className="info-text">
               <input
+                ref={inputRef}
                 type="text"
                 className="domain-input"
                 placeholder="maximun 255 character support"
@@ -54,8 +60,7 @@ const AcceptRejectModal = ({
               <button
                 className="btn"
                 onClick={() => {
-                  setRejectMsg(msg)
-                  rejectSingleRequest(rejectionData)
+                  rejectSingleRequest(rejectionData, inputRef.current.value)
                   saveAndExit()
                 }}
               >
@@ -77,7 +82,7 @@ const AcceptRejectModal = ({
                 onClick={() => {
                   acceptSingleRequest(acceptData)
                   saveAndExit()
-                  document.body.style.overflow = 'scroll'
+                  // document.body.style.overflow = 'scroll'
                 }}
               >
                 Confirm

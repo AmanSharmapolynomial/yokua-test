@@ -1,14 +1,30 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 import '../../components/Footer/style.css'
 
 const Footer = () => {
+  const navigate = useNavigate()
   return (
-    <div className="footer fixed-bottom">
+    <footer className="container-fluid footer mt-auto">
       <div className="footerBtn">
-        <button className="btn mr-2">Impressum</button>
-        <button className="btn">Privacy Policy</button>
+        <button
+          className="btn mr-2"
+          onClick={() => {
+            navigate('/impressum')
+          }}
+        >
+          Impressum
+        </button>
+        <button
+          className="btn"
+          onClick={() => {
+            navigate('/privacy-policy')
+          }}
+        >
+          Privacy Policy
+        </button>
       </div>
-    </div>
+    </footer>
   )
 }
 

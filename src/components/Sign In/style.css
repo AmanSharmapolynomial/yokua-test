@@ -18,10 +18,11 @@
   min-width: 17rem;
   width: 100%;
   /* max-width: 24rem; */
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
 }
 .container__heading {
-  font-size: 24px;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .back-arrow-btn {
@@ -51,8 +52,9 @@ form {
 .input-field {
   margin: 0.4rem 0;
   height: 1.7rem;
-  min-width: 19rem;
-  width: 93%;
+  min-width: 100%;
+  /* min-width: 19rem;
+  width: 93%; */
   padding: 0.07rem 0.6rem;
   font-size: 0.8rem;
   font-family: Poppins;

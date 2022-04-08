@@ -1,17 +1,17 @@
 .heading-container {
-  height: 18rem;
+  height: 20rem;
   /* margin: 3.0rem 3.0rem; */
-  margin-left: 60px;
-  margin-right: 80px;
+  /* margin-left: 60px;
+  margin-right: 80px; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: var(--bgColor2);
+  background-color: lightgray;
 }
 
 .heading-container > h1 {
   font-weight: 500;
-  padding: 3rem 2.6rem;
+  /* padding: 3rem 2.6rem; */
 }
 
 .yk-back-image-profile {
@@ -30,4 +30,9 @@
   background-image: url('../../assets/calendar_banner.jpg');
   background-size: cover;
   background-position: center;
+}
+.yk-back-tokuchu-news {
+  background-size: cover;
+  background-position: center;
+  background-image: url('/public/assets/Tokuchu banner.png');
 }

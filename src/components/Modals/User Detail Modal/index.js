@@ -5,6 +5,8 @@ import validator from 'validator'
 import placeholder from '../../News Components/placeholder.png'
 
 import Select from 'react-select'
+
+import close from '../../../assets/close_black.png'
 const options = [
   { value: 'User', label: 'User' },
   { value: 'PMK Content Manager', label: 'PMK Content Manager' },
@@ -12,6 +14,9 @@ const options = [
 ]
 
 const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
+  const imageFileInputRef = useRef()
+  const [imageFile, SetImageFile] = useState(data?.avatar_link ? data?.avatar_link : placeholder)
+
   const [profilePicture, setProfilePicture] = useState(
     data?.avatar_link ? data?.avatar_link : placeholder
   )
@@ -38,7 +43,10 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   const [disabledInput, setDisabledInput] = useState(false)
 
   const [passwordVisible, setPasswordVisible] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [selectedOption, setSelectedOption] = useState({
+    value: data?.role ? data.role : 'User',
+    label: data?.role ? data.role : 'User',
+  })
 
   useEffect(() => {
     if (change == 'View') {
@@ -57,23 +65,42 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
       setFirstName(data.first_name)
       setLastName(data.last_name)
       setRole(data.role)
-      setSelectedOption({
-        value: data?.role ? data.role : 'User',
-        label: data?.role ? data.role : 'User',
-      })
       setCompany(data.company_name)
+      setProfilePicture(() => data.avatar_link)
     }
   }, [])
+
+  const _setImage = () => {
+    if (imageFile && imageFile != '') {
+      if (typeof imageFile == 'string') {
+        setProfilePicture(imageFile)
+      } else {
+        setProfilePicture(window.URL.createObjectURL(imageFile))
+      }
+    }
+  }
+
+  useEffect(() => {
+    _setImage()
+  }, [imageFile])
 
   return (
     <div className="modal-background">
       <div className="modal-wrapper">
         {change == 'View' && (
-          <i
-            className="fa-solid fa-remove save-icon"
+          // <i
+          //   className="fa-solid fa-remove save-icon"
+          //   onClick={() => {
+          //     saveAndExit()
+          //     // document.body.style.overflow = 'scroll'
+          //   }}
+          // />
+
+          <img
+            className="save-icon"
+            src={close}
             onClick={() => {
               saveAndExit()
-              document.body.style.overflow = 'scroll'
             }}
           />
         )}
@@ -85,18 +112,33 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
           }}
         >
           <div className="user-img">
+            <input
+              type="file"
+              accept="image/png, image/gif, image/jpeg"
+              id="imageFile"
+              ref={imageFileInputRef}
+              className="inputfile yk-icon-hover"
+              onChange={e => {
+                console.log(e.target.files[0])
+                SetImageFile(e.target.files[0])
+              }}
+            />
             <img
+              key={data?.id}
               // className="profile-setting__info_img"
-              // style={{
-              //   cursor: 'pointer',
-              // }}
+              style={{
+                cursor: !disabledInput ? 'pointer' : 'default',
+              }}
+              onClick={() => {
+                !disabledInput && imageFileInputRef.current.click()
+              }}
               src={profilePicture}
               onError={() => setProfilePicture(placeholder)}
             />
           </div>
           <div className="user-details-form">
             <div className="input-field-container">
-              <label className="input-label">First Name</label>
+              <label className="input-label font-weight-bold">First Name</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -108,7 +150,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container">
-              <label className="input-label">Last Name</label>
+              <label className="input-label font-weight-bold">Last Name</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -120,19 +162,27 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container">
-              <label className="input-label">Permission Level</label>
-
-              <Select
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={options}
-                style={{ width: '100px' }}
-                className="yg-custom-dropdowns"
-              />
+              <label className="input-label font-weight-bold">Permission Level</label>
+              {!disabledInput ? (
+                <Select
+                  defaultValue={selectedOption}
+                  onChange={setSelectedOption}
+                  options={options}
+                  style={{ width: '100px' }}
+                  className="yg-custom-dropdowns"
+                />
+              ) : (
+                <input
+                  disabled={disabledInput}
+                  className="input-text"
+                  type="text"
+                  defaultValue={selectedOption?.value}
+                />
+              )}
             </div>
 
             <div className="input-field-container">
-              <label className="input-label">E-Mail id</label>
+              <label className="input-label font-weight-bold">E-Mail id</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -144,7 +194,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               />
             </div>
             <div className="input-field-container yk-password-container">
-              <label className="input-label">Password</label>
+              <label className="input-label font-weight-bold">Password</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -166,7 +216,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label">Company</label>
+              <label className="input-label font-weight-bold">Company</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -177,64 +227,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 }}
               />
             </div>
-
-            {/* <div className="input-field-container">
-              <label className="input-label">Contact No</label>
-              <input
-                disabled={disabledInput}
-                className="input-text"
-                type="tel"
-                ref={contactRef}
-                onChange={e => {
-                  setContact(e.target.value)
-                }}
-              />
-            </div>
-            <div className="input-field-container">
-              <label className="input-label address">Address</label>
-              <div className="address-inputs">
-                <input
-                  disabled={disabledInput}
-                  className="input-text"
-                  type="text"
-                  ref={address1Ref}
-                  onChange={e => {
-                    setAddress1(e.target.value)
-                  }}
-                />
-                <input
-                  disabled={disabledInput}
-                  className="input-text"
-                  type="text"
-                  ref={address2Ref}
-                  onChange={e => {
-                    setAddress2(e.target.value)
-                  }}
-                />
-                <div className="state-and-code">
-                  <input
-                    disabled={disabledInput}
-                    className="input-text"
-                    type="text"
-                    placeholder="State"
-                    ref={stateRef}
-                    onChange={e => {
-                      setState(e.target.value)
-                    }}
-                  />
-                  <input
-                    disabled={disabledInput}
-                    className="input-text"
-                    type="text"
-                    placeholder="PIN Code"
-                    ref={pincodeRef}
-                    onChange={e => {
-                      setPincode(e.target.value)
-                    }}
-                  />
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
         {change != 'View' && (
@@ -261,6 +253,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                     lastName: lastName,
                     role: selectedOption.value,
                     company_name: company,
+                    imageFile: imageFile != placeholder ? imageFile : null,
                   }
                   if (password && password.length > 1) {
                     saveData['password'] = password

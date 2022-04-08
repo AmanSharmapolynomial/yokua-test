@@ -59,10 +59,10 @@ const SignIn = () => {
   // }
 
   return (
-    <>
-      <div className="signIn-container mx-auto col-4">
-        <h3 className="container__heading mt-4">Sign In with E-mail</h3>
-        <form className="forum" type="submit" onSubmit={SignIn}>
+    <div className="signIn-container mx-auto my-5 col-10 col-md-4 order-1 order-md-12">
+      <h3 className="container__heading mt-4">Sign In with E-mail</h3>
+      <form className="forum" type="submit" onSubmit={SignIn}>
+        <div className="row d-flex justify-content-center">
           <input
             type="email"
             required={true}
@@ -70,33 +70,42 @@ const SignIn = () => {
             className="input-field input-field__email"
             placeholder="E-Mail"
           />
-
-          <input
-            type={passwordVisible ? 'text' : 'password'}
-            name="Password"
-            className="input-field input-field__password"
-            onChange={e => setPassword(e.target.value)}
-            required={true}
-            placeholder="Password"
-          />
-
-          <i
-            className={passwordVisible ? 'fa-eye fa-solid first' : 'fa-eye-slash fa-solid first'}
-            onClick={() => setPasswordVisible(!passwordVisible)}
-          ></i>
-
+          <div className="row align-items-center input-field mx-auto">
+            <span className="flex-fill">
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                name="Password"
+                className="input-field__password"
+                onChange={e => setPassword(e.target.value)}
+                required={true}
+                placeholder="Password"
+              />
+            </span>
+            <span>
+              <i
+                className={passwordVisible ? 'fa-eye fa-solid' : 'fa-eye-slash fa-solid'}
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              />
+            </span>
+          </div>
           <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
             Incorrect Password
           </span>
-          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Sign In'}
-          </button>
-          <Link to="/auth/forgot-password" className="forgot-link">
-            Forgot your password?
-          </Link>
-        </form>
-      </div>
-    </>
+          <div className="col">
+            <div className="col-12 justify-content-center d-flex">
+              <button type="submit" className="submit-btn px-4" disabled={isLoading}>
+                {isLoading ? 'Loading...' : 'Sign In'}
+              </button>
+            </div>
+            <div className="col-12 justify-content-center d-flex">
+              <Link to="/auth/forgot-password" className="forgot-link">
+                Forgot your password?
+              </Link>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
   )
 }
 

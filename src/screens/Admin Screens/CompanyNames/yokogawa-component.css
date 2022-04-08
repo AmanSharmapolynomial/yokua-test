@@ -37,6 +37,11 @@
   /* margin-top: 12px; */
 }
 
+.yk-drop-m a:hover {
+  text-decoration: none;
+  /* margin-top: 12px; */
+}
+
 .yk-drop-m {
   min-width: 24rem;
 }
@@ -55,11 +60,11 @@
   /* margin-bottom: 115px; */
 }
 
-.yg-font-capitalize-only{
-text-transform: capitalize;
- }
+.yg-font-capitalize-only {
+  text-transform: capitalize;
+}
 
-.dropdown-menu.show{
-  top: -36px!important;
-  left: 32px!important;
+.dropdown-menu.show {
+  top: -36px !important;
+  left: 32px !important;
 }

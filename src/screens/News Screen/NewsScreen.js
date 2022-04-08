@@ -10,15 +10,15 @@ import Filtermg from '../../assets/Icon awesome-filter.png'
 import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
+import { useLoading } from '../../utils/LoadingContext'
+import { useNavigate } from 'react-router'
 
 const NewsScreen = () => {
-  const filter1Ref = useRef()
-  const filter2Ref = useRef()
+  const { setLoading } = useLoading()
+  const navigate = useNavigate()
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
   const [isCheckListActivated, setCheckListActivated] = useState(false)
 
-  const [showFilterDropdown1, setShowFilterDropdown1] = useState()
-  const [showFilterDropdown2, setShowFilterDropdown2] = useState()
   const [categoryFilter, setCategoryFilter] = useState(null)
   const [subCategoryFilter, setSubCategoryFilter] = useState(null)
   const [archivedFilter, setArchivedFilter] = useState(false)
@@ -34,7 +34,6 @@ const NewsScreen = () => {
   const [readNews, setNewsRead] = useState([])
 
   const _updateNewsRead = id => {
-    debugger
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
     if (isAlreadyAdded > -1) {
@@ -52,14 +51,6 @@ const NewsScreen = () => {
     page_index: pageNoCall,
   }
 
-  useEffect(() => {
-    const handleOnScroll = window.addEventListener('scroll', () => {
-      setShowFilterDropdown1(false)
-      setShowFilterDropdown2(false)
-    })
-    return handleOnScroll
-  }, [])
-
   useEffect(async () => {
     payload = {
       category_id: parseInt(categoryFilter),
@@ -68,27 +59,21 @@ const NewsScreen = () => {
       page_index: pageNoCall,
     }
     getAllNews(payload)
-
-    // const getAllNews = await API.post('news/', payload)
-    //
-    // console.log(getAllNews)
-    // if (getAllNews.status == 200) {
-    //   setBackendData(getAllNews.data)
-    // }
-    // setTotalPages(getAllNews.data.total_pages)
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
 
   const getAllNews = payload => {
+    setLoading(true)
     API.post('news/', payload).then(data => {
+      setLoading(false)
       if (data.status == 200) {
         setBackendData(data.data)
+        setLoading(false)
 
         data.data ? setNewsData(data.data.news_letters) : setNewsData([])
       }
       setTotalPages(data.data.total_pages)
     })
   }
-
   const markAsReadAction = array => {
     const markAsPayload = {
       news_id: array,
@@ -97,6 +82,7 @@ const NewsScreen = () => {
       .then(data => {
         setCheckListActivated(false)
         getAllNews(payload)
+        navigate(0)
       })
       .catch(error => {
         console.log('Something went wrong', error)
@@ -120,18 +106,6 @@ const NewsScreen = () => {
     setPageNoCall(pageNumber)
   }
 
-  const closeDropdown1 = () => {
-    setShowFilterDropdown1(false)
-  }
-
-  const ref1 = useDetectClickOutside({ onTriggered: closeDropdown1 })
-
-  const closeDropdown2 = () => {
-    setShowFilterDropdown2(false)
-  }
-
-  const ref2 = useDetectClickOutside({ onTriggered: closeDropdown2 })
-
   return (
     <>
       <Header
@@ -140,239 +114,281 @@ const NewsScreen = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="profile-setting-container">
-        <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
-        <div className="filter-and-read-container">
-          <div className="filter-container">
-            <div className="filter-actions">
+      <div className="row mx-2 mx-md-5 h-100">
+        <div className="profile-setting-container col center py-md-3">
+          <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
+          <div className="row py-3">
+            <div className="filter-actions col-6">
               <div className="filter-icons">
-                <img
-                  src={Filtermg}
-                  onClick={() => {
-                    debugger
-                    setShowFilterDropdown1(!showFilterDropdown1)
-                  }}
-                  ref={ref1}
-                />
-                <div
-                  className="filter-dropdown dropdown"
-                  style={{
-                    display: showFilterDropdown1 ? 'flex' : 'none',
-                  }}
-                >
-                  {backendData &&
-                    backendData.categories.map((category, index) => (
-                      <span
-                        key={index}
-                        className="dropdown-element"
-                        ref={filter1Ref}
-                        style={
-                          categoryFilter == category.id
-                            ? {
-                                fontWeight: 'bold',
-                              }
-                            : {
-                                fontWeight: '300',
-                              }
-                        }
-                        onClick={() => {
-                          if (categoryFilter == category.id) {
-                            setCategoryFilter(null)
-                            setSubCategoryFilter(null)
-                          } else {
-                            setCategoryFilter(category.id)
-                          }
-                        }}
-                      >
-                        {category.category_name}
-                      </span>
-                    ))}
-                </div>
-              </div>
-              <div className="filter-icons" style={{ marginLeft: '120px' }}>
-                {backendData?.sub_categories?.length > 0 && (
+                <div className="dropdown">
                   <img
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    className={
+                      categoryFilter === null
+                        ? 'dropdown-toggle greyed filter-icon'
+                        : 'dropdown-toggle filter-icon'
+                    }
                     src={Filtermg}
-                    onClick={() => {
-                      if (categoryFilter) {
-                        setShowFilterDropdown2(!showFilterDropdown2)
-                      } else {
-                        toast.success('Please select the Category filter first.')
-                      }
-                    }}
-                    ref={ref2}
                   />
-                )}
-                <div
-                  className="filter-dropdown dropdown"
-                  style={{
-                    display: showFilterDropdown2 ? 'flex' : 'none',
-                  }}
-                >
-                  {backendData &&
-                    backendData.sub_categories
-                      .filter(item => item.category_id == categoryFilter)
-                      .map((category, index) => (
+                  <div
+                    className="dropdown-menu"
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '10rem',
+                    }}
+                  >
+                    {backendData &&
+                      backendData.categories.map((category, index) => (
                         <span
                           key={index}
-                          className="dropdown-element"
-                          ref={filter2Ref}
-                          style={{
-                            fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
-                          }}
+                          className="dropdown-item filter-item"
+                          style={
+                            categoryFilter == category.id
+                              ? {
+                                  fontWeight: 'bold',
+                                }
+                              : {
+                                  fontWeight: '300',
+                                }
+                          }
                           onClick={() => {
-                            if (subCategoryFilter == category.id) {
+                            if (categoryFilter == category.id) {
+                              toast.success('Category filter removed')
+                              setCategoryFilter(null)
                               setSubCategoryFilter(null)
                             } else {
-                              setSubCategoryFilter(category.id)
+                              toast.success('Category filter Applied')
+                              setPageNoCall(1)
+                              setCategoryFilter(category.id)
                             }
                           }}
                         >
-                          {category.sub_category_name}
-                          Something
+                          {category.category_name}
                         </span>
                       ))}
+                  </div>
+                </div>
+              </div>
+              <div className="filter-icons mx-auto">
+                <div className="dropdown">
+                  {backendData?.sub_categories?.length > 0 && (
+                    <img
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      className={
+                        subCategoryFilter === null
+                          ? 'dropdown-toggle greyed filter-icon'
+                          : 'dropdown-toggle filter-icon'
+                      }
+                      src={Filtermg}
+                      onClick={() => {
+                        if (!categoryFilter) {
+                          // setShowFilterDropdown2(!showFilterDropdown2)
+                          // } else {
+                          toast.success('Please select the Category filter first.')
+                        }
+                      }}
+                    />
+                  )}
+                  {/* <div
+                    className="filter-dropdown dropdown"
+                    style={{
+                      display: showFilterDropdown2 ? 'flex' : 'none',
+                    }}
+                  > */}
+                  <div
+                    className="dropdown-menu"
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '10rem',
+                    }}
+                  >
+                    {backendData &&
+                      backendData.sub_categories
+                        .filter(item => item.category_id == categoryFilter)
+                        .map((category, index) => (
+                          <span
+                            key={index}
+                            className="dropdown-item filter-item"
+                            style={{
+                              fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                            }}
+                            onClick={() => {
+                              if (subCategoryFilter == category.id) {
+                                toast.success('Sub Category filter removed')
+                                setSubCategoryFilter(null)
+                              } else {
+                                toast.success('Sub Category filter applied')
+                                setPageNoCall(1)
+                                setSubCategoryFilter(category.id)
+                              }
+                            }}
+                          >
+                            {category.sub_category_name}
+                          </span>
+                        ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <button
-            className="btn"
-            onClick={() => {
-              markAsReadAction(readNews)
-            }}
-          >
-            Mark as Read
-          </button>
-        </div>
-        {isLoading ? (
-          <span>Loading....</span>
-        ) : (
-          <div className="news-container-list">
-            {newsData.length > 0 ? (
-              newsData.map((news, index) => {
-                console.log(news)
-                if (news && Object.keys(news).length > 1) {
-                  return (
-                    <NewsItem
-                      setCheckListActivated={setCheckListActivated}
-                      isCheckListActivated={isCheckListActivated}
-                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                      setNewsUnderEdit={setNewsUnderEdit}
-                      setCategoryFilter={() => setCategoryFilter(news?.category_id)}
-                      updateNewsRead={() => _updateNewsRead(news.id)}
-                      readNews={readNews}
-                      data={news}
-                      changeType={'View'}
-                      tempCategory={backendData.categories}
-                      tempSubCategory={backendData.sub_categories}
-                      key={index}
-                      setIsLoading={setIsLoading}
-                      refreshPage={() => getAllNews(payload)}
-                    />
-                  )
-                } else {
-                  return (
-                    <NewsItem
-                      isAnyNewsUnderEdit={isAnyNewsUnderEdit}
-                      setNewsUnderEdit={setNewsUnderEdit}
-                      updateNewsRead={() => _updateNewsRead(news.id)}
-                      readNews={readNews}
-                      getAllNews={() => getAllNews(payload)}
-                      cancelAddNews={id => cancelAddNews(id)}
-                      data={{}}
-                      changeType={'Add'}
-                      tempCategory={backendData.categories}
-                      tempSubCategory={backendData.sub_categories}
-                      saveAndExitAdd={saveAndExitAdd}
-                      setIsLoading={setIsLoading}
-                      refreshPage={() => getAllNews(payload)}
-                    />
-                  )
-                }
-              })
-            ) : (
-              <>
-                {backendData?.news_letters.length < 1 ? (
-                  <span>No Records Found</span>
-                ) : (
-                  <span> You're all caught up with the News </span>
-                )}
-              </>
-            )}
-
-            {/*{newNews ? (*/}
-            {/*  <NewsItem*/}
-            {/*    data={undefined}*/}
-            {/*    changeType={true}*/}
-            {/*    category={backendData.categories}*/}
-            {/*    subCategory={backendData.sub_categories}*/}
-            {/*    saveAndExitAdd={saveAndExitAdd}*/}
-            {/*    setIsLoading={setIsLoading}*/}
-            {/*  />*/}
-            {/*) : (*/}
-            {/*  <></>*/}
-            {/*)}*/}
-
-            {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') && (
-              <div
-                className="add_row"
+            <div className="col-6">
+              <button
+                className="btn float-right"
                 onClick={() => {
-                  if (!isAnyNewsUnderEdit) {
-                    setNewsUnderEdit(true)
-                    setNewsData([...newsData, { id: Math.random() }])
-                  } else {
-                    toast.error('Please finish current news edit.')
-                  }
+                  markAsReadAction(readNews)
                 }}
               >
-                <img
-                  src={Plusicon}
-                  style={{
-                    width: '22px',
-                    marginRight: '12px',
-                  }}
-                />
-                Add
+                Mark as Read
+              </button>
+            </div>
+          </div>
+          {isLoading ? (
+            <span>Loading....</span>
+          ) : (
+            <div className="col">
+              <div className="row d-flex justify-content-center">
+                {newsData.length > 0 ? (
+                  newsData.map((news, index) => {
+                    if (news && Object.keys(news).length > 1) {
+                      return (
+                        <NewsItem
+                          setCheckListActivated={setCheckListActivated}
+                          isCheckListActivated={isCheckListActivated}
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          setCategoryFilter={() => {
+                            if (categoryFilter) {
+                              toast.success('Category filter removed')
+                              setCategoryFilter(null)
+                            } else {
+                              toast.success('Category filter applied')
+                              setCategoryFilter(news?.category_id)
+                            }
+                          }}
+                          categoryFilter={categoryFilter}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          data={news}
+                          changeType={'View'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          key={index}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    } else {
+                      return (
+                        <NewsItem
+                          isAnyNewsUnderEdit={isAnyNewsUnderEdit}
+                          setNewsUnderEdit={setNewsUnderEdit}
+                          updateNewsRead={() => _updateNewsRead(news.id)}
+                          readNews={readNews}
+                          getAllNews={() => getAllNews(payload)}
+                          cancelAddNews={id => cancelAddNews(id)}
+                          data={{}}
+                          changeType={'Add'}
+                          tempCategory={backendData.categories}
+                          tempSubCategory={backendData.sub_categories}
+                          saveAndExitAdd={saveAndExitAdd}
+                          setIsLoading={setIsLoading}
+                          refreshPage={() => getAllNews(payload)}
+                        />
+                      )
+                    }
+                  })
+                ) : (
+                  <>
+                    {backendData?.news_letters.length < 1 ? (
+                      <span>No Records Found</span>
+                    ) : (
+                      <span> You're all caught up with the News </span>
+                    )}
+                  </>
+                )}
+
+                {/*{newNews ? (*/}
+                {/*  <NewsItem*/}
+                {/*    data={undefined}*/}
+                {/*    changeType={true}*/}
+                {/*    category={backendData.categories}*/}
+                {/*    subCategory={backendData.sub_categories}*/}
+                {/*    saveAndExitAdd={saveAndExitAdd}*/}
+                {/*    setIsLoading={setIsLoading}*/}
+                {/*  />*/}
+                {/*) : (*/}
+                {/*  <></>*/}
+                {/*)}*/}
+
+                {(getUserRoles() == 'PMK Administrator' ||
+                  getUserRoles() == 'PMK Content Manager' ||
+                  getUserRoles() == 'Technical Administrator') &&
+                  !archivedFilter && (
+                    <div
+                      className="add_row"
+                      onClick={() => {
+                        if (!isAnyNewsUnderEdit) {
+                          setNewsUnderEdit(true)
+                          setNewsData([...newsData, { id: Math.random() }])
+                        } else {
+                          toast.error('Please finish current news edit.')
+                        }
+                      }}
+                    >
+                      <img
+                        src={Plusicon}
+                        style={{
+                          width: '22px',
+                          marginRight: '12px',
+                        }}
+                      />
+                      Add
+                    </div>
+                  )}
               </div>
+            </div>
+          )}
+          {newsData.length > 0 && (
+            <div className="pagination my-3">
+              <Pagination
+                total={totalPages * 10}
+                showQuickJumper
+                showSizeChanger={false}
+                onChange={onChange}
+                style={{ border: 'none' }}
+              />
+            </div>
+          )}
+          <div className="archived-filter">
+            {archivedFilter ? (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setPageNoCall(1)
+                  setArchivedFilter(false)
+                }}
+              >
+                Live News
+              </button>
+            ) : (
+              <button
+                className="btn"
+                style={{ display: 'grid', placeItems: 'center' }}
+                onClick={() => {
+                  setPageNoCall(1)
+                  setArchivedFilter(true)
+                }}
+              >
+                News Archive
+              </button>
             )}
           </div>
-        )}
-        {newsData.length > 0 && (
-          <div className="pagination">
-            <Pagination
-              total={totalPages * 10}
-              showQuickJumper
-              showSizeChanger={false}
-              onChange={onChange}
-              style={{ border: 'none' }}
-            />
-          </div>
-        )}
-        <div className="archived-filter ">
-          {archivedFilter ? (
-            <button
-              className="btn ml-3"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(false)
-              }}
-            >
-              Live News
-            </button>
-          ) : (
-            <button
-              className="btn ml-3"
-              style={{ display: 'grid', placeItems: 'center' }}
-              onClick={() => {
-                setArchivedFilter(true)
-              }}
-            >
-              News Archive
-            </button>
-          )}
         </div>
       </div>
     </>

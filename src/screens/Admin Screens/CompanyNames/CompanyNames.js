@@ -9,6 +9,7 @@ import { Modal, FormControl } from 'react-bootstrap'
 
 import './yokogawa-component.css'
 import { useLoading } from '../../../utils/LoadingContext'
+import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 
 export default () => {
   const [companyList, setCompanyList] = useState([])
@@ -46,10 +47,112 @@ export default () => {
 
   const [show, setShow] = useState(false)
   const [parentCompnay, setParentCompany] = useState('')
+  const [showDelete, setDelete] = useState(false)
+  const [currentDeleteId, setCurrentDeleteId] = useState(0)
   return (
-    <div style={{ padding: '0.5rem 2.5rem', marginBottom: '' }}>
-      <SecondaryHeading title={'Company Name'} />
+    <div className="row mx-2 mx-md-5 h-100">
+      <div className="col user-list-view">
+        <SecondaryHeading title={'Company Name'} />
+        <div className="col-4 mt-5" style={{ paddingBottom: '5rem' }}>
+          <div className="row yk-h-bg py-3">
+            <p className="d-flex align-items-center px-3 h6">Company name</p>
+          </div>
+          {companyList.map(data => (
+            <div className="yk-dd dropright">
+              <div className="row yk-data-row d-flex justify-content-between align-items-center  p-3">
+                <div className="h6 text-align-center yg-font-capitalize-only">
+                  {data.company_name}
+                </div>
 
+                <div>
+                  <div className="d-flex align-items-center">
+                    <i
+                      className="fa fa-trash"
+                      style={{ fontSize: '1rem' }}
+                      aria-hidden="true"
+                      onClick={() => {
+                        setCurrentDeleteId(data.parent_company_id)
+                        setDelete(true)
+                      }}
+                    ></i>
+                    {/* <i
+                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
+                  ></i> */}
+                    <i
+                      className="fa fa-caret-right dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-hidden="true"
+                    ></i>
+                    <div className="yk-drop-m dropdown-menu dropdown">
+                      {data.company_divisions.map(item => (
+                        <>
+                          <a
+                            className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
+                            style={{
+                              fontSize: '1rem',
+                              padding: '1.17rem',
+                              marginLeft: '10px',
+                              textDecoration: 'none',
+                            }}
+                          >
+                            {item.sub_div_name}
+                            <i
+                              className="fa fa-trash"
+                              aria-hidden="true"
+                              style={{ fontSize: '1rem' }}
+                              onClick={() => {
+                                setCurrentDeleteId(data.parent_company_id)
+                                setDelete(true)
+                              }}
+                            ></i>
+                          </a>
+                          <hr />
+                        </>
+                      ))}
+                      <a
+                        onClick={() => {
+                          setShow(true)
+                          setParentCompany(data.company_name)
+                        }}
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                      >
+                        <img
+                          src={Plusicon}
+                          style={{
+                            width: '1rem',
+                            marginRight: '0.2rem',
+                          }}
+                        />
+                        Add
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
+            <div
+              style={{ padding: '1.17rem' }}
+              onClick={() => {
+                setShow(true)
+                setParentCompany('')
+              }}
+            >
+              <img
+                src={Plusicon}
+                style={{
+                  width: '1rem',
+                  marginRight: '0.2rem',
+                }}
+              />
+              Add
+            </div>
+          </div>
+        </div>
+      </div>
       <AddCompany
         show={show}
         setShow={setShow}
@@ -57,94 +160,15 @@ export default () => {
         parentCompnay={parentCompnay}
       />
 
-      <div className="col-4 mx-5 mt-5" style={{ paddingBottom: '5rem' }}>
-        <div className="row yk-h-bg py-3">
-          <p className="d-flex align-items-center px-3 h6">Company name</p>
-        </div>
-        {companyList.map(data => (
-          <div className="yk-dd dropright">
-            <div className="row yk-data-row d-flex justify-content-between align-items-center  p-3">
-              <div className="h6 text-align-center yg-font-capitalize-only">
-                {data.company_name}
-              </div>
-
-              <div>
-                <div className="d-flex align-items-center">
-                  <i
-                    className="fa fa-trash"
-                    style={{ fontSize: '1rem' }}
-                    aria-hidden="true"
-                    onClick={() => deleteCompany(data.parent_company_id)}
-                  ></i>
-                  {/* <i
-                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
-                  ></i> */}
-                  <i
-                    className="fa fa-caret-right dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-hidden="true"
-                  ></i>
-                  <div className="yk-drop-m dropdown-menu dropdown">
-                    {data.company_divisions.map(item => (
-                      <>
-                        <a
-                          className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
-                          style={{ fontSize: '1rem', padding: '1.17rem', marginLeft: '10px' }}
-                        >
-                          {item.sub_div_name}
-                          <i
-                            className="fa fa-trash"
-                            aria-hidden="true"
-                            style={{ fontSize: '1rem' }}
-                            onClick={() => deleteCompany(item.id)}
-                          ></i>
-                        </a>
-                        <hr />
-                      </>
-                    ))}
-                    <a
-                      onClick={() => {
-                        setShow(true)
-                        setParentCompany(data.company_name)
-                      }}
-                      className="d-flex justify-content-center align-items-center"
-                      style={{ fontSize: '0.8rem', padding: '1.17rem' }}
-                    >
-                      <img
-                        src={Plusicon}
-                        style={{
-                          width: '1rem',
-                          marginRight: '0.2rem',
-                        }}
-                      />
-                      Add
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
-          <div
-            style={{ padding: '1.17rem' }}
-            onClick={() => {
-              setShow(true)
-              setParentCompany('')
-            }}
-          >
-            <img
-              src={Plusicon}
-              style={{
-                width: '1rem',
-                marginRight: '0.2rem',
-              }}
-            />
-            Add
-          </div>
-        </div>
-      </div>
+      <DeleteModal
+        setShow={setDelete}
+        show={showDelete}
+        title={'Are you sure want to delete this Company?'}
+        runDelete={deleteCompany}
+        saveAndExit={() => setDelete(false)}
+        data={currentDeleteId}
+        req={'Company'}
+      />
     </div>
   )
 }
