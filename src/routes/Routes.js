@@ -2,7 +2,7 @@ import React, { Children, useEffect, useState } from 'react'
 import AdminScreen from '../screens/Admin Screens/User List View'
 import ProfileSettingScreen from '../screens/Profile Setting'
 import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom'
-import { Navigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import UserListView from '../screens/Admin Screens/User List View'
 import UserApprovalScreen from '../screens/Admin Screens/User Approval Request'
 import SignIn from '../components/Sign In'
@@ -37,6 +37,7 @@ import PrivacyPolicy from '../components/PrivacyPolicy'
 
 const Routing = () => {
   // get User Login Info
+  const navigate = useNavigate()
 
   return (
     <React.Fragment>
@@ -166,30 +167,7 @@ const Routing = () => {
               </React.Fragment>
             }
           />
-          <Route
-            path="event/all"
-            element={
-              <PrivateRoute>
-                <EventScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="event/add"
-            element={
-              <PrivateRoute>
-                <AddEventScreen />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="event/update/:eventId"
-            element={
-              <PrivateRoute>
-                <AddEventScreen />
-              </PrivateRoute>
-            }
-          />
+
           {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
         </Route>
         {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
@@ -269,7 +247,32 @@ const Routing = () => {
             </>
           }
         />
+        <Route
+          path="event/all"
+          element={
+            <PrivateRoute>
+              <EventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/add"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/update/:eventId"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
       </Routes>
+
       <Footer />
     </React.Fragment>
   )

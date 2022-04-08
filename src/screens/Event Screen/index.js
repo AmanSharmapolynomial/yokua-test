@@ -120,8 +120,10 @@ const EventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="event-screen-header">
-        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+      <div className="row mx-2 mx-md-5 h-100">
+        <div className="col event-setting-container pb-5">
+          <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+        </div>
       </div>
       {eventList.length > 0 ? (
         <div className="calenderDiv" style={{ marginTop: '10px' }}>
