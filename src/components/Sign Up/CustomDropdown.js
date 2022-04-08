@@ -187,7 +187,10 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
 
 const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
   const [companyName, setCompanyname] = useState('')
-  const handleClose = () => setShow(false)
+  const handleClose = () => {
+    setCompanyname('')
+    setShow(false)
+  }
 
   return (
     <Modal show={show} centered onHide={handleClose}>

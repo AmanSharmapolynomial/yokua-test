@@ -149,6 +149,7 @@ const ProfileSettingScreen = () => {
                   }}
                 />
                 <img
+                  key={profilePicture}
                   className="profile-setting__info_img"
                   style={{
                     cursor: 'pointer',

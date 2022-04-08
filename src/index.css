@@ -123,7 +123,11 @@ body {
 .font-8 {
   font-size: 0.8rem !important;
 }
-
+.dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
 /* tablet view */
 ::-webkit-scrollbar {
   height: 8px;

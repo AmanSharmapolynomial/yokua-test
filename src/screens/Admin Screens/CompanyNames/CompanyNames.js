@@ -58,8 +58,13 @@ export default () => {
             <p className="d-flex align-items-center px-3 h6">Company name</p>
           </div>
           {companyList.map(data => (
-            <div className="yk-dd dropright">
-              <div className="row yk-data-row d-flex justify-content-between align-items-center  p-3">
+            <div className="yk-dd">
+              <div
+                className="row yk-data-row d-flex justify-content-between align-items-center p-3 dropright"
+                // data-display="static"
+                data-toggle="dropdown"
+                aria-hidden="true"
+              >
                 <div className="h6 text-align-center yg-font-capitalize-only">
                   {data.company_name}
                 </div>
@@ -78,12 +83,8 @@ export default () => {
                     {/* <i
                     className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
                   ></i> */}
-                    <i
-                      className="fa fa-caret-right dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-hidden="true"
-                    ></i>
-                    <div className="yk-drop-m dropdown-menu dropdown">
+                    <i className="fa fa-caret-right dropdown-toggle"> </i>
+                    <div className="yk-drop-m dropdown-menu dropdown-menu-right">
                       {data.company_divisions.map(item => (
                         <>
                           <a

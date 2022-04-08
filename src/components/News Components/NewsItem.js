@@ -221,6 +221,7 @@ const NewsItem = ({
     }
     setSubCategory([...subCategory, tempSubCatObject])
     handleSelectSubTopic(tempSubCatObject)
+    SetNewSubTopicName('')
   }
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
@@ -302,27 +303,16 @@ const NewsItem = ({
       })
 
       const fileDetails = fileInputRef?.current?.files[0]
-      var bodyFormData = new FormData()
+      let bodyFormData = new FormData()
       bodyFormData.append('data', details)
       if (fileDetails) {
         bodyFormData.append('file', fileDetails)
       }
-      // bodyFormData.append('image', newsI)
 
-      const token = getToken()
-      axios({
-        method: 'post',
-        url: 'https://yokogawa-flow-center.herokuapp.com/news/upsert_news',
-        data: bodyFormData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(function (response) {
-          //handle success
+      API.post('news/upsert_news', bodyFormData)
+        .then(response => {
+          //  handle success
           setLoading(false)
-
           if (response.status == 200) {
             setNewsUnderEdit(false)
             setEditView(false)
@@ -340,13 +330,14 @@ const NewsItem = ({
             toast.error(response.data.message)
           }
         })
-        .catch(function (response) {
+        .catch(error => {
+          console.log(error)
           setLoading(false)
           setEditView(false)
           setNewsUnderEdit(false)
           //handle error
           if (response.status != 200) {
-            // toast.error(response?.message)
+            response?.message && toast.error(response?.message)
             // toast.error('Session expired')
           }
         })
@@ -559,6 +550,35 @@ const NewsItem = ({
     return items.length > 0 ? true : false
   }
 
+  const renderSubCategory = () => {
+    if (data?.sub_category !== undefined) {
+      console.log(data?.sub_category, 'UNDEFINED')
+      return (
+        <div class="dropdown">
+          <div
+            class="dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
+          </div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {data?.sub_category.map((item, index) => {
+              return <div>{item.sub_category_name}</div>
+            })}
+          </div>
+        </div>
+      )
+    } else if (data?.sub_category && data?.sub_category[0] !== undefined) {
+      return data?.sub_category[0]['sub_category_name']
+    } else {
+      return ''
+    }
+  }
+
   return (
     <React.Fragment key={data?.id}>
       <div style={{ width: '400px' }}></div>
@@ -623,13 +643,12 @@ const NewsItem = ({
               </div>
               <div className="col-3 p-sm-0 p-md-auto">
                 <div className="news-img rounded mx-md-3">
-                  {editView ? (
-                    <>
-                      <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
-                    </>
-                  ) : (
-                    <img src={catImg} onError={_onErrorImage} placeholder={placeholder} />
-                  )}
+                  <img
+                    src={catImg}
+                    onError={_onErrorImage}
+                    placeholder={placeholder}
+                    style={{ objectFit: 'contain' }}
+                  />
                 </div>
               </div>
               <div className="col col-md-2">
@@ -645,7 +664,7 @@ const NewsItem = ({
                       }}
                       size="sm"
                       autoClose={'outside'}
-                      className="yk-dropdown-holder"
+                      className="yk-dropdown-holder border"
                       style={{
                         width: '12rem',
                       }}
@@ -726,7 +745,7 @@ const NewsItem = ({
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
-                              className="yg-font-size"
+                              className="yg-font-size ml-2"
                               id="button-addon2"
                             >
                               Save
@@ -752,8 +771,8 @@ const NewsItem = ({
                         autoClose={'outside'}
                         className={
                           toggleDropDown == 1
-                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
-                            : 'yk-dropdown-holder mt-3'
+                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic border'
+                            : 'yk-dropdown-holder mt-3 border'
                         }
                         style={{
                           width: '12rem',
@@ -821,7 +840,7 @@ const NewsItem = ({
                                         }
                                       }}
                                       variant="outline-secondary"
-                                      className="yg-font-size"
+                                      className="yg-font-size ml-2"
                                       id="button-addon2"
                                     >
                                       Save
@@ -841,7 +860,7 @@ const NewsItem = ({
                                     }}
                                   >
                                     <input
-                                      style={{ marginRight: '8px' }}
+                                      style={{ marginRight: '8px', width: 'auto' }}
                                       type="checkbox"
                                       checked={cat.isChecked}
                                       onChange={() => _handleChecked(cat.id)}
@@ -902,6 +921,7 @@ const NewsItem = ({
                                     cursor: 'pointer',
                                   }}
                                   onClick={() => {
+                                    SetNewSubTopicName('')
                                     setSubTopicAdd(false)
                                   }}
                                 />
@@ -916,7 +936,7 @@ const NewsItem = ({
                                   }
                                 }}
                                 variant="outline-secondary"
-                                className="yg-font-size"
+                                className="yg-font-size ml-2"
                                 id="button-addon2"
                               >
                                 Save
@@ -927,9 +947,7 @@ const NewsItem = ({
                       </Dropdown>
                     </>
                   ) : (
-                    <span className="news-sub-category">
-                      {data?.sub_category ? data?.sub_category[0]['sub_category_name'] : ''}
-                    </span>
+                    <span className="news-sub-category">{renderSubCategory()}</span>
                   )}
                 </div>
               </div>
@@ -1298,11 +1316,11 @@ function AddCategoryModal({
               _setImage(e.target.files[0])
             }}
           />
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center w-100">
             <Image
               thumbnail={true}
-              style={{ maxWidth: '40%' }}
-              src={catImg}
+              style={{ width: '40%' }}
+              src={catImg ? catImg : placeholder}
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
             />

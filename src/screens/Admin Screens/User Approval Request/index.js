@@ -241,7 +241,7 @@ const UserApprovalScreen = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
     setOpenDeleteDomainModal(false)
-    document.body.style.overflow = 'scroll'
+    // document.body.style.overflow = 'scroll'
   }
 
   const deleteAllDUL = async () => {
@@ -300,6 +300,7 @@ const UserApprovalScreen = () => {
     setChangeModal('Accepted')
     setOpenARModal(false)
     console.log('accepted', data)
+    setReloadTable(!reloadTable)
   }
 
   const deleteDomain = async data => {
@@ -341,6 +342,12 @@ const UserApprovalScreen = () => {
   const selectedRowsActionDUL = ({ selectedRows }) => {
     // do anything with selected rows
     setSelectedDULRowsState(selectedRows)
+  }
+
+  const getIsDeleteButtonDisabled = () => {
+    return selectedDULRowsState.some(item => {
+      return item.role === 'Technical Administrator'
+    })
   }
 
   const selectedRowsActionUA = ({ selectedRows }) => {
@@ -578,7 +585,8 @@ const UserApprovalScreen = () => {
                 <div className="btn-container mt-2 row">
                   <div className="col-auto">
                     <button
-                      className="action-btn-btn"
+                      disabled={getIsDeleteButtonDisabled()}
+                      className={`action-btn-btn${getIsDeleteButtonDisabled() ? ' greyed' : ''}`}
                       onClick={() => {
                         if (selectedDULRowsState.length > 0) {
                           setShow(true)
