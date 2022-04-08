@@ -51,6 +51,13 @@ const UserApprovalScreen = () => {
 
   const [pageIndex, setPageIndex] = useState({ page_index: 1 })
 
+  const changePositionInArr = (arr, indexFrom, idx) => {
+    console.log(arr, indexFrom, idx)
+    const element = arr.splice(indexFrom, 1)[0]
+    arr.splice(idx, 0, element)
+    return arr
+  }
+
   useEffect(async () => {
     const listUserApprovalData = await API.post('admin/user_approval', {
       page_index: pageCallUserApproval,
@@ -127,11 +134,20 @@ const UserApprovalScreen = () => {
     setTotalPages(listDULdata.data.total_pages)
 
     const listDomains = await API.get('admin/list_whitelisted_domain')
-    const tempDL = []
+    let tempDL = []
     listDomains.data.map(data => {
       tempDL.push(data)
     })
-
+    tempDL = changePositionInArr(
+      tempDL,
+      tempDL.findIndex(i => i.domain === 'www.yokogawa.com'),
+      0
+    )
+    tempDL = changePositionInArr(
+      tempDL,
+      tempDL.findIndex(i => i.domain === 'UNK'),
+      1
+    )
     setContentRowApprovalTable(tempArr)
     setContentRowDomainUserListTable(tempDULArr)
     setDoaminList(tempDL)

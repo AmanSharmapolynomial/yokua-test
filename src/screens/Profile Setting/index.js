@@ -105,6 +105,7 @@ const ProfileSettingScreen = () => {
       .then(data => {
         toast.success('Avatar updated successfully')
         setReloadData(!reloadData)
+        navigate(0)
       })
       .catch(error => {
         // toast.error('Error while updating Avatar')

@@ -551,8 +551,7 @@ const NewsItem = ({
   }
 
   const renderSubCategory = () => {
-    if (data?.sub_category !== undefined) {
-      console.log(data?.sub_category, 'UNDEFINED')
+    if (data?.sub_category !== undefined && data?.sub_category?.length > 1) {
       return (
         <div class="dropdown">
           <div
@@ -1293,7 +1292,7 @@ function AddCategoryModal({
             borderBottom: '0',
           }}
         >
-          <Modal.Title>Create Category</Modal.Title>
+          <Modal.Title>{preloadedCategoryData ? 'Edit Category' : 'Create Category'}</Modal.Title>
         </Modal.Header>
         <Modal.Body
           style={{
@@ -1311,7 +1310,6 @@ function AddCategoryModal({
             ref={imageFileInputRef}
             className="inputfile yk-icon-hover"
             onChange={e => {
-              console.log(e.target.files[0])
               SetImageFile(e.target.files[0])
               _setImage(e.target.files[0])
             }}

@@ -437,9 +437,11 @@ const UserListView = () => {
                   ref={filter1Ref}
                   onClick={() => {
                     if (filterActive == 'active') {
+                      setPageNoCall(1)
                       filterTable('')
                       filter1Ref.current.style.fontWeight = '300'
                     } else {
+                      setPageNoCall(1)
                       filterTable('active')
                       filter1Ref.current.style.fontWeight = 'bold'
                       filter2Ref.current.style.fontWeight = '300'
@@ -453,9 +455,11 @@ const UserListView = () => {
                   ref={filter2Ref}
                   onClick={() => {
                     if (filterActive == 'inactive') {
+                      setPageNoCall(1)
                       filterTable('')
                       filter2Ref.current.style.fontWeight = '300'
                     } else {
+                      setPageNoCall(1)
                       filterTable('inactive')
                       filter2Ref.current.style.fontWeight = 'bold'
                       filter1Ref.current.style.fontWeight = '300'
@@ -543,33 +547,31 @@ const UserListView = () => {
             conditionalRowStyles={conditionalRowStyles}
             onSelectedRowsChange={selectedRowsAction}
           />
-
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div
-              className="add_row"
-              style={{ fontSize: '1rem', background: 'none' }}
-              onClick={() => {
-                document.body.scrollTop = 0
-                document.documentElement.scrollTop = 0
-                document.body.style.overflow = 'hidden'
-                setChangeModal('Add')
-                setOpenModal(true)
-                setModalTitle('Add/Update user dialog')
-              }}
-            >
-              <img
-                src={Plusicon}
-                style={{
-                  width: '1rem',
-                  marginRight: '0.2rem',
-                }}
-                className={'mr-2'}
-              />
-              {'Add'}
-            </div>
-          )}
         </div>
+        {(getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') && (
+          <div
+            className="add_row"
+            style={{ fontSize: '1rem', background: 'none' }}
+            onClick={() => {
+              document.body.scrollTop = 0
+              document.documentElement.scrollTop = 0
+              document.body.style.overflow = 'hidden'
+              setChangeModal('Add')
+              setOpenModal(true)
+              setModalTitle('Add/Update user dialog')
+            }}
+          >
+            <img
+              src={Plusicon}
+              style={{
+                width: '1rem',
+                marginRight: '0.2rem',
+              }}
+              className={'mr-2'}
+            />
+            {'Add'}
+          </div>
+        )}
         {/* <Pagination noOfPages={10} /> */}
         <div className="pagination my-3">
           <Pagination
