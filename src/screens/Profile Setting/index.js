@@ -181,6 +181,7 @@ const ProfileSettingScreen = () => {
                     src={require('../../assets/Icon ionic-ios-person.png')}
                   />
                   <input
+                    required
                     type="text"
                     disabled={disabledInputName}
                     ref={nameRef}
@@ -213,11 +214,12 @@ const ProfileSettingScreen = () => {
                   />
                   <input
                     type="email"
+                    required
                     disabled={disabledInputEmail}
                     ref={emailRef}
                     onChange={e => {
                       setEditMode2(true)
-                      setEmail(e.target.value)
+                      setEmail(e.target.value.toLocaleLowerCase())
                     }}
                   />
                   {getUserRoles() == 'Technical Administrator' ? (
@@ -241,6 +243,7 @@ const ProfileSettingScreen = () => {
                   />
 
                   <input
+                    required
                     type="text"
                     disabled={disabledInputAddress}
                     ref={addressRef}
