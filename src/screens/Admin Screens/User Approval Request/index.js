@@ -501,9 +501,11 @@ const UserApprovalScreen = () => {
               <div className="domain-list-content col-4">
                 <div
                   className="domain-list"
-                  style={{
-                    maxHeight: '27rem',
-                  }}
+                  style={
+                    {
+                      // maxHeight: '27rem',
+                    }
+                  }
                 >
                   {domainList.map((data, index) => (
                     <div

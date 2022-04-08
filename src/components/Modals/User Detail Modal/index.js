@@ -140,9 +140,13 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             <div className="input-field-container">
               <label className="input-label font-weight-bold">First Name</label>
               <input
+                autoCapitalize="words"
                 disabled={disabledInput}
                 className="input-text"
                 type="text"
+                style={{
+                  textTransform: 'capitalize',
+                }}
                 ref={firstNameRef}
                 onChange={e => {
                   setFirstName(e.target.value)
@@ -155,6 +159,9 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 disabled={disabledInput}
                 className="input-text"
                 type="text"
+                style={{
+                  textTransform: 'capitalize',
+                }}
                 ref={lastNameRef}
                 onChange={e => {
                   setLastName(e.target.value)
@@ -187,9 +194,12 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 disabled={disabledInput}
                 className="input-text"
                 type="email"
+                style={{
+                  textTransform: 'lowercase',
+                }}
                 ref={emailRef}
                 onChange={e => {
-                  setEmail(e.target.value)
+                  setEmail(e.target.value.toLocaleLowerCase())
                 }}
               />
             </div>

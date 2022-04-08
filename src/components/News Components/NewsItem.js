@@ -12,6 +12,7 @@ import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import { faBullseye } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router'
 
 const NewsItem = ({
   data,
@@ -78,7 +79,7 @@ const NewsItem = ({
 
   const [newTopicName, SetNewTopicName] = useState('')
   const [newSubTopicName, SetNewSubTopicName] = useState('')
-
+  const navigate = useNavigate()
   const subTopicRef = useRef()
   const topicRef = useRef()
 
@@ -318,6 +319,7 @@ const NewsItem = ({
             setEditView(false)
             refreshPage()
             toast.success(response.data.message)
+            navigate(0)
             if (!changeType) {
             } else if (changeType == 'Add') {
               // window.location.reload()
@@ -664,9 +666,9 @@ const NewsItem = ({
                       size="sm"
                       autoClose={'outside'}
                       className="yk-dropdown-holder border"
-                      style={{
-                        width: '12rem',
-                      }}
+                      // style={{
+                      //   width: '12rem',
+                      // }}
                     >
                       <Dropdown.Toggle
                         size={'sm'}
@@ -773,9 +775,9 @@ const NewsItem = ({
                             ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic border'
                             : 'yk-dropdown-holder mt-3 border'
                         }
-                        style={{
-                          width: '12rem',
-                        }}
+                        // style={{
+                        //   width: '12rem',
+                        // }}
                       >
                         <Dropdown.Toggle
                           size={'sm'}
@@ -1317,7 +1319,7 @@ function AddCategoryModal({
           <div className="d-flex justify-content-center w-100">
             <Image
               thumbnail={true}
-              style={{ width: '40%' }}
+              style={{ maxWidth: '40%', width: 'auto' }}
               src={catImg ? catImg : placeholder}
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}

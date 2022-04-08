@@ -181,6 +181,7 @@ const ProfileSettingScreen = () => {
                     src={require('../../assets/Icon ionic-ios-person.png')}
                   />
                   <input
+                    autoCapitalize="word"
                     required
                     type="text"
                     disabled={disabledInputName}
@@ -213,6 +214,7 @@ const ProfileSettingScreen = () => {
                     src={require('../../assets/Icon zocial-email.png')}
                   />
                   <input
+                    style={{ textTransform: 'lowercase' }}
                     type="email"
                     required
                     disabled={disabledInputEmail}
@@ -267,93 +269,7 @@ const ProfileSettingScreen = () => {
                 </div>
               </div>
             </div>
-
-            <div className="profile-setting__basic-profile profile-setting__box">
-              <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
-              <div className="profile-setting__basic-profile-edit">
-                <div className="edit_input">
-                  <img
-                    style={{ width: '20px', height: '20px' }}
-                    src={require('../../assets/Icon awesome-unlock.png')}
-                  />
-
-                  <input
-                    type={passwordVisible ? 'text' : 'password'}
-                    disabled={disabledInputPassword}
-                    onChange={e => {
-                      setPassword(e.target.value)
-                    }}
-                    placeholder="Enter New Password"
-                  />
-                  {passwordVisible ? (
-                    <i
-                      className="fa-regular fa-eye"
-                      onClick={() => {
-                        setPasswordVisible(false)
-                      }}
-                    />
-                  ) : (
-                    <i
-                      className="fa-regular fa-eye-slash"
-                      onClick={() => {
-                        setPasswordVisible(true)
-                      }}
-                    />
-                  )}
-
-                  <i
-                    className="fa-solid fa-pen-to-square edit"
-                    style={{
-                      color: disabledInputPassword ? 'var(--bgColor2)' : 'grey',
-                    }}
-                    onClick={() => {
-                      setDisabledInputPassword(!disabledInputPassword)
-                    }}
-                  />
-                </div>
-                <div className="edit_input">
-                  <img
-                    style={{ width: '20px', height: '20px' }}
-                    src={require('../../assets/Icon awesome-unlock.png')}
-                  />
-                  <input
-                    type={passwordVisible2 ? 'text' : 'password'}
-                    disabled={disabledInputPasswordRetype}
-                    onChange={e => {
-                      setPasswordRetype(e.target.value)
-                    }}
-                    placeholder="Retype New Password"
-                  />
-
-                  {passwordVisible2 ? (
-                    <i
-                      className="fa-regular fa-eye"
-                      onClick={() => {
-                        setPasswordVisible2(false)
-                      }}
-                    />
-                  ) : (
-                    <i
-                      className="fa-regular fa-eye-slash"
-                      onClick={() => {
-                        setPasswordVisible2(true)
-                      }}
-                    />
-                  )}
-
-                  <i
-                    className="fa-solid fa-pen-to-square edit"
-                    style={{
-                      color: disabledInputPasswordRetype ? 'var(--bgColor2)' : 'grey',
-                    }}
-                    onClick={() => {
-                      setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="profile-setting__basic-profile profile-setting__box">
+            <div className="profile-setting__basic-profile profile-setting__box mt-3">
               <h1 className="profile-setting__heading py-3">SALES NEWS BY ROTA YOKOGAWA</h1>
               <div className="sales-news_background">
                 {isLoading ? (
@@ -374,7 +290,7 @@ const ProfileSettingScreen = () => {
               </div>
             </div>
 
-            <div className="save-btns">
+            <div className="save-btns mt-3">
               {getUserRoles() == 'Technical Administrator' ? (
                 <></>
               ) : (
@@ -393,7 +309,7 @@ const ProfileSettingScreen = () => {
               )}
 
               <button
-                className="btn"
+                className="btn ml-3"
                 style={{ color: 'white' }}
                 onClick={async () => {
                   const tempNLArray = []
@@ -438,6 +354,7 @@ const ProfileSettingScreen = () => {
                       toast.error(
                         'Name should be atleast 5 letters and must contain only letters A-Z or a-z'
                       )
+                      return
                     }
                   }
                   if (email && validator.isEmail(email)) {
@@ -448,6 +365,7 @@ const ProfileSettingScreen = () => {
                     if (editMode2) {
                       toast.error('Please enter email in proper format - abc@xyz.com')
                     }
+                    return
                   }
                   if (address && address != '') {
                     payload = {
@@ -456,6 +374,118 @@ const ProfileSettingScreen = () => {
                     }
                   }
 
+                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
+                  setName()
+                  setEmail()
+                  setAddress()
+                  setDisabledInputAddress(true)
+                  setDisabledInputEmail(true)
+                  setDisabledInputName(true)
+                  setDisabledInputPassword(true)
+                  setDisabledInputPasswordRetype(true)
+                  setEditMode1(false)
+                  setEditMode2(false)
+                  toast.success(afterUpdateMsg.data.message)
+                  setReloadData(!reloadData)
+                }}
+              >
+                Save Changes
+              </button>
+            </div>
+
+            <div className="profile-setting__basic-profile profile-setting__box mt-5">
+              <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
+              <div className="profile-setting__basic-profile-edit">
+                <div className="edit_input">
+                  <img
+                    style={{ width: '20px', height: '20px' }}
+                    src={require('../../assets/Icon awesome-unlock.png')}
+                  />
+
+                  <input
+                    required
+                    type={passwordVisible ? 'text' : 'password'}
+                    disabled={disabledInputPassword}
+                    onChange={e => {
+                      setPassword(e.target.value)
+                    }}
+                    placeholder="Enter New Password"
+                  />
+                  {passwordVisible ? (
+                    <i
+                      className="fa-regular fa-eye"
+                      onClick={() => {
+                        setPasswordVisible(false)
+                      }}
+                    />
+                  ) : (
+                    <i
+                      className="fa-regular fa-eye-slash"
+                      onClick={() => {
+                        setPasswordVisible(true)
+                      }}
+                    />
+                  )}
+
+                  <i
+                    className="fa-solid fa-pen-to-square edit"
+                    style={{
+                      color: disabledInputPassword ? 'var(--bgColor2)' : 'grey',
+                    }}
+                    onClick={() => {
+                      setDisabledInputPassword(!disabledInputPassword)
+                    }}
+                  />
+                </div>
+                <div className="edit_input">
+                  <img
+                    style={{ width: '20px', height: '20px' }}
+                    src={require('../../assets/Icon awesome-unlock.png')}
+                  />
+                  <input
+                    required
+                    type={passwordVisible2 ? 'text' : 'password'}
+                    disabled={disabledInputPasswordRetype}
+                    onChange={e => {
+                      setPasswordRetype(e.target.value)
+                    }}
+                    placeholder="Retype New Password"
+                  />
+
+                  {passwordVisible2 ? (
+                    <i
+                      className="fa-regular fa-eye"
+                      onClick={() => {
+                        setPasswordVisible2(false)
+                      }}
+                    />
+                  ) : (
+                    <i
+                      className="fa-regular fa-eye-slash"
+                      onClick={() => {
+                        setPasswordVisible2(true)
+                      }}
+                    />
+                  )}
+
+                  <i
+                    className="fa-solid fa-pen-to-square edit"
+                    style={{
+                      color: disabledInputPasswordRetype ? 'var(--bgColor2)' : 'grey',
+                    }}
+                    onClick={() => {
+                      setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="save-btns mt-3">
+              <button
+                className="btn"
+                style={{ color: 'white' }}
+                onClick={async () => {
                   if (password || passwordRetype) {
                     if (password === passwordRetype) {
                       const payloadPassword = {
@@ -475,19 +505,20 @@ const ProfileSettingScreen = () => {
                       toast.error('Password and retype password does not match')
                     }
                   }
-                  const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
-                  setName()
-                  setEmail()
-                  setAddress()
                   setPassword()
                   setPasswordRetype()
                   setEditMode1(false)
                   setEditMode2(false)
+                  setDisabledInputAddress(true)
+                  setDisabledInputEmail(true)
+                  setDisabledInputName(true)
+                  setDisabledInputPassword(true)
+                  setDisabledInputPasswordRetype(true)
                   toast.success(afterUpdateMsg.data.message)
                   setReloadData(!reloadData)
                 }}
               >
-                Save Changes
+                Save Password
               </button>
             </div>
 

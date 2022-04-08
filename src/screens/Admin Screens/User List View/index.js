@@ -470,7 +470,7 @@ const UserListView = () => {
                 </span>
               </div>
             </div>
-            {getUserRoles() == 'PMK Administrator' && (
+            {/* {getUserRoles() == 'PMK Administrator' && (
               <i
                 className="fa-solid fa-trash mx-2"
                 style={{ cursor: 'pointer' }}
@@ -479,7 +479,7 @@ const UserListView = () => {
                   setReloadTable(!reloadTable)
                 }}
               />
-            )}
+            )} */}
           </div>
           <div className="row">
             <div className="col-auto filter-checkbox d-flex align-items-center">

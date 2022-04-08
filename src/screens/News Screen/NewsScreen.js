@@ -12,7 +12,7 @@ import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
-
+// pre-wrap
 const NewsScreen = () => {
   const { setLoading } = useLoading()
   const navigate = useNavigate()
