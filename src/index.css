@@ -131,6 +131,9 @@ body {
 .bsgpsK div:first-child {
   white-space: normal !important;
 }
+.theme {
+  color: var(--bgColor2);
+}
 /* tablet view */
 ::-webkit-scrollbar {
   height: 8px;

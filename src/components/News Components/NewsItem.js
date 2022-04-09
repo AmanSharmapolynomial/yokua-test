@@ -555,23 +555,61 @@ const NewsItem = ({
   const renderSubCategory = () => {
     if (data?.sub_category !== undefined && data?.sub_category?.length > 1) {
       return (
-        <div class="dropdown">
+        <div class="accordion" id="accordionExample">
           <div
-            class="dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
+            class="card"
+            style={{
+              zIndex: 1,
+              position: 'absolute',
+              backgroundColor: 'white',
+            }}
           >
-            {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
-          </div>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {data?.sub_category.map((item, index) => {
-              return <div>{item.sub_category_name}</div>
-            })}
+            <div class="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
+              <div
+                class="collapsed"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                {data?.sub_category[0] !== undefined
+                  ? data?.sub_category[0]['sub_category_name']
+                  : ''}
+                <i className="fa-solid fa-angle-up ml-3 theme" />
+              </div>
+            </div>
+            <div
+              id="collapseTwo"
+              class="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionExample"
+            >
+              <div class="card-body p-0">
+                {data?.sub_category.map((item, index) => {
+                  return index !== 0 && <div className="px-2 mb-2">{item.sub_category_name}</div>
+                })}
+              </div>
+            </div>
           </div>
         </div>
+        // <div class="dropdown">
+        //   <div
+        //     class="dropdown-toggle"
+        //     type="button"
+        //     id="dropdownMenuButton"
+        //     data-toggle="dropdown"
+        //     aria-haspopup="true"
+        //     aria-expanded="false"
+        //   >
+        //     {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
+        //   </div>
+        //   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        //     {data?.sub_category.map((item, index) => {
+        //       return <div>{item.sub_category_name}</div>
+        //     })}
+        //   </div>
+        // </div>
       )
     } else if (data?.sub_category && data?.sub_category[0] !== undefined) {
       return data?.sub_category[0]['sub_category_name']
