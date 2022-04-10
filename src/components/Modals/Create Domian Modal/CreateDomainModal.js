@@ -12,7 +12,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain }) => {
             marginBottom: 0,
           }}
         >
-          Add New Domain
+          Add New Whitelist Domain
         </h3>
         <div
           className="modal-content domain-modal"

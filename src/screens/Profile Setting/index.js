@@ -10,7 +10,7 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import validator from 'validator'
 import CustomCheckbox from '../../components/Profile/CustomCheckbox'
 import Header from '../../components/Header'
-
+import { useNavigate } from 'react-router'
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
 import { faL } from '@fortawesome/free-solid-svg-icons'
@@ -48,7 +48,9 @@ const ProfileSettingScreen = () => {
   const [imageFile, SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
   const [profilePicture, setProfilePicture] = useState(placeholder)
-
+  const [actionLabel, setActionLabel] = useState('')
+  const alertRef = useRef()
+  const navigate = useNavigate()
   useEffect(async () => {
     // call profile data
     setIsLoading(true)
@@ -82,7 +84,7 @@ const ProfileSettingScreen = () => {
 
   const saveAndExit = () => {
     setOpenSimpleDeleteModal(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'auto'
     setReloadData(!reloadData)
   }
 
@@ -295,7 +297,7 @@ const ProfileSettingScreen = () => {
                 <></>
               ) : (
                 <button
-                  className="delete-btn"
+                  className="delete-btn mr-3"
                   style={{
                     cursor: 'pointer',
                   }}
@@ -309,7 +311,7 @@ const ProfileSettingScreen = () => {
               )}
 
               <button
-                className="btn ml-3"
+                className="btn"
                 style={{ color: 'white' }}
                 onClick={async () => {
                   const tempNLArray = []
@@ -364,17 +366,23 @@ const ProfileSettingScreen = () => {
                   } else {
                     if (editMode2) {
                       toast.error('Please enter email in proper format - abc@xyz.com')
+                      return
                     }
-                    return
                   }
                   if (address && address != '') {
                     payload = {
                       company: address,
                       ...payload,
                     }
+                  } else {
+                    if (addressRef.current.value === '') {
+                      toast.error('Please enter valid company')
+                      return
+                    }
                   }
-
                   const afterUpdateMsg = await API.post('/auth/profile_settings/', payload)
+                  toast.success(afterUpdateMsg.data.message)
+                  setReloadData(!reloadData)
                   setName()
                   setEmail()
                   setAddress()
@@ -385,8 +393,6 @@ const ProfileSettingScreen = () => {
                   setDisabledInputPasswordRetype(true)
                   setEditMode1(false)
                   setEditMode2(false)
-                  toast.success(afterUpdateMsg.data.message)
-                  setReloadData(!reloadData)
                 }}
               >
                 Save Changes
@@ -478,6 +484,13 @@ const ProfileSettingScreen = () => {
                     }}
                   />
                 </div>
+                <span
+                  className="alert-under-input"
+                  ref={alertRef}
+                  style={{ display: 'none', width: '80%', margin: '1rem 1.5rem' }}
+                >
+                  {actionLabel}
+                </span>
               </div>
             </div>
 
@@ -486,8 +499,18 @@ const ProfileSettingScreen = () => {
                 className="btn"
                 style={{ color: 'white' }}
                 onClick={async () => {
-                  if (password || passwordRetype) {
-                    if (password === passwordRetype) {
+                  if (password.length < 8) {
+                    setActionLabel(
+                      'Password must contain 8-16 characters, one special and numeric value'
+                    )
+                    setTimeout(() => {
+                      alertRef.current.style.display = 'none'
+                    }, 3000)
+                    alertRef.current.style.display = 'block'
+                  } else {
+                    if (password != passwordRetype) {
+                      toast.error('Password and Confirm Password should be same')
+                    } else {
                       const payloadPassword = {
                         new_password1: password,
                         new_password2: passwordRetype,
@@ -497,25 +520,38 @@ const ProfileSettingScreen = () => {
                         '/auth/password-change/',
                         payloadPassword
                       )
-                      setPassword(undefined)
                       toast.success(afterPassChangeMsg.data.message)
-
-                      // toast.success(afterPassChangeMsg.data.detail)
-                    } else {
-                      toast.error('Password and retype password does not match')
+                      setPassword()
+                      setPasswordRetype()
+                      setEditMode1(false)
+                      setEditMode2(false)
+                      setDisabledInputAddress(true)
+                      setDisabledInputEmail(true)
+                      setDisabledInputName(true)
+                      setDisabledInputPassword(true)
+                      setDisabledInputPasswordRetype(true)
+                      setReloadData(!reloadData)
                     }
                   }
-                  setPassword()
-                  setPasswordRetype()
-                  setEditMode1(false)
-                  setEditMode2(false)
-                  setDisabledInputAddress(true)
-                  setDisabledInputEmail(true)
-                  setDisabledInputName(true)
-                  setDisabledInputPassword(true)
-                  setDisabledInputPasswordRetype(true)
-                  toast.success(afterUpdateMsg.data.message)
-                  setReloadData(!reloadData)
+                  // if (password || passwordRetype) {
+                  //   if (password === passwordRetype) {
+                  //     const payloadPassword = {
+                  //       new_password1: password,
+                  //       new_password2: passwordRetype,
+                  //     }
+
+                  //     const afterPassChangeMsg = await API.post(
+                  //       '/auth/password-change/',
+                  //       payloadPassword
+                  //     )
+                  //     setPassword(undefined)
+                  //     toast.success(afterPassChangeMsg.data.message)
+
+                  //     // toast.success(afterPassChangeMsg.data.detail)
+                  //   } else {
+                  //     toast.error('Password and retype password does not match')
+                  //   }
+                  // }
                 }}
               >
                 Save Password

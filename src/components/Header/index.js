@@ -34,7 +34,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                     type="text"
                     placeholder="What are you looking for?"
                     className="search_input ml-3"
-                    autoComplete={false}
+                    autoComplete="false"
                   ></input>
                 </div>
               )}

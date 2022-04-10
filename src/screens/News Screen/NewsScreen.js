@@ -122,6 +122,7 @@ const NewsScreen = () => {
               <div className="filter-icons">
                 <div className="dropdown">
                   <img
+                    data-spy="affix"
                     id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true"
@@ -176,6 +177,7 @@ const NewsScreen = () => {
                 <div className="dropdown">
                   {backendData?.sub_categories?.length > 0 && (
                     <img
+                      data-spy="affix"
                       id="dropdownMenuButton"
                       data-toggle="dropdown"
                       aria-haspopup="true"
@@ -236,16 +238,19 @@ const NewsScreen = () => {
                 </div>
               </div>
             </div>
-            <div className="col-6">
-              <button
-                className="btn float-right"
-                onClick={() => {
-                  markAsReadAction(readNews)
-                }}
-              >
-                Mark as Read
-              </button>
-            </div>
+            {!archivedFilter && (
+              <div className="col-6">
+                <button
+                  disabled={readNews.length === 0}
+                  className={`btn float-right${readNews.length === 0 ? ' greyed' : ''}`}
+                  onClick={() => {
+                    markAsReadAction(readNews)
+                  }}
+                >
+                  Mark as Read
+                </button>
+              </div>
+            )}
           </div>
           {isLoading ? (
             <span>Loading....</span>
@@ -280,6 +285,7 @@ const NewsScreen = () => {
                           key={index}
                           setIsLoading={setIsLoading}
                           refreshPage={() => getAllNews(payload)}
+                          archivedFilter={archivedFilter}
                         />
                       )
                     } else {
@@ -298,6 +304,7 @@ const NewsScreen = () => {
                           saveAndExitAdd={saveAndExitAdd}
                           setIsLoading={setIsLoading}
                           refreshPage={() => getAllNews(payload)}
+                          archivedFilter={archivedFilter}
                         />
                       )
                     }

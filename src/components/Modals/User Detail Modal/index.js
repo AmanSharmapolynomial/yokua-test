@@ -189,7 +189,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label font-weight-bold">E-Mail id</label>
+              <label className="input-label font-weight-bold">E-Mail</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
@@ -203,27 +203,29 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 }}
               />
             </div>
-            <div className="input-field-container yk-password-container">
-              <label className="input-label font-weight-bold">Password</label>
-              <input
-                disabled={disabledInput}
-                className="input-text"
-                type={passwordVisible ? 'text' : 'password'}
-                ref={passwordRef}
-                onChange={e => {
-                  setPassword(e.target.value)
-                }}
-              />
+            {title !== 'View User Detail' && (
+              <div className="input-field-container yk-password-container">
+                <label className="input-label font-weight-bold">Password</label>
+                <input
+                  disabled={disabledInput}
+                  className="input-text"
+                  type={passwordVisible ? 'text' : 'password'}
+                  ref={passwordRef}
+                  onChange={e => {
+                    setPassword(e.target.value)
+                  }}
+                />
 
-              <i
-                className={
-                  passwordVisible
-                    ? 'fa-eye fa-solid yk-eye-icon '
-                    : 'fa-eye-slash fa-solid yk-eye-icon '
-                }
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              ></i>
-            </div>
+                <i
+                  className={
+                    passwordVisible
+                      ? 'fa-eye fa-solid yk-eye-icon '
+                      : 'fa-eye-slash fa-solid yk-eye-icon '
+                  }
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                ></i>
+              </div>
+            )}
 
             <div className="input-field-container">
               <label className="input-label font-weight-bold">Company</label>

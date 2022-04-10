@@ -6,8 +6,9 @@ const PrivacyPolicy = () => {
     <div className="row mx-2 mx-md-5 h-100 pb-3">
       <div className="col">
         <div className="row py-md-3 text-center h2 weight-bold">
-          <div className="col">Terms of Use</div>
+          <div className="col">Privacy Policy</div>
         </div>
+        <div className="h6 weight-bold">Terms of Use</div>
         <div className="font-8">
           This website is owned and run by Rota Yokogawa GmbH & Co. KG (hereinafter referred to as
           "Rota Yokogawa") or its proxy. The following are terms of a legal agreement between you

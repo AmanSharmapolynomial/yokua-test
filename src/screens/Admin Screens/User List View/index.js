@@ -226,8 +226,8 @@ const UserListView = () => {
               setChangeModal('View')
               setOpenModal(true)
               setModalTitle('View User Detail')
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
+              // document.body.scrollTop = 0
+              // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setDataToChange(index)
             }}
@@ -261,8 +261,8 @@ const UserListView = () => {
                 setOpenModal(true)
                 setModalTitle('Update user dialog')
 
-                document.body.scrollTop = 0
-                document.documentElement.scrollTop = 0
+                // document.body.scrollTop = 0
+                // document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setDataToChange(index)
               }}
@@ -326,7 +326,7 @@ const UserListView = () => {
       setOpenModal(false)
     }
     setOpenBasicDeleteModal(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'auto'
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
@@ -413,6 +413,7 @@ const UserListView = () => {
           <div className="filter-icons">
             <div className="dropdown">
               <img
+                data-spy="affix"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -553,8 +554,8 @@ const UserListView = () => {
             className="add_row"
             style={{ fontSize: '1rem', background: 'none' }}
             onClick={() => {
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
+              // document.body.scrollTop = 0
+              // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setChangeModal('Add')
               setOpenModal(true)

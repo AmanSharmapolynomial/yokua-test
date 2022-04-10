@@ -82,7 +82,7 @@ const AcceptRejectModal = ({
                 onClick={() => {
                   acceptSingleRequest(acceptData)
                   saveAndExit()
-                  // document.body.style.overflow = 'scroll'
+                  document.body.style.overflow = 'auto'
                 }}
               >
                 Confirm

@@ -220,7 +220,13 @@ const Routing = () => {
           path="/impressum"
           element={
             <>
-              <Header />
+              <Header
+                isLogedIn={getToken()}
+                isAdmin={
+                  getUserRoles() == 'Technical Administrator' ||
+                  getUserRoles() == 'PMK Administrator'
+                }
+              />
               <div className="d-flex justify-content-center h-100">
                 <div className="col">
                   <Impressum />
@@ -233,7 +239,13 @@ const Routing = () => {
           path="/privacy-policy"
           element={
             <>
-              <Header />
+              <Header
+                isLogedIn={getToken()}
+                isAdmin={
+                  getUserRoles() == 'Technical Administrator' ||
+                  getUserRoles() == 'PMK Administrator'
+                }
+              />
               <div className="d-flex justify-content-center h-100">
                 <div className="col">
                   <PrivacyPolicy />

@@ -13,7 +13,7 @@ const TermsPolicy = () => {
         overflowX: 'hidden',
       }}
     >
-      <div className="container-head">
+      <div className="container-head row">
         <h3 className="container__heading privacy-heading text-center">
           Term of service and Privacy Policies
         </h3>

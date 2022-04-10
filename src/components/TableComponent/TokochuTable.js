@@ -256,7 +256,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
     setRowName(rowHandler)
     setEmptyNewRow(tempObject)
     setNeedToReload(!needToReload)
-    document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'auto'
   }
 
   const convertData = () => {
