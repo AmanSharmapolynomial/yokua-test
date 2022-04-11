@@ -15,7 +15,7 @@ const TermsPolicy = () => {
     >
       <div className="container-head row">
         <h3 className="container__heading privacy-heading text-center">
-          Term of Service and Privacy Policies
+          Terms of Service and Privacy Policies
         </h3>
         <i
           className="fa-solid fa-circle-xmark"
