@@ -225,7 +225,7 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
-              setModalTitle('View User Detail')
+              setModalTitle('View user detail')
               // document.body.scrollTop = 0
               // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
