@@ -58,82 +58,79 @@ export default () => {
             <p className="d-flex align-items-center px-3 h6">Company name</p>
           </div>
           {companyList.map(data => (
-            <div className="yk-dd">
-              <div className="row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
-                <div
-                  className="dropdown-toggle col-12 d-flex justify-content-between w-100"
-                  data-toggle="dropdown"
-                >
-                  <div className="h6 text-align-center yg-font-capitalize-only">
-                    {data.company_name}
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <i
-                      className="fa fa-trash"
-                      style={{ fontSize: '1rem' }}
-                      aria-hidden="true"
-                      onClick={e => {
-                        console.log('GHIWGWLHLNJNJLK')
-                        e.stopPropagation()
-                        e.preventDefault()
-                        setCurrentDeleteId(data.parent_company_id)
-                        setDelete(true)
-                      }}
-                    ></i>
-                    {/* <i
+            <div className="yk-dd row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
+              <div
+                className="dropdown-toggle col-12 d-flex justify-content-between w-100"
+                data-toggle="dropdown"
+              >
+                <div className="h6 text-align-center yg-font-capitalize-only">
+                  {data.company_name}
+                </div>
+                <div className="d-flex align-items-center">
+                  <i
+                    className="fa fa-trash"
+                    style={{ fontSize: '1rem' }}
+                    aria-hidden="true"
+                    onClick={e => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      setCurrentDeleteId(data.parent_company_id)
+                      setDelete(true)
+                    }}
+                  ></i>
+                  {/* <i
                     className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
                   ></i> */}
-                    <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
-                  </div>
+                  <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
                 </div>
-                <div className="yk-drop-m dropdown-menu">
-                  {data.company_divisions.map((item, index) => (
-                    <>
-                      <a
-                        key={index}
-                        className="d-flex col justify-content-between align-items-center yg-font-capitalize-only dropdown-item"
-                        style={{
-                          fontSize: '1rem',
-                          padding: '1.17rem',
-                          textDecoration: 'none',
-                          cursor: 'default',
-                        }}
-                      >
-                        {item.sub_div_name}
-                        <i
-                          role={'button'}
-                          className="fa fa-trash"
-                          aria-hidden="true"
-                          style={{ fontSize: '1rem' }}
-                          onClick={e => {
-                            e.stopPropagation()
-                            e.preventDefault()
-                            setCurrentDeleteId(data.parent_company_id)
-                            setDelete(true)
-                          }}
-                        ></i>
-                      </a>
-                      <hr />
-                    </>
-                  ))}
-                  <a
-                    onClick={e => {
-                      setShow(true)
-                      setParentCompany(data.company_name)
-                    }}
-                    className="d-flex justify-content-center align-items-center dropdown-item"
-                    style={{ fontSize: '0.8rem', padding: '1.17rem' }}
-                  >
-                    <img
-                      src={Plusicon}
+              </div>
+              <div className="yk-drop-m dropdown-menu">
+                {data.company_divisions.map((item, index) => (
+                  <>
+                    <a
+                      key={index}
+                      className="d-flex col justify-content-between align-items-center yg-font-capitalize-only dropdown-item"
                       style={{
-                        width: '1rem',
-                        marginRight: '0.2rem',
+                        fontSize: '1rem',
+                        padding: '1.17rem',
+                        textDecoration: 'none',
+                        cursor: 'default',
                       }}
-                    />
-                    Add
-                  </a>
-                </div>
+                    >
+                      {item.sub_div_name}
+                      <i
+                        role={'button'}
+                        className="fa fa-trash"
+                        aria-hidden="true"
+                        style={{ fontSize: '1rem' }}
+                        onClick={e => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          setCurrentDeleteId(data.parent_company_id)
+                          setDelete(true)
+                        }}
+                      ></i>
+                    </a>
+                    <hr />
+                  </>
+                ))}
+                <a
+                  onClick={e => {
+                    setShow(true)
+                    setParentCompany(data.company_name)
+                  }}
+                  className="d-flex justify-content-center align-items-center dropdown-item"
+                  style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                >
+                  <img
+                    src={Plusicon}
+                    style={{
+                      width: '1rem',
+                      marginRight: '0.2rem',
+                    }}
+                  />
+                  Add
+                </a>
               </div>
             </div>
           ))}
