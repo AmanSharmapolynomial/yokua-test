@@ -26,7 +26,7 @@
 .cont-detail span {
     color: #000000;
     font-weight: 500;
- 
+
 }
 
 .yk-admin-contact .boxes .box-one {
@@ -68,7 +68,7 @@
 }
 
 .yk-admin-contact .product-item-name i {
-    font-size: 1rem;
+    font-size: 0.7rem;
     color: #004f9b;
 }
 
@@ -79,16 +79,16 @@
 /*--------------Profile-brief-start--------------*/
 .profile-circle{ width: 8vw; height: 8vw; border-radius:20vw; display: grid; place-items: center;}
 .profile-circle i{font-size: 4vw; color: #004f9b;}
-.profile-con i{font-size: 1.4vw;}
+.profile-con i{font-size: 1vw;}
 .profile-con i{line-height: 36px; color: #004f9b;}
-.profile-con span{color: #000000;}
+.profile-con span{color: #000000; letter-spacing: 1px;}
 
 /*-----------pmk-product-----------*/
 
 .yk-admin-contact .pmk-product{box-shadow: 0px 0px 8px #c4c4c4;}
 
 .yk-admin-contact .pmk-product .sm-img-box i{font-size: 3vw; color:#004f9b;}
-.yk-admin-contact .pmk-product .pmk-product-detail{ font-size: 1.5rem; color: #000000; line-height: 36px;}
+.yk-admin-contact .pmk-product .pmk-product-detail{ font-size: 1vw; color: #000000; line-height: 36px;}
 .yk-admin-contact .pmk-product .pmk-product-detail i{ font-size: 1.4vw; color:#004f9b;}
 
 /*------------product-handiling-------------*/

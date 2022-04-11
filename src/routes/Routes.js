@@ -212,10 +212,9 @@ const Routing = () => {
         <Route
           path="contact"
           element={
-            <>
-              <Header />
+            <PrivateRoute>
               <Contact />
-            </>
+            </PrivateRoute>
           }
         />
         {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
