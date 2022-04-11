@@ -553,7 +553,7 @@ const UserApprovalScreen = () => {
                     className="btn create-domain-btn"
                     onClick={() => {
                       // document.body.scrollTop = 0
-                      // document.documentElement.scrollTop = 0
+                      document.documentElement.scrollTop = 0
                       document.body.style.overflow = 'hidden'
                       setOpenDomainModal(true)
                     }}
