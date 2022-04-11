@@ -228,12 +228,12 @@ const NewsItem = ({
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
-  const uploadCategory = () => {
+  const uploadCategory = (image, categoryName) => {
     return new Promise((resolve, reject) => {
       if (isNewCatAdded) {
         const formData = new FormData()
         const data = {
-          category_name: category[category.length - 1].category_name,
+          category_name: categoryName,
         }
         formData.append('image', category[category.length - 1].image_link)
         formData.append('data', JSON.stringify(data))
@@ -241,6 +241,7 @@ const NewsItem = ({
         API.post('news/add_category', formData)
           .then(data => {
             resolve(data)
+            AddNewCategoryCall(image, categoryName)
           })
           .catch(error => {
             reject(error)
@@ -251,15 +252,16 @@ const NewsItem = ({
     })
   }
 
-  const uploadSubCategory = (categoryId, parentId) => {
+  const uploadSubCategory = (categoryName, parentCatId = 1, categoryId, parentId) => {
     return new Promise((resolve, reject) => {
       if (isNewSubCatAdded) {
         const subPayload = {
-          sub_category_name: categoryId,
+          sub_category_name: categoryName,
           parent_category_id: parentId,
         }
         API.post('news/add_subcategory', subPayload)
           .then(data => {
+            AddNewSubCategoryCall(newSubTopicName, categoryID)
             resolve(data)
           })
           .catch(error => {
@@ -321,8 +323,12 @@ const NewsItem = ({
             setNewsUnderEdit(false)
             setEditView(false)
             refreshPage()
-            toast.success(response.data.message)
-            navigate(0)
+            toast.success(response.data.message, {
+              autoClose: 1500,
+              pauseOnHover: false,
+            })
+
+            setTimeout(() => navigate(0), 1500)
             if (!changeType) {
             } else if (changeType == 'Add') {
               // window.location.reload()
@@ -355,38 +361,38 @@ const NewsItem = ({
       toast.error('Enter some description to add or edit news')
       return
     } else {
-      if (isNewCatAdded) {
-        uploadCategory().then(data => {
-          if (data) {
-            setCategoryID(data.data.id)
-            if (isNewSubCatAdded) {
-              uploadSubCategory(
-                subCategory[subCategory.length - 1].sub_category_name,
-                data.data.id
-              ).then(subData => {
-                if (subData) {
-                  setSubCategoryID(subData.data.id)
-                  uploadNewNews(data.data.id, subData.data.id)
-                }
-              })
-            } else {
-              uploadNewNews(data.data.id, 0)
-            }
-          } else {
-          }
-        })
-      } else if (isNewSubCatAdded) {
-        uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
-          subData => {
-            if (subData) {
-              setSubCategoryID(subData.data.id)
-              uploadNewNews(categoryID, subData.data.id)
-            }
-          }
-        )
-      } else {
-        uploadNewNews(categoryID, 0)
-      }
+      // if (isNewCatAdded) {
+      //   uploadCategory().then(data => {
+      //     if (data) {
+      //       setCategoryID(data.data.id)
+      //       if (isNewSubCatAdded) {
+      //         uploadSubCategory(
+      //           subCategory[subCategory.length - 1].sub_category_name,
+      //           data.data.id
+      //         ).then(subData => {
+      //           if (subData) {
+      //             setSubCategoryID(subData.data.id)
+      //             uploadNewNews(data.data.id, subData.data.id)
+      //           }
+      //         })
+      //       } else {
+      //         uploadNewNews(data.data.id, 0)
+      //       }
+      //     } else {
+      //     }
+      //   })
+      // } else if (isNewSubCatAdded) {
+      //   uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
+      //     subData => {
+      //       if (subData) {
+      //         setSubCategoryID(subData.data.id)
+      //         uploadNewNews(categoryID, subData.data.id)
+      //       }
+      //     }
+      //   )
+      // } else {
+      uploadNewNews(categoryID, 0)
+      // }
     }
   }
 
@@ -439,7 +445,6 @@ const NewsItem = ({
       return filtered
     })
   }
-  console.log(subCategory)
   useEffect(() => {
     _checkAllChecked()
   }, [subCategory, isAllSelectChecked])
@@ -628,7 +633,7 @@ const NewsItem = ({
         show={deleteModal}
         setShow={setDeleteModal}
         req={'News'}
-        title={`Are you sure you want to delete this news ${moment(
+        title={`Are you sure you want to delete this news from ${moment(
           data ? data.date_uploaded : ''
         ).format('MMM DD')}?`}
         isBold={true}
@@ -643,7 +648,10 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+        setTempCategoryObject={(image, data) => {
+          console.log(data)
+          uploadCategory(image, data)
+        }}
       />
       <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
@@ -792,7 +800,8 @@ const NewsItem = ({
                             <Button
                               onClick={() => {
                                 setIsTopicAdd(false)
-                                AddNewCategoryCall(null, newTopicName)
+
+                                uploadCategory(null, newTopicName)
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
@@ -1006,7 +1015,13 @@ const NewsItem = ({
                               onClick={() => {
                                 setSubTopicAdd(false)
                                 if (newSubTopicName.length != 0) {
-                                  AddNewSubCategoryCall(newSubTopicName, categoryID)
+                                  uploadSubCategory(
+                                    newSubTopicName,
+                                    categoryID,
+                                    subCategory[subCategory.length - 1].sub_category_name,
+                                    data.data.id
+                                  )
+                                  // AddNewSubCategoryCall()
                                 } else {
                                   toast.error('Please provide Sub Category title')
                                 }

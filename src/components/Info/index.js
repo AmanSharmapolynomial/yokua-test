@@ -4,7 +4,7 @@ import './style.css'
 
 const InfoComponent = () => {
   return (
-    <div className="info-container mx-auto my-5 col-10 col-md-4 order-12 order-md-1">
+    <div className="info-container mx-auto my-5 col-10 col-md-6 order-12 order-md-1 py-3">
       <p className="info__text">
         Our Flow Center Pages are designed for Yokogawa Employees and Yokogawa Representative. It
         contains up-to-date information for pre- and after sales support.

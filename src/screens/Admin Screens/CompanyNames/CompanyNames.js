@@ -73,6 +73,7 @@ export default () => {
                       style={{ fontSize: '1rem' }}
                       aria-hidden="true"
                       onClick={e => {
+                        e.preventDefault()
                         e.stopPropagation()
                         setCurrentDeleteId(data.parent_company_id)
                         setDelete(true)
@@ -102,6 +103,7 @@ export default () => {
                           aria-hidden="true"
                           style={{ fontSize: '1rem' }}
                           onClick={e => {
+                            e.preventDefault()
                             e.stopPropagation()
                             setCurrentDeleteId(data.parent_company_id)
                             setDelete(true)

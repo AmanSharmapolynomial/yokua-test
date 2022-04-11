@@ -6,7 +6,7 @@ const TermsPolicy = () => {
   const navigate = useNavigate()
   return (
     <div
-      className="signIn-container col-4 mx-auto"
+      className="signIn-container col-6 mx-auto"
       style={{
         maxHeight: '24rem',
         overflowY: 'scroll',
@@ -15,7 +15,7 @@ const TermsPolicy = () => {
     >
       <div className="container-head row">
         <h3 className="container__heading privacy-heading text-center">
-          Term of service and Privacy Policies
+          Term of Service and Privacy Policies
         </h3>
         <i
           className="fa-solid fa-circle-xmark"
@@ -176,11 +176,11 @@ const TermsPolicy = () => {
             unenforceable, such portion shall be deemed severable and shall not affect the validity
             and enforceability of any remaining portion.
           </div>
+          <br></br>
+          <br></br>
           <div className="row py-md-3 text-center h2 weight-bold">
             <div className="col">Data protection statement</div>
           </div>
-          <br></br>
-          <br></br>
           <div className="font-8">
             We are very pleased that you have visited our Web site and would like to ensure that you
             have the very best information - not only for our services, but also about data
