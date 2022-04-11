@@ -60,28 +60,12 @@ export default () => {
           {companyList.map(data => (
             <div className="yk-dd row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
               <div
-                className="dropdown-toggle col-12 d-flex justify-content-between w-100"
+                className="dropdown-toggle d-flex justify-content-between flex-fill"
+                data-offset="20,20"
                 data-toggle="dropdown"
               >
                 <div className="h6 text-align-center yg-font-capitalize-only">
                   {data.company_name}
-                </div>
-                <div className="d-flex align-items-center">
-                  <i
-                    className="fa fa-trash"
-                    style={{ fontSize: '1rem' }}
-                    aria-hidden="true"
-                    onClick={e => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      setCurrentDeleteId(data.parent_company_id)
-                      setDelete(true)
-                    }}
-                  ></i>
-                  {/* <i
-                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
-                  ></i> */}
-                  <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
                 </div>
               </div>
               <div className="yk-drop-m dropdown-menu">
@@ -131,6 +115,23 @@ export default () => {
                   />
                   Add
                 </a>
+              </div>
+              <div className="d-flex align-items-center">
+                <i
+                  className="fa fa-trash"
+                  style={{ fontSize: '1rem' }}
+                  aria-hidden="true"
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setCurrentDeleteId(data.parent_company_id)
+                    setDelete(true)
+                  }}
+                ></i>
+                {/* <i
+                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
+                  ></i> */}
+                <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
               </div>
             </div>
           ))}
