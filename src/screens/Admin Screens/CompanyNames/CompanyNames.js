@@ -61,7 +61,7 @@ export default () => {
             <div className="yk-dd">
               <div className="row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
                 <div
-                  class="dropdown-toggle col-12 d-flex justify-content-between w-100"
+                  className="dropdown-toggle col-12 d-flex justify-content-between w-100"
                   data-toggle="dropdown"
                 >
                   <div className="h6 text-align-center yg-font-capitalize-only">
@@ -73,8 +73,9 @@ export default () => {
                       style={{ fontSize: '1rem' }}
                       aria-hidden="true"
                       onClick={e => {
-                        e.preventDefault()
+                        console.log('GHIWGWLHLNJNJLK')
                         e.stopPropagation()
+                        e.preventDefault()
                         setCurrentDeleteId(data.parent_company_id)
                         setDelete(true)
                       }}
@@ -95,16 +96,18 @@ export default () => {
                           fontSize: '1rem',
                           padding: '1.17rem',
                           textDecoration: 'none',
+                          cursor: 'default',
                         }}
                       >
                         {item.sub_div_name}
                         <i
+                          role={'button'}
                           className="fa fa-trash"
                           aria-hidden="true"
                           style={{ fontSize: '1rem' }}
                           onClick={e => {
-                            e.preventDefault()
                             e.stopPropagation()
+                            e.preventDefault()
                             setCurrentDeleteId(data.parent_company_id)
                             setDelete(true)
                           }}

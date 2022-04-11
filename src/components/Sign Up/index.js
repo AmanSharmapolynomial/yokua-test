@@ -313,7 +313,7 @@ const SignUp = () => {
             <div className="row text-center d-flex justify-content-center align-items-center">
               <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />
               <span className="checkbox-text mr-auto ml-2">
-                Accept the Term of Service and Privacy Policies
+                Accept the Terms of Service and Privacy Policies
               </span>
             </div>
           </div>

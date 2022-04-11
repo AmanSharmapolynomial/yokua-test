@@ -84,7 +84,7 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-xmark reject"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
+                    document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
                     const sendData = {
                       email: data.email_id,
@@ -102,7 +102,7 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-check"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
+                    document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
                     setAcceptData(data.email_id)
                     setChangeModal('Accepted')

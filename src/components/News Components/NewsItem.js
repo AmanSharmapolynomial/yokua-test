@@ -41,6 +41,7 @@ const NewsItem = ({
     const outsideClick = document.body.addEventListener('click', () => {
       setToggleDropDown(1)
       if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+        SetNewSubTopicName('')
         setSubTopicAdd(false)
       }
       // if ((subTopicRef?.current?.classList) .includes('show')) {
@@ -229,48 +230,34 @@ const NewsItem = ({
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
   const uploadCategory = (image, categoryName) => {
-    return new Promise((resolve, reject) => {
-      if (isNewCatAdded) {
-        const formData = new FormData()
-        const data = {
-          category_name: categoryName,
-        }
-        formData.append('image', category[category.length - 1].image_link)
-        formData.append('data', JSON.stringify(data))
+    const formData = new FormData()
+    const data = {
+      category_name: categoryName,
+    }
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
 
-        API.post('news/add_category', formData)
-          .then(data => {
-            resolve(data)
-            AddNewCategoryCall(image, categoryName)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+    API.post('news/add_category', formData)
+      .then(data => {
+        AddNewCategoryCall(image, categoryName)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const uploadSubCategory = (categoryName, parentCatId = 1, categoryId, parentId) => {
-    return new Promise((resolve, reject) => {
-      if (isNewSubCatAdded) {
-        const subPayload = {
-          sub_category_name: categoryName,
-          parent_category_id: parentId,
-        }
-        API.post('news/add_subcategory', subPayload)
-          .then(data => {
-            AddNewSubCategoryCall(newSubTopicName, categoryID)
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+    const subPayload = {
+      sub_category_name: categoryName,
+      parent_category_id: parentCatId,
+    }
+    API.post('news/add_subcategory', subPayload)
+      .then(data => {
+        AddNewSubCategoryCall(newSubTopicName, categoryID)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const uploadNewNews = (catId, subCatId) => {
@@ -562,18 +549,18 @@ const NewsItem = ({
   const renderSubCategory = () => {
     if (data?.sub_category !== undefined && data?.sub_category?.length > 1) {
       return (
-        <div class="accordion" id="accordionExample">
+        <div className="accordion" id="accordionExample">
           <div
-            class="card"
+            className="card"
             style={{
               zIndex: 1,
               position: 'absolute',
               backgroundColor: 'white',
             }}
           >
-            <div class="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
+            <div className="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
               <div
-                class="collapsed"
+                className="collapsed"
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapseTwo"
@@ -588,11 +575,11 @@ const NewsItem = ({
             </div>
             <div
               id="collapseTwo"
-              class="collapse"
+              className="collapse"
               aria-labelledby="headingTwo"
               data-parent="#accordionExample"
             >
-              <div class="card-body p-0">
+              <div className="card-body p-0">
                 {data?.sub_category.map((item, index) => {
                   return index !== 0 && <div className="px-2 py-2">{item.sub_category_name}</div>
                 })}
@@ -649,7 +636,6 @@ const NewsItem = ({
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
         setTempCategoryObject={(image, data) => {
-          console.log(data)
           uploadCategory(image, data)
         }}
       />
@@ -737,7 +723,7 @@ const NewsItem = ({
                           >
                             {selectedTopic}
                           </a>
-                          <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -852,7 +838,7 @@ const NewsItem = ({
                           >
                             {_getSelectedItems()}
                           </a>
-                          <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -974,10 +960,12 @@ const NewsItem = ({
                             <button
                               id="mybtn"
                               className="btn yg-font-size "
-                              onClick={() => {
+                              onClick={e => {
+                                e.stopPropagation()
                                 if (_checkIsEditSubTopicOpen()) {
                                   toast.error('Please close the current Sub category edit')
                                 } else {
+                                  SetNewSubTopicName('')
                                   setSubTopicAdd(true)
                                 }
                               }}
@@ -1005,7 +993,8 @@ const NewsItem = ({
                                   fontSize: '20px',
                                   cursor: 'pointer',
                                 }}
-                                onClick={() => {
+                                onClick={e => {
+                                  e.stopPropagation()
                                   SetNewSubTopicName('')
                                   setSubTopicAdd(false)
                                 }}
@@ -1013,13 +1002,14 @@ const NewsItem = ({
                             </div>
                             <Button
                               onClick={() => {
+                                SetNewSubTopicName('')
                                 setSubTopicAdd(false)
                                 if (newSubTopicName.length != 0) {
                                   uploadSubCategory(
                                     newSubTopicName,
                                     categoryID,
-                                    subCategory[subCategory.length - 1].sub_category_name,
-                                    data.data.id
+                                    subCategory[subCategory.length - 1].sub_category_name
+                                    // data.data.id
                                   )
                                   // AddNewSubCategoryCall()
                                 } else {
