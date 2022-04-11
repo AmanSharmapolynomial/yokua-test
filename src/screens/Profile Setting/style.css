@@ -52,7 +52,7 @@
 .profile-setting__basic-profile-edit {
   display: flex;
   flex-direction: column;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
 }
 
 .edit_input {
@@ -63,7 +63,7 @@
   margin: 1rem 1.5rem;
 }
 .profile-setting__basic-profile {
-  margin-bottom: 3rem;
+  /* margin-bottom: 3rem; */
 }
 
 .profile-setting__heading {
@@ -97,7 +97,7 @@
 }
 
 .profile-setting__sales-news {
-  margin: 1.5rem;
+  margin: 0rem 1.5rem;
   padding-bottom: 1.4rem;
 }
 
@@ -135,7 +135,7 @@ button > .delete-btn {
 }
 
 .save-btns > button {
-  margin: 0.8rem 1rem 1rem 0rem;
+  /* margin: 0.8rem 1rem 1rem 0rem; */
   height: 2rem;
   font-size: 0.8rem;
   font-family: Poppins;

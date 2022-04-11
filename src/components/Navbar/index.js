@@ -94,8 +94,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
                   <text
                     x="50%"
                     y="50%"
-                    dominant-baseline="middle"
-                    text-anchor="middle"
+                    dominantBaseline="middle"
+                    textAnchor="middle"
                     fill="#fff"
                     fontSize={10}
                   >

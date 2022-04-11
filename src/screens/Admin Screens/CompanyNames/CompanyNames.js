@@ -59,23 +59,21 @@ export default () => {
           </div>
           {companyList.map(data => (
             <div className="yk-dd">
-              <div
-                className="row yk-data-row d-flex justify-content-between align-items-center p-3 dropright"
-                // data-display="static"
-                data-toggle="dropdown"
-                aria-hidden="true"
-              >
-                <div className="h6 text-align-center yg-font-capitalize-only">
-                  {data.company_name}
-                </div>
-
-                <div>
+              <div className="row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
+                <div
+                  class="dropdown-toggle col-12 d-flex justify-content-between w-100"
+                  data-toggle="dropdown"
+                >
+                  <div className="h6 text-align-center yg-font-capitalize-only">
+                    {data.company_name}
+                  </div>
                   <div className="d-flex align-items-center">
                     <i
                       className="fa fa-trash"
                       style={{ fontSize: '1rem' }}
                       aria-hidden="true"
-                      onClick={() => {
+                      onClick={e => {
+                        e.stopPropagation()
                         setCurrentDeleteId(data.parent_company_id)
                         setDelete(true)
                       }}
@@ -83,52 +81,53 @@ export default () => {
                     {/* <i
                     className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
                   ></i> */}
-                    <i className="fa fa-caret-right dropdown-toggle"> </i>
-                    <div className="yk-drop-m dropdown-menu dropdown-menu-right">
-                      {data.company_divisions.map(item => (
-                        <>
-                          <a
-                            className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
-                            style={{
-                              fontSize: '1rem',
-                              padding: '1.17rem',
-                              marginLeft: '10px',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            {item.sub_div_name}
-                            <i
-                              className="fa fa-trash"
-                              aria-hidden="true"
-                              style={{ fontSize: '1rem' }}
-                              onClick={() => {
-                                setCurrentDeleteId(data.parent_company_id)
-                                setDelete(true)
-                              }}
-                            ></i>
-                          </a>
-                          <hr />
-                        </>
-                      ))}
-                      <a
-                        onClick={() => {
-                          setShow(true)
-                          setParentCompany(data.company_name)
-                        }}
-                        className="d-flex justify-content-center align-items-center"
-                        style={{ fontSize: '0.8rem', padding: '1.17rem' }}
-                      >
-                        <img
-                          src={Plusicon}
-                          style={{
-                            width: '1rem',
-                            marginRight: '0.2rem',
-                          }}
-                        />
-                        Add
-                      </a>
-                    </div>
+                    <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
                   </div>
+                </div>
+                <div className="yk-drop-m dropdown-menu">
+                  {data.company_divisions.map((item, index) => (
+                    <>
+                      <a
+                        key={index}
+                        className="d-flex col justify-content-between align-items-center yg-font-capitalize-only dropdown-item"
+                        style={{
+                          fontSize: '1rem',
+                          padding: '1.17rem',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        {item.sub_div_name}
+                        <i
+                          className="fa fa-trash"
+                          aria-hidden="true"
+                          style={{ fontSize: '1rem' }}
+                          onClick={e => {
+                            e.stopPropagation()
+                            setCurrentDeleteId(data.parent_company_id)
+                            setDelete(true)
+                          }}
+                        ></i>
+                      </a>
+                      <hr />
+                    </>
+                  ))}
+                  <a
+                    onClick={e => {
+                      setShow(true)
+                      setParentCompany(data.company_name)
+                    }}
+                    className="d-flex justify-content-center align-items-center dropdown-item"
+                    style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                  >
+                    <img
+                      src={Plusicon}
+                      style={{
+                        width: '1rem',
+                        marginRight: '0.2rem',
+                      }}
+                    />
+                    Add
+                  </a>
                 </div>
               </div>
             </div>
@@ -230,7 +229,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
           <FormControl
             style={{ fontSize: 'small' }}
             className="mt-2 mb-2"
-            placeholder="Enter Company name"
+            placeholder="Name.."
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"
             value={name}

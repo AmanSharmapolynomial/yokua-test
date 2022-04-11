@@ -5,17 +5,18 @@ import './style.css'
 const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   return (
     <div className="dropdown">
-      <a
+      <div
+        className="d-flex justify-content-between pr-3"
         id="dropdownMenuButton"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
-        style={{ width: '14px', height: '14px' }}
-        className="dropdown-toggle"
+        data-display="static"
+        aria-hidden="true"
       >
-        {value}
-      </a>
-
+        <a>{value}</a>
+        <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+      </div>
       <div className="dropdown-menu">
         {data.map((element, index) => (
           <span

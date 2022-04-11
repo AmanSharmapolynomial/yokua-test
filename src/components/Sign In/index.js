@@ -60,7 +60,7 @@ const SignIn = () => {
 
   return (
     <div className="signIn-container mx-auto my-5 col-10 col-md-4 order-1 order-md-12">
-      <h3 className="container__heading mt-4">Sign In with E-mail</h3>
+      <h3 className="container__heading mt-4">Sign in with E-mail</h3>
       <form className="forum" type="submit" onSubmit={SignIn}>
         <div className="row d-flex justify-content-center">
           <input
