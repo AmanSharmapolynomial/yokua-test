@@ -13,18 +13,17 @@ const Forgot = () => {
 
   const forgotApi = async email => {
     setIsLoading(true)
-
     if (validator.isEmail(email)) {
       const forgotPassPayload1 = {
         email,
       }
       const data = await API.post('/auth/reset-password-token-gen', forgotPassPayload1)
       toast.success(data.data.detail)
-      setIsLoading(false)
       navigate('/auth/reset-password', { state: email })
     } else {
       toast.error('Email is not in proper format - abc@xyz.com')
     }
+    setIsLoading(false)
   }
 
   return (
