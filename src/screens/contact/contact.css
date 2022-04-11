@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap');
+
+
 .yk-admin-contact{letter-spacing: 1px;;}
 
 .yk-admin-contact .sm-h {
@@ -19,13 +22,14 @@
 
 .cont-detail i {
     display: block;
-    font-size: 1vw;
+
     color: #004f9b;
 }
 
-.cont-detail span {
+.cont-detail p {
     color: #000000;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: 'Noto Sans', sans-serif;
 
 }
 
@@ -35,13 +39,14 @@
 }
 
 .yk-admin-contact .boxes .sm-txt {
-    font-size: 1rem
+    font-size: 1rem;
+     
+    font-weight: 400;
 }
 
 .yk-admin-contact .boxes p {
-
-    font-weight: 500;
-    line-height: 20px
+    line-height: 20px;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .h {
@@ -68,20 +73,25 @@
 }
 
 .yk-admin-contact .product-item-name i {
-    font-size: 0.7rem;
+    font-size: 1vw;
     color: #004f9b;
+    
 }
 
-.yk-admin-contact .product-item-name span {
+
+
+.yk-admin-contact .product-item-name p {
     color: #000000;
+    font-family: 'Noto Sans', sans-serif !important;
 }
 
 /*--------------Profile-brief-start--------------*/
+.profile-con{margin-left: -60px;;}
 .profile-circle{ width: 8vw; height: 8vw; border-radius:20vw; display: grid; place-items: center;}
 .profile-circle i{font-size: 4vw; color: #004f9b;}
 .profile-con i{font-size: 1vw;}
-.profile-con i{line-height: 36px; color: #004f9b;}
-.profile-con span{color: #000000; letter-spacing: 1px;}
+.profile-con i{line-height: 26px; color: #004f9b;}
+.profile-con p{color: #000000; letter-spacing: 1px; font-family: 'Noto Sans', sans-serif; margin-left: 1rem;  }
 
 /*-----------pmk-product-----------*/
 
@@ -90,6 +100,8 @@
 .yk-admin-contact .pmk-product .sm-img-box i{font-size: 3vw; color:#004f9b;}
 .yk-admin-contact .pmk-product .pmk-product-detail{ font-size: 1vw; color: #000000; line-height: 36px;}
 .yk-admin-contact .pmk-product .pmk-product-detail i{ font-size: 1.4vw; color:#004f9b;}
+
+.yk-admin-contact .pmk-product .sm-img-box-two{width: 140px; height: auto;}
 
 /*------------product-handiling-------------*/
 
