@@ -203,21 +203,21 @@ const NewsItem = ({
 
   const [isNewCatAdded, setIsNewCatAdded] = useState(false)
   const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
-  const AddNewCategoryCall = async (image, categoryName) => {
+  const AddNewCategoryCall = async (image, categoryName, data) => {
     setIsNewCatAdded(true)
     const tempCatObject = {
       category_name: categoryName,
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       image_link: image,
     }
     setCategory([...category, tempCatObject])
     handleSelectTopic(tempCatObject)
   }
 
-  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
+  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1, data) => {
     setIsNewSubCatAdded(true)
     const tempSubCatObject = {
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       sub_category_name: categoryName,
       category_id: parentCatId,
       isChecked: true,
@@ -239,7 +239,7 @@ const NewsItem = ({
 
     API.post('news/add_category', formData)
       .then(data => {
-        AddNewCategoryCall(image, categoryName)
+        AddNewCategoryCall(image, categoryName, data)
       })
       .catch(error => {
         console.log(error)
@@ -253,7 +253,7 @@ const NewsItem = ({
     }
     API.post('news/add_subcategory', subPayload)
       .then(data => {
-        AddNewSubCategoryCall(newSubTopicName, categoryID)
+        AddNewSubCategoryCall(newSubTopicName, categoryID, data)
       })
       .catch(error => {
         console.log(error)
