@@ -309,8 +309,8 @@ const SignUp = () => {
               <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
             </div>
           </Dropdown> */}
-          <div className="col-12">
-            <div className="row text-center d-flex justify-content-center align-items-center">
+          <div className="col-12 p-0">
+            <div className="form-group">
               <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />
               <span className="checkbox-text mr-auto ml-2">
                 Accept the Terms of Service and Privacy Policies

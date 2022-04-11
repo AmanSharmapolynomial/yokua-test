@@ -215,7 +215,6 @@ const NewsItem = ({
   }
 
   const AddNewSubCategoryCall = async (categoryName, parentCatId = 1, data) => {
-    setIsNewSubCatAdded(true)
     const tempSubCatObject = {
       id: data.data.id,
       sub_category_name: categoryName,
@@ -260,13 +259,10 @@ const NewsItem = ({
       })
   }
 
-  const uploadNewNews = (catId, subCatId) => {
+  const uploadNewNews = catId => {
     setLoading(true)
 
     const subCategoryIds = []
-    if (isNewSubCatAdded) {
-      subCategoryIds.push(subCatId)
-    }
     subCategory
       .filter(item => item.category_id == categoryID)
       .forEach((cat, index) => {
@@ -275,9 +271,9 @@ const NewsItem = ({
         }
       })
 
-    if (isNewSubCatAdded) {
-      subCategoryIds.pop()
-    }
+    // if (isNewSubCatAdded) {
+    //   subCategoryIds.pop()
+    // }
 
     if (!catId || catId == 0) {
       toast.error('Please select Topic')
@@ -378,7 +374,7 @@ const NewsItem = ({
       //     }
       //   )
       // } else {
-      uploadNewNews(categoryID, 0)
+      uploadNewNews(categoryID)
       // }
     }
   }
@@ -1228,7 +1224,7 @@ const NewsItem = ({
                 )
               ) : (
                 <div className="attachment-icon mb-4">
-                  {data.attachment_link != '' && (
+                  {data.attachment_link !== '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a target="_blank" href={data ? data.attachment_link : ''}>
@@ -1236,7 +1232,7 @@ const NewsItem = ({
                       </a>
                     </>
                   )}
-                  {data.attachment_link == '' && (
+                  {/* {data.attachment_link == '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a
@@ -1251,7 +1247,7 @@ const NewsItem = ({
                         File Not Available
                       </a>
                     </>
-                  )}
+                  )} */}
                 </div>
               )}
             </div>
