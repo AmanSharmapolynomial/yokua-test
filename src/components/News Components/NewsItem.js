@@ -37,19 +37,19 @@ const NewsItem = ({
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
-  useEffect(() => {
-    const outsideClick = document.body.addEventListener('click', () => {
-      setToggleDropDown(1)
-      if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
-        SetNewSubTopicName('')
-        setSubTopicAdd(false)
-      }
-      // if ((subTopicRef?.current?.classList) .includes('show')) {
-      //   debugger
-      // }
-    })
-    return outsideClick
-  }, [])
+  // useEffect(() => {
+  //   const outsideClick = document.body.addEventListener('click', () => {
+  //     setToggleDropDown(1)
+  //     if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+  //       SetNewSubTopicName('')
+  //       setSubTopicAdd(false)
+  //     }
+  //     // if ((subTopicRef?.current?.classList) .includes('show')) {
+  //     //   debugger
+  //     // }
+  //   })
+  //   return outsideClick
+  // }, [])
 
   const [hasPermission] = useState(
     getUserRoles() == 'PMK Administrator' ||

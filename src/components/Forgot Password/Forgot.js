@@ -10,20 +10,25 @@ const Forgot = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-
+  console.log(isLoading)
   const forgotApi = async email => {
-    setIsLoading(true)
+    setIsLoading(prevState => true)
     if (validator.isEmail(email)) {
       const forgotPassPayload1 = {
         email,
       }
-      const data = await API.post('/auth/reset-password-token-gen', forgotPassPayload1)
-      toast.success(data.data.detail)
-      navigate('/auth/reset-password', { state: email })
+      try {
+        const data = await API.post('/auth/reset-password-token-gen', forgotPassPayload1)
+        setIsLoading(prevState => false)
+        toast.success(data.data.detail)
+        navigate('/auth/reset-password', { state: email })
+      } catch (error) {
+        setIsLoading(prevState => false)
+      }
     } else {
+      setIsLoading(prevState => false)
       toast.error('Email is not in proper format - abc@xyz.com')
     }
-    setIsLoading(false)
   }
 
   return (
