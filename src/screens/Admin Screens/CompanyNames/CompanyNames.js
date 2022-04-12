@@ -58,77 +58,80 @@ export default () => {
             <p className="d-flex align-items-center px-3 h6">Company name</p>
           </div>
           {companyList.map(data => (
-            <div className="yk-dd dropright">
-              <div className="row yk-data-row d-flex justify-content-between align-items-center  p-3">
+            <div className="yk-dd row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
+              <div
+                className="dropdown-toggle d-flex justify-content-between flex-fill"
+                data-offset="20,20"
+                data-toggle="dropdown"
+              >
                 <div className="h6 text-align-center yg-font-capitalize-only">
                   {data.company_name}
                 </div>
-
-                <div>
-                  <div className="d-flex align-items-center">
-                    <i
-                      className="fa fa-trash"
-                      style={{ fontSize: '1rem' }}
-                      aria-hidden="true"
-                      onClick={() => {
-                        setCurrentDeleteId(data.parent_company_id)
-                        setDelete(true)
+              </div>
+              <div className="yk-drop-m dropdown-menu">
+                {data.company_divisions.map((item, index) => (
+                  <>
+                    <a
+                      key={index}
+                      className="d-flex col justify-content-between align-items-center yg-font-capitalize-only dropdown-item"
+                      style={{
+                        fontSize: '1rem',
+                        padding: '1.17rem',
+                        textDecoration: 'none',
+                        cursor: 'default',
                       }}
-                    ></i>
-                    {/* <i
+                    >
+                      {item.sub_div_name}
+                      <i
+                        role={'button'}
+                        className="fa fa-trash"
+                        aria-hidden="true"
+                        style={{ fontSize: '1rem' }}
+                        onClick={e => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          setCurrentDeleteId(data.parent_company_id)
+                          setDelete(true)
+                        }}
+                      ></i>
+                    </a>
+                    <hr />
+                  </>
+                ))}
+                <a
+                  onClick={e => {
+                    setShow(true)
+                    setParentCompany(data.company_name)
+                  }}
+                  className="d-flex justify-content-center align-items-center dropdown-item"
+                  style={{ fontSize: '0.8rem', padding: '1.17rem' }}
+                >
+                  <img
+                    src={Plusicon}
+                    style={{
+                      width: '1rem',
+                      marginRight: '0.2rem',
+                    }}
+                  />
+                  Add
+                </a>
+              </div>
+              <div className="d-flex align-items-center">
+                <i
+                  className="fa fa-trash"
+                  style={{ fontSize: '1rem' }}
+                  aria-hidden="true"
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setCurrentDeleteId(data.parent_company_id)
+                    setDelete(true)
+                  }}
+                ></i>
+                {/* <i
                     className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
                   ></i> */}
-                    <i
-                      className="fa fa-caret-right dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-hidden="true"
-                    ></i>
-                    <div className="yk-drop-m dropdown-menu dropdown">
-                      {data.company_divisions.map(item => (
-                        <>
-                          <a
-                            className="d-flex row justify-content-between align-items-center  yg-font-capitalize-only"
-                            style={{
-                              fontSize: '1rem',
-                              padding: '1.17rem',
-                              marginLeft: '10px',
-                              textDecoration: 'none',
-                            }}
-                          >
-                            {item.sub_div_name}
-                            <i
-                              className="fa fa-trash"
-                              aria-hidden="true"
-                              style={{ fontSize: '1rem' }}
-                              onClick={() => {
-                                setCurrentDeleteId(data.parent_company_id)
-                                setDelete(true)
-                              }}
-                            ></i>
-                          </a>
-                          <hr />
-                        </>
-                      ))}
-                      <a
-                        onClick={() => {
-                          setShow(true)
-                          setParentCompany(data.company_name)
-                        }}
-                        className="d-flex justify-content-center align-items-center"
-                        style={{ fontSize: '0.8rem', padding: '1.17rem' }}
-                      >
-                        <img
-                          src={Plusicon}
-                          style={{
-                            width: '1rem',
-                            marginRight: '0.2rem',
-                          }}
-                        />
-                        Add
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
               </div>
             </div>
           ))}
@@ -229,7 +232,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
           <FormControl
             style={{ fontSize: 'small' }}
             className="mt-2 mb-2"
-            placeholder="Enter Company name"
+            placeholder="Name.."
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"
             value={name}

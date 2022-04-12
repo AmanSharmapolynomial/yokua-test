@@ -225,9 +225,9 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
-              setModalTitle('View User Detail')
-              document.body.scrollTop = 0
-              document.documentElement.scrollTop = 0
+              setModalTitle('View user detail')
+              // document.body.scrollTop = 0
+              // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setDataToChange(index)
             }}
@@ -259,9 +259,9 @@ const UserListView = () => {
               onClick={() => {
                 setChangeModal('Edit')
                 setOpenModal(true)
-                setModalTitle('Update user dialog')
+                setModalTitle('Update user detail')
 
-                document.body.scrollTop = 0
+                // document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setDataToChange(index)
@@ -326,7 +326,7 @@ const UserListView = () => {
       setOpenModal(false)
     }
     setOpenBasicDeleteModal(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'auto'
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
@@ -365,7 +365,7 @@ const UserListView = () => {
   }
 
   const addOrEditUser = async data => {
-    const payload = {
+    let payload = {
       email_id: data.email,
       first_name: data.firstName,
       last_name: data.lastName,
@@ -373,9 +373,20 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
-
+    if (changeModal === 'Edit') {
+      payload = {
+        ...payload,
+        email_id: contentRow[dataToChange].companyEmail,
+      }
+      if (data.email !== contentRow[dataToChange].companyEmail) {
+        payload = { ...payload, new_email: data.email }
+      }
+    }
     if (payload.email_id != '') {
-      const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
+      const afterAddOrDeleteMsg = await API.post(
+        changeModal === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
+        payload
+      )
       if (data.imageFile) {
         const formData = new FormData()
 
@@ -383,7 +394,7 @@ const UserListView = () => {
         formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)
           .then(data => {
-            setReloadData(true)
+            // setReloadData(true)
           })
           .catch(error => {
             // toast.error('Error while updating Avatar')
@@ -393,6 +404,7 @@ const UserListView = () => {
     } else {
       toast.error('Enter E-Mail')
     }
+    setReloadData(true)
     setReloadTable(!reloadTable)
   }
 
@@ -405,68 +417,74 @@ const UserListView = () => {
   }
 
   return (
-    <div className="row mx-2 mx-md-5 h-100">
-      <div className="col user-list-view">
-        <SecondaryHeading title={'Users list view'} />
+    <>
+      <div className="row mx-2 mx-md-5 h-100">
+        <div className="col user-list-view">
+          <SecondaryHeading title={'Users list view'} />
 
-        <div className="col filter-actions">
-          <div className="filter-icons">
-            <div className="dropdown">
-              <img
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                className={
-                  filterActive === ''
-                    ? 'dropdown-toggle greyed filter-icon'
-                    : 'dropdown-toggle filter-icon'
-                }
-                src={Filtermg}
-              />
+          <div className="col filter-actions">
+            <div className="filter-icons">
+              <div className="dropdown">
+                <img
+                  data-spy="affix"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  className={
+                    filterActive === ''
+                      ? 'dropdown-toggle greyed filter-icon'
+                      : 'dropdown-toggle filter-icon'
+                  }
+                  src={Filtermg}
+                />
 
-              <div
-                className="dropdown-menu"
-                style={{
-                  overflowY: 'scroll',
-                  maxHeight: '10rem',
-                }}
-              >
-                <span
-                  className="dropdown-item"
-                  ref={filter1Ref}
-                  onClick={() => {
-                    if (filterActive == 'active') {
-                      filterTable('')
-                      filter1Ref.current.style.fontWeight = '300'
-                    } else {
-                      filterTable('active')
-                      filter1Ref.current.style.fontWeight = 'bold'
-                      filter2Ref.current.style.fontWeight = '300'
-                    }
+                <div
+                  className="dropdown-menu"
+                  style={{
+                    overflowY: 'scroll',
+                    maxHeight: '10rem',
                   }}
                 >
-                  Active
-                </span>
-                <span
-                  className="dropdown-item"
-                  ref={filter2Ref}
-                  onClick={() => {
-                    if (filterActive == 'inactive') {
-                      filterTable('')
-                      filter2Ref.current.style.fontWeight = '300'
-                    } else {
-                      filterTable('inactive')
-                      filter2Ref.current.style.fontWeight = 'bold'
-                      filter1Ref.current.style.fontWeight = '300'
-                    }
-                  }}
-                >
-                  Inactive
-                </span>
+                  <span
+                    className="dropdown-item"
+                    ref={filter1Ref}
+                    onClick={() => {
+                      if (filterActive == 'active') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter1Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('active')
+                        filter1Ref.current.style.fontWeight = 'bold'
+                        filter2Ref.current.style.fontWeight = '300'
+                      }
+                    }}
+                  >
+                    Active
+                  </span>
+                  <span
+                    className="dropdown-item"
+                    ref={filter2Ref}
+                    onClick={() => {
+                      if (filterActive == 'inactive') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter2Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('inactive')
+                        filter2Ref.current.style.fontWeight = 'bold'
+                        filter1Ref.current.style.fontWeight = '300'
+                      }
+                    }}
+                  >
+                    Inactive
+                  </span>
+                </div>
               </div>
-            </div>
-            {getUserRoles() == 'PMK Administrator' && (
+              {/* {getUserRoles() == 'PMK Administrator' && (
               <i
                 className="fa-solid fa-trash mx-2"
                 style={{ cursor: 'pointer' }}
@@ -475,87 +493,93 @@ const UserListView = () => {
                   setReloadTable(!reloadTable)
                 }}
               />
-            )}
+            )} */}
+            </div>
+            <div className="row">
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox1Ref}
+                  value="PMK Administrator"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxPMK(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxPMK(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                PMK Administrator
+              </div>
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox2Ref}
+                  value="Content Manager"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxCM(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxCM(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                Content Manager
+              </div>
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox3Ref}
+                  value="User"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxUser(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxUser(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                User
+              </div>
+            </div>
           </div>
-          <div className="row">
-            <div className="col-auto filter-checkbox d-flex align-items-center">
-              <input
-                className="w-auto mr-2"
-                type="checkbox"
-                ref={filterFromCheckbox1Ref}
-                value="PMK Administrator"
-                onChange={e => {
-                  if (e.target.checked) {
-                    setFilterCheckboxPMK(true)
-                    setReloadTable(!reloadTable)
-                  } else {
-                    setFilterCheckboxPMK(false)
-                    setReloadTable(!reloadTable)
-                  }
-                }}
-              />
-              PMK Administrator
-            </div>
-            <div className="col-auto filter-checkbox d-flex align-items-center">
-              <input
-                className="w-auto mr-2"
-                type="checkbox"
-                ref={filterFromCheckbox2Ref}
-                value="Content Manager"
-                onChange={e => {
-                  if (e.target.checked) {
-                    setFilterCheckboxCM(true)
-                    setReloadTable(!reloadTable)
-                  } else {
-                    setFilterCheckboxCM(false)
-                    setReloadTable(!reloadTable)
-                  }
-                }}
-              />
-              Content Manager
-            </div>
-            <div className="col-auto filter-checkbox d-flex align-items-center">
-              <input
-                className="w-auto mr-2"
-                type="checkbox"
-                ref={filterFromCheckbox3Ref}
-                value="User"
-                onChange={e => {
-                  if (e.target.checked) {
-                    setFilterCheckboxUser(true)
-                    setReloadTable(!reloadTable)
-                  } else {
-                    setFilterCheckboxUser(false)
-                    setReloadTable(!reloadTable)
-                  }
-                }}
-              />
-              User
-            </div>
+          <div className="user-list-view-table mt-3">
+            <DataTable
+              columns={columns}
+              data={contentRow}
+              selectableRows
+              customStyles={customStyles}
+              conditionalRowStyles={conditionalRowStyles}
+              onSelectedRowsChange={selectedRowsAction}
+            />
           </div>
-        </div>
-        <div className="user-list-view-table mt-3">
-          <DataTable
-            columns={columns}
-            data={contentRow}
-            selectableRows
-            customStyles={customStyles}
-            conditionalRowStyles={conditionalRowStyles}
-            onSelectedRowsChange={selectedRowsAction}
-          />
-
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'Technical Administrator') && (
             <div
               className="add_row"
               style={{ fontSize: '1rem', background: 'none' }}
               onClick={() => {
-                document.body.scrollTop = 0
+                // document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setChangeModal('Add')
                 setOpenModal(true)
-                setModalTitle('Add/Update user dialog')
+                setModalTitle('Add/Update user detail')
               }}
             >
               <img
@@ -569,17 +593,17 @@ const UserListView = () => {
               {'Add'}
             </div>
           )}
-        </div>
-        {/* <Pagination noOfPages={10} /> */}
-        <div className="pagination my-3">
-          <Pagination
-            showQuickJumper
-            current={pageNoCall}
-            showSizeChanger={false}
-            total={totalPages * 10}
-            onChange={onChange}
-            style={{ border: 'none' }}
-          />
+          {/* <Pagination noOfPages={10} /> */}
+          <div className="pagination my-3">
+            <Pagination
+              showQuickJumper
+              current={pageNoCall}
+              showSizeChanger={false}
+              total={totalPages * 10}
+              onChange={onChange}
+              style={{ border: 'none' }}
+            />
+          </div>
         </div>
       </div>
       {openBasicDeleteModal && (
@@ -603,7 +627,7 @@ const UserListView = () => {
           saveAndExit={saveAndExitModal}
         />
       )}
-    </div>
+    </>
   )
 }
 

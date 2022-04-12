@@ -140,9 +140,13 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             <div className="input-field-container">
               <label className="input-label font-weight-bold">First Name</label>
               <input
+                autoCapitalize="words"
                 disabled={disabledInput}
                 className="input-text"
                 type="text"
+                style={{
+                  textTransform: 'capitalize',
+                }}
                 ref={firstNameRef}
                 onChange={e => {
                   setFirstName(e.target.value)
@@ -155,6 +159,9 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 disabled={disabledInput}
                 className="input-text"
                 type="text"
+                style={{
+                  textTransform: 'capitalize',
+                }}
                 ref={lastNameRef}
                 onChange={e => {
                   setLastName(e.target.value)
@@ -182,38 +189,43 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
 
             <div className="input-field-container">
-              <label className="input-label font-weight-bold">E-Mail id</label>
+              <label className="input-label font-weight-bold">E-Mail</label>
               <input
                 disabled={disabledInput}
                 className="input-text"
                 type="email"
+                style={{
+                  textTransform: 'lowercase',
+                }}
                 ref={emailRef}
                 onChange={e => {
-                  setEmail(e.target.value)
+                  setEmail(e.target.value.toLocaleLowerCase())
                 }}
               />
             </div>
-            <div className="input-field-container yk-password-container">
-              <label className="input-label font-weight-bold">Password</label>
-              <input
-                disabled={disabledInput}
-                className="input-text"
-                type={passwordVisible ? 'text' : 'password'}
-                ref={passwordRef}
-                onChange={e => {
-                  setPassword(e.target.value)
-                }}
-              />
+            {title !== 'View user detail' && (
+              <div className="input-field-container yk-password-container">
+                <label className="input-label font-weight-bold">Password</label>
+                <input
+                  disabled={disabledInput}
+                  className="input-text"
+                  type={passwordVisible ? 'text' : 'password'}
+                  ref={passwordRef}
+                  onChange={e => {
+                    setPassword(e.target.value)
+                  }}
+                />
 
-              <i
-                className={
-                  passwordVisible
-                    ? 'fa-eye fa-solid yk-eye-icon '
-                    : 'fa-eye-slash fa-solid yk-eye-icon '
-                }
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              ></i>
-            </div>
+                <i
+                  className={
+                    passwordVisible
+                      ? 'fa-eye fa-solid yk-eye-icon '
+                      : 'fa-eye-slash fa-solid yk-eye-icon '
+                  }
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                ></i>
+              </div>
+            )}
 
             <div className="input-field-container">
               <label className="input-label font-weight-bold">Company</label>

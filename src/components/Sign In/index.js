@@ -59,8 +59,8 @@ const SignIn = () => {
   // }
 
   return (
-    <div className="signIn-container mx-auto my-5 col-10 col-md-4 order-1 order-md-12">
-      <h3 className="container__heading mt-4">Sign In with E-mail</h3>
+    <div className="signIn-container mx-auto my-5 col-10 col-md-6 order-1 order-md-12">
+      <h3 className="container__heading mt-4">Sign in with E-mail</h3>
       <form className="forum" type="submit" onSubmit={SignIn}>
         <div className="row d-flex justify-content-center">
           <input
@@ -94,7 +94,7 @@ const SignIn = () => {
           <div className="col">
             <div className="col-12 justify-content-center d-flex">
               <button type="submit" className="submit-btn px-4" disabled={isLoading}>
-                {isLoading ? 'Loading...' : 'Sign In'}
+                {isLoading ? 'Loading...' : 'Sign in'}
               </button>
             </div>
             <div className="col-12 justify-content-center d-flex">

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 
 const AcceptRejectModal = ({
+  title,
   change,
   saveAndExit,
   rejectionData,
@@ -19,7 +20,11 @@ const AcceptRejectModal = ({
             marginBottom: 0,
           }}
         >
-          {change == 'Rejected' ? 'Request Denied' : 'Approval E-Mail change request'}
+          {change == 'Rejected'
+            ? 'Request Denied'
+            : title
+            ? title
+            : 'Approval E-Mail change request'}
         </h3>
         <div
           className="modal-content domain-modal"
@@ -44,7 +49,7 @@ const AcceptRejectModal = ({
                 padding: '1rem',
               }}
             >
-              The user will be change the E-Mail
+              {title ? title : 'The user will be change the E-Mail'}
             </span>
           )}
           {change == 'Rejected' ? (
@@ -82,7 +87,7 @@ const AcceptRejectModal = ({
                 onClick={() => {
                   acceptSingleRequest(acceptData)
                   saveAndExit()
-                  // document.body.style.overflow = 'scroll'
+                  document.body.style.overflow = 'auto'
                 }}
               >
                 Confirm

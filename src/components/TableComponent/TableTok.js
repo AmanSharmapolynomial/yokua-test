@@ -147,9 +147,9 @@ export default ({ tableObject, setShowDeleteModal, updateTableData }) => {
           ></i>
         </div>
       )}
-      <div class="yk-table-t container">
-        <table class="table">
-          <thead class="thead-dark">
+      <div className="yk-table-t container">
+        <table className="table">
+          <thead className="thead-dark">
             <tr>
               {tableHeader.map((item, index) => {
                 return (

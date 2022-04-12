@@ -12,6 +12,7 @@ import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import { faBullseye } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router'
 
 const NewsItem = ({
   data,
@@ -30,23 +31,25 @@ const NewsItem = ({
   setNewsUnderEdit,
   setCheckListActivated,
   isCheckListActivated,
+  archivedFilter,
 }) => {
   const { setLoading } = useLoading()
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
-  useEffect(() => {
-    const outsideClick = document.body.addEventListener('click', () => {
-      setToggleDropDown(1)
-      if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
-        setSubTopicAdd(false)
-      }
-      // if ((subTopicRef?.current?.classList) .includes('show')) {
-      //   debugger
-      // }
-    })
-    return outsideClick
-  }, [])
+  // useEffect(() => {
+  //   const outsideClick = document.body.addEventListener('click', () => {
+  //     setToggleDropDown(1)
+  //     if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+  //       SetNewSubTopicName('')
+  //       setSubTopicAdd(false)
+  //     }
+  //     // if ((subTopicRef?.current?.classList) .includes('show')) {
+  //     //   debugger
+  //     // }
+  //   })
+  //   return outsideClick
+  // }, [])
 
   const [hasPermission] = useState(
     getUserRoles() == 'PMK Administrator' ||
@@ -78,7 +81,7 @@ const NewsItem = ({
 
   const [newTopicName, SetNewTopicName] = useState('')
   const [newSubTopicName, SetNewSubTopicName] = useState('')
-
+  const navigate = useNavigate()
   const subTopicRef = useRef()
   const topicRef = useRef()
 
@@ -187,7 +190,7 @@ const NewsItem = ({
     setDeleteModal(false)
     setEditView(false)
     setNewsUnderEdit(false)
-    // document.body.style.overflow = 'scroll'
+    document.body.style.overflow = 'auto'
   }
 
   const deleteNews = async idArr => {
@@ -200,81 +203,66 @@ const NewsItem = ({
 
   const [isNewCatAdded, setIsNewCatAdded] = useState(false)
   const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
-  const AddNewCategoryCall = async (image, categoryName) => {
+  const AddNewCategoryCall = async (image, categoryName, data) => {
     setIsNewCatAdded(true)
     const tempCatObject = {
       category_name: categoryName,
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       image_link: image,
     }
     setCategory([...category, tempCatObject])
     handleSelectTopic(tempCatObject)
   }
 
-  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
-    setIsNewSubCatAdded(true)
+  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1, data) => {
     const tempSubCatObject = {
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       sub_category_name: categoryName,
       category_id: parentCatId,
       isChecked: true,
     }
     setSubCategory([...subCategory, tempSubCatObject])
     handleSelectSubTopic(tempSubCatObject)
+    SetNewSubTopicName('')
   }
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
-  const uploadCategory = () => {
-    return new Promise((resolve, reject) => {
-      if (isNewCatAdded) {
-        const formData = new FormData()
-        const data = {
-          category_name: category[category.length - 1].category_name,
-        }
-        formData.append('image', category[category.length - 1].image_link)
-        formData.append('data', JSON.stringify(data))
+  const uploadCategory = (image, categoryName) => {
+    const formData = new FormData()
+    const data = {
+      category_name: categoryName,
+    }
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
 
-        API.post('news/add_category', formData)
-          .then(data => {
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+    API.post('news/add_category', formData)
+      .then(data => {
+        AddNewCategoryCall(image, categoryName, data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
-  const uploadSubCategory = (categoryId, parentId) => {
-    return new Promise((resolve, reject) => {
-      if (isNewSubCatAdded) {
-        const subPayload = {
-          sub_category_name: categoryId,
-          parent_category_id: parentId,
-        }
-        API.post('news/add_subcategory', subPayload)
-          .then(data => {
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+  const uploadSubCategory = (categoryName, parentCatId = 1, categoryId, parentId) => {
+    const subPayload = {
+      sub_category_name: categoryName,
+      parent_category_id: parentCatId,
+    }
+    API.post('news/add_subcategory', subPayload)
+      .then(data => {
+        AddNewSubCategoryCall(newSubTopicName, categoryID, data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
-  const uploadNewNews = (catId, subCatId) => {
+  const uploadNewNews = catId => {
     setLoading(true)
 
     const subCategoryIds = []
-    if (isNewSubCatAdded) {
-      subCategoryIds.push(subCatId)
-    }
     subCategory
       .filter(item => item.category_id == categoryID)
       .forEach((cat, index) => {
@@ -283,15 +271,17 @@ const NewsItem = ({
         }
       })
 
-    if (isNewSubCatAdded) {
-      subCategoryIds.pop()
-    }
+    // if (isNewSubCatAdded) {
+    //   subCategoryIds.pop()
+    // }
 
     if (!catId || catId == 0) {
       toast.error('Please select Topic')
+      setLoading(false)
       return
     } else if (subCategoryIds.length < 1) {
       toast.error('Please select Sub Topic')
+      setLoading(false)
       return
     } else {
       const details = JSON.stringify({
@@ -316,7 +306,12 @@ const NewsItem = ({
             setNewsUnderEdit(false)
             setEditView(false)
             refreshPage()
-            toast.success(response.data.message)
+            toast.success(response.data.message, {
+              autoClose: 1500,
+              pauseOnHover: false,
+            })
+
+            setTimeout(() => navigate(0), 1500)
             if (!changeType) {
             } else if (changeType == 'Add') {
               // window.location.reload()
@@ -349,38 +344,38 @@ const NewsItem = ({
       toast.error('Enter some description to add or edit news')
       return
     } else {
-      if (isNewCatAdded) {
-        uploadCategory().then(data => {
-          if (data) {
-            setCategoryID(data.data.id)
-            if (isNewSubCatAdded) {
-              uploadSubCategory(
-                subCategory[subCategory.length - 1].sub_category_name,
-                data.data.id
-              ).then(subData => {
-                if (subData) {
-                  setSubCategoryID(subData.data.id)
-                  uploadNewNews(data.data.id, subData.data.id)
-                }
-              })
-            } else {
-              uploadNewNews(data.data.id, 0)
-            }
-          } else {
-          }
-        })
-      } else if (isNewSubCatAdded) {
-        uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
-          subData => {
-            if (subData) {
-              setSubCategoryID(subData.data.id)
-              uploadNewNews(categoryID, subData.data.id)
-            }
-          }
-        )
-      } else {
-        uploadNewNews(categoryID, 0)
-      }
+      // if (isNewCatAdded) {
+      //   uploadCategory().then(data => {
+      //     if (data) {
+      //       setCategoryID(data.data.id)
+      //       if (isNewSubCatAdded) {
+      //         uploadSubCategory(
+      //           subCategory[subCategory.length - 1].sub_category_name,
+      //           data.data.id
+      //         ).then(subData => {
+      //           if (subData) {
+      //             setSubCategoryID(subData.data.id)
+      //             uploadNewNews(data.data.id, subData.data.id)
+      //           }
+      //         })
+      //       } else {
+      //         uploadNewNews(data.data.id, 0)
+      //       }
+      //     } else {
+      //     }
+      //   })
+      // } else if (isNewSubCatAdded) {
+      //   uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
+      //     subData => {
+      //       if (subData) {
+      //         setSubCategoryID(subData.data.id)
+      //         uploadNewNews(categoryID, subData.data.id)
+      //       }
+      //     }
+      //   )
+      // } else {
+      uploadNewNews(categoryID)
+      // }
     }
   }
 
@@ -411,11 +406,10 @@ const NewsItem = ({
   }
 
   const _handleChecked = id => {
-    const updatedSubcategpry = subCategory
     let AllSelected = true
-    updatedSubcategpry
-      .filter(item => item.category_id == categoryID)
-      .forEach((cat, index) => {
+    setSubCategory(prevState => {
+      const filtered = prevState.filter(item => item.category_id == categoryID)
+      filtered.forEach((cat, index) => {
         if (cat.id == id) {
           cat.isChecked = !cat.isChecked
           if (!cat.isChecked) {
@@ -428,13 +422,12 @@ const NewsItem = ({
         }
       })
 
-    setSubCategory(updatedSubcategpry)
-
-    if (AllSelected) {
-      setAllSelectChecked(true)
-    }
+      if (AllSelected) {
+        setAllSelectChecked(true)
+      }
+      return filtered
+    })
   }
-
   useEffect(() => {
     _checkAllChecked()
   }, [subCategory, isAllSelectChecked])
@@ -549,6 +542,72 @@ const NewsItem = ({
     return items.length > 0 ? true : false
   }
 
+  const renderSubCategory = () => {
+    if (data?.sub_category !== undefined && data?.sub_category?.length > 1) {
+      return (
+        <div className="accordion" id="accordionExample">
+          <div
+            className="card"
+            style={{
+              zIndex: 1,
+              position: 'absolute',
+              backgroundColor: 'white',
+            }}
+          >
+            <div className="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
+              <div
+                className="collapsed"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                {data?.sub_category[0] !== undefined
+                  ? data?.sub_category[0]['sub_category_name']
+                  : ''}
+                <i className="fa-solid fa-angle-up ml-3 theme" />
+              </div>
+            </div>
+            <div
+              id="collapseTwo"
+              className="collapse"
+              aria-labelledby="headingTwo"
+              data-parent="#accordionExample"
+            >
+              <div className="card-body p-0">
+                {data?.sub_category.map((item, index) => {
+                  return index !== 0 && <div className="px-2 py-2">{item.sub_category_name}</div>
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+        // <div class="dropdown">
+        //   <div
+        //     class="dropdown-toggle"
+        //     type="button"
+        //     id="dropdownMenuButton"
+        //     data-toggle="dropdown"
+        //     aria-haspopup="true"
+        //     aria-expanded="false"
+        //   >
+        //     {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
+        //   </div>
+        //   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        //     {data?.sub_category.map((item, index) => {
+        //       return <div>{item.sub_category_name}</div>
+        //     })}
+        //   </div>
+        // </div>
+      )
+    } else if (data?.sub_category && data?.sub_category[0] !== undefined) {
+      return data?.sub_category[0]['sub_category_name']
+    } else {
+      return ''
+    }
+  }
+
   return (
     <React.Fragment key={data?.id}>
       <div style={{ width: '400px' }}></div>
@@ -557,7 +616,9 @@ const NewsItem = ({
         show={deleteModal}
         setShow={setDeleteModal}
         req={'News'}
-        title={'Are you sure you want to delete this news?'}
+        title={`Are you sure you want to delete this news from ${moment(
+          data ? data.date_uploaded : ''
+        ).format('MMM DD')}?`}
         isBold={true}
         saveAndExit={saveAndExitModal}
         runDelete={deleteNews}
@@ -570,47 +631,51 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+        setTempCategoryObject={(image, data) => {
+          uploadCategory(image, data)
+        }}
       />
       <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
           <div className="col-12 col-md-10">
             <div className="row">
-              <div
-                className="dot-adjust col-auto mx-md-1"
-                onClick={() => {
-                  // call here the mark as read api
-                  // const payloadRead = {
-                  //   news_id: [1],
-                  // }
-                  // const markRead = API.post('/news/mark_read', payloadRead)
-                  // setReadState(false)
-                }}
-              >
-                {isCheckListActivated && !data?.news_read && (
-                  <>
-                    <input
-                      style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
-                      type="checkbox"
-                      checked={readNews.includes(data.id) ? true : false}
-                      onChange={() => updateNewsRead()}
-                    />
-                  </>
-                )}
-                {isCheckListActivated && data?.news_read && (
-                  <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
-                )}
+              {!archivedFilter && (
+                <div
+                  className="dot-adjust col-auto mx-md-1"
+                  onClick={() => {
+                    // call here the mark as read api
+                    // const payloadRead = {
+                    //   news_id: [1],
+                    // }
+                    // const markRead = API.post('/news/mark_read', payloadRead)
+                    // setReadState(false)
+                  }}
+                >
+                  {isCheckListActivated && !data?.news_read && (
+                    <>
+                      <input
+                        style={{ marginRight: '8px', width: '1.3rem', height: '1.3rem' }}
+                        type="checkbox"
+                        checked={readNews.includes(data.id) ? true : false}
+                        onChange={() => updateNewsRead()}
+                      />
+                    </>
+                  )}
+                  {isCheckListActivated && data?.news_read && (
+                    <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+                  )}
 
-                {!isCheckListActivated && (
-                  <div
-                    className="read-dot"
-                    onClick={() =>
-                      _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
-                    }
-                    style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
-                  ></div>
-                )}
-              </div>
+                  {!isCheckListActivated && (
+                    <div
+                      className="read-dot"
+                      onClick={() =>
+                        _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
+                      }
+                      style={{ backgroundColor: _getNewsReadColor() ? 'var(--bgColor2)' : 'white' }}
+                    ></div>
+                  )}
+                </div>
+              )}
               <div className="col-3 p-sm-0 p-md-auto">
                 <div className="news-img rounded mx-md-3">
                   <img
@@ -627,33 +692,39 @@ const NewsItem = ({
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
                   </span>
                   {editView ? (
-                    <Dropdown
+                    <div
                       ref={topicRef}
-                      onClick={() => {
-                        toggleDropDown == 1 ? setToggleDropDown(0) : setToggleDropDown(1)
-                      }}
-                      size="sm"
-                      autoClose={'outside'}
-                      className="yk-dropdown-holder"
-                      style={{
-                        width: '12rem',
-                      }}
+                      className="dropdown yk-dropdown-holder border btn-group"
+                      // style={{
+                      //   width: '12rem',
+                      // }}
                     >
-                      <Dropdown.Toggle
-                        size={'sm'}
+                      <div
+                        role={'button'}
                         className="yg-custom-dropdown"
-                        color="red"
-                        id="dropdown-basic"
-                        style={{
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                        }}
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        data-display="static"
+                        aria-hidden="true"
                       >
-                        {selectedTopic}
-                      </Dropdown.Toggle>
+                        <div className="d-flex justify-content-between">
+                          <a
+                            style={{
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {selectedTopic}
+                          </a>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                        </div>
+                      </div>
 
-                      <Dropdown.Menu
+                      <div
+                        className="dropdown-menu"
                         style={{
                           maxHeight: '14rem',
                           overflowY: 'scroll',
@@ -711,19 +782,20 @@ const NewsItem = ({
                             <Button
                               onClick={() => {
                                 setIsTopicAdd(false)
-                                AddNewCategoryCall(null, newTopicName)
+
+                                uploadCategory(null, newTopicName)
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
-                              className="yg-font-size"
+                              className="yg-font-size ml-2"
                               id="button-addon2"
                             >
                               Save
                             </Button>
                           </InputGroup>
                         )}
-                      </Dropdown.Menu>
-                    </Dropdown>
+                      </div>
+                    </div>
                   ) : (
                     <span onClick={setCategoryFilter} className="news-category">
                       {data ? data.category_name : ''}
@@ -731,194 +803,227 @@ const NewsItem = ({
                   )}
 
                   {editView ? (
-                    <>
-                      <Dropdown
-                        ref={subTopicRef}
-                        onClick={() =>
-                          toggleDropDown == 2 ? setToggleDropDown(0) : setToggleDropDown(2)
-                        }
-                        size="sm"
-                        autoClose={'outside'}
-                        className={
-                          toggleDropDown == 1
-                            ? 'yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic'
-                            : 'yk-dropdown-holder mt-3'
-                        }
+                    <div
+                      ref={subTopicRef}
+                      className={
+                        toggleDropDown == 1
+                          ? 'dropdown yk-dropdown-holder mt-3 yk-dropdown-holder-subtopic border btn-group'
+                          : 'dropdown yk-dropdown-holder mt-3 border btn-group'
+                      }
+                      // style={{
+                      //   width: '12rem',
+                      // }}
+                    >
+                      <div
+                        role={'button'}
+                        className="yg-custom-dropdown"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        data-display="static"
+                        aria-hidden="true"
+                      >
+                        <div className="d-flex justify-content-between">
+                          <a
+                            style={{
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {_getSelectedItems()}
+                          </a>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                        </div>
+                      </div>
+
+                      <div
+                        className="dropdown-menu"
                         style={{
-                          width: '12rem',
+                          maxHeight: '14rem',
+                          overflowY: 'scroll',
                         }}
                       >
-                        <Dropdown.Toggle
-                          size={'sm'}
-                          className="yg-custom-dropdown"
-                          color="red"
-                          id="dropdown-basic"
-                          style={{
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                          }}
-                        >
-                          {_getSelectedItems()}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu
-                          style={{
-                            maxHeight: '14rem',
-                            overflowY: 'scroll',
-                          }}
-                        >
-                          {subCategory
-                            .filter(item => item.category_id == categoryID)
-                            .map((cat, index) => {
-                              if (cat.isEdit) {
-                                return (
-                                  <InputGroup className="mb-3 yg-font-size p-1 ">
-                                    <div className="position-relative align-items-center">
-                                      <FormControl
-                                        className="yg-font-size"
-                                        placeholder="Sub-Category"
-                                        aria-label="Recipient's username"
-                                        aria-describedby="basic-addon2"
-                                        value={cat.tempSubTopicName}
-                                        onChange={e => _updateSubTopicName(e.target.value, cat.id)}
-                                      />
-                                      <i
-                                        className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
-                                        style={{
-                                          right: 5,
-                                          top: 0,
-                                          fontSize: '20px',
-                                          cursor: 'pointer',
-                                        }}
-                                        onClick={() => {
-                                          _editSubCategory()
-                                        }}
-                                      />
-                                    </div>
-                                    <Button
-                                      onClick={() => {
-                                        if (cat.tempSubTopicName) {
-                                          _updateSubCategoryAPI(
-                                            cat.tempSubTopicName,
-                                            cat.id,
-                                            categoryID
-                                          )
-                                          _handleChecked(false)
-                                        } else {
-                                          toast.error('Please provide Sub Category title')
-                                        }
-                                      }}
-                                      variant="outline-secondary"
-                                      className="yg-font-size"
-                                      id="button-addon2"
-                                    >
-                                      Save
-                                    </Button>
-                                  </InputGroup>
-                                )
-                              }
-
+                        <div className="d-flex justify-content-between p-1">
+                          <label
+                            className="yg-font-size"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyItems: 'center',
+                            }}
+                          >
+                            <input
+                              style={{ marginRight: '8px', width: 'auto', textTransform: 'none' }}
+                              type="checkbox"
+                              checked={isAllSelectChecked}
+                              onChange={() => {
+                                _handleAllChecked(!isAllSelectChecked)
+                              }}
+                            />
+                            {'Select all'}
+                          </label>
+                        </div>
+                        {subCategory
+                          .filter(item => item.category_id == categoryID)
+                          .map((cat, index) => {
+                            if (cat.isEdit) {
                               return (
-                                <div className="d-flex justify-content-between p-1 ">
-                                  <label
-                                    className="yg-font-size"
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyItems: 'center',
-                                    }}
-                                  >
-                                    <input
-                                      style={{ marginRight: '8px' }}
-                                      type="checkbox"
-                                      checked={cat.isChecked}
-                                      onChange={() => _handleChecked(cat.id)}
+                                <InputGroup className="mb-3 yg-font-size p-1 ">
+                                  <div className="position-relative align-items-center">
+                                    <FormControl
+                                      className="yg-font-size"
+                                      placeholder="Sub-Category"
+                                      aria-label="Recipient's username"
+                                      aria-describedby="basic-addon2"
+                                      value={cat.tempSubTopicName}
+                                      onChange={e => _updateSubTopicName(e.target.value, cat.id)}
                                     />
-                                    {cat.sub_category_name}
-                                  </label>
-                                  <i
-                                    className="fa-solid fa-pen-to-square"
-                                    style={{
-                                      paddingTop: '2px',
-                                      color: 'var(--bgColor2)',
-                                      fontSize: '20px',
-                                      cursor: 'pointer',
-                                    }}
+                                    <i
+                                      className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                      style={{
+                                        right: 5,
+                                        top: 0,
+                                        fontSize: '20px',
+                                        cursor: 'pointer',
+                                      }}
+                                      onClick={() => {
+                                        _editSubCategory()
+                                      }}
+                                    />
+                                  </div>
+                                  <Button
                                     onClick={() => {
-                                      _editSubCategory(cat)
-                                      // change box to edit version
+                                      if (cat.tempSubTopicName) {
+                                        _updateSubCategoryAPI(
+                                          cat.tempSubTopicName,
+                                          cat.id,
+                                          categoryID
+                                        )
+                                        _handleChecked(false)
+                                      } else {
+                                        toast.error('Please provide Sub Category title')
+                                      }
                                     }}
-                                  />
-                                </div>
+                                    variant="outline-secondary"
+                                    className="yg-font-size ml-2"
+                                    id="button-addon2"
+                                  >
+                                    Save
+                                  </Button>
+                                </InputGroup>
                               )
-                            })}
-                          <Dropdown.Divider />
-                          {!isSubTopicAdd && (
-                            <div className="col d-flex justify-content-center">
-                              <button
-                                id="mybtn"
-                                className="btn yg-font-size "
-                                onClick={() => {
-                                  if (_checkIsEditSubTopicOpen()) {
-                                    toast.error('Please close the current Sub category edit')
-                                  } else {
-                                    setSubTopicAdd(true)
-                                  }
-                                }}
-                              >
-                                Add Sub-Topic
-                              </button>
-                            </div>
-                          )}
-                          {isSubTopicAdd && (
-                            <InputGroup className="mb-3 yg-font-size p-1 ">
-                              <div className="position-relative align-items-center">
-                                <FormControl
+                            }
+
+                            return (
+                              <div className="d-flex justify-content-between p-1">
+                                <label
                                   className="yg-font-size"
-                                  placeholder="Sub-Category"
-                                  aria-label="Recipient's username"
-                                  aria-describedby="basic-addon2"
-                                  value={newSubTopicName}
-                                  onChange={e => SetNewSubTopicName(e.target.value)}
-                                />
-                                <i
-                                  className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
                                   style={{
-                                    right: 5,
-                                    top: 0,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyItems: 'center',
+                                  }}
+                                >
+                                  <input
+                                    style={{ marginRight: '8px', width: 'auto' }}
+                                    type="checkbox"
+                                    checked={cat.isChecked}
+                                    onChange={() => _handleChecked(cat.id)}
+                                  />
+                                  {cat.sub_category_name}
+                                </label>
+                                <i
+                                  className="fa-solid fa-pen-to-square"
+                                  style={{
+                                    paddingTop: '2px',
+                                    color: 'var(--bgColor2)',
                                     fontSize: '20px',
                                     cursor: 'pointer',
                                   }}
                                   onClick={() => {
-                                    setSubTopicAdd(false)
+                                    _editSubCategory(cat)
+                                    // change box to edit version
                                   }}
                                 />
                               </div>
-                              <Button
-                                onClick={() => {
-                                  setSubTopicAdd(false)
-                                  if (newSubTopicName.length != 0) {
-                                    AddNewSubCategoryCall(newSubTopicName, categoryID)
-                                  } else {
-                                    toast.error('Please provide Sub Category title')
-                                  }
-                                }}
-                                variant="outline-secondary"
+                            )
+                          })}
+                        <Dropdown.Divider />
+                        {!isSubTopicAdd && (
+                          <div className="col d-flex justify-content-center">
+                            <button
+                              id="mybtn"
+                              className="btn yg-font-size "
+                              onClick={e => {
+                                e.stopPropagation()
+                                if (_checkIsEditSubTopicOpen()) {
+                                  toast.error('Please close the current Sub category edit')
+                                } else {
+                                  SetNewSubTopicName('')
+                                  setSubTopicAdd(true)
+                                }
+                              }}
+                            >
+                              Add Subtopic
+                            </button>
+                          </div>
+                        )}
+                        {isSubTopicAdd && (
+                          <InputGroup className="mb-3 yg-font-size p-1 ">
+                            <div className="position-relative align-items-center">
+                              <FormControl
                                 className="yg-font-size"
-                                id="button-addon2"
-                              >
-                                Save
-                              </Button>
-                            </InputGroup>
-                          )}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </>
+                                placeholder="Sub-Category"
+                                aria-label="Recipient's username"
+                                aria-describedby="basic-addon2"
+                                value={newSubTopicName}
+                                onChange={e => SetNewSubTopicName(e.target.value)}
+                              />
+                              <i
+                                className="position-absolute mt-2 fa-solid fa-xmark yk-icon-hover"
+                                style={{
+                                  right: 5,
+                                  top: 0,
+                                  fontSize: '20px',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={e => {
+                                  e.stopPropagation()
+                                  SetNewSubTopicName('')
+                                  setSubTopicAdd(false)
+                                }}
+                              />
+                            </div>
+                            <Button
+                              onClick={() => {
+                                SetNewSubTopicName('')
+                                setSubTopicAdd(false)
+                                if (newSubTopicName.length != 0) {
+                                  uploadSubCategory(
+                                    newSubTopicName,
+                                    categoryID,
+                                    subCategory[subCategory.length - 1].sub_category_name
+                                    // data.data.id
+                                  )
+                                  // AddNewSubCategoryCall()
+                                } else {
+                                  toast.error('Please provide Sub Category title')
+                                }
+                              }}
+                              variant="outline-secondary"
+                              className="yg-font-size ml-2"
+                              id="button-addon2"
+                            >
+                              Save
+                            </Button>
+                          </InputGroup>
+                        )}
+                      </div>
+                    </div>
                   ) : (
-                    <span className="news-sub-category">
-                      {data?.sub_category ? data?.sub_category[0]['sub_category_name'] : ''}
-                    </span>
+                    <span className="news-sub-category">{renderSubCategory()}</span>
                   )}
                 </div>
               </div>
@@ -1119,7 +1224,7 @@ const NewsItem = ({
                 )
               ) : (
                 <div className="attachment-icon mb-4">
-                  {data.attachment_link != '' && (
+                  {data.attachment_link !== '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a target="_blank" href={data ? data.attachment_link : ''}>
@@ -1127,7 +1232,7 @@ const NewsItem = ({
                       </a>
                     </>
                   )}
-                  {data.attachment_link == '' && (
+                  {/* {data.attachment_link == '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a
@@ -1142,7 +1247,7 @@ const NewsItem = ({
                         File Not Available
                       </a>
                     </>
-                  )}
+                  )} */}
                 </div>
               )}
             </div>
@@ -1264,7 +1369,7 @@ function AddCategoryModal({
             borderBottom: '0',
           }}
         >
-          <Modal.Title>Create Category</Modal.Title>
+          <Modal.Title>{preloadedCategoryData ? 'Edit Category' : 'Create Category'}</Modal.Title>
         </Modal.Header>
         <Modal.Body
           style={{
@@ -1282,7 +1387,6 @@ function AddCategoryModal({
             ref={imageFileInputRef}
             className="inputfile yk-icon-hover"
             onChange={e => {
-              console.log(e.target.files[0])
               SetImageFile(e.target.files[0])
               _setImage(e.target.files[0])
             }}
@@ -1290,7 +1394,7 @@ function AddCategoryModal({
           <div className="d-flex justify-content-center w-100">
             <Image
               thumbnail={true}
-              style={{ width: '40%' }}
+              style={{ maxWidth: '40%', width: 'auto' }}
               src={catImg ? catImg : placeholder}
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
