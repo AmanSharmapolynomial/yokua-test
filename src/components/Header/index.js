@@ -1,9 +1,9 @@
-import { useStoreState } from 'easy-peasy'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router'
 import Navbar from '../Navbar'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
+
 const Header = ({ isLogedIn, isAdmin }) => {
   const navigate = useNavigate()
   return (
@@ -35,7 +35,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                     placeholder="What are you looking for?"
                     className="search_input ml-3"
                     autoComplete="false"
-                  ></input>
+                  />
                 </div>
               )}
             </div>

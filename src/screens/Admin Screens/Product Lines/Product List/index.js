@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
 import API from '../../../../utils/api'
-import { toast } from 'react-toastify'
-
-import './style.css'
-
 import PrimaryHeading from '../../../../components/Primary Headings'
 import { useLocation, useNavigate } from 'react-router-dom'
 

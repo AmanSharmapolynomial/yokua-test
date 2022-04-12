@@ -42,10 +42,10 @@ export default () => {
                       <p className="sm-h1 pl-3">{contact?.general_info?.address}</p>
                     </i>
                     <i className="fa fa-phone mb-4 d-flex" aria-hidden="true">
-                       <p className="sm-h1 pl-3">{contact?.general_info?.phone_no}</p>
+                      <p className="sm-h1 pl-3">{contact?.general_info?.phone_no}</p>
                     </i>
                     <i className="fa fa-video-camera mb-4 d-flex" aria-hidden="true">
-                     <p className="sm-h1 pl-3">Video conferencing</p>
+                      <p className="sm-h1 pl-3">Video conferencing</p>
                     </i>
                   </div>
                 </div>
@@ -56,7 +56,7 @@ export default () => {
                       <p className="sm-h">Opening Hours</p>
                       <p className="sm-txt">{contact?.general_info?.opening_hours}</p>
                     </div>
-                    
+
                     <div className="box-one border border-dark rounded p-4">
                       <p className="sm-h">Bank Holidays</p>
                       <p className="sm-txt">{contact?.general_info?.bank_holidays}</p>
@@ -64,7 +64,6 @@ export default () => {
                   </div>
                 </div>
               </div>
-
 
               {/* <!--------------General Product Question start---------------> */}
 
@@ -138,7 +137,6 @@ export default () => {
                         <p className="h">{item.category}</p>
                       </div>
                     </div>
-                   
 
                     <div className="row">
                       <div className="col-md-6 col-lg-6 col-xl-6">
@@ -146,122 +144,38 @@ export default () => {
                           <div className="sm-img-box-two border border-dark rounded mr-4">
                             <img src={item.detail?.image_link} />
                           </div>
-                         
+
                           <div className="pmk-product-detail">
-                            {item.detail?.first_name&& (
-                                <div className='mb-2'>
-                                  <i className="fa fa-user" aria-hidden="true"></i>{' '}
-                                  {item.detail?.first_name + ' '} {item.detail?.last_name}
-                                </div>
-                              )}
+                            {item.detail?.first_name && (
+                              <div className="mb-2">
+                                <i className="fa fa-user" aria-hidden="true"></i>{' '}
+                                {item.detail?.first_name + ' '} {item.detail?.last_name}
+                              </div>
+                            )}
                             {item.detail?.phone_no && (
-                              <div className='d-flex mb-2  align-items-center'>
+                              <div className="d-flex mb-2  align-items-center">
                                 <i className="fa fa-phone" aria-hidden="true"></i>
-                                <p className="ml-2 pl-2 mb-0 border border-dark" style={{width:"180px"}} >
+                                <p
+                                  className="ml-2 pl-2 mb-0 border border-dark"
+                                  style={{ width: '180px' }}
+                                >
                                   {item.detail?.phone_no}
                                 </p>
                               </div>
                             )}
                             {item.detail?.email && (
-                              <div className='d-flex mb-2 align-items-center'>
+                              <div className="d-flex mb-2 align-items-center">
                                 <i className="fa fa-envelope mb-3" aria-hidden="true" />
-                                <p className='pl-2'>{item.detail?.email}</p>
+                                <p className="pl-2">{item.detail?.email}</p>
                               </div>
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
-                 
                   </div>
                 )
               })}
-
-              
-
-              {/* --------------PMK product handling------------------- */}
-
-              {/* <div className="pmk-product p-5">
-                <div className="row mb-4">
-                  <div className="col-md-12 col-lg-12 col-xl-12">
-                    <p className="h">PMK Product Sales Support</p>
-                  </div>
-                </div>
-
-                <div className="row mb-4">
-                  <div className="col-md-6 col-lg-6 col-xl-6">
-                    <div className="d-flex">
-                      <div className="sm-img-box border border-dark rounded">
-                        <i className="fa fa-user" aria-hidden="true" />
-                      </div>
-                 
-                      <div className="pmk-product-detail">
-                        <div>
-                          <i className="fa fa-user" aria-hidden="true"/> Jean Michal Reboud
-                        </div>
-                        <div>
-                          <i className="fa fa-envelope" aria-hidden="true" />
-                          <span className="py-1">abcd.yokogawa.com</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-6 col-xl-6 mt-3">
-                    <div className="d-flex">
-                      <div className="sm-img-box border border-dark rounded">
-                        <i className="fa fa-user" aria-hidden="true" />
-                      </div>
-                      &nbsp; &nbsp; &nbsp;
-                      <div className="pmk-product-detail">
-                        <div>
-                          <i className="fa fa-user" aria-hidden="true" /> &nbsp;Jean Michal Reboud
-                        </div>
-                        <div>
-                          <i className="fa fa-envelope" aria-hidden="true" /> &nbsp;
-                          <span className="py-1">abcd.yokogawa.com</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-md-6 col-lg-6 col-xl-6">
-                    <div className="d-flex">
-                      <div className="sm-img-box border border-dark rounded">
-                        <i className="fa fa-user" aria-hidden="true" />
-                      </div>
-                      &nbsp; &nbsp; &nbsp;
-                      <div className="pmk-product-detail">
-                        <div>
-                          <i className="fa fa-user" aria-hidden="true" /> &nbsp;Jean Michal Reboud
-                        </div>
-                        <div>
-                          <i className="fa fa-envelope" aria-hidden="true" /> &nbsp;
-                          <span className="py-1">abcd.yokogawa.com</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-6 col-xl-6 mt-3">
-                    <div className="d-flex">
-                      <div className="sm-img-box border border-dark rounded">
-                        <i className="fa fa-user" aria-hidden="true" />
-                      </div>
-                      &nbsp; &nbsp; &nbsp;
-                      <div className="pmk-product-detail">
-                        <div>
-                          <i className="fa fa-user" aria-hidden="true" /> &nbsp;Jean Michal Reboud
-                        </div>
-                        <div>
-                          <i className="fa fa-envelope" aria-hidden="true" /> &nbsp;
-                          <span className="py-1">abcd.yokogawa.com</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

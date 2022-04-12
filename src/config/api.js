@@ -1,8 +1,6 @@
 import { create } from 'axios'
-// import { auth } from './firebase'
 
 const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
-// const API = create({ baseURL: 'https://birdfinv1.herokuapp.com/' })
 
 API.interceptors.response.use(null, e => {
   if (!window.navigator.onLine) {
@@ -13,7 +11,6 @@ API.interceptors.response.use(null, e => {
         toastId: 'error-no-internet',
       }
     )
-    // window.location.href = '/offline.html'
     return null
   }
   if (e.response.status === 403) {

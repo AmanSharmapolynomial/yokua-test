@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import API from '../../../utils/api'

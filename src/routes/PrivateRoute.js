@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes, Redirect, Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { getToken } from '../utils/token'
 const PrivateRoute = ({ children }) => {
   if (!getToken()) {

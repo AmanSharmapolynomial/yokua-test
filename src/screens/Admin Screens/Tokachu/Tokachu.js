@@ -13,8 +13,6 @@ const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
 
 export default () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [currentDeleteId, setCurrentDeleteId] = useState(0)
-
   const [showAddModal, setShowAddModal] = useState(false)
   const [currentEdit, setCurrentEdit] = useState('')
   const [parentId, setParentId] = useState(0)
@@ -247,7 +245,6 @@ export default () => {
 
   useEffect(() => {
     _getProducts()
-    // _getDetails()
   }, [needToReload])
 
   return (

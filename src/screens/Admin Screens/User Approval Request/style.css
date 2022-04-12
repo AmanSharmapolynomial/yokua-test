@@ -61,7 +61,6 @@
 .action-btn-btn {
   margin-bottom: 50px;
   outline: none;
-  border: none;
   text-align: left !important;
   border-radius: 5px;
   background-color: var(--bgColor2) !important;

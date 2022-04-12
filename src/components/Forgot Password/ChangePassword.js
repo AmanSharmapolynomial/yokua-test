@@ -1,11 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import API from '../../utils/api'
 import { useParams } from 'react-router'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import axios from 'axios'
-
-// import './style.css'
 
 const ChnagePassword = () => {
   const { uid, token } = useParams()

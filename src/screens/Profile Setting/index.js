@@ -12,10 +12,9 @@ import Header from '../../components/Header'
 import { useNavigate } from 'react-router'
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
-import { faL } from '@fortawesome/free-solid-svg-icons'
 
 const ProfileSettingScreen = () => {
-  const { loading, setLoading } = useLoading()
+  const { setLoading } = useLoading()
 
   const [profileData, setProfileData] = useState({})
   const [name, setName] = useState()
@@ -44,7 +43,7 @@ const ProfileSettingScreen = () => {
   const [checkedIds, setCheckedIds] = useState([])
   const [reloadData, setReloadData] = useState(false)
 
-  const [imageFile, SetImageFile] = useState(null)
+  const [SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
   const [profilePicture, setProfilePicture] = useState(placeholder)
   const [actionLabel, setActionLabel] = useState('')
@@ -108,9 +107,7 @@ const ProfileSettingScreen = () => {
         setReloadData(!reloadData)
         navigate(0)
       })
-      .catch(error => {
-        // toast.error('Error while updating Avatar')
-      })
+      .catch(error => {})
   }
 
   const _setProfilePicture = avatar => {
@@ -176,7 +173,6 @@ const ProfileSettingScreen = () => {
               <h1 className="profile-setting__heading py-3">BASIC PROFILE</h1>
               <div className="profile-setting__basic-profile-edit">
                 <div className="edit_input">
-                  {/* src\assets\Icon ionic-ios-person.png */}
                   <img
                     style={{ width: '20px', height: '20px' }}
                     src={require('../../assets/Icon ionic-ios-person.png')}
@@ -206,7 +202,7 @@ const ProfileSettingScreen = () => {
                       onClick={() => {
                         setDisabledInputName(!disabledInputName)
                       }}
-                    ></i>
+                    />
                   )}
                 </div>
                 <div className="edit_input">
@@ -236,7 +232,7 @@ const ProfileSettingScreen = () => {
                       onClick={() => {
                         setDisabledInputEmail(!disabledInputEmail)
                       }}
-                    ></i>
+                    />
                   )}
                 </div>
                 <div className="edit_input">
@@ -265,7 +261,7 @@ const ProfileSettingScreen = () => {
                       onClick={() => {
                         setDisabledInputAddress(!disabledInputAddress)
                       }}
-                    ></i>
+                    />
                   )}
                 </div>
               </div>
@@ -532,25 +528,6 @@ const ProfileSettingScreen = () => {
                       setReloadData(!reloadData)
                     }
                   }
-                  // if (password || passwordRetype) {
-                  //   if (password === passwordRetype) {
-                  //     const payloadPassword = {
-                  //       new_password1: password,
-                  //       new_password2: passwordRetype,
-                  //     }
-
-                  //     const afterPassChangeMsg = await API.post(
-                  //       '/auth/password-change/',
-                  //       payloadPassword
-                  //     )
-                  //     setPassword(undefined)
-                  //     toast.success(afterPassChangeMsg.data.message)
-
-                  //     // toast.success(afterPassChangeMsg.data.detail)
-                  //   } else {
-                  //     toast.error('Password and retype password does not match')
-                  //   }
-                  // }
                 }}
               >
                 Save Password

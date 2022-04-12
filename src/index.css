@@ -91,9 +91,7 @@ body {
 }
 
 .bg-landing {
-  background: url('/src/assets/FCP landing page.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
+  background: url('/src/assets/FCP landing page.jpg') no-repeat center;
   background-size: cover;
 }
 .greyed {

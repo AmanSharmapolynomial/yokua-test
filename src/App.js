@@ -1,15 +1,10 @@
-import React, { Children, useState } from 'react'
-import Header from './components/Header'
+import React from 'react'
 import Routing from './routes/Routes'
 import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
-import { getToken } from './utils/token'
-// minified version is also included
-// import 'react-toastify/dist/ReactToastify.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import { BallTriangle, Rings, TailSpin } from 'react-loader-spinner'
+import { TailSpin } from 'react-loader-spinner'
 import styled from 'styled-components'
 import { useLoading } from './utils/LoadingContext'
 
@@ -29,9 +24,6 @@ const LoaderContainer = styled.div`
 
 function App() {
   const { loading } = useLoading()
-  // fetch state
-  // const userDetails = useStoreState(state => state.userDetails)
-
   return (
     <div className="container-fluid d-flex flex-column p-0 m-0 flex-fill">
       <Routing />

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import API from '../../utils/api'
-// import './style.css'
 import validator from 'validator'
 
 const Forgot = () => {

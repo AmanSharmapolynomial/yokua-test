@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Navigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { removeToken, removeUserRole } from '../../utils/token'
@@ -8,21 +7,6 @@ import './style.css'
 
 const PhoneNav = () => {
   const [renderDropdown, setRenderDropdown] = useState(false)
-
-  const dropDownData1 = [
-    {
-      name: 'User Management',
-      url: '/admin/user/list-view',
-    },
-    {
-      name: 'Event Management',
-      url: '/admin/user/list-view',
-    },
-    {
-      name: 'User Request',
-      url: '/admin/user/approval-request',
-    },
-  ]
 
   const navigate = useNavigate()
 
