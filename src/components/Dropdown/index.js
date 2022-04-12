@@ -1,5 +1,4 @@
 import React from 'react'
-import './style.css'
 
 const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   return (
