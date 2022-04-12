@@ -15,7 +15,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
         aria-hidden="true"
       >
         <a>{value}</a>
-        <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+        <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
       </div>
       <div className="dropdown-menu">
         {data.map((element, index) => (

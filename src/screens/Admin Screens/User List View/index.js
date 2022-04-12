@@ -225,7 +225,7 @@ const UserListView = () => {
             onClick={() => {
               setChangeModal('View')
               setOpenModal(true)
-              setModalTitle('View User Detail')
+              setModalTitle('View user detail')
               // document.body.scrollTop = 0
               // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
@@ -262,7 +262,7 @@ const UserListView = () => {
                 setModalTitle('Update user detail')
 
                 // document.body.scrollTop = 0
-                // document.documentElement.scrollTop = 0
+                document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setDataToChange(index)
               }}
@@ -365,7 +365,7 @@ const UserListView = () => {
   }
 
   const addOrEditUser = async data => {
-    const payload = {
+    let payload = {
       email_id: data.email,
       first_name: data.firstName,
       last_name: data.lastName,
@@ -373,9 +373,20 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
-
+    if (changeModal === 'Edit') {
+      payload = {
+        ...payload,
+        email_id: contentRow[dataToChange].companyEmail,
+      }
+      if (data.email !== contentRow[dataToChange].companyEmail) {
+        payload = { ...payload, new_email: data.email }
+      }
+    }
     if (payload.email_id != '') {
-      const afterAddOrDeleteMsg = await API.post('admin/upsert_user', payload)
+      const afterAddOrDeleteMsg = await API.post(
+        changeModal === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
+        payload
+      )
       if (data.imageFile) {
         const formData = new FormData()
 
@@ -383,7 +394,7 @@ const UserListView = () => {
         formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)
           .then(data => {
-            setReloadData(true)
+            // setReloadData(true)
           })
           .catch(error => {
             // toast.error('Error while updating Avatar')
@@ -393,6 +404,7 @@ const UserListView = () => {
     } else {
       toast.error('Enter E-Mail')
     }
+    setReloadData(true)
     setReloadTable(!reloadTable)
   }
 
@@ -492,9 +504,11 @@ const UserListView = () => {
                   value="PMK Administrator"
                   onChange={e => {
                     if (e.target.checked) {
+                      setPageNoCall(1)
                       setFilterCheckboxPMK(true)
                       setReloadTable(!reloadTable)
                     } else {
+                      setPageNoCall(1)
                       setFilterCheckboxPMK(false)
                       setReloadTable(!reloadTable)
                     }
@@ -510,9 +524,11 @@ const UserListView = () => {
                   value="Content Manager"
                   onChange={e => {
                     if (e.target.checked) {
+                      setPageNoCall(1)
                       setFilterCheckboxCM(true)
                       setReloadTable(!reloadTable)
                     } else {
+                      setPageNoCall(1)
                       setFilterCheckboxCM(false)
                       setReloadTable(!reloadTable)
                     }
@@ -528,9 +544,11 @@ const UserListView = () => {
                   value="User"
                   onChange={e => {
                     if (e.target.checked) {
+                      setPageNoCall(1)
                       setFilterCheckboxUser(true)
                       setReloadTable(!reloadTable)
                     } else {
+                      setPageNoCall(1)
                       setFilterCheckboxUser(false)
                       setReloadTable(!reloadTable)
                     }

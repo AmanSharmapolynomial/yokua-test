@@ -18,6 +18,7 @@ const UserApprovalScreen = () => {
   const [openDomainModal, setOpenDomainModal] = useState(false)
   const [openDeleteDomainModal, setOpenDeleteDomainModal] = useState(false)
   const [changeModal, setChangeModal] = useState('')
+  const [modalTitle, setModalTitle] = useState('')
   const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
   const [rejectionData, setRejectionData] = useState()
   const [acceptData, setAcceptData] = useState()
@@ -83,7 +84,7 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-xmark reject"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
+                    document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
                     const sendData = {
                       email: data.email_id,
@@ -92,6 +93,7 @@ const UserApprovalScreen = () => {
                     setRejectionData(sendData)
                     setChangeModal('Rejected')
                     setOpenARModal(true)
+                    setModalTitle(data.request_for)
                   }}
                 />
               </div>
@@ -100,11 +102,12 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-check"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
+                    document.documentElement.scrollTop = 0
                     document.body.style.overflow = 'hidden'
                     setAcceptData(data.email_id)
                     setChangeModal('Accepted')
                     setOpenARModal(true)
+                    setModalTitle(data.request_for)
                   }}
                 />
               </div>
@@ -314,6 +317,7 @@ const UserApprovalScreen = () => {
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
     console.log(afterAcceptMsg)
     setChangeModal('Accepted')
+    setModalTitle(null)
     setOpenARModal(false)
     console.log('accepted', data)
     setReloadTable(!reloadTable)
@@ -387,6 +391,7 @@ const UserApprovalScreen = () => {
     <>
       {openARModal && (
         <AcceptRejectModal
+          title={modalTitle}
           change={changeModal}
           saveAndExit={saveAndExitModal}
           rejectSingleRequest={rejectSingleRequest}
@@ -443,9 +448,13 @@ const UserApprovalScreen = () => {
                     selectedCheckBox !== 'notification' ? 'greyed' : null
                   }`}
                   onClick={() => {
-                    const a = API.get('admin/clear_notification')
-                    console.log(a)
-                    setReloadTable(!reloadTable)
+                    API.get('admin/clear_notification')
+                      .then(res => {
+                        setReloadTable(!reloadTable)
+                      })
+                      .catch(err => {
+                        setReloadTable(!reloadTable)
+                      })
                   }}
                   style={{ cursor: selectedCheckBox !== 'notification' ? 'not-allowed' : '' }}
                 >

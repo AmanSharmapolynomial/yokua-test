@@ -203,7 +203,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                 }}
               />
             </div>
-            {title !== 'View User Detail' && (
+            {title !== 'View user detail' && (
               <div className="input-field-container yk-password-container">
                 <label className="input-label font-weight-bold">Password</label>
                 <input

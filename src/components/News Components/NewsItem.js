@@ -37,18 +37,19 @@ const NewsItem = ({
   const [catImg, setCatImg] = useState()
   const [editView, setEditView] = useState(false)
 
-  useEffect(() => {
-    const outsideClick = document.body.addEventListener('click', () => {
-      setToggleDropDown(1)
-      if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
-        setSubTopicAdd(false)
-      }
-      // if ((subTopicRef?.current?.classList) .includes('show')) {
-      //   debugger
-      // }
-    })
-    return outsideClick
-  }, [])
+  // useEffect(() => {
+  //   const outsideClick = document.body.addEventListener('click', () => {
+  //     setToggleDropDown(1)
+  //     if (Object.prototype.toString.call(subTopicRef?.current?.classList) === '[object Array]') {
+  //       SetNewSubTopicName('')
+  //       setSubTopicAdd(false)
+  //     }
+  //     // if ((subTopicRef?.current?.classList) .includes('show')) {
+  //     //   debugger
+  //     // }
+  //   })
+  //   return outsideClick
+  // }, [])
 
   const [hasPermission] = useState(
     getUserRoles() == 'PMK Administrator' ||
@@ -202,21 +203,20 @@ const NewsItem = ({
 
   const [isNewCatAdded, setIsNewCatAdded] = useState(false)
   const [isNewSubCatAdded, setIsNewSubCatAdded] = useState(false)
-  const AddNewCategoryCall = async (image, categoryName) => {
+  const AddNewCategoryCall = async (image, categoryName, data) => {
     setIsNewCatAdded(true)
     const tempCatObject = {
       category_name: categoryName,
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       image_link: image,
     }
     setCategory([...category, tempCatObject])
     handleSelectTopic(tempCatObject)
   }
 
-  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1) => {
-    setIsNewSubCatAdded(true)
+  const AddNewSubCategoryCall = async (categoryName, parentCatId = 1, data) => {
     const tempSubCatObject = {
-      id: Math.random(10000, 200000),
+      id: data.data.id,
       sub_category_name: categoryName,
       category_id: parentCatId,
       isChecked: true,
@@ -228,56 +228,41 @@ const NewsItem = ({
 
   const [showCategoryModal, setShowCategoryModal] = useState(false)
 
-  const uploadCategory = () => {
-    return new Promise((resolve, reject) => {
-      if (isNewCatAdded) {
-        const formData = new FormData()
-        const data = {
-          category_name: category[category.length - 1].category_name,
-        }
-        formData.append('image', category[category.length - 1].image_link)
-        formData.append('data', JSON.stringify(data))
+  const uploadCategory = (image, categoryName) => {
+    const formData = new FormData()
+    const data = {
+      category_name: categoryName,
+    }
+    formData.append('image', image)
+    formData.append('data', JSON.stringify(data))
 
-        API.post('news/add_category', formData)
-          .then(data => {
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+    API.post('news/add_category', formData)
+      .then(data => {
+        AddNewCategoryCall(image, categoryName, data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
-  const uploadSubCategory = (categoryId, parentId) => {
-    return new Promise((resolve, reject) => {
-      if (isNewSubCatAdded) {
-        const subPayload = {
-          sub_category_name: categoryId,
-          parent_category_id: parentId,
-        }
-        API.post('news/add_subcategory', subPayload)
-          .then(data => {
-            resolve(data)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      } else {
-        resolve(null)
-      }
-    })
+  const uploadSubCategory = (categoryName, parentCatId = 1, categoryId, parentId) => {
+    const subPayload = {
+      sub_category_name: categoryName,
+      parent_category_id: parentCatId,
+    }
+    API.post('news/add_subcategory', subPayload)
+      .then(data => {
+        AddNewSubCategoryCall(newSubTopicName, categoryID, data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
-  const uploadNewNews = (catId, subCatId) => {
+  const uploadNewNews = catId => {
     setLoading(true)
 
     const subCategoryIds = []
-    if (isNewSubCatAdded) {
-      subCategoryIds.push(subCatId)
-    }
     subCategory
       .filter(item => item.category_id == categoryID)
       .forEach((cat, index) => {
@@ -286,9 +271,9 @@ const NewsItem = ({
         }
       })
 
-    if (isNewSubCatAdded) {
-      subCategoryIds.pop()
-    }
+    // if (isNewSubCatAdded) {
+    //   subCategoryIds.pop()
+    // }
 
     if (!catId || catId == 0) {
       toast.error('Please select Topic')
@@ -321,8 +306,12 @@ const NewsItem = ({
             setNewsUnderEdit(false)
             setEditView(false)
             refreshPage()
-            toast.success(response.data.message)
-            navigate(0)
+            toast.success(response.data.message, {
+              autoClose: 1500,
+              pauseOnHover: false,
+            })
+
+            setTimeout(() => navigate(0), 1500)
             if (!changeType) {
             } else if (changeType == 'Add') {
               // window.location.reload()
@@ -355,38 +344,38 @@ const NewsItem = ({
       toast.error('Enter some description to add or edit news')
       return
     } else {
-      if (isNewCatAdded) {
-        uploadCategory().then(data => {
-          if (data) {
-            setCategoryID(data.data.id)
-            if (isNewSubCatAdded) {
-              uploadSubCategory(
-                subCategory[subCategory.length - 1].sub_category_name,
-                data.data.id
-              ).then(subData => {
-                if (subData) {
-                  setSubCategoryID(subData.data.id)
-                  uploadNewNews(data.data.id, subData.data.id)
-                }
-              })
-            } else {
-              uploadNewNews(data.data.id, 0)
-            }
-          } else {
-          }
-        })
-      } else if (isNewSubCatAdded) {
-        uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
-          subData => {
-            if (subData) {
-              setSubCategoryID(subData.data.id)
-              uploadNewNews(categoryID, subData.data.id)
-            }
-          }
-        )
-      } else {
-        uploadNewNews(categoryID, 0)
-      }
+      // if (isNewCatAdded) {
+      //   uploadCategory().then(data => {
+      //     if (data) {
+      //       setCategoryID(data.data.id)
+      //       if (isNewSubCatAdded) {
+      //         uploadSubCategory(
+      //           subCategory[subCategory.length - 1].sub_category_name,
+      //           data.data.id
+      //         ).then(subData => {
+      //           if (subData) {
+      //             setSubCategoryID(subData.data.id)
+      //             uploadNewNews(data.data.id, subData.data.id)
+      //           }
+      //         })
+      //       } else {
+      //         uploadNewNews(data.data.id, 0)
+      //       }
+      //     } else {
+      //     }
+      //   })
+      // } else if (isNewSubCatAdded) {
+      //   uploadSubCategory(subCategory[subCategory.length - 1].sub_category_name, categoryID).then(
+      //     subData => {
+      //       if (subData) {
+      //         setSubCategoryID(subData.data.id)
+      //         uploadNewNews(categoryID, subData.data.id)
+      //       }
+      //     }
+      //   )
+      // } else {
+      uploadNewNews(categoryID)
+      // }
     }
   }
 
@@ -439,7 +428,6 @@ const NewsItem = ({
       return filtered
     })
   }
-  console.log(subCategory)
   useEffect(() => {
     _checkAllChecked()
   }, [subCategory, isAllSelectChecked])
@@ -557,18 +545,18 @@ const NewsItem = ({
   const renderSubCategory = () => {
     if (data?.sub_category !== undefined && data?.sub_category?.length > 1) {
       return (
-        <div class="accordion" id="accordionExample">
+        <div className="accordion" id="accordionExample">
           <div
-            class="card"
+            className="card"
             style={{
               zIndex: 1,
               position: 'absolute',
               backgroundColor: 'white',
             }}
           >
-            <div class="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
+            <div className="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
               <div
-                class="collapsed"
+                className="collapsed"
                 type="button"
                 data-toggle="collapse"
                 data-target="#collapseTwo"
@@ -583,11 +571,11 @@ const NewsItem = ({
             </div>
             <div
               id="collapseTwo"
-              class="collapse"
+              className="collapse"
               aria-labelledby="headingTwo"
               data-parent="#accordionExample"
             >
-              <div class="card-body p-0">
+              <div className="card-body p-0">
                 {data?.sub_category.map((item, index) => {
                   return index !== 0 && <div className="px-2 py-2">{item.sub_category_name}</div>
                 })}
@@ -628,7 +616,7 @@ const NewsItem = ({
         show={deleteModal}
         setShow={setDeleteModal}
         req={'News'}
-        title={`Are you sure you want to delete this news ${moment(
+        title={`Are you sure you want to delete this news from ${moment(
           data ? data.date_uploaded : ''
         ).format('MMM DD')}?`}
         isBold={true}
@@ -643,7 +631,9 @@ const NewsItem = ({
         setShow={setShowCategoryModal}
         show={showCategoryModal}
         getCategoryAndSubCategory={getCategoryAndSubCategory}
-        setTempCategoryObject={(image, data) => AddNewCategoryCall(image, data)}
+        setTempCategoryObject={(image, data) => {
+          uploadCategory(image, data)
+        }}
       />
       <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
@@ -729,7 +719,7 @@ const NewsItem = ({
                           >
                             {selectedTopic}
                           </a>
-                          <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -792,7 +782,8 @@ const NewsItem = ({
                             <Button
                               onClick={() => {
                                 setIsTopicAdd(false)
-                                AddNewCategoryCall(null, newTopicName)
+
+                                uploadCategory(null, newTopicName)
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
@@ -843,7 +834,7 @@ const NewsItem = ({
                           >
                             {_getSelectedItems()}
                           </a>
-                          <i class="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -965,10 +956,12 @@ const NewsItem = ({
                             <button
                               id="mybtn"
                               className="btn yg-font-size "
-                              onClick={() => {
+                              onClick={e => {
+                                e.stopPropagation()
                                 if (_checkIsEditSubTopicOpen()) {
                                   toast.error('Please close the current Sub category edit')
                                 } else {
+                                  SetNewSubTopicName('')
                                   setSubTopicAdd(true)
                                 }
                               }}
@@ -996,7 +989,8 @@ const NewsItem = ({
                                   fontSize: '20px',
                                   cursor: 'pointer',
                                 }}
-                                onClick={() => {
+                                onClick={e => {
+                                  e.stopPropagation()
                                   SetNewSubTopicName('')
                                   setSubTopicAdd(false)
                                 }}
@@ -1004,9 +998,16 @@ const NewsItem = ({
                             </div>
                             <Button
                               onClick={() => {
+                                SetNewSubTopicName('')
                                 setSubTopicAdd(false)
                                 if (newSubTopicName.length != 0) {
-                                  AddNewSubCategoryCall(newSubTopicName, categoryID)
+                                  uploadSubCategory(
+                                    newSubTopicName,
+                                    categoryID,
+                                    subCategory[subCategory.length - 1].sub_category_name
+                                    // data.data.id
+                                  )
+                                  // AddNewSubCategoryCall()
                                 } else {
                                   toast.error('Please provide Sub Category title')
                                 }
@@ -1223,7 +1224,7 @@ const NewsItem = ({
                 )
               ) : (
                 <div className="attachment-icon mb-4">
-                  {data.attachment_link != '' && (
+                  {data.attachment_link !== '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a target="_blank" href={data ? data.attachment_link : ''}>
@@ -1231,7 +1232,7 @@ const NewsItem = ({
                       </a>
                     </>
                   )}
-                  {data.attachment_link == '' && (
+                  {/* {data.attachment_link == '' && (
                     <>
                       <i className="fa-solid fa-file" />
                       <a
@@ -1246,7 +1247,7 @@ const NewsItem = ({
                         File Not Available
                       </a>
                     </>
-                  )}
+                  )} */}
                 </div>
               )}
             </div>

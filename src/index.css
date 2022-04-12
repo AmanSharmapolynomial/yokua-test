@@ -83,6 +83,7 @@ body {
 .user-list-view-table div:first-child {
   /* overflow-x: inherit !important; */
   overflow-y: visible !important;
+  white-space: normal !important;
 }
 
 .yk-sticky-footer {
@@ -128,9 +129,9 @@ body {
   display: inline-block;
   vertical-align: middle;
 }
-.bsgpsK div:first-child {
+/* .bsgpsK div:first-child {
   white-space: normal !important;
-}
+} */
 .theme {
   color: var(--bgColor2);
 }

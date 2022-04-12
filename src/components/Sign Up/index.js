@@ -163,7 +163,7 @@ const SignUp = () => {
             }}
           />
         </span>
-        <div className="container__heading text-center">Create a New Account</div>
+        <div className="container__heading text-center">Create a new account</div>
       </div>
       <form className="forum mt-2" type="submit" onSubmit={register}>
         <div className="row">
@@ -309,10 +309,12 @@ const SignUp = () => {
               <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
             </div>
           </Dropdown> */}
-          <div className="col-12">
-            <div className="row text-center d-flex justify-content-center align-items-center">
+          <div className="col-12 p-0">
+            <div className="form-group">
               <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />
-              <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
+              <span className="checkbox-text mr-auto ml-2">
+                Accept the Terms of Service and Privacy Policies
+              </span>
             </div>
           </div>
 
@@ -324,7 +326,7 @@ const SignUp = () => {
       <div className="terms">
         {'By signing up, you agree with the '}
         <Link to="/auth/terms-privacy" className="terms-link" target="_blank">
-          Terms of Service and Privacy Policy
+          Terms of Service and Privacy Policies
         </Link>
       </div>
     </div>
