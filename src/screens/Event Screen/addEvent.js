@@ -129,7 +129,7 @@ const AddEventScreen = () => {
         if (data.status == 200 || data.status == 201) {
           const result = data.data
           setEventDetailById(result)
-          console.log(result)
+          //console.log(result)
           setTrainingName(result.event_details['training_name'])
           setStartDate(new Date(result.event_details['start_date']))
           setEndDate(new Date(result.event_details['end_date']))
@@ -174,7 +174,7 @@ const AddEventScreen = () => {
         if (data.status == 200 || data.status == 201) {
           const result = data.data
           setRegisteredAttendeesList(result)
-          console.log(result)
+          //console.log(result)
         } else {
           toast.error('Error while getting record')
           navigate('/event/all')
@@ -220,7 +220,7 @@ const AddEventScreen = () => {
       requirements: requirement,
     }
 
-    console.log('called api: ' + JSON.stringify(eventObject))
+    //console.log('called api: ' + JSON.stringify(eventObject))
     await API.post('training/training_addition', eventObject)
       .then(data => {
         if (data.status == 200 || data.status == 201) {
@@ -255,10 +255,10 @@ const AddEventScreen = () => {
           : foodRequirement.name,
     }
 
-    console.log('called api: ' + JSON.stringify(myObject))
+    //console.log('called api: ' + JSON.stringify(myObject))
     await API.post('training/training_registeration', myObject)
       .then(data => {
-        console.log(data)
+        //console.log(data)
         if (data.status == 200 || data.status == 201) {
           toast.success(data.data.message)
         } else if (data.message.Fail) {
@@ -266,7 +266,7 @@ const AddEventScreen = () => {
         }
       })
       .catch(error => {
-        console.log(error)
+        //console.log(error)
         toast.error(error.message)
         navigate('/event/update/' + eventId)
       })
@@ -486,14 +486,14 @@ const AddEventScreen = () => {
                       className="col-md-2"
                       options={eventOptionList}
                       onChange={event => {
-                        console.log(event.value)
+                        //console.log(event.value)
                         if (event.value == 'webinar') {
                           setDisabled(true)
                         } else if (event.value == 'site_event') {
                           setDisabled(false)
                         }
                         let obj = eventOptionList.filter(e => e.value == event.value)[0]
-                        console.log(obj)
+                        //console.log(obj)
                         setEventOption(obj)
                       }}
                       value={eventOption}
@@ -566,7 +566,7 @@ const AddEventScreen = () => {
                     <Select
                       options={classificationOption}
                       onChange={event => {
-                        console.log(event.label + ' selected:' + event.value)
+                        //console.log(event.label + ' selected:' + event.value)
                         setClassificationLevel({
                           value: event.value,
                           label: event.label,
@@ -1182,7 +1182,7 @@ const AddEventScreen = () => {
                 }}
                 src={CloseIcon}
                 onClick={() => {
-                  console.log('Close modal..')
+                  //console.log('Close modal..')
                   setRegisteredAttendeesListModalOpen(false)
                 }}
               />

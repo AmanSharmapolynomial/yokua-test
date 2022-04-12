@@ -31,8 +31,8 @@ const EventScreen = () => {
     getAllEventList()
   }, [])
 
-  console.log(eventList)
-  console.log(checkedBoxState)
+  //console.log(eventList)
+  //console.log(checkedBoxState)
 
   const getAllEventList = async () => {
     let temp = []
@@ -102,7 +102,7 @@ const EventScreen = () => {
   //handle main check box
   const handleMainCheckBox = value => {
     let temp = []
-    console.log(value)
+    //console.log(value)
 
     checkedBoxState.map(e => {
       temp.push({
@@ -110,7 +110,7 @@ const EventScreen = () => {
         status: value,
       })
     })
-    console.log(temp)
+    //console.log(temp)
     setCheckedBoxState([...temp])
   }
   //delete model
