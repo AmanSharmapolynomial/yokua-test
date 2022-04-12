@@ -63,7 +63,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
       />
       <div className="yk-sign-up-dropdn">
         <div className="row">
-          <div className="yg-dropdown-overwrtie">
+          <div className="yg-dropdown-overwrtie p-0">
             <div className="btn-group">
               <button className="btn btn-secondary btn-main btn-sm" type="button">
                 {selectedCompany}

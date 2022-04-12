@@ -107,7 +107,7 @@ const SignUp = () => {
 
   return (
     <div className="signIn-container mx-auto col-10 col-md-4 my-5">
-      <div className="container-head">
+      <div className="container-head px-2">
         <span className="position-absolute float-left">
           <i
             className="fa-solid fa-arrow-left back-arrow-btn"
@@ -145,7 +145,7 @@ const SignUp = () => {
             onChange={e => setCompanyEmail(e.target.value)}
             placeholder="Company E-Mail"
           />
-          <div className="row align-items-center input-field mx-auto">
+          <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">
               <input
                 type={passwordVisible ? 'text' : 'password'}
@@ -163,7 +163,7 @@ const SignUp = () => {
               />
             </span>
           </div>
-          <div className="row align-items-center input-field mx-auto">
+          <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">
               <input
                 type={confirmPasswordVisible ? 'text' : 'password'}

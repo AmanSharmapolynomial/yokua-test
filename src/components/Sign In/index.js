@@ -53,7 +53,7 @@ const SignIn = () => {
             className="input-field input-field__email"
             placeholder="E-Mail"
           />
-          <div className="row align-items-center input-field mx-auto">
+          <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">
               <input
                 type={passwordVisible ? 'text' : 'password'}
