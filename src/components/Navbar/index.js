@@ -174,7 +174,9 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           ) : (
             ''
           )}
-          {true && (
+          {!(
+            getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+          ) && (
             <li>
               <Link className="nav-link" to="/contact">
                 Contact
