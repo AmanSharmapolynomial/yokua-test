@@ -16,7 +16,9 @@ import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
+import EventScreen from '../screens/Event Screen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
+import AddEventScreen from '../screens/Event Screen/addEvent'
 import Footer from '../components/Footer'
 import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
 import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
@@ -150,6 +152,8 @@ const Routing = () => {
               </React.Fragment>
             }
           />
+
+          {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
         </Route>
         <Route
           path="news"
@@ -239,7 +243,32 @@ const Routing = () => {
             </>
           }
         />
+        <Route
+          path="event/all"
+          element={
+            <PrivateRoute>
+              <EventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/add"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/update/:eventId"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
       </Routes>
+
       <Footer />
     </React.Fragment>
   )
