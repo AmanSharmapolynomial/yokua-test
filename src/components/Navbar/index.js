@@ -181,6 +181,15 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           ) : (
             ''
           )}
+          {!(
+            getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+          ) && (
+            <li>
+              <Link className="nav-link" to="/contact">
+                Contact
+              </Link>
+            </li>
+          )}
         </ul>
         {isLogedIn && (
           <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
