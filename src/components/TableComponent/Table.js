@@ -98,10 +98,6 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const callAddRowAPI = async () => {
     let data = []
     tableObject.forEach(col => {
-      // let values = []
-      // col.values.forEach(val => {
-      //   values.push(val.value)
-      // })
       data.push({ column_name: col.column_name /*, values*/ })
     })
 
@@ -153,7 +149,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   }
 
   useEffect(() => {
-    if (tableObject != {}) {
+    if (tableObject !== {}) {
       _setTableHeaders()
       _setTableData()
     }
@@ -163,13 +159,13 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     <>
       {tableObject != {} && (
         <div className="ml-auto mt-4">
-          <i className="fa-solid fa-pen-to-square mr-2"></i>
+          <i className="fa-solid fa-pen-to-square mr-2" />
           <i
             className="fa-solid fa-trash ml-2"
             onClick={() => {
               setShowDeleteModal(true)
             }}
-          ></i>
+          />
         </div>
       )}
       <div className="border w-100">
@@ -181,9 +177,6 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           data={tableRows}
           customStyles={customStyles}
           persistTableHead
-          // conditionalRowStyles={conditionalRowStyles}
-          // selectableRows
-          // onSelectedRowsChange={selectedRowsActionUA}
         />
         {isEditable ? (
           renderDummyRow()
@@ -201,6 +194,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
                 width: '16px',
                 marginRight: '12px',
               }}
+              alt={'PlusIcon'}
             />
             Add
           </div>

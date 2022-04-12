@@ -7,6 +7,7 @@ import placeholder from '../../News Components/placeholder.png'
 import Select from 'react-select'
 
 import close from '../../../assets/close_black.png'
+
 const options = [
   { value: 'User', label: 'User' },
   { value: 'PMK Content Manager', label: 'PMK Content Manager' },
@@ -24,12 +25,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   let emailRef = useRef()
   let firstNameRef = useRef()
   let lastNameRef = useRef()
-  let roleRef = useRef()
-  let contactRef = useRef()
-  let address1Ref = useRef()
-  let address2Ref = useRef()
-  let stateRef = useRef()
-  let pincodeRef = useRef()
 
   let companyRef = useRef()
   let passwordRef = useRef()
@@ -88,14 +83,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
     <div className="modal-background">
       <div className="modal-wrapper">
         {change == 'View' && (
-          // <i
-          //   className="fa-solid fa-remove save-icon"
-          //   onClick={() => {
-          //     saveAndExit()
-          //     // document.body.style.overflow = 'scroll'
-          //   }}
-          // />
-
           <img
             className="save-icon"
             src={close}
@@ -125,7 +112,6 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             />
             <img
               key={data?.id}
-              // className="profile-setting__info_img"
               style={{
                 cursor: !disabledInput ? 'pointer' : 'default',
               }}
@@ -223,7 +209,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                       : 'fa-eye-slash fa-solid yk-eye-icon '
                   }
                   onClick={() => setPasswordVisible(!passwordVisible)}
-                ></i>
+                />
               </div>
             )}
 
@@ -241,7 +227,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </div>
           </div>
         </div>
-        {change != 'View' && (
+        {change !== 'View' && (
           <div className="domain-modal-cta">
             <button
               className="cancel-domain btn col-6 text-center"
@@ -258,14 +244,14 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                   toast.error('Please select the permission')
                   return
                 }
-                if (email != '' && email && firstName && lastName) {
+                if (email !== '' && email && firstName && lastName) {
                   const saveData = {
                     email: email,
                     firstName: firstName,
                     lastName: lastName,
                     role: selectedOption.value,
                     company_name: company,
-                    imageFile: imageFile != placeholder ? imageFile : null,
+                    imageFile: imageFile !== placeholder ? imageFile : null,
                   }
                   if (password && password.length > 1) {
                     saveData['password'] = password

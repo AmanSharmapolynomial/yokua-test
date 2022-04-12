@@ -1,17 +1,14 @@
-import React, { useEffect, useRef, useState, type } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
 import placeholder from './placeholder.png'
 import moment from 'moment'
 import API from '../../utils/api'
 import DeleteModal from '../Modals/Delete Modal/DeleteModal'
-import axios from 'axios'
-import { getToken } from '../../utils/token'
 import { toast } from 'react-toastify'
 
 import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
-import { faBullseye } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router'
 
 const NewsItem = ({
@@ -1187,7 +1184,7 @@ const NewsItem = ({
                       <i className="fa-solid fa-paperclip" style={{ fontSize: '22px' }} />
                     </span>
                   </label>
-                    
+
                   <input
                     accept="application/pdf"
                     type="file"

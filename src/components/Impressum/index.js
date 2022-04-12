@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-import PrimaryHeading from '../Primary Headings'
+import React from 'react'
 
 const Impressum = () => {
   return (

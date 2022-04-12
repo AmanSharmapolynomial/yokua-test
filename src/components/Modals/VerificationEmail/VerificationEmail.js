@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import API from '../../../utils/api'
 import { useLocation, useParams } from 'react-router'
@@ -42,17 +42,7 @@ export default () => {
   }
 
   return (
-    <div
-      className="signIn-container mx-auto col-4 text-center"
-      // style={{
-      //   position: 'relative',
-      //   width: '40rem',
-      //   height: '12rem',
-      //   maxWidth: '60rem',
-      //   minWidth: '10rem',
-      //   minHeight: '10rem',
-      // }}
-    >
+    <div className="signIn-container mx-auto col-4 text-center">
       <div
         className="container-head "
         style={{

@@ -1,8 +1,5 @@
 .heading-container {
   height: 20rem;
-  /* margin: 3.0rem 3.0rem; */
-  /* margin-left: 60px;
-  margin-right: 80px; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -11,7 +8,6 @@
 
 .heading-container > h1 {
   font-weight: 500;
-  /* padding: 3rem 2.6rem; */
 }
 
 .yk-back-image-profile {

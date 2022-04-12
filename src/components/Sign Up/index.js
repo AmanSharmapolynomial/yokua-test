@@ -1,11 +1,9 @@
-import { useStoreActions, useStoreState } from 'easy-peasy'
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import './style.css'
 import { registerUser } from './../../services/auth.service'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
-import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 
 import CustomDropdown from './CustomDropdown'
 
@@ -18,15 +16,8 @@ const SignUp = () => {
   const navigate = useNavigate()
 
   const [category, setCategory] = useState([])
-  const [isTopicAdd, setIsTopicAdd] = useState(false)
   const [topicName, setTopicName] = useState('')
   const [selectedTopic, setSelectedTopic] = useState('Company')
-  // fetch state
-  // const userDetails = useStoreState(state => state.userDetails)
-  // const registeredUser = useStoreState(state => state.registeredUser)
-  // const config = {
-  //   Authorization: `Bearer ${userDetails[0]?.data?.access_token}`,
-  // }
 
   // states
   const [companyEmail, setCompanyEmail] = useState('')
@@ -42,21 +33,8 @@ const SignUp = () => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
 
-  // actions import
-  // const fetchRegister = useStoreActions(actions => actions.fetchRegister)
   const alertRef = useRef()
   const tncRef = useRef()
-
-  // if () {
-  //   alertRef.current.style.opacity = 1
-  //   setTimeout(() => {
-  //     alertRef.current.style.opacity = 0
-  //   }, 5000)
-  // }
-
-  // console.log(registeredUser[registeredUser.length - 1])
-
-  // fill data from form
 
   useEffect(() => {
     getCompanyList()
@@ -78,33 +56,12 @@ const SignUp = () => {
   }
   // use actions
 
-  const AddNewCompany = () => {
-    if (selectedTopic.length < 2) {
-      toast.error('Please enter valid company name')
-      setTopicName('')
-      return
-    }
-
-    API.post('auth/add_company', {
-      parent_company: topicName,
-      child_company: '',
-    })
-      .then(data => {
-        getCompanyList()
-        setTopicName('')
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
-
   const handleSelectTopic = cat => {
     setCompany(cat)
     setSelectedTopic(cat)
   }
 
   const register = async e => {
-    // setLoading(true)
     e.preventDefault()
     if (selectedTopic.length < 2 || selectedTopic.toLowerCase() == 'company') {
       toast.error('Please select the company')
@@ -126,10 +83,6 @@ const SignUp = () => {
               registerUser(registerDetails).then(a => {
                 if (a.status == 200) {
                   navigate('/auth/verification-email', { state: companyEmail })
-                } else {
-                  // toast.error(a.data?.password1[0])
-
-                  console.log(a.data)
                 }
               })
               setLoading(false)
@@ -137,7 +90,7 @@ const SignUp = () => {
           }
         } else {
           toast.error(
-            'First name and last name should be atleast 5 letters and must not contain any special characters'
+            'First name and last name should be at least 5 letters and must not contain any special characters'
           )
         }
       } else {
@@ -237,78 +190,6 @@ const SignUp = () => {
             setTopicName={setTopicName}
             key={'registration'}
           />
-          {/* <Dropdown
-            size="sm"
-            autoClose={'outside'}
-            className="yk-dropdown-holder input-field"
-            style={{
-              flexDirection: 'row',
-              overflow: 'visible',
-            }}
-          >
-            <Dropdown.Toggle
-              size={'sm'}
-              className="yg-custom-dropdown"
-              color="red"
-              id="dropdown-basic"
-            >
-              {selectedTopic}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu style={{ width: '80%', maxHeight: '14rem', overflowY: 'scroll' }}>
-              {category.map((cat, index) => (
-                <Dropdown.Item
-                  key={index}
-                  className="yg-font-size-r"
-                  onClick={() => handleSelectTopic(cat)}
-                >
-                  {cat.company_name}
-                </Dropdown.Item>
-              ))}
-              <Dropdown.Divider />
-              {!isTopicAdd && (
-                <Dropdown.Item
-                  className="yg-font-size-r"
-                  onClick={() => {
-                    setIsTopicAdd(true)
-                  }}
-                >
-                  Others
-                </Dropdown.Item>
-              )}
-              {isTopicAdd && (
-                <InputGroup className="yg-font-size-registrtion p-1 ">
-                  <FormControl
-                    className="yg-font-size"
-                    placeholder="Company"
-                    aria-label="Recipient's username"
-                    aria-describedby="basic-addon2"
-                    value={topicName}
-                    onChange={e => setTopicName(e.target.value)}
-                  />
-                  <Button
-                    onClick={() => {
-                      setIsTopicAdd(false)
-                      AddNewCompany()
-                    }}
-                    variant="outline-secondary"
-                    className="saveBtn"
-                    id="button-addon2"
-                  >
-                    Save
-                  </Button>
-                </InputGroup>
-              )}
-            </Dropdown.Menu>
-          </Dropdown>
-          <div className="col-12">
-            <div className="row text-center d-flex justify-content-center align-items-center">
-              <span>
-                <input type="checkbox" id="checkTermandCondtions" ref={tncRef} />
-              </span>
-              <span className="checkbox-text mr-auto ml-2">Accept the term and conditions</span>
-            </div>
-          </Dropdown> */}
           <div className="col-12 p-0">
             <div className="form-group">
               <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />

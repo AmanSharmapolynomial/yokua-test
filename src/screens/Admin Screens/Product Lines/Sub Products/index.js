@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import './style.css'
-
 import API from '../../../../utils/api'
 import { toast } from 'react-toastify'
 
-import { useLocation, useNavigate, useHistory, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Breadcrumb from '../../../../components/Breadcrumb'
 
 const SubProductList = () => {

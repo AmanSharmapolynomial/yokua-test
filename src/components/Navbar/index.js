@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { getUserRoles } from '../../utils/token'
@@ -151,7 +151,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               Profile Setting
             </Link>
           </li>
-          {getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator' ? (
+          {getUserRoles() === 'Technical Administrator' ||
+          getUserRoles() === 'PMK Administrator' ? (
             <li className="nav-item dropdown px-3">
               <a
                 className="nav-link dropdown-toggle"
@@ -165,17 +166,13 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               >
                 Admin Management
               </a>
-              <NavDropdown
-                data={navDropdownAdminData}
-                // style={{ position: 'absolute' }}
-                icon={true}
-              />
+              <NavDropdown data={navDropdownAdminData} icon={true} />
             </li>
           ) : (
             ''
           )}
           {!(
-            getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+            getUserRoles() === 'Technical Administrator' || getUserRoles() === 'PMK Administrator'
           ) && (
             <li>
               <Link className="nav-link" to="/contact">
@@ -200,20 +197,6 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </ul>
         )}
       </div>
-      {/* <div className="col-auto">
-        <div className="input-group search">
-          <span className="input-group-addon">
-            <i className="fa-solid fa-magnifying-glass" />
-          </span>
-          <input
-            ref={searchNavRef}
-            type="text"
-            placeholder="What are you looking for?"
-            className="search_input"
-            autoComplete={false}
-          ></input>
-        </div>
-      </div> */}
     </nav>
   )
 }

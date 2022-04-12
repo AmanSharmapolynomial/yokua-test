@@ -34,8 +34,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
-  const [numberOfColumns, setNumberOfColumns] = useState(0)
-  const [numberOfRows, setNumberOfRows] = useState(0)
   const [needToReload, setNeedToReload] = useState(false)
 
   const [editModeData, setEditModeData] = useState([])
@@ -78,52 +76,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
     setRowName({ ...updatedRowName })
   }
 
-  // Not usable in current context in updated Flow
-  // const handleEditChange = (name, value, rowIndex) => {
-  //   const updatedTableData = editModeData
-  //   updatedTableData.forEach((c, i) => {
-  //     if (rowIndex == i) {
-  //       c[name] = value
-  //     }
-  //   })
-  //   setEditModeData([...updatedTableData])
-  //   setFieldChanged(!filedChanged)
-  //
-  //   const updatedRows = updatedTableData
-  //   updatedRows.forEach((c, i) => {
-  //       Object.entries(c).forEach(
-  //         ([key, v]) => {
-  //           debugger
-  //           if (typeof v == 'string') {
-  //             c[key] = (
-  //               <>
-  //                 <input
-  //                   key={Math.random().toString()}
-  //                   id={v}
-  //                   type='text'
-  //                   value={v}
-  //                   onChange={e => {
-  //                   }}
-  //                 ></input>
-  //               </>
-  //             )
-  //           }
-  //         })
-  //     },
-  //   )
-  //   setTableRows((p) => {
-  //     debugger
-  //     console.log(p)
-  //     return updatedRows
-  //   })
-  //
-  // }
-
-  const _totalNumberOfRowsAndColumns = () => {
-    setNumberOfColumns(tableObject?.table_data?.length)
-    setNumberOfRows(tableObject?.table_data?.values?.length)
-  }
-
   const _setTableHeaders = () => {
     const tableColumns = []
     tableObject.table_data?.map((column, index) => {
@@ -159,8 +111,12 @@ export default ({ tableObject, setShowDeleteModal }) => {
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <img src={Uploadicon} style={{ width: '15px', marginRight: '10px' }} />
-                <a target="_blank" href={tableC.values[index].value}></a>
+                <img
+                  src={Uploadicon}
+                  style={{ width: '15px', marginRight: '10px' }}
+                  alt={'FileImage'}
+                />
+                <a target="_blank" href={tableC.values[index].value} />
               </>
             )
           } else {
@@ -171,7 +127,6 @@ export default ({ tableObject, setShowDeleteModal }) => {
         })
         finalTableData.push(tableRowObject)
       })
-    debugger
     if (isEdit && emptyNewRow) {
       finalTableData.push(emptyNewRow)
     }
@@ -330,15 +285,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
         </div>
       )}
 
-      <DataTable
-        fixedHeader
-        columns={tableHeader}
-        data={tableRows}
-        customStyles={customStyles}
-        // conditionalRowStyles={conditionalRowStyles}
-        // selectableRows
-        // onSelectedRowsChange={selectedRowsActionUA}
-      />
+      <DataTable fixedHeader columns={tableHeader} data={tableRows} customStyles={customStyles} />
 
       {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
         isEdit && (

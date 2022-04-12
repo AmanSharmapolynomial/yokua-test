@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SecondaryHeading from '../../../components/Secondary Heading'
 import API from '../../../utils/api'
-import DataTable from 'react-data-table-component'
 import Plusicon from '../../../assets/Group 331.png'
-import { Dropdown, SplitButton, DropdownButton, ButtonGroup } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { Modal, FormControl } from 'react-bootstrap'
 
@@ -13,7 +11,7 @@ import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 
 export default () => {
   const [companyList, setCompanyList] = useState([])
-  const { loading, setLoading } = useLoading()
+  const { setLoading } = useLoading()
 
   const deleteCompany = id => {
     setLoading(true)
@@ -93,7 +91,7 @@ export default () => {
                           setCurrentDeleteId(data.parent_company_id)
                           setDelete(true)
                         }}
-                      ></i>
+                      />
                     </a>
                     <hr />
                   </>
@@ -112,6 +110,7 @@ export default () => {
                       width: '1rem',
                       marginRight: '0.2rem',
                     }}
+                    alt={'PlusIcon'}
                   />
                   Add
                 </a>
@@ -127,11 +126,8 @@ export default () => {
                     setCurrentDeleteId(data.parent_company_id)
                     setDelete(true)
                   }}
-                ></i>
-                {/* <i
-                    className="fa fa-caret-right dropdown-toggle" data-toggle="dropdown" aria-hidden="true"
-                  ></i> */}
-                <i className="fa fa-caret-right" data-display="static" aria-hidden="true"></i>
+                />
+                <i className="fa fa-caret-right" data-display="static" aria-hidden="true" />
               </div>
             </div>
           ))}
@@ -150,6 +146,7 @@ export default () => {
                   width: '1rem',
                   marginRight: '0.2rem',
                 }}
+                alt={'PlusIcon1'}
               />
               Add
             </div>
@@ -189,10 +186,10 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
     setName('')
     setShow(false)
 
-    const companyName = parentCompnay != '' ? parentCompnay : name
+    const companyName = parentCompnay !== '' ? parentCompnay : name
     API.post('auth/add_company', {
       parent_company: companyName,
-      child_company: companyName == parentCompnay ? name : '',
+      child_company: companyName === parentCompnay ? name : '',
     })
       .then(data => {
         setLoading(false)
