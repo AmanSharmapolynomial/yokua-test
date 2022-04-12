@@ -141,7 +141,14 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </li>
 
           <li className="nav-item px-3">
-            <a className="nav-link">Training</a>
+            <a
+              className="nav-link"
+              onClick={() => {
+                navigate('/event/all')
+              }}
+            >
+              Training
+            </a>
           </li>
           <li className="nav-item px-3">
             <a className="nav-link">Data History</a>

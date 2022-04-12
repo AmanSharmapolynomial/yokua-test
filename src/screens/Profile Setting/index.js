@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './style.css'
-import PrimaryHeading from '../../components/Primary Headings/index'
-
+import PrimaryHeading from '../../components/Primary Headings'
 import moment from 'moment'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'

@@ -26,7 +26,11 @@
   background-image: url('/public/assets/news banner.jpg');
 }
 
-
+.yk-back-image-event {
+  background-image: url('../../assets/calendar_banner.jpg');
+  background-size: cover;
+  background-position: center;
+}
 .yk-back-tokuchu-news {
   background-size: cover;
   background-position: center;
