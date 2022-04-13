@@ -942,7 +942,7 @@ const AddEventScreen = () => {
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="email"
-                      placeholder="Company E-Mail address"
+                      placeholder="Company E-Mail ID"
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={companyEmail}
