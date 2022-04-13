@@ -24,7 +24,7 @@ const AddEventScreen = () => {
   const [location, setLocation] = useState('')
   const [duration, setDuration] = useState('')
   const [cost, setCost] = useState('')
-  const [maxAttendacees, setMaxAttendeed] = useState(0)
+  const [maxAttendacees, setMaxAttendeed] = useState(1)
   const [remainSeat, setRemainSeats] = useState(0)
   const [description, setDescription] = useState('')
   const [trainingFormDisable, setTrainingFormDisable] = useState(false)
@@ -274,8 +274,10 @@ const AddEventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="event-screen-header">
-        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+      <div className="row mx-2 mx-md-5 h-100">
+        <div className="col event-setting-container pb-5">
+          <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+        </div>
       </div>
 
       <div
@@ -344,11 +346,11 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={new Date()}
-                      className="col-md-3 form-control"
+                      className="col-md-12 form-control"
                       onChange={date => {
-                        setStartDate(date)
-                        if (endDate != null || endDate != undefined) {
+                        if (endDate != null && endDate != undefined && endDate >= date) {
                           setDuration(moment(endDate).diff(date, 'days'))
+                          setStartDate(date)
                         }
                       }}
                       placeholderText="DDMMYYYY"
@@ -386,7 +388,7 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={startDate}
-                      className="col-md-3 form-control"
+                      className="col-md-12 form-control"
                       onChange={date => {
                         setEndDate(date)
                         if (startDate != null || startDate != undefined) {
@@ -453,7 +455,11 @@ const AddEventScreen = () => {
                       className="col-md-3 form-control"
                       style={{ width: '200px' }}
                       onChange={event => {
-                        setCost(event.target.value)
+                        console.log(event.target.value)
+                        let value = event.target.value.replace('+', '')
+                        value = event.target.value.replace('-', '')
+                        console.log(value)
+                        setCost(Number(value))
                       }}
                       value={cost}
                     />
@@ -479,43 +485,47 @@ const AddEventScreen = () => {
 
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
+                    <label style={{ fontWeight: 'bold' }} className="col-md-3">
                       Type of Events
                     </label>
-                    <Select
-                      className="col-md-2"
-                      options={eventOptionList}
-                      onChange={event => {
-                        //console.log(event.value)
-                        if (event.value == 'webinar') {
-                          setDisabled(true)
-                        } else if (event.value == 'site_event') {
-                          setDisabled(false)
-                        }
-                        let obj = eventOptionList.filter(e => e.value == event.value)[0]
-                        //console.log(obj)
-                        setEventOption(obj)
-                      }}
-                      value={eventOption}
-                    />
-                    <div className="col-md-10">
-                      <button
-                        onClick={event => {
-                          event.preventDefault()
-                          setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
+                    <div className="col-md-4" style={{ width: '100%', marginLeft: '55px' }}>
+                      <Select
+                        options={eventOptionList}
+                        onChange={event => {
+                          //console.log(event.value)
+                          if (event.value == 'webinar') {
+                            setDisabled(true)
+                          } else if (event.value == 'site_event') {
+                            setDisabled(false)
+                          }
+                          let obj = eventOptionList.filter(e => e.value == event.value)[0]
+                          //console.log(obj)
+                          setEventOption(obj)
                         }}
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                          borderRadius: '3px',
-                          fontSize: '13px',
-                          float: 'right',
-                          padding: '1%',
-                        }}
-                      >
-                        Registered attendees list
-                      </button>
+                        selected={eventOption}
+                        value={eventOption}
+                      />
+                    </div>
+                    <div className="col-md-10" style={{ marginLeft: '50px' }}>
+                      {eventId ? (
+                        <button
+                          onClick={event => {
+                            event.preventDefault()
+                            setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
+                          }}
+                          style={{
+                            background: 'rgb(0, 79, 155)',
+                            color: 'white',
+                            border: '1px solid black',
+                            borderRadius: '3px',
+                            fontSize: '13px',
+                            float: 'right',
+                            padding: '1%',
+                          }}
+                        >
+                          Registered attendees list
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -779,7 +789,13 @@ const AddEventScreen = () => {
               marginBottom: '100px',
             }}
           >
-            <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
+            <div>
+              {eventId ? (
+                <h4 style={{ padding: '20px' }}>Register for {trainingName}</h4>
+              ) : (
+                <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
+              )}
+            </div>
             <div
               style={{
                 padding: '20px',

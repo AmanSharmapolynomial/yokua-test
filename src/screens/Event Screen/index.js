@@ -162,8 +162,15 @@ const EventScreen = () => {
             >
               <thead>
                 <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="5" style={{ width: '10%' }}>
-                    <div style={{ background: 'rgb(0, 79, 155)' }}>
+                  <td colSpan="5" style={{ width: '40%' }}>
+                    <div
+                      style={{
+                        background: 'rgb(0, 79, 155)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        float: 'left',
+                      }}
+                    >
                       <input
                         id="mainCheckbox"
                         type="checkbox"
@@ -177,7 +184,7 @@ const EventScreen = () => {
                           margin: '5px',
                         }}
                       >
-                        Upcoming training
+                        All Trainings
                       </label>
                     </div>
                   </td>
@@ -196,11 +203,7 @@ const EventScreen = () => {
                   return (
                     <tr>
                       <td className="tdFirstAndLastWidth">
-                        <div
-                          style={{
-                            padding: '25px',
-                          }}
-                        >
+                        <div>
                           <input
                             type="checkbox"
                             id={e.id}
@@ -236,11 +239,7 @@ const EventScreen = () => {
                         </div>
                       </td>
                       <td className="tdWidth">
-                        <div
-                          onClick={() => {
-                            navigate('/event/update/' + e.id)
-                          }}
-                        >
+                        <div>
                           <img
                             src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
                             style={{
@@ -248,6 +247,22 @@ const EventScreen = () => {
                             }}
                           />
                           {e.location}
+                        </div>
+                      </td>
+                      <td className="tdWidth">
+                        <div
+                          style={{
+                            padding: '25px',
+                          }}
+                        >
+                          <a
+                            style={{ color: 'rgb(0, 79, 155)' }}
+                            onClick={() => {
+                              navigate('/event/update/' + e.id)
+                            }}
+                          >
+                            + more information & Registration
+                          </a>
                         </div>
                       </td>
                       <td className="tdWidth">
@@ -285,13 +300,17 @@ const EventScreen = () => {
 
           <div
             className="row"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              marginLeft: '10%',
-              marginBottom: '4%',
-              marginRight: '10%',
-            }}
+            style={
+              getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+                ? {
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    marginLeft: '10%',
+                    marginBottom: '4%',
+                    marginRight: '10%',
+                  }
+                : { display: 'none' }
+            }
           >
             <div>
               <button
@@ -325,6 +344,7 @@ const EventScreen = () => {
               </button>
             </div>
           </div>
+
           <br />
           <br />
 
