@@ -16,6 +16,7 @@ import Modal from 'react-modal'
 import CustomeModel from '../../components/Event Module/Modal'
 import PrimaryHeading from '../../components/Primary Headings'
 import CloseIcon from '../../assets/close_modal.png'
+import { max } from 'moment'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
@@ -24,8 +25,8 @@ const AddEventScreen = () => {
   const [location, setLocation] = useState('')
   const [duration, setDuration] = useState('')
   const [cost, setCost] = useState('')
-  const [maxAttendacees, setMaxAttendeed] = useState('')
-  const [remainSeat, setRemainSeats] = useState('')
+  const [maxAttendacees, setMaxAttendeed] = useState(0)
+  const [remainSeat, setRemainSeats] = useState(0)
   const [description, setDescription] = useState('')
   const [trainingFormDisable, setTrainingFormDisable] = useState(false)
 
@@ -393,7 +394,8 @@ const AddEventScreen = () => {
                           setDuration(moment(endDate).diff(date, 'days'))
                           setStartDate(date)
                         } else {
-                          alert('Change end date')
+                          toast.error('End date should be greater than start date')
+                          setStartDate('')
                         }
                       }}
                       placeholderText="DDMMYYYY"
@@ -435,7 +437,7 @@ const AddEventScreen = () => {
                       onChange={date => {
                         setEndDate(date)
                         if (startDate != null || startDate != undefined) {
-                          setDuration(moment(date).diff(startDate, 'days'))
+                          setDuration(moment(date).diff(startDate, 'days') + 1)
                         }
                       }}
                       placeholderText="DDMMYYYY"
@@ -608,6 +610,11 @@ const AddEventScreen = () => {
                           let value = Number(event.target.value.match(/\d+/)?.join(''))
                           setMaxAttendeed(value)
                         }}
+                        onBlur={event => {
+                          if (remainSeat && remainSeat > maxAttendacees) {
+                            toast.error("Remain seat can't greater that max attendeed")
+                          }
+                        }}
                         value={maxAttendacees}
                       />
                     </div>
@@ -626,7 +633,13 @@ const AddEventScreen = () => {
                           //console.log()
                           let value = Number(event.target.value.match(/\d+/)?.join(''))
                           console.log(maxAttendacees + ':' + value)
-                          if (maxAttendacees > value) setRemainSeats(value)
+                          setRemainSeats(value)
+                        }}
+                        onBlur={event => {
+                          if (maxAttendacees != remainSeat) {
+                            toast.error('Max attedees and remain attendees should be equal')
+                            setRemainSeats(0)
+                          }
                         }}
                         value={remainSeat}
                       />
