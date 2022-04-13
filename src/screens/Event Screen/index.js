@@ -255,14 +255,14 @@ const EventScreen = () => {
                             padding: '25px',
                           }}
                         >
-                          <a
+                          <label
                             style={{ color: 'rgb(0, 79, 155)' }}
                             onClick={() => {
                               navigate('/event/update/' + e.id)
                             }}
                           >
                             + more information & Registration
-                          </a>
+                          </label>
                         </div>
                       </td>
                       <td className="tdWidth">

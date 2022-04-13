@@ -24,8 +24,8 @@ const AddEventScreen = () => {
   const [location, setLocation] = useState('')
   const [duration, setDuration] = useState('')
   const [cost, setCost] = useState('')
-  const [maxAttendacees, setMaxAttendeed] = useState(1)
-  const [remainSeat, setRemainSeats] = useState(0)
+  const [maxAttendacees, setMaxAttendeed] = useState('')
+  const [remainSeat, setRemainSeats] = useState('')
   const [description, setDescription] = useState('')
   const [trainingFormDisable, setTrainingFormDisable] = useState(false)
 
@@ -40,6 +40,7 @@ const AddEventScreen = () => {
   const [foodRequirement, setFoodRequirement] = useState('')
   const [foodRequirementList, setFoodRequirementList] = useState([])
   const [otherFoodRequirement, setOtherFoodRequirement] = useState('')
+  const [termsPolicy, setTermPolicy] = useState(false)
 
   //feature state varible
   const { eventId } = useParams()
@@ -67,6 +68,14 @@ const AddEventScreen = () => {
     value: 'internal',
     label: 'Internal Training',
   })
+  const [registerationType, setRegistrationType] = useState(
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+      ? {
+          value: 'internal',
+          label: 'My self',
+        }
+      : { value: 'external', label: 'External' }
+  )
   const [eventOption, setEventOption] = useState({
     value: 'site_event',
     label: 'Site Event',
@@ -74,6 +83,10 @@ const AddEventScreen = () => {
   const eventOptionList = [
     { value: 'site_event', label: 'Site Event' },
     { value: 'webinar', label: 'Webinar' },
+  ]
+  const registerationTypeOption = [
+    { value: 'internal', label: 'My self' },
+    { value: 'external', label: 'External' },
   ]
 
   const classificationOption = [
@@ -92,9 +105,7 @@ const AddEventScreen = () => {
     setRequirement(temp)
     if (eventId != null) {
       getEventDetailById(eventId)
-      getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
-        ? setTrainingFormDisable(false)
-        : setTrainingFormDisable(true)
+      setTrainingFormDisable(true)
     }
   }, [])
 
@@ -241,7 +252,7 @@ const AddEventScreen = () => {
     foodRequirementList.push('No Pork')
     foodRequirementList.push('Vegetarian')
     let myObject = {
-      registeration_type: classificationLevel.value,
+      registeration_type: registerationType.value,
       event_id: eventId,
       first_name: firstName,
       last_name: lastName,
@@ -351,6 +362,8 @@ const AddEventScreen = () => {
                         if (endDate != null && endDate != undefined && endDate >= date) {
                           setDuration(moment(endDate).diff(date, 'days'))
                           setStartDate(date)
+                        } else {
+                          alert('Change end date')
                         }
                       }}
                       placeholderText="DDMMYYYY"
@@ -451,15 +464,14 @@ const AddEventScreen = () => {
                       Costs
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       className="col-md-3 form-control"
                       style={{ width: '200px' }}
+                      pattern="[0-9]"
                       onChange={event => {
-                        console.log(event.target.value)
-                        let value = event.target.value.replace('+', '')
-                        value = event.target.value.replace('-', '')
-                        console.log(value)
-                        setCost(Number(value))
+                        //console.log()
+                        let value = event.target.value.match(/\d+/)?.join('')
+                        setCost(value)
                       }}
                       value={cost}
                     />
@@ -536,15 +548,24 @@ const AddEventScreen = () => {
                     style={{ display: 'flex', justifyContent: 'space-between' }}
                   >
                     <div style={{ display: 'flex' }} className="col-md-8">
-                      <label style={{ fontWeight: 'bold' }} className="col-md-6">
+                      <label
+                        style={{ fontWeight: 'bold', marginLeft: '-15px' }}
+                        className="col-md-6"
+                      >
                         Max attendees
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control col-md-4"
-                        style={{ width: '70px', float: 'left' }}
+                        pattern="[0-9]"
+                        style={{
+                          width: '70px',
+                          float: 'left',
+                          marginLeft: '15px',
+                        }}
                         onChange={event => {
-                          setMaxAttendeed(event.target.value)
+                          let value = Number(event.target.value.match(/\d+/)?.join(''))
+                          setMaxAttendeed(value)
                         }}
                         value={maxAttendacees}
                       />
@@ -552,15 +573,19 @@ const AddEventScreen = () => {
                     <div style={{ display: 'flex' }} className="col-md-8">
                       <label style={{ fontWeight: 'bold' }}>Remaining Seats</label>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control col-md-4"
                         style={{
                           width: '70px',
                           float: 'left',
                           marginLeft: '45px',
                         }}
+                        pattern="[0-9]"
                         onChange={event => {
-                          setRemainSeats(event.target.value)
+                          //console.log()
+                          let value = Number(event.target.value.match(/\d+/)?.join(''))
+                          console.log(maxAttendacees + ':' + value)
+                          if (maxAttendacees > value) setRemainSeats(value)
                         }}
                         value={remainSeat}
                       />
@@ -805,6 +830,36 @@ const AddEventScreen = () => {
             >
               <form style={{ alignItems: 'flex-start', width: '100%' }}>
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                  <div
+                    className="col-md-9"
+                    style={
+                      getUserRoles() == 'Technical Administrator' ||
+                      getUserRoles() == 'PMK Administrator'
+                        ? { display: 'flex', marginLeft: '-15px' }
+                        : {
+                            pointerEvents: 'none',
+                            opacity: '0.5',
+                            display: 'flex',
+                            marginLeft: '-15px',
+                          }
+                    }
+                  >
+                    <Select
+                      className="col-md-3"
+                      options={registerationTypeOption}
+                      onChange={event => {
+                        //console.log(event.label + ' selected:' + event.value)
+                        setRegistrationType({
+                          value: event.value,
+                          label: event.label,
+                        })
+                      }}
+                      selected={registerationType}
+                      value={registerationType}
+                    />
+                  </div>
+                </div>
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
@@ -837,7 +892,7 @@ const AddEventScreen = () => {
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="email"
-                      placeholder="Company Email address"
+                      placeholder="Company E-Mail address"
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={companyEmail}
@@ -877,7 +932,7 @@ const AddEventScreen = () => {
                       : { width: '100%', padding: '5px' }
                   }
                 >
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
+                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
                     <label style={{ fontWeight: 'bold' }} className="col-md-4">
                       Hotel reservation required
                     </label>
@@ -890,6 +945,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '6%',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -912,6 +968,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '6%',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -929,7 +986,7 @@ const AddEventScreen = () => {
                     </div>
                   </div>
 
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
+                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
                     <label style={{ fontWeight: 'bold' }} className="col-md-5">
                       Assist with organization of shuttle transport
                     </label>
@@ -942,6 +999,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '6%',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -964,6 +1022,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '6%',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -981,7 +1040,7 @@ const AddEventScreen = () => {
                     </div>
                   </div>
 
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
+                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
                     <label style={{ fontWeight: 'bold' }} className="col-md-5">
                       Special food requirement
                     </label>
@@ -994,6 +1053,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '250px',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -1016,6 +1076,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '115px',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -1038,6 +1099,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '145px',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -1060,6 +1122,7 @@ const AddEventScreen = () => {
                         justifyContent: 'space-between',
                         width: '740px',
                         marginTop: '10px',
+                        marginLeft: '30px',
                       }}
                     >
                       <input
@@ -1074,15 +1137,17 @@ const AddEventScreen = () => {
                       <label class="form-check-label" for="no">
                         Other, please specify
                       </label>
-                      <input
-                        type="text"
-                        className="form-control "
-                        style={{ width: '500px' }}
-                        value={otherFoodRequirement}
-                        onChange={event => {
-                          setOtherFoodRequirement(event.target.value)
-                        }}
-                      />
+                      {foodRequirement.name == 'Other, please specify' ? (
+                        <input
+                          type="text"
+                          className="form-control "
+                          style={{ width: '500px' }}
+                          value={otherFoodRequirement}
+                          onChange={event => {
+                            setOtherFoodRequirement(event.target.value)
+                          }}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -1097,7 +1162,12 @@ const AddEventScreen = () => {
                 }}
               >
                 <button
-                  onClick={handleRegisterButton}
+                  onClick={() => {
+                    if (termsPolicy == true) handleRegisterButton()
+                    else {
+                      alert('Accept Term of service and policy')
+                    }
+                  }}
                   style={{
                     background: 'rgb(0, 79, 155)',
                     color: 'white',
@@ -1130,7 +1200,7 @@ const AddEventScreen = () => {
                   <label style={{ fontWeight: 'bold' }}>Registration can be cancelled untill</label>
                   <DatePicker
                     minDate={new Date()}
-                    className="col-md-3 form-control"
+                    className="col-md-8 form-control"
                     onChange={date => setCancelledDate(date)}
                     placeholderText="DDMMYYYY"
                     dateFormat="dd/M/Y"
@@ -1142,7 +1212,36 @@ const AddEventScreen = () => {
             </div>
 
             <div style={{ marginLeft: '30px', marginTop: '10px' }}>
-              <label>By signing up, you agree with Terms of service and Privacy Policy</label>
+              <div
+                className="col-md-3"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '740px',
+                  marginTop: '10px',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={termsPolicy}
+                  onChange={() => {
+                    setTermPolicy(!termsPolicy)
+                  }}
+                />
+              </div>
+              <label style={{ marginLeft: '20px' }}>
+                By signing up, you agree with{' '}
+                <label
+                  style={{ color: 'rgb(0, 79, 155)' }}
+                  onClick={() => {
+                    navigate('/privacy-policy')
+                  }}
+                >
+                  Terms of service and Privacy
+                </label>{' '}
+                Policy
+              </label>
             </div>
           </div>
         </div>
@@ -1169,6 +1268,15 @@ const AddEventScreen = () => {
                   ? setAlinkMessage
                   : dependOnButton == 'blink'
                   ? setBlinkMessage
+                  : null
+              }
+              value={
+                dependOnButton == 'agenda'
+                  ? agendaMessage
+                  : dependOnButton == 'alink'
+                  ? alinkMessage
+                  : dependOnButton == 'blink'
+                  ? blinkMessage
                   : null
               }
               closeModal={closeModal}
