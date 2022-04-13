@@ -162,30 +162,32 @@ const EventScreen = () => {
             >
               <thead>
                 <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="5" style={{ width: '40%' }}>
+                  <td colSpan="5">
                     <div
                       style={{
                         background: 'rgb(0, 79, 155)',
                         display: 'flex',
                         justifyContent: 'center',
                         float: 'left',
+                        paddingTop: '10px',
+                        width: '15%',
                       }}
                     >
                       <input
                         id="mainCheckbox"
                         type="checkbox"
-                        style={{ margin: '5px', marginLeft: '25px' }}
+                        style={{ marginLeft: '-35px' }}
                         onChange={event => handleMainCheckBox(event.target.checked)}
                       />
-                      <label
+                      <p
                         style={{
                           color: 'white',
                           fontSize: '20px',
-                          margin: '5px',
+                          width: '100%',
                         }}
                       >
                         All Trainings
-                      </label>
+                      </p>
                     </div>
                   </td>
                 </tr>
@@ -312,7 +314,7 @@ const EventScreen = () => {
                 : { display: 'none' }
             }
           >
-            <div>
+            <div style={{ marginLeft: '17%' }}>
               <button
                 onClick={() => {
                   openModalForMultipleEvent()
@@ -328,7 +330,7 @@ const EventScreen = () => {
                 Delete
               </button>
             </div>
-            <div style={{ marginTop: '5%' }}>
+            <div style={{ marginTop: '5%', marginLeft: '-16%' }}>
               <button
                 onClick={() => {
                   navigate('/event/add')
