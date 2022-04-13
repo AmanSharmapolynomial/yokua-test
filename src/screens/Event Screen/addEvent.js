@@ -30,6 +30,7 @@ const AddEventScreen = () => {
   const [trainingFormDisable, setTrainingFormDisable] = useState(false)
 
   //register in event state variable
+  const [userProfile, setUserProfile] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -77,11 +78,11 @@ const AddEventScreen = () => {
       : { value: 'external', label: 'External' }
   )
   const [eventOption, setEventOption] = useState({
-    value: 'site_event',
+    value: 'site event',
     label: 'Site Event',
   })
   const eventOptionList = [
-    { value: 'site_event', label: 'Site Event' },
+    { value: 'site event', label: 'Site Event' },
     { value: 'webinar', label: 'Webinar' },
   ]
   const registerationTypeOption = [
@@ -105,6 +106,8 @@ const AddEventScreen = () => {
     setRequirement(temp)
     if (eventId != null) {
       getEventDetailById(eventId)
+      //get Current User profile from token
+      getUserProfile()
       setTrainingFormDisable(true)
     }
   }, [])
@@ -132,7 +135,33 @@ const AddEventScreen = () => {
       height: '60%',
     },
   }
-
+  const getUserProfile = async () => {
+    await API.get('auth/profile_settings/')
+      .then(async data => {
+        //toast.success('')
+        if (data.status == 200 || data.status == 201) {
+          const result = data.data
+          //console.log(result)
+          setUserProfile(result)
+          if (
+            getUserRoles() == 'Technical Administrator' ||
+            getUserRoles() == 'PMK Administrator'
+          ) {
+            setFirstName(result['basic_profile'].full_name)
+            setCompanyEmail(result['basic_profile'].email)
+            setCompanyName(result['basic_profile'].company_name)
+          }
+        } else {
+          toast.error('Error while getting record')
+          navigate('/event/all')
+        }
+        //setReloadData(true)
+      })
+      .catch(error => {
+        toast.error('Error while getting record')
+        navigate('/event/all')
+      })
+  }
   const getEventDetailById = async id => {
     await API.get('training/training_view/' + id)
       .then(async data => {
@@ -215,6 +244,7 @@ const AddEventScreen = () => {
         cost: cost,
         max_attendees: maxAttendacees,
         remaining_seats: remainSeat,
+        event_type: eventOption.value,
         location: location,
         classification_level: classificationLevel.value,
         start_date: moment(startDate).format('YYYY-MM-DD'),
@@ -507,7 +537,9 @@ const AddEventScreen = () => {
                           //console.log(event.value)
                           if (event.value == 'webinar') {
                             setDisabled(true)
-                          } else if (event.value == 'site_event') {
+                            setMaxAttendeed(0)
+                            setRemainSeats(0)
+                          } else if (event.value == 'site event') {
                             setDisabled(false)
                           }
                           let obj = eventOptionList.filter(e => e.value == event.value)[0]
@@ -545,7 +577,16 @@ const AddEventScreen = () => {
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div
                     className="col-md-8"
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                    style={
+                      eventOption.value == 'webinar'
+                        ? {
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            pointerEvents: 'none',
+                            opacity: '0.4',
+                          }
+                        : { display: 'flex', justifyContent: 'space-between' }
+                    }
                   >
                     <div style={{ display: 'flex' }} className="col-md-8">
                       <label
@@ -853,6 +894,15 @@ const AddEventScreen = () => {
                           value: event.value,
                           label: event.label,
                         })
+                        if (event.value == 'internal') {
+                          setFirstName(userProfile['basic_profile'].full_name)
+                          setCompanyEmail(userProfile['basic_profile'].email)
+                          setCompanyName(userProfile['basic_profile'].company_name)
+                        } else {
+                          setFirstName('')
+                          setCompanyEmail('')
+                          setCompanyName('')
+                        }
                       }}
                       selected={registerationType}
                       value={registerationType}
