@@ -122,7 +122,7 @@ const EventScreen = () => {
       <Header isLogedIn={getToken()} />
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col event-setting-container pb-5">
-          <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+          <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
       {eventList.length > 0 ? (
@@ -306,7 +306,7 @@ const EventScreen = () => {
                 Delete
               </button>
             </div>
-            <div style={{ marginTop: '5%', padding: 0 }}>
+            <div style={{ padding: 0 }}>
               <button
                 onClick={() => {
                   navigate('/event/add')
