@@ -1252,9 +1252,8 @@ const AddEventScreen = () => {
                       navigate('/privacy-policy')
                     }}
                   >
-                    Terms of service and Privacy
-                  </label>{' '}
-                  Policy
+                    Terms of service and Privacy Policy
+                  </label>
                 </label>
               </div>
               <div
@@ -1306,6 +1305,7 @@ const AddEventScreen = () => {
                     Registration can be cancelled until
                   </label>
                   <DatePicker
+                    disabled
                     minDate={new Date()}
                     className="form-control"
                     onChange={date => setCancelledDate(date)}
