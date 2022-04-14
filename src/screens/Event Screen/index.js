@@ -164,13 +164,13 @@ const EventScreen = () => {
             >
               <thead>
                 <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="5">
+                  <td colSpan="6">
                     <div
                       style={{
                         background: 'rgb(0, 79, 155)',
                         display: 'flex',
                         justifyContent: 'center',
-                        float: 'left',
+                        alignItems: 'center',
                         paddingTop: '10px',
                         width: '15%',
                       }}
@@ -178,7 +178,6 @@ const EventScreen = () => {
                       <input
                         id="mainCheckbox"
                         type="checkbox"
-                        style={{ marginLeft: '-35px' }}
                         onChange={event => handleMainCheckBox(event.target.checked)}
                       />
                       <p
@@ -186,6 +185,8 @@ const EventScreen = () => {
                           color: 'white',
                           fontSize: '20px',
                           width: '100%',
+                          marginBottom: 0,
+                          marginLeft: '1rem',
                         }}
                       >
                         All Trainings
@@ -298,37 +299,18 @@ const EventScreen = () => {
           </div>
 
           <div
-            className="row"
+            className="row mx-2 mx-md-5"
             style={
               getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
                 ? {
                     display: 'flex',
                     justifyContent: 'space-around',
-                    marginLeft: '10%',
-                    marginBottom: '4%',
-                    marginRight: '10%',
+                    margin: '0 auto 32px',
                   }
                 : { display: 'none' }
             }
           >
-            <div style={{ marginLeft: '17%' }}>
-              <button
-                onClick={() => {
-                  openModalForMultipleEvent()
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                  float: 'right',
-                  marginTop: '20px',
-                }}
-              >
-                Delete
-              </button>
-            </div>
-            <div style={{ marginTop: '5%', marginLeft: '-16%' }}>
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
               <button
                 onClick={() => {
                   navigate('/event/add')
@@ -342,11 +324,21 @@ const EventScreen = () => {
               >
                 RYG Event creation
               </button>
+              <button
+                onClick={() => {
+                  openModalForMultipleEvent()
+                }}
+                style={{
+                  background: 'rgb(0, 79, 155)',
+                  color: 'white',
+                  border: '1px solid black',
+                  borderRadius: '3px',
+                }}
+              >
+                Delete
+              </button>
             </div>
           </div>
-
-          <br />
-          <br />
 
           <div>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
