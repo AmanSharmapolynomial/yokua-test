@@ -186,7 +186,7 @@ const EventScreen = () => {
                           fontSize: '20px',
                           width: '100%',
                           marginBottom: 0,
-                          marginLeft: '1rem',
+                          marginLeft: '25px',
                         }}
                       >
                         All Trainings
@@ -219,33 +219,32 @@ const EventScreen = () => {
                           />
                         </div>
                       </td>
-                      <td
-                        style={{
-                          width: '15%',
-                        }}
-                      >
+                      <td style={{ width: '20%', minWidth: '100px' }}>
                         <div
                           style={{
                             fontWeight: 'bold',
                             borderRight: '1px solid',
+                            paddingRight: '15px',
                           }}
                         >
-                          <span> {moment(startDate).format('ddd DD MMM')}</span>
-                          <br />
-                          <span>{moment(endDate).format('ddd DD MMM')}</span>
-                          <br />
-                          <span>{endDate.diff(startDate, 'days')} days</span>
+                          <p>{moment(startDate).format('ddd DD MMM')}</p>
+                          <p>{moment(endDate).format('ddd DD MMM')}</p>
+                          <p>{endDate.diff(startDate, 'days')} days</p>
                         </div>
                       </td>
                       <td className="tdWidth">
-                        <div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
                           <img
                             src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
                             style={{
-                              padding: '25px',
+                              marginRight: '15px',
                             }}
                           />
-                          {e.location}
+                          <span>
+                            <p>{e.training_name}</p>
+                            <p>{e.location}</p>
+                            <p>{e.classification_level} Training</p>
+                          </span>
                         </div>
                       </td>
                       <td className="tdWidth">
@@ -255,23 +254,25 @@ const EventScreen = () => {
                           }}
                         >
                           <label
-                            style={{ color: 'rgb(0, 79, 155)' }}
+                            style={{ color: 'rgb(0, 79, 155)', cursor: 'pointer' }}
                             onClick={() => {
                               navigate('/event/update/' + e.id)
                             }}
                           >
-                            + more information & Registration
+                            + more information &amp; Registration
                           </label>
                         </div>
                       </td>
                       <td className="tdWidth">
-                        <div
+                        <p
                           style={{
                             padding: '25px',
+                            wordWrap: 'break-word',
+                            overflowWrap: 'break-word',
                           }}
                         >
-                          {e.description}
-                        </div>
+                          {e.description.slice(0, 50) + '...'}
+                        </p>
                       </td>
                       <td className="tdFirstAndLastWidth">
                         <div

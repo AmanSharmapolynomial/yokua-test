@@ -53,3 +53,12 @@
   margin-top: 2rem;
   padding-bottom: 4rem;
 }
+
+table p {
+  text-transform: capitalize;
+  margin-bottom: 0;
+}
+
+.table td {
+  vertical-align: middle;
+}
