@@ -62,3 +62,14 @@ table p {
 .table td {
   vertical-align: middle;
 }
+
+.event-title {
+  background-color: rgb(0, 79, 155);
+  color: #fff;
+  margin-top: 0.5rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

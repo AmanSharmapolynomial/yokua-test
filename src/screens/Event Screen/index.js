@@ -143,11 +143,7 @@ const EventScreen = () => {
                 //console.log(calenderDate)
                 let dataList = eventList.filter(e => e.start_date === calenderDate)
                 return dataList.length > 0 ? (
-                  <div>
-                    <textarea className="eventPTag" disabled={true}>
-                      {dataList[0].description}
-                    </textarea>
-                  </div>
+                  <div className="event-title">{dataList[0].training_name}</div>
                 ) : null
               }}
             />
