@@ -158,6 +158,8 @@ const EventScreen = () => {
               responsive="sm"
               style={{
                 border: '1px solid',
+                margin: '20px auto 0',
+                maxHeight: '450px',
               }}
             >
               <thead>
@@ -183,13 +185,7 @@ const EventScreen = () => {
                   </td>
                 </tr>
               </thead>
-              <tbody
-                style={{
-                  display: 'block',
-                  maxHeight: '450px',
-                  overflow: 'auto',
-                }}
-              >
+              <tbody>
                 {eventList.map(e => {
                   let startDate = moment(e.start_date, 'yyyy-MM-DD')
                   let endDate = moment(e.end_date, 'yyyy-MM-DD')
