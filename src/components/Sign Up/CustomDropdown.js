@@ -26,7 +26,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
     }
 
     let payload = {}
-    if (currentEdit == 1) {
+    if (currentEdit === 1) {
       payload = {
         parent_company: name,
         child_company: '',
@@ -63,7 +63,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
       />
       <div className="yk-sign-up-dropdn">
         <div className="row">
-          <div className="yg-dropdown-overwrtie">
+          <div className="yg-dropdown-overwrtie p-0">
             <div className="btn-group">
               <button className="btn btn-secondary btn-main btn-sm" type="button">
                 {selectedCompany}
@@ -86,7 +86,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                       onClick={() => setSelectedCompany(item.company_name)}
                     >
                       {item.company_name}
-                      <i className="fa fa-chevron-right mt-1" aria-hidden="true"></i>
+                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                     </a>
                     {item.company_divisions.length > 0 && (
                       <ul className="dropdown-menu">
@@ -98,44 +98,6 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                             <a tabIndex="-1">{subc.sub_div_name}</a>
                           </li>
                         ))}
-                        {/* <li className="dropdown-item">
-                        {!isSubTopicAdd && (
-                          <Dropdown.Item
-                            className="yg-font-size-r"
-                            onClick={() => {
-                              setParentCompany(item.company_name)
-                              setCurrentEdit(2)
-                              setShow(true)
-                              // setIsSubTopicAdd(true)
-                            }}
-                          >
-                            Others
-                          </Dropdown.Item>
-                        )}
-                        {isSubTopicAdd && (
-                          <InputGroup className="yg-font-size-registrtion p-1 ">
-                            <FormControl
-                              className="yg-font-size"
-                              placeholder="Company"
-                              aria-label="Recipient's username"
-                              aria-describedby="basic-addon2"
-                              value={'topicName'}
-                              onChange={e => setTopicName(e.target.value)}
-                            />
-                            <Button
-                              onClick={() => {
-                                setIsSubTopicAdd(false)
-                                AddNewCompany()
-                              }}
-                              variant="outline-secondary"
-                              className="saveBtn"
-                              id="button-addon2"
-                            >
-                              Save
-                            </Button>
-                          </InputGroup>
-                        )}
-                      </li> */}
                       </ul>
                     )}
                   </li>
@@ -147,7 +109,6 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
                     onClick={() => {
                       setCurrentEdit(1)
                       setShow(true)
-                      // setIsTopicAdd(true)
                     }}
                   >
                     Others

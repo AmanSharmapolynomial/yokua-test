@@ -4,6 +4,7 @@ import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import './productcard.css'
+
 const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [preview, setPreview] = useState()

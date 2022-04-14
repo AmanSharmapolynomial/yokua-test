@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './style.css'
-
 import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable from 'react-data-table-component'
 import API from '../../../utils/api'
@@ -9,7 +8,6 @@ import CreateNewDomain from '../../../components/Modals/Create Domian Modal/Crea
 import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/DeleteDomainModal'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
-// import DeleteModal from '../../../components/Modals/DeleteModal'
 import Example from '../../../components/Modals/Delete Modal/DeleteModal'
 
 const UserApprovalScreen = () => {
@@ -37,11 +35,6 @@ const UserApprovalScreen = () => {
   const onChangeUserApproval = number => {
     setPageCallUserApproval(number)
   }
-
-  // /admin/user_approval
-
-  // refs
-
   const [contentRowApprovalTable, setContentRowApprovalTable] = useState([])
   const [contentRowDomainUserListTable, setContentRowDomainUserListTable] = useState([])
   const [domainList, setDoaminList] = useState([])
@@ -49,8 +42,6 @@ const UserApprovalScreen = () => {
   const [reloadTable, setReloadTable] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [DULfilter, setDULfilter] = useState(1)
-
-  const [pageIndex, setPageIndex] = useState({ page_index: 1 })
 
   const changePositionInArr = (arr, indexFrom, idx) => {
     console.log(arr, indexFrom, idx)

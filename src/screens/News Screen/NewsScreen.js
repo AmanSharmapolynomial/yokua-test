@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useDetectClickOutside } from 'react-detect-click-outside'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import NewsItem from '../../components/News Components/NewsItem'
 import PrimaryHeading from '../../components/Primary Headings'
@@ -65,7 +64,7 @@ const NewsScreen = () => {
     setLoading(true)
     API.post('news/', payload).then(data => {
       setLoading(false)
-      if (data.status == 200) {
+      if (data.status === 200) {
         setBackendData(data.data)
         setLoading(false)
 
@@ -111,7 +110,7 @@ const NewsScreen = () => {
       <Header
         isLogedIn={getToken()}
         isAdmin={
-          getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+          getUserRoles() === 'Technical Administrator' || getUserRoles() === 'PMK Administrator'
         }
       />
       <div className="row mx-2 mx-md-5 h-100">
@@ -147,7 +146,7 @@ const NewsScreen = () => {
                           key={index}
                           className="dropdown-item filter-item"
                           style={
-                            categoryFilter == category.id
+                            categoryFilter === category.id
                               ? {
                                   fontWeight: 'bold',
                                 }
@@ -197,12 +196,7 @@ const NewsScreen = () => {
                       }}
                     />
                   )}
-                  {/* <div
-                    className="filter-dropdown dropdown"
-                    style={{
-                      display: showFilterDropdown2 ? 'flex' : 'none',
-                    }}
-                  > */}
+
                   <div
                     className="dropdown-menu"
                     style={{
@@ -218,10 +212,10 @@ const NewsScreen = () => {
                             key={index}
                             className="dropdown-item filter-item"
                             style={{
-                              fontWeight: subCategoryFilter == category.id ? 'bold' : '300',
+                              fontWeight: subCategoryFilter === category.id ? 'bold' : '300',
                             }}
                             onClick={() => {
-                              if (subCategoryFilter == category.id) {
+                              if (subCategoryFilter === category.id) {
                                 toast.success('Sub Category filter removed')
                                 setSubCategoryFilter(null)
                               } else {
@@ -321,19 +315,6 @@ const NewsScreen = () => {
                     )}
                   </>
                 )}
-
-                {/*{newNews ? (*/}
-                {/*  <NewsItem*/}
-                {/*    data={undefined}*/}
-                {/*    changeType={true}*/}
-                {/*    category={backendData.categories}*/}
-                {/*    subCategory={backendData.sub_categories}*/}
-                {/*    saveAndExitAdd={saveAndExitAdd}*/}
-                {/*    setIsLoading={setIsLoading}*/}
-                {/*  />*/}
-                {/*) : (*/}
-                {/*  <></>*/}
-                {/*)}*/}
 
                 {(getUserRoles() == 'PMK Administrator' ||
                   getUserRoles() == 'PMK Content Manager' ||

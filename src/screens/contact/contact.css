@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap');
+
+
+.yk-admin-contact{letter-spacing: 1px;;}
+
+.yk-admin-contact .sm-h {
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.yk-admin-contact .img-box {
+
+    display: grid;
+    place-items: center;
+
+}
+
+.yk-admin-contact .img-box i {
+    font-size: 7rem;
+    color: #5a5a5a;
+}
+
+.cont-detail i {
+    display: block;
+
+    color: #004f9b;
+}
+
+.cont-detail p {
+    color: #000000;
+    font-weight: 600;
+    font-family: 'Noto Sans', sans-serif;
+
+}
+
+.yk-admin-contact .boxes .box-one {
+
+    width: 100%;
+}
+
+.yk-admin-contact .boxes .sm-txt {
+    font-size: 1rem;
+     
+    font-weight: 400;
+}
+
+.yk-admin-contact .boxes p {
+    line-height: 20px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.h {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.sm-img-box {
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+}
+
+/*--------------gen-product-start--------------*/
+
+.yk-admin-contact .gen-product {
+    box-shadow: 0px 0px 8px #c4c4c4;
+}
+
+.yk-admin-contact .gen-product .fa-picture-o {
+    font-size: 30px;
+    color: #5a5a5a;
+}
+
+.yk-admin-contact .product-item-name i {
+    font-size: 1vw;
+    color: #004f9b;
+    
+}
+
+
+
+.yk-admin-contact .product-item-name p {
+    color: #000000;
+    font-family: 'Noto Sans', sans-serif !important;
+}
+
+/*--------------Profile-brief-start--------------*/
+.profile-con{margin-left: -60px;;}
+.profile-circle{ width: 8vw; height: 8vw; border-radius:20vw; display: grid; place-items: center;}
+.profile-circle i{font-size: 4vw; color: #004f9b;}
+.profile-con i{font-size: 1vw;}
+.profile-con i{line-height: 26px; color: #004f9b;}
+.profile-con p{color: #000000; letter-spacing: 1px; font-family: 'Noto Sans', sans-serif; margin-left: 1rem;  }
+
+/*-----------pmk-product-----------*/
+
+.yk-admin-contact .pmk-product{box-shadow: 0px 0px 8px #c4c4c4;}
+
+.yk-admin-contact .pmk-product .sm-img-box i{font-size: 3vw; color:#004f9b;}
+.yk-admin-contact .pmk-product .pmk-product-detail{ font-size: 1vw; color: #000000; line-height: 36px;}
+.yk-admin-contact .pmk-product .pmk-product-detail i{ font-size: 1.4vw; color:#004f9b;}
+
+.yk-admin-contact .pmk-product .sm-img-box-two{width: 140px; height: auto;}
+
+/*------------product-handiling-------------*/
+
+.yk-admin-contact .product-handiling{ box-shadow: 0px 0px 8px #c4c4c4;}

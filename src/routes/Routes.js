@@ -1,8 +1,6 @@
-import React, { Children, useEffect, useState } from 'react'
-import AdminScreen from '../screens/Admin Screens/User List View'
+import React from 'react'
 import ProfileSettingScreen from '../screens/Profile Setting'
-import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom'
-import { Navigate } from 'react-router'
+import { Route, Routes } from 'react-router-dom'
 import UserListView from '../screens/Admin Screens/User List View'
 import UserApprovalScreen from '../screens/Admin Screens/User Approval Request'
 import SignIn from '../components/Sign In'
@@ -11,8 +9,6 @@ import InfoComponent from '../components/Info'
 import AdminScreens from '../screens/Admin Screens'
 import Forgot from '../components/Forgot Password/Forgot'
 import ChnagePassword from '../components/Forgot Password/ChangePassword'
-import { useStoreState } from 'easy-peasy'
-import { useLocation } from 'react-router'
 import HomeScreen from '../screens/Home Screen'
 import PrivateRoute from './PrivateRoute'
 import AuthLayout from '../layouts/AuthLayout'
@@ -20,11 +16,12 @@ import Header from '../components/Header'
 import TermsPolicy from '../components/Terms Privacy/TermsPolicy'
 import { getToken, getUserRoles } from '../utils/token'
 import NewsScreen from '../screens/News Screen/NewsScreen'
+import EventScreen from '../screens/Event Screen'
 import VerificationEmail from '../components/Modals/VerificationEmail/VerificationEmail'
+import AddEventScreen from '../screens/Event Screen/addEvent'
 import Footer from '../components/Footer'
 import CompanyNames from '../screens/Admin Screens/CompanyNames/CompanyNames'
 import Rotameter from '../screens/Admin Screens/Product Lines/Rotameter'
-import ApprovedTokuchus from '../screens/Admin Screens/Product Lines/Approved Tokuchus'
 import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 import ProductLine from '../screens/ProductLine/ProductLine'
 import SubProduct from '../screens/ProductLine/SubProduct'
@@ -32,10 +29,9 @@ import ProductDetail from '../screens/ProductLine/ProductDetail'
 import Tokuchu from '../screens/Admin Screens/Tokuchu/Tokuchu'
 import Impressum from '../components/Impressum'
 import PrivacyPolicy from '../components/PrivacyPolicy'
+import Contact from '../screens/contact/Contact'
 
 const Routing = () => {
-  // get User Login Info
-
   return (
     <React.Fragment>
       <Routes>
@@ -46,7 +42,6 @@ const Routing = () => {
             <React.Fragment>
               <Header />
               <AuthLayout />
-              {/* <Footer/> */}
             </React.Fragment>
           }
         >
@@ -60,7 +55,6 @@ const Routing = () => {
                     <SignIn />
                   </div>
                 </div>
-                {/* <Footer/> */}
               </React.Fragment>
             }
           />
@@ -138,7 +132,6 @@ const Routing = () => {
           element={
             <PrivateRoute>
               <AdminScreens />
-              {/* <Footer/> */}
             </PrivateRoute>
           }
         >
@@ -155,17 +148,13 @@ const Routing = () => {
             path="user/approval-request"
             element={
               <React.Fragment>
-                {/* {getUserRoles() == 'PMK Administrator' ? (
-                    <UserApprovalScreen />
-                  ) : (
-                    <Navigate to="/admin/user/list-view" />
-                  )} */}
                 <UserApprovalScreen />
               </React.Fragment>
             }
           />
+
+          {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
         </Route>
-        {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
         <Route
           path="news"
           element={
@@ -208,14 +197,14 @@ const Routing = () => {
             </PrivateRoute>
           }
         />
-        {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
-
-        {/* {(getUserRoles() == 'Technical Administrator') |
-          (getUserRoles() == 'PMK Administrator') ? (
-            <Route path="*" element={<Navigate to="/user/list-view" />} />
-          ) : (
-            <Route path="*" element={<Navigate to="/profile" />} />
-          )} */}
+        <Route
+          path="contact"
+          element={
+            <PrivateRoute>
+              <Contact />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/impressum"
           element={
@@ -254,7 +243,32 @@ const Routing = () => {
             </>
           }
         />
+        <Route
+          path="event/all"
+          element={
+            <PrivateRoute>
+              <EventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/add"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="event/update/:eventId"
+          element={
+            <PrivateRoute>
+              <AddEventScreen />
+            </PrivateRoute>
+          }
+        />
       </Routes>
+
       <Footer />
     </React.Fragment>
   )

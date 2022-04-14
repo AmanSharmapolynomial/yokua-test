@@ -18,13 +18,7 @@ API.interceptors.request.use(
   }
 )
 API.interceptors.response.use(null, e => {
-  // if ((e.response.status > 400 && e.response.status !== 401) || e.code === 'ECONNABORTED') {
-  //   throw new Error(e)
-  // }
-  console.log(e.response)
-
   if (e.response.status === 401) {
-    // alert('Please login again')
     removeToken()
     window.location.href = '/auth/login'
   }
@@ -50,10 +44,9 @@ API.interceptors.response.use(null, e => {
       toast.error(password1)
     })
     e.response.data.password2?.forEach(password2 => {
-      toast.error(email)
+      toast.error(password2)
     })
   }
-  // window.location.href = '/offline.html'
   return e
 })
 

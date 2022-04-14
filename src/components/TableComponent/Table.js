@@ -98,10 +98,6 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const callAddRowAPI = async () => {
     let data = []
     tableObject.forEach(col => {
-      // let values = []
-      // col.values.forEach(val => {
-      //   values.push(val.value)
-      // })
       data.push({ column_name: col.column_name /*, values*/ })
     })
 
@@ -153,7 +149,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   }
 
   useEffect(() => {
-    if (tableObject != {}) {
+    if (tableObject !== {}) {
       _setTableHeaders()
       _setTableData()
     }

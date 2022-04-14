@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SecondaryHeading from '../../../components/Secondary Heading'
-import DataTable, { createTheme } from 'react-data-table-component'
+import DataTable from 'react-data-table-component'
 import './style.css'
-import { Pagination, Select } from 'antd'
+import { Pagination } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import API from '../../../utils/api'
 import { toast } from 'react-toastify'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
-import { useDetectClickOutside } from 'react-detect-click-outside'
 import Plusicon from '../../../assets/Group 331.png'
 import Filtermg from '../../../assets/Icon awesome-filter.png'
-import Deleteimg from '../../../assets/Icon material-delete.png'
 import { useLoading } from '../../../utils/LoadingContext'
 
 const NEW_TO_OLD = 'latest'
@@ -26,7 +24,7 @@ const atz = 'A to Z'
 const zta = 'Z to A'
 
 const UserListView = () => {
-  const { loading, setLoading } = useLoading()
+  const { setLoading } = useLoading()
 
   // states
   const [openModal, setOpenModal] = useState(false)
@@ -117,7 +115,7 @@ const UserListView = () => {
               <span
                 style={{
                   color: 'rgba(0,0,0,0.87)',
-                  fontWeight: element.key == sortMethod.key ? '600' : '400',
+                  fontWeight: element.key === sortMethod.key ? '600' : '400',
                 }}
                 key={index}
                 className="dropdown-item filter-item"
@@ -161,19 +159,19 @@ const UserListView = () => {
     setLoading(true)
     const updatedUserList = backendData
     let sortedArray = []
-    if (sortMethod == NEW_TO_OLD) {
+    if (sortMethod === NEW_TO_OLD) {
       sortedArray = updatedUserList.sort((a, b) =>
         new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
       )
-    } else if (sortMethod == OLD_TO_NEW) {
+    } else if (sortMethod === OLD_TO_NEW) {
       sortedArray = updatedUserList.sort((a, b) =>
         new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
       )
-    } else if (sortMethod == A_TO_Z) {
+    } else if (sortMethod === A_TO_Z) {
       sortedArray = updatedUserList.sort((a, b) =>
         a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
       )
-    } else if (sortMethod == Z_TO_A) {
+    } else if (sortMethod === Z_TO_A) {
       sortedArray = updatedUserList.sort((a, b) =>
         a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
       )
@@ -188,10 +186,6 @@ const UserListView = () => {
     }
     setLoading(false)
   }
-
-  // useEffect(() => {
-  //   _handleSort(sortMethod)
-  // }, [sortMethod])
 
   useEffect(async () => {
     const payload = {
@@ -226,8 +220,6 @@ const UserListView = () => {
               setChangeModal('View')
               setOpenModal(true)
               setModalTitle('View user detail')
-              // document.body.scrollTop = 0
-              // document.documentElement.scrollTop = 0
               document.body.style.overflow = 'hidden'
               setDataToChange(index)
             }}
@@ -252,8 +244,8 @@ const UserListView = () => {
         companyEmail: data.email,
         status: data.status,
         company: data.company_name,
-        edit: (getUserRoles() == 'PMK Administrator' ||
-          getUserRoles() == 'Technical Administrator') && (
+        edit: (getUserRoles() === 'PMK Administrator' ||
+          getUserRoles() === 'Technical Administrator') && (
           <div className="edit-icons" key={index}>
             <i
               className="fa-solid fa-pen-to-square mx-2"
@@ -266,7 +258,6 @@ const UserListView = () => {
                 setOpenModal(true)
                 setModalTitle('Update user detail')
 
-                // document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setDataToChange(index)
@@ -295,7 +286,7 @@ const UserListView = () => {
 
   const conditionalRowStyles = [
     {
-      when: row => row.id % 2 != 0,
+      when: row => row.id % 2 !== 0,
       style: {},
     },
   ]
@@ -387,7 +378,7 @@ const UserListView = () => {
         payload = { ...payload, new_email: data.email }
       }
     }
-    if (payload.email_id != '') {
+    if (payload.email_id !== '') {
       const afterAddOrDeleteMsg = await API.post(
         changeModal === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
         payload
@@ -489,16 +480,6 @@ const UserListView = () => {
                   </span>
                 </div>
               </div>
-              {/* {getUserRoles() == 'PMK Administrator' && (
-              <i
-                className="fa-solid fa-trash mx-2"
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  deleteUser()
-                  setReloadTable(!reloadTable)
-                }}
-              />
-            )} */}
             </div>
             <div className="row">
               <div className="col-auto filter-checkbox d-flex align-items-center">
@@ -573,13 +554,12 @@ const UserListView = () => {
               onSelectedRowsChange={selectedRowsAction}
             />
           </div>
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'Technical Administrator') && (
+          {(getUserRoles() === 'PMK Administrator' ||
+            getUserRoles() === 'Technical Administrator') && (
             <div
               className="add_row"
               style={{ fontSize: '1rem', background: 'none' }}
               onClick={() => {
-                // document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setChangeModal('Add')
@@ -598,7 +578,6 @@ const UserListView = () => {
               {'Add'}
             </div>
           )}
-          {/* <Pagination noOfPages={10} /> */}
           <div className="pagination my-3">
             <Pagination
               showQuickJumper
