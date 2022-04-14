@@ -785,7 +785,10 @@ const AddEventScreen = () => {
               }}
             >
               <form style={{ alignItems: 'flex-start', width: '100%' }}>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                <div
+                  className="row"
+                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
+                >
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
@@ -799,7 +802,10 @@ const AddEventScreen = () => {
                     />
                   </div>
                 </div>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                <div
+                  className="row"
+                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
+                >
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
@@ -814,7 +820,10 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                <div
+                  className="row"
+                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
+                >
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="email"
@@ -830,7 +839,10 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                <div
+                  className="row"
+                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
+                >
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
@@ -863,7 +875,10 @@ const AddEventScreen = () => {
                       Hotel reservation required
                     </label>
                   </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
+                  <div
+                    className="row"
+                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                  >
                     <div
                       className="col-md-3"
                       style={{
@@ -915,7 +930,10 @@ const AddEventScreen = () => {
                       Assist with organization of shuttle transport
                     </label>
                   </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
+                  <div
+                    className="row"
+                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                  >
                     <div
                       className="col-md-3"
                       style={{
@@ -967,7 +985,10 @@ const AddEventScreen = () => {
                       Special food requirement
                     </label>
                   </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
+                  <div
+                    className="row"
+                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                  >
                     <div
                       className="col-md-3"
                       style={{
@@ -1038,9 +1059,8 @@ const AddEventScreen = () => {
                       className="col-md-3"
                       style={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        alignItems: 'center',
                         width: '740px',
-                        marginTop: '10px',
                       }}
                     >
                       <input
@@ -1058,7 +1078,7 @@ const AddEventScreen = () => {
                       <input
                         type="text"
                         className="form-control "
-                        style={{ width: '500px' }}
+                        style={{ paddingTop: 0, paddingBottom: 0, marginLeft: '16px' }}
                         value={otherFoodRequirement}
                         onChange={event => {
                           setOtherFoodRequirement(event.target.value)
@@ -1099,19 +1119,23 @@ const AddEventScreen = () => {
                           opacity: '0.4',
                           display: 'flex',
                           justifyContent: 'space-between',
+                          alignItems: 'center',
                           width: '45%',
                         }
                       : {
                           display: 'flex',
                           justifyContent: 'space-between',
+                          alignItems: 'center',
                           width: '45%',
                         }
                   }
                 >
-                  <label style={{ fontWeight: 'bold' }}>Registration can be cancelled untill</label>
+                  <label style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                    Registration can be cancelled until
+                  </label>
                   <DatePicker
                     minDate={new Date()}
-                    className="col-md-3 form-control"
+                    className="form-control"
                     onChange={date => setCancelledDate(date)}
                     placeholderText="DDMMYYYY"
                     dateFormat="dd/M/Y"
