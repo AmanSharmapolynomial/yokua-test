@@ -27,7 +27,7 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`col-12 col-md card shadow ${
+      className={`product-card col-12 col-md card shadow ${
         index % 2 === 0 ? 'mr-md-5' : 'ms-md-5'
       } px-2 py-3 mt-3 mt-md-0`}
     >

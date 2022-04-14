@@ -1,7 +1,7 @@
-textarea {
+.product-card textarea {
   resize: none !important;
 }
-input {
+.product-card input {
   width: 100%;
 }
 .img-thumbnail {
