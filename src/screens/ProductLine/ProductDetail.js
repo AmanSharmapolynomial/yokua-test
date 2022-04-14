@@ -154,7 +154,7 @@ const ProductDetail = () => {
               ></i>
             </div>
           </div>
-          <div className="row">
+          <div>
             {/* <span className="flex-fill">{ele.title}</span> */}
             <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
               Download

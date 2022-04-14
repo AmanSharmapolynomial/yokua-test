@@ -90,7 +90,7 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
             {isEditable ? (
               <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
             ) : (
-              <div className="col-6 d-flex align-items-center">{item.description}</div>
+              <div className="col-6 d-flex align-items-center" style={{wordBreak:'break-all'}} >{item.description}</div>
             )}
           </div>
         </div>
