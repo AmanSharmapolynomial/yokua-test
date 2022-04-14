@@ -526,7 +526,7 @@ const AddEventScreen = () => {
 
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-3">
+                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
                       Type of Events
                     </label>
                     <Select
@@ -571,7 +571,7 @@ const AddEventScreen = () => {
                       </label>
                       <input
                         type="text"
-                        className="form-control col-md-4"
+                        className="form-control col-md-8"
                         pattern="[0-9]"
                         style={{
                           width: '70px',
@@ -599,7 +599,7 @@ const AddEventScreen = () => {
                       </label>
                       <input
                         type="text"
-                        className="form-control col-md-4"
+                        className="form-control col-md-8"
                         style={{
                           width: '70px',
                           float: 'left',
@@ -884,17 +884,16 @@ const AddEventScreen = () => {
                     style={
                       getUserRoles() == 'Technical Administrator' ||
                       getUserRoles() == 'PMK Administrator'
-                        ? { display: 'flex', marginLeft: '-15px' }
+                        ? { display: 'flex' }
                         : {
                             pointerEvents: 'none',
                             opacity: '0.5',
                             display: 'flex',
-                            marginLeft: '-15px',
                           }
                     }
                   >
                     <Select
-                      className="col-md-3"
+                      className="select-box"
                       options={registerationTypeOption}
                       onChange={event => {
                         //console.log(event.label + ' selected:' + event.value)
@@ -931,10 +930,7 @@ const AddEventScreen = () => {
                     />
                   </div>
                 </div>
-                <div
-                  className="row"
-                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
-                >
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
@@ -949,10 +945,7 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div
-                  className="row"
-                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
-                >
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="email"
@@ -968,10 +961,7 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div
-                  className="row"
-                  style={{ width: '100%', marginTop: '10px', marginLeft: '5px' }}
-                >
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <input
                       type="text"
