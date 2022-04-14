@@ -1061,6 +1061,8 @@ const AddEventScreen = () => {
                         display: 'flex',
                         alignItems: 'center',
                         width: '740px',
+                        marginTop: '10px',
+                        position: 'relative',
                       }}
                     >
                       <input
@@ -1075,15 +1077,17 @@ const AddEventScreen = () => {
                       <label class="form-check-label" for="no">
                         Other, please specify
                       </label>
-                      <input
-                        type="text"
-                        className="form-control "
-                        style={{ paddingTop: 0, paddingBottom: 0, marginLeft: '16px' }}
-                        value={otherFoodRequirement}
-                        onChange={event => {
-                          setOtherFoodRequirement(event.target.value)
-                        }}
-                      />
+                      {foodRequirement.name == 'Other, please specify' && (
+                        <input
+                          type="text"
+                          className="form-control "
+                          style={{ position: 'absolute', left: '200px' }}
+                          value={otherFoodRequirement}
+                          onChange={event => {
+                            setOtherFoodRequirement(event.target.value)
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
