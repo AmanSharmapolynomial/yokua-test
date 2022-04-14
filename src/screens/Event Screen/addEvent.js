@@ -1221,6 +1221,42 @@ const AddEventScreen = () => {
               </form>
             </div>
             <div className="row">
+              <div style={{ marginLeft: '25px', marginTop: '10px' }}>
+                <div
+                  className="col-md-4"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '740px',
+                    marginTop: '10px',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    checked={termsPolicy}
+                    onChange={() => {
+                      setTermPolicy(!termsPolicy)
+                    }}
+                  />
+                </div>
+                <label style={{ marginLeft: '20px' }}>
+                  By signing up, you agree with{' '}
+                  <label
+                    style={{
+                      color: 'rgb(0, 79, 155)',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                    }}
+                    onClick={() => {
+                      navigate('/privacy-policy')
+                    }}
+                  >
+                    Terms of service and Privacy
+                  </label>{' '}
+                  Policy
+                </label>
+              </div>
               <div
                 style={{
                   width: '80%',
@@ -1241,7 +1277,7 @@ const AddEventScreen = () => {
                     border: '1px solid black',
                     borderRadius: '3px',
                     fontSize: '13px',
-                    marginLeft: '30px',
+                    marginLeft: '20px',
                   }}
                 >
                   Register
@@ -1279,39 +1315,6 @@ const AddEventScreen = () => {
                   />
                 </div>
               </div>
-            </div>
-
-            <div style={{ marginLeft: '30px', marginTop: '10px' }}>
-              <div
-                className="col-md-3"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  width: '740px',
-                  marginTop: '10px',
-                }}
-              >
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  checked={termsPolicy}
-                  onChange={() => {
-                    setTermPolicy(!termsPolicy)
-                  }}
-                />
-              </div>
-              <label style={{ marginLeft: '20px' }}>
-                By signing up, you agree with{' '}
-                <label
-                  style={{ color: 'rgb(0, 79, 155)' }}
-                  onClick={() => {
-                    navigate('/privacy-policy')
-                  }}
-                >
-                  Terms of service and Privacy
-                </label>{' '}
-                Policy
-              </label>
             </div>
           </div>
         </div>
