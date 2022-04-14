@@ -186,7 +186,7 @@ const EventScreen = () => {
               <tbody
                 style={{
                   display: 'block',
-                  height: '450px',
+                  maxHeight: '450px',
                   overflow: 'auto',
                 }}
               >
