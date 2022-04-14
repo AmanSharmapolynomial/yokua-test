@@ -293,7 +293,7 @@ const EventScreen = () => {
               marginRight: '10%',
             }}
           >
-            <div>
+            <div style={{ padding: 0 }}>
               <button
                 onClick={() => {
                   openModalForMultipleEvent()
@@ -304,12 +304,13 @@ const EventScreen = () => {
                   border: '1px solid black',
                   borderRadius: '3px',
                   float: 'right',
+                  marginTop: '20px',
                 }}
               >
                 Delete
               </button>
             </div>
-            <div style={{ marginTop: '5%' }}>
+            <div style={{ marginTop: '5%', padding: 0 }}>
               <button
                 onClick={() => {
                   navigate('/event/add')
