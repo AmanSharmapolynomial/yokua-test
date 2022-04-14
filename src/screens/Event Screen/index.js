@@ -268,6 +268,7 @@ const EventScreen = () => {
                               onClick={() => {
                                 openModal(e.id)
                               }}
+                              style={{ width: '1.5rem', cursor: 'pointer' }}
                             />
                           ) : null}
                         </div>
