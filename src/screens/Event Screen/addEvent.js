@@ -328,8 +328,7 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="text"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      className="form-control"
                       onChange={event => {
                         setTrainingName(event.target.value)
                       }}
@@ -344,7 +343,7 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={new Date()}
-                      className="col-md-3 form-control"
+                      className="form-control"
                       onChange={date => {
                         setStartDate(date)
                         if (endDate != null || endDate != undefined) {
@@ -354,7 +353,6 @@ const AddEventScreen = () => {
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={startDate}
-                      style={{ width: '200px' }}
                       open={isStartDateOpen}
                       onSelect={() => {
                         setIsStartDateOpen(false)
@@ -386,7 +384,7 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={startDate}
-                      className="col-md-3 form-control"
+                      className="form-control"
                       onChange={date => {
                         setEndDate(date)
                         if (startDate != null || startDate != undefined) {
@@ -396,7 +394,6 @@ const AddEventScreen = () => {
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={endDate}
-                      style={{ width: '200px' }}
                       open={isEndDateOpen}
                       onSelect={() => {
                         setIsEndDateOpen(false)
@@ -434,11 +431,11 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="number"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      className="form-control"
                       onChange={event => {
                         setDuration(event.target.value)
                       }}
+                      disabled
                       value={duration}
                     />
                   </div>
@@ -450,8 +447,7 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="number"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      className="form-control"
                       onChange={event => {
                         setCost(event.target.value)
                       }}
@@ -483,7 +479,7 @@ const AddEventScreen = () => {
                       Type of Events
                     </label>
                     <Select
-                      className="col-md-2"
+                      className="select-box"
                       options={eventOptionList}
                       onChange={event => {
                         //console.log(event.value)
@@ -498,57 +494,40 @@ const AddEventScreen = () => {
                       }}
                       value={eventOption}
                     />
-                    <div className="col-md-10">
-                      <button
-                        onClick={event => {
-                          event.preventDefault()
-                          setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
-                        }}
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                          borderRadius: '3px',
-                          fontSize: '13px',
-                          float: 'right',
-                          padding: '1%',
-                        }}
-                      >
-                        Registered attendees list
-                      </button>
-                    </div>
                   </div>
                 </div>
 
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div
-                    className="col-md-8"
                     style={{ display: 'flex', justifyContent: 'space-between' }}
+                    className="col-md-8"
                   >
-                    <div style={{ display: 'flex' }} className="col-md-8">
+                    <div
+                      style={{ display: 'inline-flex', alignItems: 'center', padding: 0 }}
+                      className="col-md-8"
+                    >
                       <label style={{ fontWeight: 'bold' }} className="col-md-6">
                         Max attendees
                       </label>
                       <input
                         type="number"
-                        className="form-control col-md-4"
-                        style={{ width: '70px', float: 'left' }}
+                        className="form-control col-md-8"
                         onChange={event => {
                           setMaxAttendeed(event.target.value)
                         }}
                         value={maxAttendacees}
                       />
                     </div>
-                    <div style={{ display: 'flex' }} className="col-md-8">
-                      <label style={{ fontWeight: 'bold' }}>Remaining Seats</label>
+                    <div
+                      style={{ display: 'inline-flex', alignItems: 'center' }}
+                      className="col-md-8"
+                    >
+                      <label style={{ fontWeight: 'bold' }} className="col-md-6">
+                        Remaining Seats
+                      </label>
                       <input
                         type="number"
-                        className="form-control col-md-4"
-                        style={{
-                          width: '70px',
-                          float: 'left',
-                          marginLeft: '45px',
-                        }}
+                        className="form-control col-md-8"
                         onChange={event => {
                           setRemainSeats(event.target.value)
                         }}
@@ -564,6 +543,7 @@ const AddEventScreen = () => {
                       Classification level
                     </label>
                     <Select
+                      className="select-box"
                       options={classificationOption}
                       onChange={event => {
                         //console.log(event.label + ' selected:' + event.value)
@@ -584,6 +564,7 @@ const AddEventScreen = () => {
                       display: 'flex',
                       justifyContent: 'space-between',
                       width: '40%',
+                      margin: '10px 15px 0',
                     }}
                   >
                     <button
@@ -643,22 +624,17 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div style={{ width: '100%', marginTop: '40px' }}>
+                <div style={{ width: '100%', marginTop: '40px', padding: '0 15px' }}>
                   <h4>Requirements for the event</h4>
-                  {requirement.map(e => {
-                    return (
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <li style={{ fontSize: '25px', color: 'rgb(0, 79, 155)' }}></li>
-                        <label
-                          onMouseOver={() => {
-                            console.log('hover_')
-                          }}
-                        >
-                          {e}
-                        </label>
-                      </div>
-                    )
-                  })}
+                  <ul class="requirements-list">
+                    {requirement.map(e => {
+                      return (
+                        <li style={{ fontSize: '16px' }}>
+                          <label>{e}</label>
+                        </li>
+                      )
+                    })}
+                  </ul>
 
                   <div>
                     {moreInputFlag == true ? (
@@ -668,8 +644,11 @@ const AddEventScreen = () => {
                           setMoreInputFlag(!moreInputFlag)
                         }}
                       >
-                        <i style={{ color: 'rgb(0, 79, 155)' }} class="fa-solid fa-circle-plus" />
-                        more
+                        <i
+                          style={{ color: 'rgb(0, 79, 155)', marginRight: '0.5rem' }}
+                          class="fa-solid fa-circle-plus"
+                        />
+                        <span>more</span>
                       </h6>
                     ) : (
                       <div
@@ -732,12 +711,30 @@ const AddEventScreen = () => {
                   >
                     Publish
                   </button>
+                  <button
+                    onClick={event => {
+                      event.preventDefault()
+                      setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
+                    }}
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      color: 'white',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                      fontSize: '13px',
+                      float: 'right',
+                      padding: '5px',
+                      marginTop: '15px',
+                    }}
+                  >
+                    Registered attendees list
+                  </button>
                 </div>
               </form>
 
               <div
                 style={{
-                  display: 'inline',
+                  width: '50%',
                 }}
               >
                 <div
@@ -751,9 +748,9 @@ const AddEventScreen = () => {
                   <textarea
                     style={{ marginTop: '10px' }}
                     rows="8"
-                    cols="30"
+                    // cols="30"
                     placeholder="Enter description..."
-                    className="form-control"
+                    className="form-control description-box"
                     onChange={event => {
                       setDescription(event.target.value)
                     }}
@@ -1119,7 +1116,6 @@ const AddEventScreen = () => {
                     placeholderText="DDMMYYYY"
                     dateFormat="dd/M/Y"
                     selected={cancelledDate}
-                    style={{ width: '200px' }}
                   />
                 </div>
               </div>
@@ -1162,9 +1158,6 @@ const AddEventScreen = () => {
         </Modal>
       </div>
 
-      {
-        // for Registered attendees list
-      }
       <div>
         <Modal
           isOpen={registeredAttendeesListModalOpen}
