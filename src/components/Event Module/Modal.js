@@ -78,7 +78,7 @@ const MyModel = props => {
               borderRadius: '3px',
             }}
           >
-            Send
+            Save
           </button>
         </div>
       </div>
