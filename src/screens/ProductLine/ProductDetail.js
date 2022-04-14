@@ -296,7 +296,7 @@ const ProductDetail = () => {
         <div className="row">
           {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
         </div>
-        <div className="row mt-3">
+        <div className="mt-3">
           <button
             className="btn create-domain-btn"
             onClick={() => {
@@ -790,7 +790,7 @@ const ProductDetail = () => {
           ) : (
             <>
               <div className="row">{renderComponents()}</div>
-              <div className="row mt-2">
+              <div className="mt-2 d-flex justify-content-center">
                 <button
                   className="btn create-domain-btn mx-auto"
                   onClick={() => {
