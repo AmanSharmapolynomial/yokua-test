@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import './style.css'
 
-const Dropdown = ({ value, data, userData, addOrEditUser }) => {
+const Dropdown = ({ value, data, userData, addOrEditUser, changeIndex }) => {
   return (
     <div className="dropdown">
       <div
@@ -23,6 +23,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
             key={index}
             className="dropdown-item filter-item"
             onClick={() => {
+              changeIndex()
               const payload = {
                 email: userData.email,
                 firstName: userData.first_name,

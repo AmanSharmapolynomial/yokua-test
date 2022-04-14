@@ -286,6 +286,7 @@ const NewsScreen = () => {
                           setIsLoading={setIsLoading}
                           refreshPage={() => getAllNews(payload)}
                           archivedFilter={archivedFilter}
+                          index={index}
                         />
                       )
                     } else {
@@ -305,6 +306,8 @@ const NewsScreen = () => {
                           setIsLoading={setIsLoading}
                           refreshPage={() => getAllNews(payload)}
                           archivedFilter={archivedFilter}
+                          key={index}
+                          index={index}
                         />
                       )
                     }

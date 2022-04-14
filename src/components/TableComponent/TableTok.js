@@ -122,7 +122,7 @@ export default ({ tableObject, setShowDeleteModal, updateTableData }) => {
     }
 
     debugger
-    console.log('Seomhkirngiuerbn', item['Tokachu'])
+    console.log('Seomhkirngiuerbn', item['Tokuchu'])
     updateTableData(item['Tokuchu'], dataArray, tableObject.id)
   }
 

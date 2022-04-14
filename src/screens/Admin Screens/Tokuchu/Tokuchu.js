@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/api'
-import './Tokachu.css'
+import './Tokuchu.css'
 import TokochuTable from '../../../components/TableComponent/TokochuTable'
 import PrimaryHeading from '../../../components/Primary Headings'
 import { toast } from 'react-toastify'
@@ -253,7 +253,7 @@ export default () => {
   return (
     <>
       <DeleteModal
-        key={'Tokachu Delete'}
+        key={'Tokuchu Delete'}
         show={showDeleteModal}
         setShow={setShowDeleteModal}
         data={''}
@@ -271,133 +271,137 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="tokachu-main row mx-5">
-        <div className="profile-setting-container col center md-3">
+      <div className="row mx-2 mx-md-5 h-100">
+        <div className="col center py-md-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
-          <div className="container">
-            <div className="toku-dropdn">
-              <div className="row">
-                <div className="dropdown p-0">
-                  <div className="btn-group">
-                    <button
-                      className="btn btn-secondary btn-main btn-sm"
-                      type="button"
-                      data-toggle="dropdown"
+          <div className="toku-dropdn mt-4">
+            <div className="dropdown p-0">
+              <div className="btn-group">
+                <button
+                  className="btn btn-secondary btn-main btn-sm"
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-display="static"
+                  aria-hidden="true"
+                  data-toggle="dropdown"
+                >
+                  Choose your Product line
+                </button>
+                <button
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-display="static"
+                  aria-hidden="true"
+                  data-toggle="dropdown"
+                  type="button"
+                  className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
+                >
+                  <span className="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul
+                  className="dropdown-menu multi-level"
+                  role="menu"
+                  aria-labelledby="dropdownMenu"
+                >
+                  {products.map((item, index) => (
+                    <li
+                      className="dropdown-submenu"
+                      key={item.name}
+                      onMouseEnter={() => {
+                        _getSubProducts(item.id)
+                      }}
                     >
-                      Choose your Product line
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-secondary btn-arrow dropdown-toggle dropdown-toggle-split"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <span className="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul
-                      className="dropdown-menu multi-level"
-                      role="menu"
-                      aria-labelledby="dropdownMenu"
-                    >
-                      {products.map((item, index) => (
-                        <li
-                          className="dropdown-submenu"
-                          key={item.name}
-                          onMouseEnter={() => {
-                            _getSubProducts(item.id)
-                          }}
-                        >
-                          <a className="dropdown-item" tabIndex="-1">
-                            {item.name}{' '}
-                            <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
-                          </a>
-                          <ul className="dropdown-menu">
-                            {subProductLoading && (
+                      <a className="dropdown-item" tabIndex="-1">
+                        {item.name} <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                      </a>
+                      <ul className="dropdown-menu">
+                        {subProductLoading && (
+                          <li className="dropdown-submenu">
+                            <li className="dropdown-submenu">
+                              <a className="dropdown-item">Please wait Fetching ..</a>
+                            </li>
+                          </li>
+                        )}
+
+                        {item.subProducts.length > 0 &&
+                          item.subProducts.map((sub, i) => (
+                            <li
+                              className="dropdown-submenu"
+                              key={i}
+                              onMouseEnter={() => {
+                                _getProductItems(sub.id, item.id)
+                              }}
+                            >
                               <li className="dropdown-submenu">
-                                <li className="dropdown-submenu">
-                                  <a className="dropdown-item">Please wait Fetching ..</a>
-                                </li>
+                                <a className="dropdown-item">
+                                  {sub.name}
+                                  <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                                </a>
+                                <ul className="dropdown-menu">
+                                  {productItemLoading && (
+                                    <li className="dropdown-item" key={'Sub Fetching'}>
+                                      <a>Please wait Fetching</a>
+                                    </li>
+                                  )}
+                                  {sub.productItems.map(prod => (
+                                    <li
+                                      className="dropdown-item"
+                                      key={prod.name}
+                                      onClick={e => {
+                                        e.stopPropagation()
+                                        _getDetails(prod.id)
+                                      }}
+                                    >
+                                      <a>{prod.name}</a>
+                                    </li>
+                                  ))}
+
+                                  {/*<div className="col d-flex justify-content-center">*/}
+                                  {/*  <button*/}
+                                  {/*    className="btn yg-font-size"*/}
+                                  {/*    onClick={() => {*/}
+                                  {/*      setParentId(sub.id)*/}
+                                  {/*      setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)*/}
+                                  {/*      setShowAddModal(true)*/}
+                                  {/*    }}*/}
+                                  {/*  >*/}
+                                  {/*    Add*/}
+                                  {/*  </button>*/}
+                                  {/*</div>*/}
+                                </ul>
                               </li>
-                            )}
+                            </li>
+                          ))}
 
-                            {item.subProducts.length > 0 &&
-                              item.subProducts.map((sub, i) => (
-                                <li
-                                  className="dropdown-submenu"
-                                  key={i}
-                                  onMouseEnter={() => {
-                                    _getProductItems(sub.id, item.id)
-                                  }}
-                                >
-                                  <li className="dropdown-submenu">
-                                    <a className="dropdown-item">
-                                      {sub.name}
-                                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
-                                    </a>
-                                    <ul className="dropdown-menu">
-                                      {productItemLoading && (
-                                        <li className="dropdown-item" key={'Sub Fetching'}>
-                                          <a>Please wait Fetching</a>
-                                        </li>
-                                      )}
-                                      {sub.productItems.map(prod => (
-                                        <li
-                                          className="dropdown-item"
-                                          key={prod.name}
-                                          onClick={() => _getDetails(prod.id)}
-                                        >
-                                          <a>{prod.name}</a>
-                                        </li>
-                                      ))}
+                        {/*<div className="col d-flex justify-content-center">*/}
+                        {/*  <button*/}
+                        {/*    className="btn yg-font-size"*/}
+                        {/*    onClick={() => {*/}
+                        {/*      setParentId(item.id)*/}
+                        {/*      setCurrentEdit(EDIT_SUB_PRODUCT)*/}
+                        {/*      setShowAddModal(true)*/}
+                        {/*    }}*/}
+                        {/*  >*/}
+                        {/*    Add*/}
+                        {/*  </button>*/}
+                        {/*</div>*/}
+                      </ul>
+                    </li>
+                  ))}
 
-                                      {/*<div className="col d-flex justify-content-center">*/}
-                                      {/*  <button*/}
-                                      {/*    className="btn yg-font-size"*/}
-                                      {/*    onClick={() => {*/}
-                                      {/*      setParentId(sub.id)*/}
-                                      {/*      setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)*/}
-                                      {/*      setShowAddModal(true)*/}
-                                      {/*    }}*/}
-                                      {/*  >*/}
-                                      {/*    Add*/}
-                                      {/*  </button>*/}
-                                      {/*</div>*/}
-                                    </ul>
-                                  </li>
-                                </li>
-                              ))}
-
-                            {/*<div className="col d-flex justify-content-center">*/}
-                            {/*  <button*/}
-                            {/*    className="btn yg-font-size"*/}
-                            {/*    onClick={() => {*/}
-                            {/*      setParentId(item.id)*/}
-                            {/*      setCurrentEdit(EDIT_SUB_PRODUCT)*/}
-                            {/*      setShowAddModal(true)*/}
-                            {/*    }}*/}
-                            {/*  >*/}
-                            {/*    Add*/}
-                            {/*  </button>*/}
-                            {/*</div>*/}
-                          </ul>
-                        </li>
-                      ))}
-
-                      {/*<div className="col d-flex justify-content-center">*/}
-                      {/*  <button*/}
-                      {/*    className="btn yg-font-size"*/}
-                      {/*    onClick={() => {*/}
-                      {/*      setCurrentEdit(EDIT_PRODUCT)*/}
-                      {/*      setShowAddModal(true)*/}
-                      {/*    }}*/}
-                      {/*  >*/}
-                      {/*    Add*/}
-                      {/*  </button>*/}
-                      {/*</div>*/}
-                    </ul>
-                  </div>
-                </div>
+                  {/*<div className="col d-flex justify-content-center">*/}
+                  {/*  <button*/}
+                  {/*    className="btn yg-font-size"*/}
+                  {/*    onClick={() => {*/}
+                  {/*      setCurrentEdit(EDIT_PRODUCT)*/}
+                  {/*      setShowAddModal(true)*/}
+                  {/*    }}*/}
+                  {/*  >*/}
+                  {/*    Add*/}
+                  {/*  </button>*/}
+                  {/*</div>*/}
+                </ul>
               </div>
             </div>
           </div>

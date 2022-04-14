@@ -86,9 +86,9 @@ a {
   background: url('../../assets/message_icon.svg');
 }
 @media (min-width: 768px) {
-  .navbar-expand-md .navbar-nav .dropdown-menu {
+  /* .navbar-expand-md .navbar-nav .dropdown-menu {
     margin-top: 4.8rem;
-  }
+  } */
   .nav-link,
   .logout-btn {
     color: white !important;

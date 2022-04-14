@@ -160,52 +160,39 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   }, [tableObject])
 
   return (
-    <>
-      {tableObject != {} && (
-        <div className="ml-auto mt-4">
-          <i className="fa-solid fa-pen-to-square mr-2"></i>
-          <i
-            className="fa-solid fa-trash ml-2"
-            onClick={() => {
-              setShowDeleteModal(true)
+    <div className="border w-100 mt-4">
+      <DataTable
+        pagination={false}
+        paginationPerPage={false}
+        fixedHeader
+        columns={tableHeader}
+        data={tableRows}
+        customStyles={customStyles}
+        persistTableHead
+        // conditionalRowStyles={conditionalRowStyles}
+        // selectableRows
+        // onSelectedRowsChange={selectedRowsActionUA}
+      />
+      {isEditable ? (
+        renderDummyRow()
+      ) : (
+        <div
+          role={'button'}
+          className="add-row"
+          onClick={() => {
+            setIsEditable(true)
+          }}
+        >
+          <img
+            src={Plusicon}
+            style={{
+              width: '16px',
+              marginRight: '12px',
             }}
-          ></i>
+          />
+          Add
         </div>
       )}
-      <div className="border w-100">
-        <DataTable
-          pagination={false}
-          paginationPerPage={false}
-          fixedHeader
-          columns={tableHeader}
-          data={tableRows}
-          customStyles={customStyles}
-          persistTableHead
-          // conditionalRowStyles={conditionalRowStyles}
-          // selectableRows
-          // onSelectedRowsChange={selectedRowsActionUA}
-        />
-        {isEditable ? (
-          renderDummyRow()
-        ) : (
-          <div
-            role={'button'}
-            className="add-row"
-            onClick={() => {
-              setIsEditable(true)
-            }}
-          >
-            <img
-              src={Plusicon}
-              style={{
-                width: '16px',
-                marginRight: '12px',
-              }}
-            />
-            Add
-          </div>
-        )}
-      </div>
-    </>
+    </div>
   )
 }

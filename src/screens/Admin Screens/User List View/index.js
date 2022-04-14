@@ -240,7 +240,12 @@ const UserListView = () => {
           <Dropdown
             value={data.role}
             data={dropdownData}
-            addOrEditUser={addOrEditUser}
+            changeIndex={() => {
+              setDataToChange(index)
+            }}
+            addOrEditUser={payload => {
+              addOrEditUser(payload)
+            }}
             userData={data}
           />
         ),
@@ -387,7 +392,8 @@ const UserListView = () => {
         changeModal === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
         payload
       )
-      if (data.imageFile) {
+
+      if (data.imageFile !== backendData[dataToChange].avatar_link) {
         const formData = new FormData()
 
         formData.append('image', data.imageFile)
@@ -404,7 +410,6 @@ const UserListView = () => {
     } else {
       toast.error('Enter E-Mail')
     }
-    setReloadData(true)
     setReloadTable(!reloadTable)
   }
 

@@ -109,7 +109,12 @@ const SubProduct = () => {
                 >
                   Previous page
                 </span>
-                <span className="col-6">
+                <span
+                  className="col-6"
+                  style={{
+                    wordBreak: 'break-all',
+                  }}
+                >
                   <u
                     role="button"
                     onClick={() => {

@@ -29,7 +29,7 @@ import ResetPasswordModal from '../components/Modals/Reset Password Modal'
 import ProductLine from '../screens/ProductLine/ProductLine'
 import SubProduct from '../screens/ProductLine/SubProduct'
 import ProductDetail from '../screens/ProductLine/ProductDetail'
-import Tokachu from '../screens/Admin Screens/Tokachu/Tokachu'
+import Tokuchu from '../screens/Admin Screens/Tokuchu/Tokuchu'
 import Impressum from '../components/Impressum'
 import PrivacyPolicy from '../components/PrivacyPolicy'
 
@@ -148,7 +148,7 @@ const Routing = () => {
 
           {/* <Route path="products" element={<ProductList />} /> */}
           <Route path="rotameter" element={<Rotameter />} />
-          <Route path="approved-tokuchus" element={<Tokachu />} />
+          <Route path="approved-tokuchus" element={<Tokuchu />} />
           {/* <Route path="sub-products/:id" element={<SubProductList />} /> */}
           <Route path="product-detail/:id" element={<ProductDetail />} />
           <Route

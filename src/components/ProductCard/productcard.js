@@ -73,7 +73,14 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
                   <input ref={inputRef} />
                 </div>
               ) : (
-                <div className="border text-center rounded mt-2">
+                <div
+                  className="border text-center rounded mt-2"
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    wordBreak: 'break-word',
+                  }}
+                >
                   {subProduct ? item.sub_product_name : item.name}
                 </div>
               )}

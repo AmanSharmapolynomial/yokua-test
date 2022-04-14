@@ -32,6 +32,7 @@ const NewsItem = ({
   setCheckListActivated,
   isCheckListActivated,
   archivedFilter,
+  index,
 }) => {
   const { setLoading } = useLoading()
   const [catImg, setCatImg] = useState()
@@ -559,9 +560,9 @@ const NewsItem = ({
                 className="collapsed"
                 type="button"
                 data-toggle="collapse"
-                data-target="#collapseTwo"
+                data-target={`#collapse${index}`}
                 aria-expanded="false"
-                aria-controls="collapseTwo"
+                aria-controls={`collapse${index}`}
               >
                 {data?.sub_category[0] !== undefined
                   ? data?.sub_category[0]['sub_category_name']
@@ -570,7 +571,7 @@ const NewsItem = ({
               </div>
             </div>
             <div
-              id="collapseTwo"
+              id={`collapse${index}`}
               className="collapse"
               aria-labelledby="headingTwo"
               data-parent="#accordionExample"

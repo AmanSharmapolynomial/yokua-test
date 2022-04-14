@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom'
 import Table from '../../components/TableComponent/Table'
 import { Modal, Image } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
+import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 
 const ProductDetail = () => {
   const navigate = useNavigate()
@@ -20,7 +21,9 @@ const ProductDetail = () => {
   const [productDetail, setProductDetail] = useState([])
   const [addComponentData, setAddComponentData] = useState({})
   const [inputBinary, setInputBinary] = useState()
-
+  const [showDeleteModal, setShowDeleteModal] = useState({})
+  const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const sectionTitleRef = React.useRef(null)
   const components = [
     {
       title: 'Add Table',
@@ -96,12 +99,61 @@ const ProductDetail = () => {
     setInputBinary()
   }
 
-  const onComponentDelete = () => {}
+  const onAddSection = () => {
+    API.post('/products/create_section', {
+      page_id: state.page_id,
+      section_name: sectionTitleRef.current.value,
+      order_index: 1,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getProductDetails()
+          setIsAddSectionModalVisible(false)
+        }
+      })
+      .catch(error => {
+        setIsAddSectionModalVisible(false)
+        console.log(error)
+      })
+  }
 
-  const renderType = (ele, idx, arr) => {
+  const onComponentDelete = () => {
+    API.post('/products/page/delete_component', showDeleteModal)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getProductDetails()
+          setShowDeleteModal({})
+        }
+      })
+      .catch(error => {
+        setShowDeleteModal({})
+        console.log(error)
+      })
+  }
+
+  const renderType = (ele, idx, arr, section) => {
     if (ele.type === 'binary') {
       return (
         <div className="col-12 mt-4">
+          <div className="row">
+            <div className="ml-auto my-2">
+              <i className="fa-solid fa-pen-to-square mr-2"></i>
+              <i
+                role={'button'}
+                className="fa-solid fa-trash ml-2"
+                onClick={() => {
+                  let payload = {
+                    section_id: section.section_id,
+                    component_id: ele.id,
+                    component_type: ele.type,
+                  }
+                  setShowDeleteModal(payload)
+                }}
+              ></i>
+            </div>
+          </div>
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
             <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
@@ -112,23 +164,58 @@ const ProductDetail = () => {
       )
     } else if (ele.type === 'table') {
       return (
-        <Table
-          tableObject={ele.table_data}
-          setShowDeleteModal={false}
-          onRefresh={() => {
-            getProductDetails()
-          }}
-          onComponentDelete={() => {
-            onComponentDelete()
-          }}
-        />
+        <div className="col-12 mt-4">
+          <div className="row">
+            <div className="ml-auto my-2">
+              <i className="fa-solid fa-pen-to-square mr-2"></i>
+              <i
+                className="fa-solid fa-trash ml-2"
+                role={'button'}
+                onClick={() => {
+                  let payload = {
+                    section_id: section.section_id,
+                    component_id: ele.id,
+                    component_type: ele.type,
+                  }
+                  setShowDeleteModal(payload)
+                }}
+              ></i>
+            </div>
+          </div>
+          <div className="row">
+            <Table
+              tableObject={ele.table_data}
+              setShowDeleteModal={false}
+              onRefresh={() => {
+                getProductDetails()
+              }}
+            />
+          </div>
+        </div>
       )
     } else if (ele.type === 'link') {
       return (
         <div className="col-12 mt-4">
           <div className="row">
+            <div className="ml-auto my-2">
+              <i className="fa-solid fa-pen-to-square mr-2"></i>
+              <i
+                role={'button'}
+                className="fa-solid fa-trash ml-2"
+                onClick={() => {
+                  let payload = {
+                    section_id: section.section_id,
+                    component_id: ele.id,
+                    component_type: ele.type,
+                  }
+                  setShowDeleteModal(payload)
+                }}
+              ></i>
+            </div>
+          </div>
+          <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a className="stretched-link" role={'button'} href={ele.link}>
+            <a role={'button'} href={ele.link}>
               {ele.title}
             </a>
           </div>
@@ -137,28 +224,66 @@ const ProductDetail = () => {
     } else if (ele.type === 'description') {
       return (
         <div className="col-12 mt-4">
+          <div className="row">
+            <div className="ml-auto my-2">
+              <i className="fa-solid fa-pen-to-square mr-2"></i>
+              <i
+                role={'button'}
+                className="fa-solid fa-trash ml-2"
+                onClick={() => {
+                  let payload = {
+                    section_id: section.section_id,
+                    component_id: ele.id,
+                    component_type: ele.type,
+                  }
+                  setShowDeleteModal(payload)
+                }}
+              ></i>
+            </div>
+          </div>
           <div className="row">{ele.description}</div>
         </div>
       )
     } else if (ele.type === 'image') {
-      let IMAGES = []
-      for (let index = idx; index < arr.length; index++) {
-        const element = arr[index]
-        if (element.type === 'image') {
-          IMAGES.push(
-            <div className="col-3">
-              <Image src={ele.image_link} className="border rounded img-product-line" />
-            </div>
-          )
-        } else {
-          break
+      if (arr[idx - 1]?.type !== 'image') {
+        let IMAGES = []
+        for (let index = idx; index < arr.length; index++) {
+          const element = arr[index]
+          if (element.type === 'image') {
+            IMAGES.push(
+              <div className={`col-3${index === idx ? ' pl-0' : ''}`}>
+                <Image src={ele.image_link} className="border rounded img-product-line" />
+              </div>
+            )
+          } else {
+            break
+          }
         }
+        return (
+          <div className="col-12 mt-4">
+            <div className="row">
+              <div className="ml-auto my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
+            </div>
+            <div className="row">{IMAGES}</div>
+          </div>
+        )
+      } else {
+        return null
       }
-      return (
-        <div className="col-12 mt-4">
-          <div className="row">{IMAGES}</div>
-        </div>
-      )
     }
   }
 
@@ -169,7 +294,7 @@ const ProductDetail = () => {
           <span className="text-bold">{item.sectionName}</span>
         </div>
         <div className="row">
-          {item.components.map((ele, idx, arr) => renderType(ele, idx, arr))}
+          {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
         </div>
         <div className="row mt-3">
           <button
@@ -641,7 +766,12 @@ const ProductDetail = () => {
                 >
                   Previous page
                 </span>
-                <span className="col-6">
+                <span
+                  className="col-6"
+                  style={{
+                    wordBreak: 'break-all',
+                  }}
+                >
                   <u
                     role="button"
                     onClick={e => {
@@ -664,7 +794,7 @@ const ProductDetail = () => {
                 <button
                   className="btn create-domain-btn mx-auto"
                   onClick={() => {
-                    setIsAddComponentModalVisible(index)
+                    setIsAddSectionModalVisible(true)
                   }}
                 >
                   Add New Section
@@ -736,6 +866,116 @@ const ProductDetail = () => {
             Confirm
           </button>
         </Modal.Footer> */}
+      </Modal>
+      <Modal
+        show={Object.keys(showDeleteModal).length > 0}
+        centered
+        onHide={() => {
+          setShowDeleteModal({})
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>
+            Are you sure you want to delete this{' '}
+            {showDeleteModal?.component_type ? showDeleteModal?.component_type : ''}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            The {showDeleteModal?.component_type ? showDeleteModal?.component_type : ''} will be
+            deleted, link can be removed
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setShowDeleteModal({})
+              }}
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ml-2"
+              onClick={() => {
+                onComponentDelete()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={isAddSectionModalVisible}
+        centered
+        onHide={() => {
+          setIsAddSectionModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Add New Section</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            <input
+              ref={sectionTitleRef}
+              placeholder="Enter new title"
+              type="text"
+              className="form-control"
+              aria-label={'Title'}
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setIsAddSectionModalVisible(false)
+              }}
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ml-2"
+              onClick={() => {
+                if (sectionTitleRef.current.value.length > 0) {
+                  onAddSection()
+                } else {
+                  toast.error('Please enter section title')
+                }
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
       </Modal>
     </>
   )

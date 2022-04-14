@@ -18,7 +18,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   ]
 
   const productLineDropdown = [
-    { name: 'Approved Tokachu', url: '/admin/approved-tokuchus' },
+    { name: 'Approved Tokuchu', url: '/admin/approved-tokuchus' },
     { name: 'Product Line', url: '/product-lines' },
   ]
 
