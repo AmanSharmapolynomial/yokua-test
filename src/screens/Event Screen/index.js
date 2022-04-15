@@ -120,8 +120,8 @@ const EventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
-        <div className="col event-setting-container pb-5">
+      <div className="row mx-2 mx-md-5 my-4 h-100">
+        <div className="col event-setting-container">
           <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
