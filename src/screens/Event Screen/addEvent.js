@@ -93,7 +93,7 @@ const AddEventScreen = () => {
 
   const classificationOption = [
     { value: 'internal', label: 'Internal Training' },
-    { value: 'external', label: 'Enternal Training' },
+    { value: 'external', label: 'External Training' },
   ]
 
   useEffect(async () => {
@@ -340,6 +340,7 @@ const AddEventScreen = () => {
                   width: '100%',
                   padding: '5px',
                   marginTop: '30px',
+                  userSelect: 'none',
                 }
               : { marginTop: '30px' }
           }
@@ -533,14 +534,12 @@ const AddEventScreen = () => {
                       className="select-box"
                       options={eventOptionList}
                       onChange={event => {
-                        //console.log(event.value)
                         if (event.value == 'webinar') {
                           setDisabled(true)
-                        } else if (event.value == 'site_event') {
+                        } else {
                           setDisabled(false)
                         }
-                        let obj = eventOptionList.filter(e => e.value == event.value)[0]
-                        //console.log(obj)
+                        let obj = eventOptionList.find(e => e.value == event.value)
                         setEventOption(obj)
                       }}
                       value={eventOption}
@@ -558,6 +557,7 @@ const AddEventScreen = () => {
                             justifyContent: 'space-between',
                             pointerEvents: 'none',
                             opacity: '0.4',
+                            userSelect: 'none',
                           }
                         : { display: 'flex', justifyContent: 'space-between' }
                     }
@@ -888,7 +888,8 @@ const AddEventScreen = () => {
                         ? { display: 'flex' }
                         : {
                             pointerEvents: 'none',
-                            opacity: '0.5',
+                            opacity: '0.4',
+                            userSelect: 'none',
                             display: 'flex',
                           }
                     }
@@ -986,6 +987,7 @@ const AddEventScreen = () => {
                           opacity: '0.4',
                           width: '100%',
                           padding: '5px',
+                          userSelect: 'none',
                         }
                       : { width: '100%', padding: '5px' }
                   }
@@ -1293,6 +1295,7 @@ const AddEventScreen = () => {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           width: '45%',
+                          userSelect: 'none',
                         }
                       : {
                           display: 'flex',
