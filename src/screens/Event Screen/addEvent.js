@@ -74,7 +74,7 @@ const AddEventScreen = () => {
           value: 'internal',
           label: 'My self',
         }
-      : { value: 'external', label: 'External' }
+      : { value: 'external', label: 'Others' }
   )
   const [eventOption, setEventOption] = useState({
     value: 'site event',
@@ -86,7 +86,7 @@ const AddEventScreen = () => {
   ]
   const registerationTypeOption = [
     { value: 'internal', label: 'My self' },
-    { value: 'external', label: 'External' },
+    { value: 'external', label: 'Others' },
   ]
 
   const classificationOption = [
@@ -316,7 +316,7 @@ const AddEventScreen = () => {
       <Header isLogedIn={getToken()} />
       <div className="row mx-2 mx-md-5 mt-4 mb-2 h-100">
         <div className="col event-setting-container">
-          <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+          <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
 
