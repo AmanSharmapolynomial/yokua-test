@@ -328,20 +328,7 @@ const AddEventScreen = () => {
           flexDirection: 'column',
         }}
       >
-        <div
-          style={
-            trainingFormDisable
-              ? {
-                  pointerEvents: 'none',
-                  opacity: '0.4',
-                  width: '100%',
-                  padding: '5px',
-                  marginTop: '30px',
-                  userSelect: 'none',
-                }
-              : { marginTop: '30px' }
-          }
-        >
+        <div style={{ marginTop: '30px' }}>
           <div
             style={{
               boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
@@ -370,6 +357,7 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="text"
+                      disabled={eventId}
                       className="form-control"
                       onChange={event => {
                         setTrainingName(event.target.value)
@@ -398,14 +386,19 @@ const AddEventScreen = () => {
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={startDate}
+                      disabled={eventId}
                     />
                     <div
-                      style={{
-                        zIndex: '1',
-                        marginLeft: '-30px',
-                        marginTop: '7px',
-                        pointerEvents: 'none',
-                      }}
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
                     >
                       {registeredAttendeesListModalOpen == false ? (
                         <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
@@ -430,15 +423,20 @@ const AddEventScreen = () => {
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={endDate}
+                      disabled={eventId}
                     />
 
                     <div
-                      style={{
-                        zIndex: '1',
-                        marginLeft: '-30px',
-                        marginTop: '7px',
-                        pointerEvents: 'none',
-                      }}
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
                     >
                       {registeredAttendeesListModalOpen == true ? (
                         <i
@@ -483,6 +481,7 @@ const AddEventScreen = () => {
                         setCost(value)
                       }}
                       value={cost}
+                      disabled={eventId}
                     />
                   </div>
                 </div>
@@ -500,6 +499,7 @@ const AddEventScreen = () => {
                         setLocation(event.target.value)
                       }}
                       value={location}
+                      disabled={eventId}
                     />
                   </div>
                 </div>
@@ -522,6 +522,7 @@ const AddEventScreen = () => {
                         setEventOption(obj)
                       }}
                       value={eventOption}
+                      isDisabled={eventId}
                     />
                   </div>
                 </div>
@@ -567,6 +568,7 @@ const AddEventScreen = () => {
                           }
                         }}
                         value={maxAttendacees}
+                        disabled={eventId}
                       />
                     </div>
                     <div
@@ -598,6 +600,7 @@ const AddEventScreen = () => {
                           }
                         }}
                         value={remainSeat}
+                        disabled={eventId}
                       />
                     </div>
                   </div>
@@ -627,6 +630,7 @@ const AddEventScreen = () => {
                       }}
                       selected={classificationLevel}
                       value={classificationLevel}
+                      isDisabled={eventId}
                     />
                   </div>
                 </div>
@@ -709,81 +713,85 @@ const AddEventScreen = () => {
                     })}
                   </ul>
 
-                  <div>
-                    {moreInputFlag == true ? (
-                      <h6
-                        style={{ marginLeft: '29px' }}
-                        onClick={() => {
-                          setMoreInputFlag(!moreInputFlag)
-                        }}
-                      >
-                        <i
-                          style={{ color: 'rgb(0, 79, 155)', marginRight: '0.5rem' }}
-                          class="fa-solid fa-circle-plus"
-                        />
-                        <span>more</span>
-                      </h6>
-                    ) : (
-                      <div
-                        style={{
-                          justifyContent: 'space-between',
-                          display: 'flex',
-                          width: '40%',
-                        }}
-                        className="row align-items-center"
-                      >
-                        <div className="col-md-10">
-                          <input
-                            type="text"
-                            className="form-control"
-                            onChange={event => {
-                              setSingleRequirement(event.target.value)
-                            }}
-                            value={singleRequirement}
+                  {!eventId && (
+                    <div>
+                      {moreInputFlag == true ? (
+                        <h6
+                          style={{ marginLeft: '29px' }}
+                          onClick={() => {
+                            setMoreInputFlag(!moreInputFlag)
+                          }}
+                        >
+                          <i
+                            style={{ color: 'rgb(0, 79, 155)', marginRight: '0.5rem' }}
+                            class="fa-solid fa-circle-plus"
                           />
+                          <span>more</span>
+                        </h6>
+                      ) : (
+                        <div
+                          style={{
+                            justifyContent: 'space-between',
+                            display: 'flex',
+                            width: '40%',
+                          }}
+                          className="row align-items-center"
+                        >
+                          <div className="col-md-10">
+                            <input
+                              type="text"
+                              className="form-control"
+                              onChange={event => {
+                                setSingleRequirement(event.target.value)
+                              }}
+                              value={singleRequirement}
+                            />
+                          </div>
+                          <div className="col-md-2">
+                            <button
+                              style={{
+                                width: 'auto',
+                                background: 'rgb(0, 79, 155)',
+                                color: 'white',
+                                border: '1px solid black',
+                                borderRadius: '3px',
+                                fontSize: '15px',
+                              }}
+                              onClick={event => {
+                                setMoreInputFlag(true)
+                                if (singleRequirement != null && singleRequirement != '') {
+                                  requirement.push(singleRequirement)
+                                  setSingleRequirement('')
+                                }
+                              }}
+                            >
+                              Save
+                            </button>
+                          </div>
                         </div>
-                        <div className="col-md-2">
-                          <button
-                            style={{
-                              width: 'auto',
-                              background: 'rgb(0, 79, 155)',
-                              color: 'white',
-                              border: '1px solid black',
-                              borderRadius: '3px',
-                              fontSize: '15px',
-                            }}
-                            onClick={event => {
-                              setMoreInputFlag(true)
-                              if (singleRequirement != null && singleRequirement != '') {
-                                requirement.push(singleRequirement)
-                                setSingleRequirement('')
-                              }
-                            }}
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  )}
 
-                  <button
-                    onClick={event => {
-                      handlePublishButton(event)
-                    }}
-                    style={{
-                      width: 'auto',
-                      background: 'rgb(0, 79, 155)',
-                      color: 'white',
-                      border: '1px solid black',
-                      borderRadius: '3px',
-                      fontSize: '13px',
-                      padding: '5px',
-                      marginTop: '15px',
-                    }}
-                  >
-                    Publish
-                  </button>
+                  {!eventId && (
+                    <button
+                      onClick={event => {
+                        handlePublishButton(event)
+                      }}
+                      style={{
+                        width: 'auto',
+                        background: 'rgb(0, 79, 155)',
+                        color: 'white',
+                        border: '1px solid black',
+                        borderRadius: '3px',
+                        fontSize: '13px',
+                        padding: '5px',
+                        marginTop: '15px',
+                      }}
+                    >
+                      Publish
+                    </button>
+                  )}
                   <button
                     onClick={event => {
                       event.preventDefault()
@@ -828,6 +836,7 @@ const AddEventScreen = () => {
                       setDescription(event.target.value)
                     }}
                     value={description}
+                    disabled={eventId}
                   />
                 </div>
               </div>
@@ -1280,24 +1289,12 @@ const AddEventScreen = () => {
                 </button>
 
                 <div
-                  style={
-                    trainingFormDisable
-                      ? {
-                          pointerEvents: 'none',
-                          opacity: '0.4',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          width: '45%',
-                          userSelect: 'none',
-                        }
-                      : {
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          width: '45%',
-                        }
-                  }
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '45%',
+                  }}
                 >
                   <label style={{ fontWeight: 'bold', marginBottom: 0 }}>
                     Registration can be cancelled until
