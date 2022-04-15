@@ -313,7 +313,7 @@ const AddEventScreen = () => {
             <h4 style={{ padding: '20px' }}>Rotomass TI Service Training</h4>
             <div
               style={{
-                padding: '20px',
+                padding: '0px 20px 20px',
                 width: '100%',
                 display: 'flex',
               }}
@@ -810,14 +810,14 @@ const AddEventScreen = () => {
             >
               <div>
                 {eventId ? (
-                  <h4 style={{ padding: '20px' }}>Register for {trainingName}</h4>
+                  <h4 style={{ padding: '20px 20px 0' }}>Register for {trainingName}</h4>
                 ) : (
-                  <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
+                  <h4 style={{ padding: '20px 20px 0' }}>Register for Trainings</h4>
                 )}
               </div>
               <div
                 style={{
-                  padding: '20px',
+                  padding: '20px 0 20px 35px',
                   width: '100%',
                   display: 'flex',
                 }}
