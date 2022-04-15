@@ -17,12 +17,14 @@ select {
 
 .requirements-list {
   list-style: none;
+  line-height: 1;
   margin-bottom: 0;
 }
 
 .requirements-list li::before {
   content: '\2022';
   color: rgb(0, 79, 155);
+  font-size: 20px;
   font-weight: bold;
   display: inline-block;
   width: 1em;

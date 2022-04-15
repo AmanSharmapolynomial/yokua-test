@@ -744,7 +744,7 @@ const AddEventScreen = () => {
                           display: 'flex',
                           width: '40%',
                         }}
-                        className="row"
+                        className="row align-items-center"
                       >
                         <div className="col-md-10">
                           <input
