@@ -530,7 +530,7 @@ const AddEventScreen = () => {
                         }}
                         onBlur={event => {
                           if (remainSeat && remainSeat > maxAttendacees) {
-                            toast.error("Remain seat can't greater that max attendeed")
+                            toast.error("Remaining seat can't greater that max attendees")
                           }
                         }}
                         value={maxAttendacees}
@@ -561,7 +561,7 @@ const AddEventScreen = () => {
                         }}
                         onBlur={event => {
                           if (maxAttendacees != remainSeat) {
-                            toast.error('Max attedees and remain attendees should be equal')
+                            toast.error('Max attendees and remaining attendees should be equal')
                             setRemainSeats(0)
                           }
                         }}
