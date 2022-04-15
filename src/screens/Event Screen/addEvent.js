@@ -916,6 +916,7 @@ const AddEventScreen = () => {
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={firstName}
+                      disabled={eventId && registerationType.value == 'internal'}
                       onChange={event => {
                         setFirstName(event.target.value)
                       }}
@@ -930,6 +931,7 @@ const AddEventScreen = () => {
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={lastName}
+                      disabled={eventId && registerationType.value == 'internal'}
                       onChange={event => {
                         setLastName(event.target.value)
                       }}
@@ -945,6 +947,7 @@ const AddEventScreen = () => {
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={companyEmail}
+                      disabled={eventId && registerationType.value == 'internal'}
                       onChange={event => {
                         setCompanyEmail(event.target.value)
                       }}
@@ -961,6 +964,7 @@ const AddEventScreen = () => {
                       className="col-md-3 form-control"
                       style={{ width: '400px' }}
                       value={companyName}
+                      disabled={eventId && registerationType.value == 'internal'}
                       onChange={event => {
                         setCompanyName(event.target.value)
                       }}
