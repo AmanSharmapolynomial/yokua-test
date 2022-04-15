@@ -303,7 +303,7 @@ const AddEventScreen = () => {
           flexDirection: 'column',
         }}
       >
-        <div style={{ marginTop: '30px' }}>
+        <div style={{ marginTop: '30px', marginBottom: eventId ? 0 : '60px' }}>
           <div
             style={{
               boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
@@ -792,475 +792,477 @@ const AddEventScreen = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            width: '100%',
-            marginTop: '3%',
-          }}
-        >
+        {eventId && (
           <div
             style={{
-              boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
-              borderRadius: '5px',
               width: '100%',
-              paddingBottom: '50px',
-              marginBottom: '100px',
+              marginTop: '3%',
             }}
           >
-            <div>
-              {eventId ? (
-                <h4 style={{ padding: '20px' }}>Register for {trainingName}</h4>
-              ) : (
-                <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
-              )}
-            </div>
             <div
               style={{
-                padding: '20px',
+                boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
+                borderRadius: '5px',
                 width: '100%',
-                display: 'flex',
+                paddingBottom: '50px',
+                marginBottom: '100px',
               }}
             >
-              <form style={{ alignItems: 'flex-start', width: '100%' }}>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div
-                    className="col-md-9"
-                    style={
-                      getUserRoles() == 'Technical Administrator' ||
-                      getUserRoles() == 'PMK Administrator'
-                        ? { display: 'flex' }
-                        : {
-                            pointerEvents: 'none',
-                            opacity: '0.4',
-                            userSelect: 'none',
-                            display: 'flex',
-                          }
-                    }
-                  >
-                    <Select
-                      className="select-box"
-                      options={
-                        classificationLevel.value === 'external'
-                          ? registerationTypeOption.filter(e => e.value !== 'external')
-                          : registerationTypeOption
-                      }
-                      onChange={event => {
-                        //console.log(event.label + ' selected:' + event.value)
-                        setRegistrationType({
-                          value: event.value,
-                          label: event.label,
-                        })
-                        if (event.value == 'internal') {
-                          setFirstName(userProfile['basic_profile'].full_name)
-                          setCompanyEmail(userProfile['basic_profile'].email)
-                          setCompanyName(userProfile['basic_profile'].company_name)
-                        } else {
-                          setFirstName('')
-                          setCompanyEmail('')
-                          setCompanyName('')
-                        }
-                      }}
-                      selected={registerationType}
-                      value={registerationType}
-                    />
-                  </div>
-                </div>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="First Name"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={firstName}
-                      disabled={eventId && registerationType.value == 'internal'}
-                      onChange={event => {
-                        setFirstName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={lastName}
-                      disabled={eventId && registerationType.value == 'internal'}
-                      onChange={event => {
-                        setLastName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="email"
-                      placeholder="Company E-Mail ID"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={companyEmail}
-                      disabled={eventId && registerationType.value == 'internal'}
-                      onChange={event => {
-                        setCompanyEmail(event.target.value)
-                      }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="Company "
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={companyName}
-                      disabled={eventId && registerationType.value == 'internal'}
-                      onChange={event => {
-                        setCompanyName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="row"
-                  style={
-                    disabled
-                      ? {
-                          pointerEvents: 'none',
-                          opacity: '0.4',
-                          width: '100%',
-                          padding: '5px',
-                          userSelect: 'none',
-                        }
-                      : { width: '100%', padding: '5px' }
-                  }
-                >
-                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
-                      Hotel reservation required
-                    </label>
-                  </div>
-                  <div
-                    className="row"
-                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                  >
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={hotelReservation.name == 'hotelYes' ? true : false}
-                        name="hotelYes"
-                        onChange={event => {
-                          setHotelReservation(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={hotelReservation.name == 'hotelNo' ? true : false}
-                        name="hotelNo"
-                        onChange={event => {
-                          setHotelReservation(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-5">
-                      Assist with organization of shuttle transport
-                    </label>
-                  </div>
-                  <div
-                    className="row"
-                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                  >
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={shuttleTransport.name == 'shuttleYes' ? true : false}
-                        name="shuttleYes"
-                        onChange={event => {
-                          setShuttleTransport(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={shuttleTransport.name == 'shuttleNo' ? true : false}
-                        name="shuttleNo"
-                        onChange={event => {
-                          setShuttleTransport(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-5">
-                      Special food requirement
-                    </label>
-                  </div>
-                  <div
-                    className="row"
-                    style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                  >
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '250px',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={foodRequirement.name == 'No Requirement' ? true : false}
-                        name="No Requirement"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        No Special requirements
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '115px',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={foodRequirement.name == 'No Pork' ? true : false}
-                        name="No Pork"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No Pork
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '145px',
-                        marginTop: '10px',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={foodRequirement.name == 'Vegetarian' ? true : false}
-                        name="Vegetarian"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        Vegetarian
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        width: '740px',
-                        marginTop: '10px',
-                        position: 'relative',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={foodRequirement.name == 'Other, please specify' ? true : false}
-                        name="Other, please specify"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        Other, please specify
-                      </label>
-                      {foodRequirement.name == 'Other, please specify' && (
-                        <input
-                          type="text"
-                          className="form-control "
-                          style={{ position: 'absolute', left: '200px' }}
-                          value={otherFoodRequirement}
-                          onChange={event => {
-                            setOtherFoodRequirement(event.target.value)
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className="row">
-              <div style={{ marginLeft: '25px', marginTop: '10px' }}>
-                <div
-                  className="col-md-4"
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '740px',
-                    marginTop: '10px',
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    checked={termsPolicy}
-                    onChange={() => {
-                      setTermPolicy(!termsPolicy)
-                    }}
-                  />
-                </div>
-                <label style={{ marginLeft: '20px' }}>
-                  By signing up, you agree with{' '}
-                  <label
-                    style={{
-                      color: 'rgb(0, 79, 155)',
-                      cursor: 'pointer',
-                      textDecoration: 'underline',
-                    }}
-                    onClick={() => {
-                      navigate('/privacy-policy')
-                    }}
-                  >
-                    Terms of service and Privacy Policy
-                  </label>
-                </label>
+              <div>
+                {eventId ? (
+                  <h4 style={{ padding: '20px' }}>Register for {trainingName}</h4>
+                ) : (
+                  <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
+                )}
               </div>
               <div
                 style={{
-                  width: '80%',
+                  padding: '20px',
+                  width: '100%',
                   display: 'flex',
-                  justifyContent: 'space-between',
                 }}
               >
-                <button
-                  onClick={() => {
-                    if (termsPolicy == true) handleRegisterButton()
-                    else {
-                      alert('Accept Term of service and policy')
-                    }
-                  }}
-                  style={{
-                    background: 'rgb(0, 79, 155)',
-                    color: 'white',
-                    border: '1px solid black',
-                    borderRadius: '3px',
-                    fontSize: '13px',
-                    marginLeft: '20px',
-                  }}
-                >
-                  Register
-                </button>
+                <form style={{ alignItems: 'flex-start', width: '100%' }}>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div
+                      className="col-md-9"
+                      style={
+                        getUserRoles() == 'Technical Administrator' ||
+                        getUserRoles() == 'PMK Administrator'
+                          ? { display: 'flex' }
+                          : {
+                              pointerEvents: 'none',
+                              opacity: '0.4',
+                              userSelect: 'none',
+                              display: 'flex',
+                            }
+                      }
+                    >
+                      <Select
+                        className="select-box"
+                        options={
+                          classificationLevel.value === 'external'
+                            ? registerationTypeOption.filter(e => e.value !== 'external')
+                            : registerationTypeOption
+                        }
+                        onChange={event => {
+                          //console.log(event.label + ' selected:' + event.value)
+                          setRegistrationType({
+                            value: event.value,
+                            label: event.label,
+                          })
+                          if (event.value == 'internal') {
+                            setFirstName(userProfile['basic_profile'].full_name)
+                            setCompanyEmail(userProfile['basic_profile'].email)
+                            setCompanyName(userProfile['basic_profile'].company_name)
+                          } else {
+                            setFirstName('')
+                            setCompanyEmail('')
+                            setCompanyName('')
+                          }
+                        }}
+                        selected={registerationType}
+                        value={registerationType}
+                      />
+                    </div>
+                  </div>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="First Name"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={firstName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setFirstName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="Last Name"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={lastName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setLastName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
 
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="email"
+                        placeholder="Company E-Mail ID"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={companyEmail}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setCompanyEmail(event.target.value)
+                        }}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="Company "
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={companyName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setCompanyName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div
+                    className="row"
+                    style={
+                      disabled
+                        ? {
+                            pointerEvents: 'none',
+                            opacity: '0.4',
+                            width: '100%',
+                            padding: '5px',
+                            userSelect: 'none',
+                          }
+                        : { width: '100%', padding: '5px' }
+                    }
+                  >
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }} className="col-md-4">
+                        Hotel reservation required
+                      </label>
+                    </div>
+                    <div
+                      className="row"
+                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                    >
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '6%',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={hotelReservation.name == 'hotelYes' ? true : false}
+                          name="hotelYes"
+                          onChange={event => {
+                            setHotelReservation(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="yes">
+                          Yes
+                        </label>
+                      </div>
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '6%',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={hotelReservation.name == 'hotelNo' ? true : false}
+                          name="hotelNo"
+                          onChange={event => {
+                            setHotelReservation(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="no">
+                          No
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }} className="col-md-5">
+                        Assist with organization of shuttle transport
+                      </label>
+                    </div>
+                    <div
+                      className="row"
+                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                    >
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '6%',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={shuttleTransport.name == 'shuttleYes' ? true : false}
+                          name="shuttleYes"
+                          onChange={event => {
+                            setShuttleTransport(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="yes">
+                          Yes
+                        </label>
+                      </div>
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '6%',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={shuttleTransport.name == 'shuttleNo' ? true : false}
+                          name="shuttleNo"
+                          onChange={event => {
+                            setShuttleTransport(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="no">
+                          No
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }} className="col-md-5">
+                        Special food requirement
+                      </label>
+                    </div>
+                    <div
+                      className="row"
+                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
+                    >
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '250px',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'No Requirement' ? true : false}
+                          name="No Requirement"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="yes">
+                          No Special requirements
+                        </label>
+                      </div>
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '115px',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={foodRequirement.name == 'No Pork' ? true : false}
+                          name="No Pork"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="no">
+                          No Pork
+                        </label>
+                      </div>
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          width: '145px',
+                          marginTop: '10px',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="col-md-4 form-check-input"
+                          checked={foodRequirement.name == 'Vegetarian' ? true : false}
+                          name="Vegetarian"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="no">
+                          Vegetarian
+                        </label>
+                      </div>
+                      <div
+                        className="col-md-3"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          width: '740px',
+                          marginTop: '10px',
+                          position: 'relative',
+                          marginLeft: '30px',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'Other, please specify' ? true : false}
+                          name="Other, please specify"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                        />
+                        <label class="form-check-label" for="no">
+                          Other, please specify
+                        </label>
+                        {foodRequirement.name == 'Other, please specify' && (
+                          <input
+                            type="text"
+                            className="form-control "
+                            style={{ position: 'absolute', left: '200px' }}
+                            value={otherFoodRequirement}
+                            onChange={event => {
+                              setOtherFoodRequirement(event.target.value)
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div className="row">
+                <div style={{ marginLeft: '25px', marginTop: '10px' }}>
+                  <div
+                    className="col-md-4"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '740px',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={termsPolicy}
+                      onChange={() => {
+                        setTermPolicy(!termsPolicy)
+                      }}
+                    />
+                  </div>
+                  <label style={{ marginLeft: '20px' }}>
+                    By signing up, you agree with{' '}
+                    <label
+                      style={{
+                        color: 'rgb(0, 79, 155)',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={() => {
+                        navigate('/privacy-policy')
+                      }}
+                    >
+                      Terms of service and Privacy Policy
+                    </label>
+                  </label>
+                </div>
                 <div
                   style={{
+                    width: '80%',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: '45%',
                   }}
                 >
-                  <label style={{ fontWeight: 'bold', marginBottom: 0 }}>
-                    Registration can be cancelled until
-                  </label>
-                  <DatePicker
-                    disabled
-                    minDate={new Date()}
-                    className="form-control"
-                    onChange={date => setCancelledDate(date)}
-                    placeholderText="DDMMYYYY"
-                    dateFormat="dd/M/Y"
-                    selected={cancelledDate}
-                  />
+                  <button
+                    onClick={() => {
+                      if (termsPolicy == true) handleRegisterButton()
+                      else {
+                        alert('Accept Term of service and policy')
+                      }
+                    }}
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      color: 'white',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                      fontSize: '13px',
+                      marginLeft: '20px',
+                    }}
+                  >
+                    Register
+                  </button>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '45%',
+                    }}
+                  >
+                    <label style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                      Registration can be cancelled until
+                    </label>
+                    <DatePicker
+                      disabled
+                      minDate={new Date()}
+                      className="form-control"
+                      onChange={date => setCancelledDate(date)}
+                      placeholderText="DDMMYYYY"
+                      dateFormat="dd/M/Y"
+                      selected={cancelledDate}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div>
