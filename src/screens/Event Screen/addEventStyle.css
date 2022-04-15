@@ -4,6 +4,10 @@
   width: 200px !important;
 }
 
+.react-datepicker-popper {
+  z-index: 2;
+}
+
 .description-box {
   width: 100% !important;
 }

@@ -54,8 +54,6 @@ const AddEventScreen = () => {
   const [singleRequirement, setSingleRequirement] = useState('')
   const [requirement, setRequirement] = useState([])
   const [disabled, setDisabled] = useState(false)
-  const [isStartDateOpen, setIsStartDateOpen] = useState(false)
-  const [isEndDateOpen, setIsEndDateOpen] = useState(false)
   const [modalIsOpen, setIsOpen] = useState(false)
   const [moreInputFlag, setMoreInputFlag] = useState(true)
   const [agendaMessage, setAgendaMessage] = useState('')
@@ -395,28 +393,19 @@ const AddEventScreen = () => {
                           setStartDate(date)
                         } else {
                           toast.error('End date should be greater than start date')
-                          setStartDate('')
+                          setStartDate(new Date())
                         }
                       }}
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={startDate}
-                      open={isStartDateOpen}
-                      onSelect={() => {
-                        setIsStartDateOpen(false)
-                      }}
-                      onInputClick={() => {
-                        setIsStartDateOpen(!isStartDateOpen)
-                      }}
                     />
                     <div
                       style={{
                         zIndex: '1',
                         marginLeft: '-30px',
                         marginTop: '7px',
-                      }}
-                      onClick={() => {
-                        setIsStartDateOpen(!isStartDateOpen)
+                        pointerEvents: 'none',
                       }}
                     >
                       {registeredAttendeesListModalOpen == false ? (
@@ -442,13 +431,6 @@ const AddEventScreen = () => {
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={endDate}
-                      open={isEndDateOpen}
-                      onSelect={() => {
-                        setIsEndDateOpen(false)
-                      }}
-                      onInputClick={() => {
-                        setIsEndDateOpen(!isEndDateOpen)
-                      }}
                     />
 
                     <div
@@ -456,12 +438,10 @@ const AddEventScreen = () => {
                         zIndex: '1',
                         marginLeft: '-30px',
                         marginTop: '7px',
-                      }}
-                      onClick={() => {
-                        setIsEndDateOpen(!isEndDateOpen)
+                        pointerEvents: 'none',
                       }}
                     >
-                      {isStartDateOpen == true || registeredAttendeesListModalOpen == true ? (
+                      {registeredAttendeesListModalOpen == true ? (
                         <i
                           class="fa-solid fa-calendar-days"
                           style={{ color: 'rgb(0, 79, 155)', display: 'none' }}
