@@ -527,6 +527,7 @@ const AddEventScreen = () => {
                         onChange={event => {
                           let value = Number(event.target.value.match(/\d+/)?.join(''))
                           setMaxAttendeed(value)
+                          setRemainSeats(value)
                         }}
                         onBlur={event => {
                           if (remainSeat && remainSeat > maxAttendacees) {
