@@ -605,8 +605,7 @@ const AddEventScreen = () => {
                   <div
                     style={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '40%',
+                      gap: '0 20px',
                       margin: '10px 15px 0',
                     }}
                   >
