@@ -269,8 +269,7 @@ const AddEventScreen = () => {
           toast.error(data.data.message)
         }
       })
-      .catch(error => {
-        toast.error(error.message)
+      .catch(() => {
         navigate('/event/add')
       })
   }
