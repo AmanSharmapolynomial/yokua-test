@@ -437,10 +437,8 @@ const AddEventScreen = () => {
                       Costs
                     </label>
                     <input
-                      type="text"
-                      className="form-control"
-                      style={{ width: '200px' }}
-                      pattern="[0-9]"
+                      type="number"
+                      className="form-control hide-spinners"
                       onChange={event => {
                         //console.log()
                         let value = event.target.value.match(/\d+/)?.join('')
