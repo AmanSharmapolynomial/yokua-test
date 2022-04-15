@@ -638,6 +638,13 @@ const AddEventScreen = () => {
                           value: event.value,
                           label: event.label,
                         })
+
+                        if (event.value === 'external') {
+                          setRegistrationType({
+                            value: 'internal',
+                            label: 'My self',
+                          })
+                        }
                       }}
                       selected={classificationLevel}
                       value={classificationLevel}
@@ -896,7 +903,11 @@ const AddEventScreen = () => {
                   >
                     <Select
                       className="select-box"
-                      options={registerationTypeOption}
+                      options={
+                        classificationLevel.value === 'external'
+                          ? registerationTypeOption.filter(e => e.value !== 'external')
+                          : registerationTypeOption
+                      }
                       onChange={event => {
                         //console.log(event.label + ' selected:' + event.value)
                         setRegistrationType({
