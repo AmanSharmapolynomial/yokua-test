@@ -1265,7 +1265,12 @@ const AddEventScreen = () => {
       </div>
 
       <div>
-        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+        >
           {linkModal && (
             <CustomeModel
               title={
@@ -1296,6 +1301,15 @@ const AddEventScreen = () => {
                   ? blinkMessage
                   : null
               }
+              onCancel={() => {
+                if (dependOnButton == 'agenda') {
+                  setAgendaMessage('')
+                } else if (dependOnButton == 'alink') {
+                  setAlinkMessage('')
+                } else if (dependOnButton == 'blink') {
+                  setBlinkMessage('')
+                }
+              }}
               closeModal={closeModal}
               handleSendButton={closeModal}
             />

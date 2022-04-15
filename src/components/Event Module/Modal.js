@@ -61,6 +61,9 @@ const MyModel = props => {
               borderRadius: '3px',
             }}
             onClick={() => {
+              if (typeof props.onCancel === 'function') {
+                props.onCancel()
+              }
               props.closeModal()
             }}
           >
