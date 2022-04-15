@@ -316,8 +316,8 @@ const AddEventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
-        <div className="col event-setting-container pb-5">
+      <div className="row mx-2 mx-md-5 mt-4 mb-2 h-100">
+        <div className="col event-setting-container">
           <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
@@ -346,8 +346,8 @@ const AddEventScreen = () => {
         >
           <div
             style={{
-              marginRight: '1%',
-              boxShadow: '1px 0px 1px 1px #888888',
+              boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
+              borderRadius: '5px',
             }}
           >
             <h4 style={{ padding: '20px' }}>Rotomass TI Service Training</h4>
@@ -857,9 +857,10 @@ const AddEventScreen = () => {
         >
           <div
             style={{
-              boxShadow: '1px 0px 1px 1px #888888',
+              boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
+              borderRadius: '5px',
               width: '100%',
-              height: '100%',
+              paddingBottom: '50px',
               marginBottom: '100px',
             }}
           >
