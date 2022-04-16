@@ -1,6 +1,7 @@
 import React from 'react'
 import './style.css'
 import Modal from 'react-modal'
+import { toast } from 'react-toastify'
 const MyModel = props => {
   console.log(props)
   const customStyles = {
@@ -72,6 +73,15 @@ const MyModel = props => {
           &nbsp;&nbsp;
           <button
             onClick={() => {
+              if (typeof props.validation === 'function') {
+                const validationResult = props.validation(props.message)
+                if (validationResult) {
+                  props.handleSendButton()
+                  return
+                }
+                toast.error('URL is not valid')
+                return
+              }
               props.handleSendButton()
             }}
             style={{

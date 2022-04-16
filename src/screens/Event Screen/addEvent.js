@@ -17,6 +17,7 @@ import CustomeModel from '../../components/Event Module/Modal'
 import PrimaryHeading from '../../components/Primary Headings'
 import CloseIcon from '../../assets/close_modal.png'
 import { max } from 'moment'
+import { validateUrl } from '../../utils/urlValidator'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
@@ -1282,6 +1283,15 @@ const AddEventScreen = () => {
                   : null
               }
               placeholder="Enter link"
+              validation={() => {
+                if (dependOnButton === 'agenda') {
+                  return validateUrl(agendaMessage)
+                } else if (dependOnButton === 'alink') {
+                  return validateUrl(alinkMessage)
+                } else if (dependOnButton === 'blink') {
+                  return validateUrl(blinkMessage)
+                }
+              }}
               setMessage={
                 dependOnButton == 'agenda'
                   ? setAgendaMessage
