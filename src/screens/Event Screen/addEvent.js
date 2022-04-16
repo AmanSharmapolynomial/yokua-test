@@ -174,6 +174,9 @@ const AddEventScreen = () => {
           setCancelledDate(new Date(result.event_details['cancelled_date']))
           setDescription(result.event_details['description'])
           setLocation(result.event_details['location'])
+          setEventOption(
+            eventOptionList.find(event => event.value === result.event_details['event_type'])
+          )
           setMaxAttendeed(result.event_details['max_attendees'])
           setRemainSeats(result.event_details['remaining_seats'])
           setDuration(
