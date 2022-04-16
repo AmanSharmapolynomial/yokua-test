@@ -63,6 +63,9 @@ const AddEventScreen = () => {
   const [dependOnButton, setDependOnButton] = useState('')
   const [linkModal, setLinkModal] = useState(false)
 
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   const [classificationLevel, setClassificationLevel] = useState({
     value: 'internal',
     label: 'Internal Training',
@@ -508,41 +511,46 @@ const AddEventScreen = () => {
                         : { display: 'flex', justifyContent: 'space-between' }
                     }
                   >
-                    <div style={{ display: 'flex' }} className="col-md-8">
-                      <label
-                        style={{ fontWeight: 'bold', marginLeft: '-15px' }}
-                        className="col-md-6"
-                      >
-                        Max attendees
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control col-md-8"
-                        pattern="[0-9]"
-                        style={{
-                          width: '70px',
-                          float: 'left',
-                          marginLeft: '15px',
-                        }}
-                        onChange={event => {
-                          let value = Number(event.target.value.match(/\d+/)?.join(''))
-                          setMaxAttendeed(value)
-                          setRemainSeats(value)
-                        }}
-                        onBlur={event => {
-                          if (remainSeat && remainSeat > maxAttendacees) {
-                            toast.error("Remaining seat can't greater that max attendees")
-                          }
-                        }}
-                        value={maxAttendacees}
-                        disabled={eventId}
-                      />
-                    </div>
+                    {isAdmin && (
+                      <div style={{ display: 'flex' }} className="col-md-8">
+                        <label
+                          style={{ fontWeight: 'bold', marginLeft: '-15px' }}
+                          className="col-md-6"
+                        >
+                          Max attendees
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control col-md-8"
+                          pattern="[0-9]"
+                          style={{
+                            width: '70px',
+                            float: 'left',
+                            marginLeft: '15px',
+                          }}
+                          onChange={event => {
+                            let value = Number(event.target.value.match(/\d+/)?.join(''))
+                            setMaxAttendeed(value)
+                            setRemainSeats(value)
+                          }}
+                          onBlur={event => {
+                            if (remainSeat && remainSeat > maxAttendacees) {
+                              toast.error("Remaining seat can't greater that max attendees")
+                            }
+                          }}
+                          value={maxAttendacees}
+                          disabled={eventId}
+                        />
+                      </div>
+                    )}
                     <div
                       style={{ display: 'inline-flex', alignItems: 'center' }}
                       className="col-md-8"
                     >
-                      <label style={{ fontWeight: 'bold' }} className="col-md-6">
+                      <label
+                        style={{ fontWeight: 'bold', marginLeft: !isAdmin ? '-15px' : 0 }}
+                        className="col-md-6"
+                      >
                         Remaining Seats
                       </label>
                       <input
@@ -551,7 +559,7 @@ const AddEventScreen = () => {
                         style={{
                           width: '70px',
                           float: 'left',
-                          marginLeft: '45px',
+                          marginLeft: !isAdmin ? '15px' : '45px',
                         }}
                         pattern="[0-9]"
                         onChange={event => {
