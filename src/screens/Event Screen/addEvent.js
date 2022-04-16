@@ -886,7 +886,7 @@ const AddEventScreen = () => {
                       <Select
                         className="select-box"
                         options={
-                          classificationLevel.value === 'external'
+                          classificationLevel.value === 'internal'
                             ? registerationTypeOption.filter(e => e.value !== 'external')
                             : registerationTypeOption
                         }
