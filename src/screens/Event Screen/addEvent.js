@@ -1032,6 +1032,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setHotelReservation(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="yes">
                           Yes
@@ -1046,6 +1047,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setHotelReservation(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="no">
                           No
@@ -1068,6 +1070,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setShuttleTransport(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="yes">
                           Yes
@@ -1082,6 +1085,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setShuttleTransport(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="no">
                           No
@@ -1102,6 +1106,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setFoodRequirement(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="yes">
                           No Special requirements
@@ -1116,6 +1121,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setFoodRequirement(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="no">
                           No Pork
@@ -1130,6 +1136,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setFoodRequirement(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="no">
                           Vegetarian
@@ -1149,6 +1156,7 @@ const AddEventScreen = () => {
                           onChange={event => {
                             setFoodRequirement(event.target)
                           }}
+                          disabled={eventOption.value === 'webinar'}
                         />
                         <label class="form-check-label" for="no">
                           Other, please specify
