@@ -423,6 +423,44 @@ const AddEventScreen = () => {
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <label style={{ fontWeight: 'bold' }} className="col-md-4">
+                      Cancel Date
+                    </label>
+                    <DatePicker
+                      minDate={new Date()}
+                      maxDate={moment(startDate).subtract(1, 'day').toDate()}
+                      className="form-control"
+                      onChange={date => {
+                        if (moment(date).isBefore(startDate)) {
+                          setCancelledDate(date)
+                        } else {
+                          toast.error('Cancel date should be before start date')
+                        }
+                      }}
+                      placeholderText="DDMMYYYY"
+                      dateFormat="dd/M/Y"
+                      selected={cancelledDate}
+                      disabled={eventId}
+                    />
+
+                    <div
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
+                    >
+                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                    </div>
+                  </div>
+                </div>
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                  <div className="col-md-8" style={{ display: 'flex' }}>
+                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
                       Duration
                     </label>
                     <input
