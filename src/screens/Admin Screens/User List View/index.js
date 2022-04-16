@@ -10,9 +10,6 @@ import Modal from 'react-modal'
 import axios from 'axios'
 
 const customStyles = {
-  rows: {
-    style: {},
-  },
   headCells: {
     style: {
       paddingLeft: '16px', // override the cell padding for head cells
@@ -31,6 +28,9 @@ const customStyles = {
 }
 
 const customModalStyles = {
+  overlay: {
+    zIndex: 10,
+  },
   content: {
     top: '50%',
     left: '50%',
