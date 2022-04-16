@@ -17,7 +17,22 @@ const MyModel = props => {
   }
   return (
     <div>
-      <div>
+      <div style={{ position: 'relative' }}>
+        <i
+          className="fa-solid fa-xmark"
+          style={{
+            position: 'absolute',
+            top: '-10px',
+            right: '-10px',
+            padding: '3px 5px',
+            borderRadius: '50%',
+            background: '#cd0000',
+            color: '#fff',
+            fontSize: '0.75rem',
+            cursor: 'pointer',
+          }}
+          onClick={() => props.closeModal()}
+        ></i>
         <p
           style={{
             fontWeight: 'bold',
