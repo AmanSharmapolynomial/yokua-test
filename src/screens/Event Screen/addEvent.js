@@ -97,14 +97,6 @@ const AddEventScreen = () => {
   ]
 
   useEffect(async () => {
-    let temp = []
-    // temp.push('min of 6 Months working for Yokogawa')
-    // temp.push('Fieldmate modem')
-    // temp.push('Travel Organisation')
-    // temp.push('optional visa if required')
-    // temp.push('Contact Rota Yokogawa for hotel reservation or assistance')
-
-    setRequirement(temp)
     if (eventId != null) {
       getEventDetailById(eventId)
       //get Current User profile from token
@@ -716,13 +708,32 @@ const AddEventScreen = () => {
                 <div style={{ width: '100%', marginTop: '40px', padding: '0 15px' }}>
                   <h4>Requirements for the event</h4>
                   <ul class="requirements-list">
-                    {requirement.map(e => {
-                      return (
-                        <li style={{ fontSize: '16px' }}>
-                          <label>{e}</label>
-                        </li>
-                      )
-                    })}
+                    {!eventId
+                      ? requirement.map(e => {
+                          return (
+                            <li>
+                              <label>{e}</label>
+                              <i
+                                className="fa-solid fa-trash"
+                                style={{
+                                  marginLeft: '10px',
+                                  cursor: 'pointer',
+                                  color: '#cd2727',
+                                }}
+                                onClick={() => {
+                                  setRequirement(requirement.filter(r => r !== e))
+                                }}
+                              ></i>
+                            </li>
+                          )
+                        })
+                      : requirement.map(e => {
+                          return (
+                            <li style={{ fontSize: '16px' }}>
+                              <label>{e}</label>
+                            </li>
+                          )
+                        })}
                   </ul>
 
                   {!eventId && (
@@ -758,7 +769,7 @@ const AddEventScreen = () => {
                               value={singleRequirement}
                             />
                           </div>
-                          <div className="col-md-2">
+                          <div className="btn-group col-md-2">
                             <button
                               style={{
                                 width: 'auto',
@@ -771,12 +782,29 @@ const AddEventScreen = () => {
                               onClick={event => {
                                 setMoreInputFlag(true)
                                 if (singleRequirement != null && singleRequirement != '') {
-                                  requirement.push(singleRequirement)
+                                  setRequirement(requirement => [...requirement, singleRequirement])
                                   setSingleRequirement('')
                                 }
                               }}
                             >
                               Save
+                            </button>
+                            <button
+                              style={{
+                                marginLeft: '10px',
+                                width: 'auto',
+                                background: 'rgb(0, 79, 155)',
+                                color: 'white',
+                                border: '1px solid black',
+                                borderRadius: '3px',
+                                fontSize: '15px',
+                              }}
+                              onClick={() => {
+                                setSingleRequirement('')
+                                setMoreInputFlag(true)
+                              }}
+                            >
+                              Cancel
                             </button>
                           </div>
                         </div>
