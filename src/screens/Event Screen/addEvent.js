@@ -975,42 +975,15 @@ const AddEventScreen = () => {
                     </div>
                   </div>
 
-                  <div
-                    className="row"
-                    style={
-                      disabled
-                        ? {
-                            pointerEvents: 'none',
-                            opacity: '0.4',
-                            width: '100%',
-                            padding: '5px',
-                            userSelect: 'none',
-                          }
-                        : { width: '100%', padding: '5px' }
-                    }
-                  >
+                  <div className="row" style={{ width: '100%', marginLeft: '8px' }}>
                     <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                      <label style={{ fontWeight: 'bold' }} className="col-md-4">
-                        Hotel reservation required
-                      </label>
+                      <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
                     </div>
-                    <div
-                      className="row"
-                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                    >
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '6%',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                    <div className="row">
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={hotelReservation.name == 'hotelYes' ? true : false}
                           name="hotelYes"
                           onChange={event => {
@@ -1021,19 +994,10 @@ const AddEventScreen = () => {
                           Yes
                         </label>
                       </div>
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '6%',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={hotelReservation.name == 'hotelNo' ? true : false}
                           name="hotelNo"
                           onChange={event => {
@@ -1047,27 +1011,15 @@ const AddEventScreen = () => {
                     </div>
 
                     <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                      <label style={{ fontWeight: 'bold' }} className="col-md-5">
+                      <label style={{ fontWeight: 'bold' }}>
                         Assist with organization of shuttle transport
                       </label>
                     </div>
-                    <div
-                      className="row"
-                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                    >
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '6%',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                    <div className="row">
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={shuttleTransport.name == 'shuttleYes' ? true : false}
                           name="shuttleYes"
                           onChange={event => {
@@ -1078,19 +1030,10 @@ const AddEventScreen = () => {
                           Yes
                         </label>
                       </div>
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '6%',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={shuttleTransport.name == 'shuttleNo' ? true : false}
                           name="shuttleNo"
                           onChange={event => {
@@ -1104,24 +1047,10 @@ const AddEventScreen = () => {
                     </div>
 
                     <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
-                      <label style={{ fontWeight: 'bold' }} className="col-md-5">
-                        Special food requirement
-                      </label>
+                      <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
                     </div>
-                    <div
-                      className="row"
-                      style={{ width: '100%', display: 'inline', marginLeft: '20px' }}
-                    >
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '250px',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                    <div className="row">
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1135,19 +1064,10 @@ const AddEventScreen = () => {
                           No Special requirements
                         </label>
                       </div>
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '115px',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={foodRequirement.name == 'No Pork' ? true : false}
                           name="No Pork"
                           onChange={event => {
@@ -1158,19 +1078,10 @@ const AddEventScreen = () => {
                           No Pork
                         </label>
                       </div>
-                      <div
-                        className="col-md-3"
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '145px',
-                          marginTop: '10px',
-                          marginLeft: '30px',
-                        }}
-                      >
+                      <div className="row ml-0">
                         <input
                           type="checkbox"
-                          className="col-md-4 form-check-input"
+                          className="form-check-input"
                           checked={foodRequirement.name == 'Vegetarian' ? true : false}
                           name="Vegetarian"
                           onChange={event => {
@@ -1182,14 +1093,9 @@ const AddEventScreen = () => {
                         </label>
                       </div>
                       <div
-                        className="col-md-3"
+                        className="row ml-0"
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          width: '740px',
-                          marginTop: '10px',
                           position: 'relative',
-                          marginLeft: '30px',
                         }}
                       >
                         <input
@@ -1208,7 +1114,7 @@ const AddEventScreen = () => {
                           <input
                             type="text"
                             className="form-control "
-                            style={{ position: 'absolute', left: '200px' }}
+                            style={{ position: 'absolute', left: '200px', top: '-25%' }}
                             value={otherFoodRequirement}
                             onChange={event => {
                               setOtherFoodRequirement(event.target.value)
@@ -1221,9 +1127,8 @@ const AddEventScreen = () => {
                 </form>
               </div>
               <div className="row">
-                <div style={{ marginLeft: '25px', marginTop: '10px' }}>
+                <div style={{ marginLeft: '55px', marginTop: '10px' }}>
                   <div
-                    className="col-md-4"
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -1242,7 +1147,7 @@ const AddEventScreen = () => {
                   </div>
                   <label style={{ marginLeft: '20px' }}>
                     By signing up, you agree with{' '}
-                    <label
+                    <span
                       style={{
                         color: 'rgb(0, 79, 155)',
                         cursor: 'pointer',
@@ -1253,7 +1158,7 @@ const AddEventScreen = () => {
                       }}
                     >
                       Terms of service and Privacy Policy
-                    </label>
+                    </span>
                   </label>
                 </div>
                 <div
@@ -1261,6 +1166,8 @@ const AddEventScreen = () => {
                     width: '80%',
                     display: 'flex',
                     justifyContent: 'space-between',
+                    marginLeft: '15px',
+                    marginTop: '10px',
                   }}
                 >
                   <button
