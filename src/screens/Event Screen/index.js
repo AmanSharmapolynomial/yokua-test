@@ -180,11 +180,13 @@ const EventScreen = () => {
                         width: '15%',
                       }}
                     >
-                      <input
-                        id="mainCheckbox"
-                        type="checkbox"
-                        onChange={event => handleMainCheckBox(event.target.checked)}
-                      />
+                      {isAdmin && (
+                        <input
+                          id="mainCheckbox"
+                          type="checkbox"
+                          onChange={event => handleMainCheckBox(event.target.checked)}
+                        />
+                      )}
                       <p
                         style={{
                           color: 'white',
@@ -208,20 +210,22 @@ const EventScreen = () => {
                     <tr>
                       <td className="tdFirstAndLastWidth">
                         <div>
-                          <input
-                            type="checkbox"
-                            id={e.id}
-                            checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
-                            onChange={event => {
-                              let temp = [...checkedBoxState]
-                              temp.forEach(data => {
-                                if (data.id == e.id) {
-                                  data.status = !data.status
-                                }
-                              })
-                              setCheckedBoxState([...temp])
-                            }}
-                          />
+                          {isAdmin && (
+                            <input
+                              type="checkbox"
+                              id={e.id}
+                              checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
+                              onChange={event => {
+                                let temp = [...checkedBoxState]
+                                temp.forEach(data => {
+                                  if (data.id == e.id) {
+                                    data.status = !data.status
+                                  }
+                                })
+                                setCheckedBoxState([...temp])
+                              }}
+                            />
+                          )}
                         </div>
                       </td>
                       <td style={{ width: '20%', minWidth: '100px' }}>
