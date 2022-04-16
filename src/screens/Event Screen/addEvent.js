@@ -912,20 +912,7 @@ const AddEventScreen = () => {
               >
                 <form style={{ alignItems: 'flex-start', width: '100%' }}>
                   <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                    <div
-                      className="col-md-9"
-                      style={
-                        getUserRoles() == 'Technical Administrator' ||
-                        getUserRoles() == 'PMK Administrator'
-                          ? { display: 'flex' }
-                          : {
-                              pointerEvents: 'none',
-                              opacity: '0.4',
-                              userSelect: 'none',
-                              display: 'flex',
-                            }
-                      }
-                    >
+                    <div className="col-md-9" style={{ display: 'flex' }}>
                       <Select
                         className="select-box"
                         options={
@@ -949,8 +936,6 @@ const AddEventScreen = () => {
                             setCompanyName('')
                           }
                         }}
-                        selected={registerationType}
-                        value={registerationType}
                       />
                     </div>
                   </div>
