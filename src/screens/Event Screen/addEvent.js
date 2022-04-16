@@ -659,9 +659,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('agenda')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('agenda')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(agendaMessage, '_blank')
+                        }
                       }}
                     >
                       Agenda
@@ -677,9 +682,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('alink')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('alink')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(alinkMessage, '_blank')
+                        }
                       }}
                     >
                       Other Possible link A
@@ -695,9 +705,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('blink')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('blink')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(blinkMessage, '_blank')
+                        }
                       }}
                     >
                       Other Possible Link B
