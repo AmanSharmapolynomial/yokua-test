@@ -283,9 +283,7 @@ const AddEventScreen = () => {
           toast.error(data.data.message.Fail)
         }
       })
-      .catch(error => {
-        //console.log(error)
-        toast.error(error.message)
+      .catch(() => {
         navigate('/event/update/' + eventId)
       })
   }
