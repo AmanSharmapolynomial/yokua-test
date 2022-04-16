@@ -143,7 +143,13 @@ const EventScreen = () => {
                 //console.log(calenderDate)
                 let dataList = eventList.filter(e => e.start_date === calenderDate)
                 return dataList.length > 0 ? (
-                  <div className="event-title">{dataList[0].training_name}</div>
+                  <div className="event-container">
+                    {dataList.slice(0, 3).map(data => (
+                      <div key={data.id} className="event-title">
+                        {data.training_name}
+                      </div>
+                    ))}
+                  </div>
                 ) : null
               }}
             />
