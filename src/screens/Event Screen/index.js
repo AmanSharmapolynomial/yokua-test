@@ -27,6 +27,9 @@ const EventScreen = () => {
   const [eventDeleteMsg, setEventDeleteMsg] = useState([])
   const [modalIsOpen, setIsOpen] = useState(false)
 
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   useEffect(async () => {
     getAllEventList()
   }, [])
@@ -126,7 +129,7 @@ const EventScreen = () => {
         </div>
       </div>
       {eventList.length > 0 ? (
-        <div className="calenderDiv" style={{ marginTop: '10px' }}>
+        <div className="calenderDiv" style={{ margin: '10px 0' }}>
           <div
             style={{
               display: 'flex',
@@ -301,48 +304,38 @@ const EventScreen = () => {
             </Table>
           </div>
 
-          <div
-            className="row mx-2 mx-md-5"
-            style={
-              getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
-                ? {
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    margin: '0 auto 32px',
-                  }
-                : { display: 'none' }
-            }
-          >
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-              <button
-                onClick={() => {
-                  navigate('/event/add')
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                }}
-              >
-                RYG Event creation
-              </button>
-              <button
-                onClick={() => {
-                  openModalForMultipleEvent()
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                }}
-              >
-                Delete
-              </button>
+          {!isAdmin && (
+            <div className="row mx-2 mx-md-5" style={{ display: 'none' }}>
+              <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                <button
+                  onClick={() => {
+                    navigate('/event/add')
+                  }}
+                  style={{
+                    background: 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: '1px solid black',
+                    borderRadius: '3px',
+                  }}
+                >
+                  RYG Event creation
+                </button>
+                <button
+                  onClick={() => {
+                    openModalForMultipleEvent()
+                  }}
+                  style={{
+                    background: 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: '1px solid black',
+                    borderRadius: '3px',
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-
+          )}
           <div>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
               <div>
