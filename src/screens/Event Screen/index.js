@@ -308,8 +308,8 @@ const EventScreen = () => {
             </Table>
           </div>
 
-          {!isAdmin && (
-            <div className="row mx-2 mx-md-5" style={{ display: 'none' }}>
+          {isAdmin && (
+            <div className="row mx-2 mx-md-5 mb-5">
               <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
                 <button
                   onClick={() => {
