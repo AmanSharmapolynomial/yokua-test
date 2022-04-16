@@ -16,6 +16,7 @@ import { useLoading } from '../../utils/LoadingContext'
 const ProfileSettingScreen = () => {
   const { setLoading } = useLoading()
 
+  const [viewMore, setViewMore] = useState(false)
   const [profileData, setProfileData] = useState({})
   const [name, setName] = useState()
   const nameRef = useRef()
@@ -567,17 +568,30 @@ const ProfileSettingScreen = () => {
                   <span>Loading...</span>
                 ) : (
                   <div className="profile-setting__basic-profile-edit">
-                    {profileData.participated_trainings?.map((training, index) => (
-                      <div className="edit_training" key={index}>
-                        <i className="fa-solid fa-calendar-check" />
-                        <div className="training_text">
-                          <span>{training.training_name}</span>
-                          <span>{training.date}</span>
+                    {profileData.participated_trainings
+                      ?.slice(0, viewMore ? 6 : 2)
+                      .map((training, index) => (
+                        <div className="edit_training" key={index}>
+                          <i className="fa-solid fa-calendar-check" />
+                          <div className="training_text">
+                            <span>{training.training_name}</span>
+                            <span>{training.date}</span>
+                          </div>
                         </div>
-
-                        <i className="fa-solid fa-pen-to-square edit" />
-                      </div>
-                    ))}
+                      ))}
+                    <p
+                      style={{
+                        textDecoration: 'underline',
+                        color: 'rgb(0, 79, 155)',
+                        paddingLeft: '25px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        setViewMore(prev => !prev)
+                      }}
+                    >
+                      {viewMore ? 'View Less' : 'View More'}
+                    </p>
                   </div>
                 )}
               </div>
