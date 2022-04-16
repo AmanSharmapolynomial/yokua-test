@@ -699,13 +699,12 @@ const AddEventScreen = () => {
                       ) : (
                         <div
                           style={{
-                            justifyContent: 'space-between',
                             display: 'flex',
                             width: '40%',
                           }}
                           className="row align-items-center"
                         >
-                          <div className="col-md-10">
+                          <div className="col-md-8">
                             <input
                               type="text"
                               className="form-control"
