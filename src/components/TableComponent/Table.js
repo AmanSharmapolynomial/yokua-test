@@ -30,7 +30,7 @@ import { toast } from 'react-toastify'
  * ]}
  *
  */
-export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
+export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
@@ -180,7 +180,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       />
       {isEditable ? (
         renderDummyRow()
-      ) : (
+      ) : isAdmin ? (
         <div
           role={'button'}
           className="add-row"
@@ -197,7 +197,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           />
           Add
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

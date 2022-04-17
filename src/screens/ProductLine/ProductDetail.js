@@ -12,6 +12,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 
 const ProductDetail = () => {
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   const navigate = useNavigate()
   const { state } = useLocation()
   const { setLoading } = useLoading()
@@ -172,21 +175,23 @@ const ProductDetail = () => {
         <div className="col-12 mt-4">
           <div className="d-flex align-items-center justify-content-between">
             <h3>{ele.table_name}</h3>
-            <div className="w-auto my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                className="fa-solid fa-trash ml-2"
-                role={'button'}
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
-            </div>
+            {isAdmin && (
+              <div className="w-auto my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  className="fa-solid fa-trash ml-2"
+                  role={'button'}
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
+            )}
           </div>
           <div className="row">
             <Table
@@ -195,6 +200,7 @@ const ProductDetail = () => {
               onRefresh={() => {
                 getProductDetails()
               }}
+              isAdmin={isAdmin}
             />
           </div>
         </div>
@@ -202,23 +208,25 @@ const ProductDetail = () => {
     } else if (ele.type === 'link') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2"
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {isAdmin && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
             <a role={'button'} href={ele.link}>
@@ -230,23 +238,25 @@ const ProductDetail = () => {
     } else if (ele.type === 'description') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2"
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {isAdmin && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="row">{ele.description}</div>
         </div>
       )
@@ -267,23 +277,25 @@ const ProductDetail = () => {
         }
         return (
           <div className="col-12 mt-4">
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+            {isAdmin && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
               </div>
-            </div>
+            )}
             <div className="row">{IMAGES}</div>
           </div>
         )
@@ -302,16 +314,18 @@ const ProductDetail = () => {
         <div className="row">
           {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
         </div>
-        <div className="mt-3">
-          <button
-            className="btn create-domain-btn"
-            onClick={() => {
-              setIsAddComponentModalVisible(index)
-            }}
-          >
-            Add Component
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="mt-3">
+            <button
+              className="btn create-domain-btn"
+              onClick={() => {
+                setIsAddComponentModalVisible(index)
+              }}
+            >
+              Add Component
+            </button>
+          </div>
+        )}
       </div>
     ))
   const renderAddTable = () => {
@@ -799,16 +813,18 @@ const ProductDetail = () => {
           ) : (
             <>
               <div className="row">{renderComponents()}</div>
-              <div className="mt-2 d-flex justify-content-center">
-                <button
-                  className="btn create-domain-btn mx-auto"
-                  onClick={() => {
-                    setIsAddSectionModalVisible(true)
-                  }}
-                >
-                  Add New Section
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="mt-2 d-flex justify-content-center">
+                  <button
+                    className="btn create-domain-btn mx-auto"
+                    onClick={() => {
+                      setIsAddSectionModalVisible(true)
+                    }}
+                  >
+                    Add New Section
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
