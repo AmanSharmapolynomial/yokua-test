@@ -93,7 +93,9 @@ const ProductLine = () => {
           {isLoading ? (
             <div className="col text-center">Loading....</div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="col" style={{ paddingRight: '10%' }}>
+              {renderRow()}
+            </div>
           )}
 
           {/* {(getUserRoles() == 'PMK Administrator' ||
