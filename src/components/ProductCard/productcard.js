@@ -5,7 +5,7 @@ import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import './productcard.css'
 
-const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
+const ProductCard = ({ index, item, onClick, subProduct, onUpdate, isAdmin }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [preview, setPreview] = useState()
   const imageInputRef = useRef(null)
@@ -96,50 +96,52 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
             )}
           </div>
         </div>
-        <span className="col-auto d-none d-md-block">
-          <img
-            src={isEditable ? saveIcon : editIcon}
-            onClick={e => {
-              e.stopPropagation()
-              if (isEditable) {
-                try {
-                  if (
-                    inputRef.current.value.trim() !== '' &&
-                    inputRef.current.value.trim() !== '' &&
-                    item.id !== undefined &&
-                    item.id !== null
-                  ) {
-                    const payload = new FormData()
-                    if (subProduct)
-                      payload.append(
-                        'data',
-                        JSON.stringify({
-                          product_id: item.id,
-                          sub_product_name: inputRef.current.value,
-                          description: textareaRef.current.value,
-                        })
-                      )
-                    else
-                      payload.append(
-                        'data',
-                        JSON.stringify({
-                          id: item.id,
-                          product_name: inputRef.current.value,
-                          description: textareaRef.current.value,
-                        })
-                      )
-                    payload.append('file', imageInputRef.current.files[0])
-                    onUpdate(payload)
+        {isAdmin ? (
+          <span className="col-auto d-none d-md-block">
+            <img
+              src={isEditable ? saveIcon : editIcon}
+              onClick={e => {
+                e.stopPropagation()
+                if (isEditable) {
+                  try {
+                    if (
+                      inputRef.current.value.trim() !== '' &&
+                      inputRef.current.value.trim() !== '' &&
+                      item.id !== undefined &&
+                      item.id !== null
+                    ) {
+                      const payload = new FormData()
+                      if (subProduct)
+                        payload.append(
+                          'data',
+                          JSON.stringify({
+                            product_id: item.id,
+                            sub_product_name: inputRef.current.value,
+                            description: textareaRef.current.value,
+                          })
+                        )
+                      else
+                        payload.append(
+                          'data',
+                          JSON.stringify({
+                            id: item.id,
+                            product_name: inputRef.current.value,
+                            description: textareaRef.current.value,
+                          })
+                        )
+                      payload.append('file', imageInputRef.current.files[0])
+                      onUpdate(payload)
+                    }
+                  } catch (error) {
+                    console.log(error)
                   }
-                } catch (error) {
-                  console.log(error)
+                  setPreview(undefined)
                 }
-                setPreview(undefined)
-              }
-              setIsEditable(!isEditable)
-            }}
-          />
-        </span>
+                setIsEditable(!isEditable)
+              }}
+            />
+          </span>
+        ) : null}
       </div>
     </div>
   )

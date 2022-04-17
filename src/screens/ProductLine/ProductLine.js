@@ -16,6 +16,9 @@ import ProductCard from '../../components/ProductCard/productcard'
 import { Link, Router } from 'react-router-dom'
 
 const ProductLine = () => {
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   const navigate = useNavigate()
   const { setLoading } = useLoading()
   const [archivedFilter, setArchivedFilter] = useState(false)
@@ -55,6 +58,7 @@ const ProductLine = () => {
           key={item.id}
           index={index}
           item={item}
+          isAdmin={isAdmin}
           onClick={() => {
             navigate('/product-lines/sub-product', { state: item })
           }}
