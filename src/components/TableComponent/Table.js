@@ -146,6 +146,10 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
                   src={accept}
                   className="mx-2"
                   onClick={() => {
+                    if (inputRef.current[idx].value === '') {
+                      toast.error('Cannot add with empty data')
+                      return
+                    }
                     callAddRowAPI()
                   }}
                 />
