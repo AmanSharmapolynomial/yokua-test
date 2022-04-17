@@ -53,7 +53,8 @@ const MyModel = props => {
           <input
             style={{
               borderRadius: '3px',
-              width: '75%',
+              flex: 1,
+              margin: '0 2.5rem',
             }}
             type="text"
             maxLength="255"
@@ -66,9 +67,7 @@ const MyModel = props => {
             value={props.value}
           />
         </div>
-        <br />
-        <br />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
           <button
             style={{
               background: 'white',
