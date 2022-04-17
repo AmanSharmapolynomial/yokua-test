@@ -562,7 +562,7 @@ const AddEventScreen = () => {
                             marginLeft: '15px',
                           }}
                           onChange={event => {
-                            let value = Number(event.target.value.match(/\d+/)?.join(''))
+                            let value = +event.target.value || 0
                             setMaxAttendeed(value)
                             setRemainSeats(value)
                           }}
