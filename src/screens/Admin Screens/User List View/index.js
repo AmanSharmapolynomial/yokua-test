@@ -66,7 +66,6 @@ const UserListView = () => {
     {
       name: 'SL.No',
       selector: row => row.id,
-      sortable: true,
     },
     {
       name: 'Name',
@@ -237,7 +236,7 @@ const UserListView = () => {
     <>
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col user-approval-screen">
-          <h2>Event Management</h2>
+          <h2 className="secondary-heading h4 mt-4">Event Management</h2>
 
           <div className="col d-flex justify-content-between align-items-center">
             <SecondaryHeading title="Notification" />
@@ -286,7 +285,7 @@ const UserListView = () => {
               )}
             </div>
           </div>
-          <h3 className="mt-4">View Attendees List</h3>
+          <h2 className="col secondary-heading h4 mt-4">View Attendees List</h2>
           <div className="domain-user-list mt-4">
             <div>
               <div className="row">
