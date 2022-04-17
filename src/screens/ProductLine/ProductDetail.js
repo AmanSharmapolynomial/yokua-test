@@ -311,11 +311,9 @@ const ProductDetail = () => {
   const renderAddTable = () => {
     return (
       <div className="row">
-        <div className="input-group mb-3">
+        <div className="input-group my-input-group">
           <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
-              {'Table Name'}
-            </span>
+            <span className="input-group-text font-8 font-weight-bold">Table Name</span>
           </div>
           <input
             onChange={e => {
@@ -333,16 +331,14 @@ const ProductDetail = () => {
             aria-describedby="basic-addon1"
           />
         </div>
-        <div className="input-group mb-3">
+        <div className="input-group my-input-group">
           <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
-              {'Add Number of Columns'}
-            </span>
+            <span className="input-group-text font-8 font-weight-bold">Add Number of Columns</span>
           </div>
           <input
             onChange={e => {
               setAddComponentData(prevState => {
-                return { ...prevState, columnsNum: parseInt(e.target.value) }
+                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
               })
             }}
             type="number"
@@ -355,17 +351,26 @@ const ProductDetail = () => {
         </div>
         {addComponentData?.columnsNum && addComponentData?.columnsNum > 0 && (
           <div className="col-12 font-8">
-            <div className="row">
+            <div className="row add-table-row">
               {columneNames.map((item, index) => (
-                <div className={`${index === 0 ? 'col-4' : 'col-2'}`}>{item.title}</div>
+                <div
+                  className={`${
+                    index === 0 ? 'col-4 add-table-col' : 'col-2 add-table-col text-center'
+                  }`}
+                >
+                  {item.title}
+                </div>
               ))}
             </div>
             {[...Array(addComponentData?.columnsNum)].map((e, i) => (
-              <div className="row d-flex align-items-center mt-2">
+              <div className="row add-table-row d-flex align-items-center">
                 {columneNames.map((item, index) =>
                   index === 0 ? (
                     <input
-                      className={`${index === 0 ? 'col-4' : 'col-2'}`}
+                      className={`${
+                        index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
+                      }`}
+                      placeholder="type column name"
                       onChange={e => {
                         setAddComponentData(prevState => {
                           let state = { ...prevState }
