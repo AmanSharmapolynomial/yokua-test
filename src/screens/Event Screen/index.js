@@ -138,6 +138,8 @@ const EventScreen = () => {
           >
             <Calendar
               //minDate={new Date()}
+              prevLabel={<i className="fas fa-caret-left"></i>}
+              nextLabel={<i className="fas fa-caret-right"></i>}
               formatShortWeekday={(locale, value) =>
                 ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
               }
@@ -257,8 +259,8 @@ const EventScreen = () => {
                             }}
                           ></i>
                           <span style={{ fontWeight: 'bold' }}>
-                            <p>{e.training_name}</p>
-                            <p>{e.location}</p>
+                            <p style={{ marginBottom: '10px' }}>{e.training_name}</p>
+                            <p style={{ marginBottom: '10px' }}>{e.location}</p>
                             <p>{e.classification_level} Training</p>
                           </span>
                         </div>

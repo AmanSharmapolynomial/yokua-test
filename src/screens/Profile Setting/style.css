@@ -176,12 +176,13 @@ button > .delete-btn {
 .edit_training {
   display: flex;
   align-items: flex-start;
-  justify-content: space-around;
   margin: 1rem 0;
+  padding: 0 2rem;
 }
 
 .training_text {
   margin-top: -0.5rem;
+  margin-left: 2rem;
   display: flex;
   flex-direction: column;
   line-height: 2.4rem;

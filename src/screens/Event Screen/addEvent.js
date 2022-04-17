@@ -1222,7 +1222,7 @@ const AddEventScreen = () => {
                       color: 'white',
                       border: '1px solid black',
                       borderRadius: '3px',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       marginLeft: '20px',
                     }}
                   >

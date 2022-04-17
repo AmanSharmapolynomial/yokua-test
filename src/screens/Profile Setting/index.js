@@ -659,7 +659,10 @@ const ProfileSettingScreen = () => {
                   <div className="profile-setting__basic-profile-edit">
                     {profileData.future_trainings?.map((training, index) => (
                       <div className="edit_training" key={index}>
-                        <i className="fa-solid fa-calendar-check" />
+                        <i
+                          className="fa-solid fa-calendar-check"
+                          style={{ color: '#004f9b', fontSize: '20px' }}
+                        />
                         <div className="training_text">
                           <span>{training.training_topic}</span>
                           <span>{training.date}</span>
@@ -672,7 +675,12 @@ const ProfileSettingScreen = () => {
                             setIsModalOpen(true)
                             fetchEventData(training.event_id, training.participant_email)
                           }}
-                          style={{ cursor: 'pointer' }}
+                          style={{
+                            cursor: 'pointer',
+                            color: '#004f9b',
+                            fontSize: '20px',
+                            marginLeft: 'auto',
+                          }}
                           className="fa-solid fa-pen-to-square"
                         />
                       </div>
@@ -692,7 +700,10 @@ const ProfileSettingScreen = () => {
                       ?.slice(0, viewMore ? 6 : 2)
                       .map((training, index) => (
                         <div className="edit_training" key={index}>
-                          <i className="fa-solid fa-calendar-check" />
+                          <i
+                            className="fa-solid fa-calendar-check"
+                            style={{ color: '#004f9b', fontSize: '20px' }}
+                          />
                           <div className="training_text">
                             <span>{training.training_name}</span>
                             <span>{training.date}</span>
@@ -701,16 +712,16 @@ const ProfileSettingScreen = () => {
                       ))}
                     <p
                       style={{
-                        textDecoration: 'underline',
                         color: 'rgb(0, 79, 155)',
-                        paddingLeft: '25px',
+                        paddingRight: '25px',
                         cursor: 'pointer',
+                        textAlign: 'right',
                       }}
                       onClick={() => {
                         setViewMore(prev => !prev)
                       }}
                     >
-                      {viewMore ? 'View Less' : 'View More'}
+                      {viewMore ? 'view less...' : 'view more...'}
                     </p>
                   </div>
                 )}
