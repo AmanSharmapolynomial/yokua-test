@@ -67,6 +67,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       tableColumns.push({
         name: column.column_name,
         selector: row => row[tempColumnName],
+        wrap: true,
         sortable: column.is_sortable,
         isLink: column.is_link,
         isDate: column.is_date,
