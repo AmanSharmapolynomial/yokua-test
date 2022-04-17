@@ -36,6 +36,11 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   const [isEditable, setIsEditable] = useState(false)
   const inputRef = useRef([])
   const customStyles = {
+    table: {
+      style: {
+        border: 'none',
+      },
+    },
     rows: {
       style: {
         border: '1px solid black',
@@ -44,6 +49,14 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
     headRow: {
       style: {
         borderBottom: '1px solid var(--bgColor2)',
+        fontSize: '16px',
+      },
+    },
+    row: {
+      style: {
+        border: '2px solid black',
+        borderLeft: 'none',
+        borderRight: 'none',
       },
     },
     headCells: {
@@ -61,6 +74,11 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
         fontSize: '0.8rem',
+      },
+    },
+    noData: {
+      style: {
+        border: '1px solid black',
       },
     },
   }
