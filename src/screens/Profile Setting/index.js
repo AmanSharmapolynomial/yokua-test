@@ -155,9 +155,10 @@ const ProfileSettingScreen = () => {
 
   const handleModalClose = () => {
     setSelectedEvent({})
-    setIsModalOpen(false)
     setIsModalLoading(false)
     setIsModalSubmitting(false)
+    setShowCancelModal(false)
+    setIsModalOpen(false)
   }
 
   const fetchEventData = (event_id, email) => {
@@ -214,7 +215,7 @@ const ProfileSettingScreen = () => {
           setProfileData(prev => ({
             ...prev,
             future_trainings: prev.future_trainings.filter(
-              training => training.event_id === selectedEvent.event_id
+              training => training.event_id !== selectedEvent.event_id
             ),
           }))
         }
