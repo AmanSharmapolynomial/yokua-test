@@ -183,6 +183,9 @@ const AddEventScreen = () => {
           setClassificationLevel(
             classificationOption.find(e => e.value == result.event_details['classification_level'])
           )
+          if (result.event_details.classification_level == 'internal') {
+            setRegistrationType(registerationTypeOption.find(e => e.value == 'internal'))
+          }
           setCost(result.event_details['cost'])
           setAgendaMessage(result.links['agenda_link'])
           setAlinkMessage(result.links['link_a'])
@@ -936,6 +939,7 @@ const AddEventScreen = () => {
                             setCompanyName('')
                           }
                         }}
+                        value={registerationType}
                       />
                     </div>
                   </div>
