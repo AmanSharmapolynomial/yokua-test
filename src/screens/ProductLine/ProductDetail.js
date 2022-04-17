@@ -138,7 +138,7 @@ const ProductDetail = () => {
       return (
         <div className="col-12 mt-4">
           <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
+            <div className="ml-auto w-auto my-2 my-2">
               <i className="fa-solid fa-pen-to-square mr-2"></i>
               <i
                 role={'button'}
@@ -197,7 +197,7 @@ const ProductDetail = () => {
       return (
         <div className="col-12 mt-4">
           <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
+            <div className="ml-auto w-auto my-2 my-2">
               <i className="fa-solid fa-pen-to-square mr-2"></i>
               <i
                 role={'button'}
@@ -225,7 +225,7 @@ const ProductDetail = () => {
       return (
         <div className="col-12 mt-4">
           <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
+            <div className="ml-auto w-auto my-2 my-2">
               <i className="fa-solid fa-pen-to-square mr-2"></i>
               <i
                 role={'button'}
@@ -262,7 +262,7 @@ const ProductDetail = () => {
         return (
           <div className="col-12 mt-4">
             <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
+              <div className="ml-auto w-auto my-2 my-2">
                 <i className="fa-solid fa-pen-to-square mr-2"></i>
                 <i
                   role={'button'}
@@ -835,7 +835,7 @@ const ProductDetail = () => {
                     aria-controls={`collapse${idx}`}
                   >
                     <span>{item.title}</span>
-                    <i className="fa-solid fa-angle-right greyed" />
+                    <i className="fa-solid fa-angle-down greyed" />
                   </div>
                 </div>
                 <div
