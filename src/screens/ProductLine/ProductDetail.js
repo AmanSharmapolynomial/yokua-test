@@ -822,12 +822,16 @@ const ProductDetail = () => {
           <Modal.Title>List of Components</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
-          <div className="accordion" id="accordionExample">
+          <div
+            className="accordion"
+            id="accordionExample"
+            style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+          >
             {components.map((item, idx) => (
-              <div className="card">
-                <div className="card-header" id="headingOne">
+              <div className="card border border-secondary">
+                <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
                   <div
-                    className="accordian-title d-flex justify-content-between align-items-center font-8"
+                    className="accordian-title d-flex justify-content-between align-items-center font-10"
                     type="button"
                     data-toggle="collapse"
                     data-target={`#collapse${idx}`}
