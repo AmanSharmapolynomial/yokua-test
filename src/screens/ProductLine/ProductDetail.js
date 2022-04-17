@@ -165,8 +165,9 @@ const ProductDetail = () => {
     } else if (ele.type === 'table') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
+          <div className="d-flex align-items-center justify-content-between">
+            <h3>{ele.table_name}</h3>
+            <div className="w-auto my-2">
               <i className="fa-solid fa-pen-to-square mr-2"></i>
               <i
                 className="fa-solid fa-trash ml-2"
