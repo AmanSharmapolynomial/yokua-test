@@ -29,7 +29,9 @@ const ProductLine = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductList(res.data)
+          const productList = res.data.slice()
+          productList.sort((a, b) => a.name.localeCompare(b.name))
+          setProductList(productList)
         }
         setIsLoading(false)
       })
