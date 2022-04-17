@@ -34,7 +34,7 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
       <div className="row">
         <div className="col">
           <div className="row">
-            <div className="col-6">
+            <div className="col-6" style={{ padding: '0 20px' }}>
               <div className="img-box thumb rounded d-flex">
                 {isEditable ? (
                   <>
@@ -70,12 +70,12 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
                 )}
               </div>
               {isEditable ? (
-                <div className="border text-center rounded mt-2">
+                <div className="border text-center rounded mt-3">
                   <input ref={inputRef} />
                 </div>
               ) : (
                 <div
-                  className="border text-center rounded mt-2"
+                  className="border text-center rounded mt-3"
                   style={{
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -90,7 +90,9 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
             {isEditable ? (
               <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
             ) : (
-              <div className="col-6 d-flex align-items-center" style={{wordBreak:'break-all'}} >{item.description}</div>
+              <div className="col-6 d-flex align-items-center" style={{ wordBreak: 'break-all' }}>
+                {item.description}
+              </div>
             )}
           </div>
         </div>
