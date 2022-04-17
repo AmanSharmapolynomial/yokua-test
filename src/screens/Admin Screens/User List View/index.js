@@ -58,6 +58,8 @@ const UserListView = () => {
   const [eventAttendeesPage, setEventAttendeesPage] = useState(1)
   const [eventAttendeesPageTotal, setEventAttendeesPageTotal] = useState(1)
 
+  const [isEventDataLoading, setIsEventDataLoading] = useState(false)
+
   const [isModalLoading, setIsModalLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalData, setModalData] = useState({})
@@ -175,6 +177,7 @@ const UserListView = () => {
         cancelToken.cancel('Operation canceled by the user')
       }
 
+      setIsEventDataLoading(true)
       cancelToken = axios.CancelToken.source()
       API.get(`training/training_registeration_view/${selectedEvent}`, {
         cancelToken: cancelToken.token,
@@ -187,6 +190,9 @@ const UserListView = () => {
         })
         .catch(err => {
           console.error(err)
+        })
+        .finally(() => {
+          setIsEventDataLoading(false)
         })
     }
   }
@@ -238,7 +244,7 @@ const UserListView = () => {
         <div className="col user-approval-screen">
           <h2 className="secondary-heading h4 mt-4">Event Management</h2>
 
-          <div className="col d-flex justify-content-between align-items-center">
+          <div className="d-flex justify-content-between align-items-center">
             <SecondaryHeading title="Notification" />
             <button className="btn create-domain-btn" onClick={clearNotifications}>
               Clear Notifications
@@ -328,6 +334,7 @@ const UserListView = () => {
                           customStyles={customStyles}
                           fixedHeader
                           fixedHeaderScrollHeight="400px"
+                          progressPending={isEventDataLoading}
                         />
                         <Pagination
                           current={eventAttendeesPage}
