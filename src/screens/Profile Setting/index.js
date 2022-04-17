@@ -12,10 +12,48 @@ import Header from '../../components/Header'
 import { useNavigate } from 'react-router'
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
+import Modal from 'react-modal'
+
+const customStyles = {
+  overlay: {
+    zIndex: 10,
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '30%',
+    overflow: 'auto',
+  },
+}
+
+const cancelModalStyle = {
+  overlay: {
+    zIndex: 15,
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '30%',
+    overflow: 'auto',
+  },
+}
 
 const ProfileSettingScreen = () => {
   const { setLoading } = useLoading()
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalLoading, setIsModalLoading] = useState(false)
+  const [isModalSubmitting, setIsModalSubmitting] = useState(false)
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState({})
   const [viewMore, setViewMore] = useState(false)
   const [profileData, setProfileData] = useState({})
   const [name, setName] = useState()
@@ -113,6 +151,80 @@ const ProfileSettingScreen = () => {
 
   const _setProfilePicture = avatar => {
     setProfilePicture(avatar)
+  }
+
+  const handleModalClose = () => {
+    setSelectedEvent({})
+    setIsModalOpen(false)
+    setIsModalLoading(false)
+    setIsModalSubmitting(false)
+  }
+
+  const fetchEventData = (event_id, email) => {
+    setIsModalLoading(true)
+    API.post('training/get_user_preference', {
+      event_id,
+      email,
+    })
+      .then(res => {
+        if (res.status === 200) {
+          setSelectedEvent({
+            ...res.data,
+            event_id,
+            email,
+            isOtherSelected: !(
+              res.data?.food_requirements === 'No Requirement' ||
+              res.data?.food_requirements === 'No Pork' ||
+              res.data?.food_requirements === 'Vegetarian'
+            ),
+          })
+        }
+      })
+      .finally(() => {
+        setIsModalLoading(false)
+      })
+  }
+
+  const handleEventUpdate = (e, shouldCancel = false) => {
+    e.preventDefault()
+    if (selectedEvent.isOtherSelected && selectedEvent.food_requirements === '') {
+      toast.error('Please specify food requirement')
+      return
+    }
+    setIsModalSubmitting(true)
+    API.post('/auth/update_event_preferences/', {
+      id: selectedEvent.event_id,
+      participant_email: selectedEvent.email,
+      cancel: shouldCancel,
+      preferences: {
+        hotel_reservation: selectedEvent.hotel_reservation,
+        shuttle_transport: selectedEvent.shuttle_transport,
+        food_requirements: selectedEvent.food_requirements,
+      },
+    })
+      .then(res => {
+        if (res.status === 200) {
+          toast.success(res.data.message || 'Event preferences updated successfully')
+        } else {
+          throw new Error(res.data.message || 'Event preferences update failed')
+        }
+      })
+      .then(() => {
+        if (shouldCancel) {
+          setProfileData(prev => ({
+            ...prev,
+            future_trainings: prev.future_trainings.filter(
+              training => training.event_id === selectedEvent.event_id
+            ),
+          }))
+        }
+        handleModalClose()
+      })
+      .catch(e => {
+        console.error(e)
+        toast.error('Some error occurred')
+        setIsModalSubmitting(false)
+      })
   }
 
   return (
@@ -554,7 +666,14 @@ const ProfileSettingScreen = () => {
                           <span>{training.address}</span>
                         </div>
 
-                        <i className="fa-solid fa-pen-to-square edit" />
+                        <i
+                          onClick={() => {
+                            setIsModalOpen(true)
+                            fetchEventData(training.event_id, training.participant_email)
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className="fa-solid fa-pen-to-square"
+                        />
                       </div>
                     ))}
                   </div>
@@ -599,6 +718,326 @@ const ProfileSettingScreen = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        style={customStyles}
+        onRequestClose={handleModalClose}
+        ariaHideApp={false}
+      >
+        <div style={{ position: 'relative' }}>
+          <h3 className="text-center mb-3">View Preferences</h3>
+          <i
+            className="fa-solid fa-xmark"
+            style={{
+              position: 'absolute',
+              top: '-10px',
+              right: '-10px',
+              padding: '3px 5px',
+              borderRadius: '50%',
+              background: '#cd0000',
+              color: '#fff',
+              fontSize: '0.75rem',
+              cursor: 'pointer',
+            }}
+            onClick={handleModalClose}
+          ></i>
+          {isModalLoading ? (
+            <h3>Loading...</h3>
+          ) : (
+            <div style={{ width: '100%' }}>
+              <div className="row w-100">
+                <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
+                <div className="row">
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent?.hotel_reservation === true}
+                      name="hotelYes"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          hotel_reservation: true,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="yes">
+                      Yes
+                    </label>
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent?.hotel_reservation === false}
+                      name="hotelNo"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          hotel_reservation: false,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      No
+                    </label>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: '20px' }}>
+                  <label style={{ fontWeight: 'bold' }}>
+                    Assist with organization of shuttle transport
+                  </label>
+                </div>
+                <div className="row">
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent?.shuttle_transport === true}
+                      name="shuttleYes"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          shuttle_transport: true,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="yes">
+                      Yes
+                    </label>
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent?.shuttle_transport === false}
+                      name="shuttleNo"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          shuttle_transport: false,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      No
+                    </label>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: '20px' }}>
+                  <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
+                </div>
+                <div className="row">
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent?.food_requirements === 'No Requirement'}
+                      name="No Requirement"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          food_requirements: 'No Requirement',
+                          isOtherSelected: false,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="yes">
+                      No Special requirements
+                    </label>
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="col-md-4 form-check-input"
+                      checked={selectedEvent?.food_requirements === 'No Pork'}
+                      name="No Pork"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          food_requirements: 'No Pork',
+                          isOtherSelected: false,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      No Pork
+                    </label>
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="col-md-4 form-check-input"
+                      checked={selectedEvent?.food_requirements === 'Vegetarian'}
+                      name="Vegetarian"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          food_requirements: 'Vegetarian',
+                          isOtherSelected: false,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      Vegetarian
+                    </label>
+                  </div>
+                  <div
+                    className="row"
+                    style={{
+                      position: 'relative',
+                      marginLeft: '30px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedEvent.isOtherSelected}
+                      name="Other, please specify"
+                      onChange={() => {
+                        setSelectedEvent(prev => ({
+                          ...prev,
+                          food_requirements: '',
+                          isOtherSelected: true,
+                        }))
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      Other, please specify
+                    </label>
+                    {selectedEvent.isOtherSelected && (
+                      <input
+                        type="text"
+                        className="form-control "
+                        style={{ position: 'absolute', left: '200px', top: '-25%' }}
+                        value={selectedEvent.food_requirements}
+                        onChange={event => {
+                          setSelectedEvent(prev => ({
+                            ...prev,
+                            food_requirements: event.target.value,
+                          }))
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="row justify-content-between mt-3 w-100" style={{ padding: '0 12px' }}>
+                <button
+                  style={{
+                    width: 'fit-content',
+                    background: isModalSubmitting ? '#6c757d' : 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: isModalSubmitting ? '1px solid #6c757d' : '1px solid black',
+                    borderRadius: '3px',
+                    fontSize: '13px',
+                    cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
+                  }}
+                  type="submit"
+                  onClick={handleEventUpdate}
+                  disabled={isModalSubmitting}
+                >
+                  Save
+                </button>
+                <button
+                  style={{
+                    width: 'fit-content',
+                    background: isModalSubmitting ? '#6c757d' : 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: isModalSubmitting ? '1px solid #6c757d' : '1px solid black',
+                    borderRadius: '3px',
+                    fontSize: '13px',
+                    cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
+                  }}
+                  onClick={() => setShowCancelModal(true)}
+                  disabled={isModalSubmitting}
+                >
+                  Cancel Event
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </Modal>
+      <Modal
+        isOpen={showCancelModal}
+        style={cancelModalStyle}
+        onRequestClose={() => setShowCancelModal(false)}
+        ariaHideApp={false}
+      >
+        <div className="row p-4">
+          <h4 className="text-center mb-4">Are you sure you want to cancel this event?</h4>
+          <div className="d-flex justify-content-center">
+            <button
+              style={{
+                width: '50px',
+                background: isModalSubmitting ? '#6c757d' : 'rgb(0, 79, 155)',
+                color: 'white',
+                border: isModalSubmitting ? '1px solid #6c757d' : '1px solid black',
+                borderRadius: '3px',
+                fontSize: '13px',
+                cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
+              }}
+              onClick={e => handleEventUpdate(e, true)}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                width: '50px',
+                background: isModalSubmitting ? '#6c757d' : 'rgb(0, 79, 155)',
+                color: 'white',
+                border: isModalSubmitting ? '1px solid #6c757d' : '1px solid black',
+                borderRadius: '3px',
+                fontSize: '13px',
+                cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
+                marginLeft: '10px',
+              }}
+              onClick={() => setShowCancelModal(false)}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }
