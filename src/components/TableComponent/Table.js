@@ -88,7 +88,15 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
         tableData?.map(column_name => {
           const tempObject = new Object()
-          tempObject[column_name['column_name']] = column_name.values[index].value
+          let value = column_name.values[index].value
+          if (column_name.is_link) {
+            value = (
+              <a href={value} target="_blank">
+                {value}
+              </a>
+            )
+          }
+          tempObject[column_name['column_name']] = value
           Object.assign(tableRowObject, tempObject)
         })
         finalTableData.push(tableRowObject)
