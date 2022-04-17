@@ -24,6 +24,7 @@ const ProductDetail = () => {
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const sectionTitleRef = React.useRef(null)
+  const accordionRef = React.useRef(null)
   const components = [
     {
       title: 'Add Table',
@@ -94,7 +95,11 @@ const ProductDetail = () => {
   }
 
   const onAddComponentCancel = () => {
-    setIsAddComponentModalVisible(-1)
+    if (accordionRef.current) {
+      Array.from(accordionRef.current.querySelectorAll('div.show')).forEach(el =>
+        el.classList.remove('show')
+      )
+    }
     setAddComponentData({})
     setInputBinary()
   }
@@ -637,8 +642,7 @@ const ProductDetail = () => {
               }
             }}
             onClick={() => {
-              setIsAddComponentModalVisible(-1)
-              setAddComponentData({})
+              onAddComponentCancel()
             }}
             className="btn mr-2"
           >
@@ -707,8 +711,7 @@ const ProductDetail = () => {
               }
             }}
             onClick={() => {
-              setIsAddComponentModalVisible(-1)
-              setAddComponentData({})
+              onAddComponentCancel()
             }}
             className="btn mr-2"
           >
@@ -832,6 +835,7 @@ const ProductDetail = () => {
             className="accordion"
             id="accordionExample"
             style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+            ref={accordionRef}
           >
             {components.map((item, idx) => (
               <div className="card border border-secondary">
