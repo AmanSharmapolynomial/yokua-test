@@ -38,9 +38,12 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   const customStyles = {
     rows: {
       style: {
-        borderWidth: '10px',
-        borderBottomColor: 'black',
-        borderBottomWidth: '10px',
+        border: '1px solid black',
+      },
+    },
+    headRow: {
+      style: {
+        borderBottom: '1px solid var(--bgColor2)',
       },
     },
     headCells: {
@@ -49,6 +52,8 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
         paddingRight: '8px',
         backgroundColor: 'var(--bgColor2)',
         color: 'white',
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
       },
     },
     cells: {
