@@ -165,6 +165,7 @@ const EventScreen = () => {
                 border: '1px solid',
                 margin: '20px auto 0',
                 maxHeight: '450px',
+                width: '100%',
               }}
             >
               <thead>
@@ -176,7 +177,7 @@ const EventScreen = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        paddingTop: '10px',
+                        padding: '5px 0',
                         width: '15%',
                       }}
                     >
@@ -184,6 +185,7 @@ const EventScreen = () => {
                         <input
                           id="mainCheckbox"
                           type="checkbox"
+                          style={{ marginLeft: '10px' }}
                           onChange={event => handleMainCheckBox(event.target.checked)}
                         />
                       )}
@@ -208,13 +210,14 @@ const EventScreen = () => {
                   let endDate = moment(e.end_date, 'yyyy-MM-DD')
                   return (
                     <tr>
-                      <td className="tdFirstAndLastWidth">
+                      <td style={{ width: '5%' }}>
                         <div>
                           {isAdmin && (
                             <input
                               type="checkbox"
                               id={e.id}
                               checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
+                              style={{ marginLeft: '10px' }}
                               onChange={event => {
                                 let temp = [...checkedBoxState]
                                 temp.forEach(data => {
@@ -228,51 +231,55 @@ const EventScreen = () => {
                           )}
                         </div>
                       </td>
-                      <td style={{ width: '20%', minWidth: '100px' }}>
+                      <td style={{ width: '15%', minWidth: '150px' }}>
                         <div
                           style={{
-                            fontWeight: 'bold',
                             borderRight: '1px solid',
                             paddingRight: '15px',
+                            fontWeight: 'bold',
                           }}
                         >
                           <p>{moment(startDate).format('ddd DD MMM')}</p>
                           <p>{moment(endDate).format('ddd DD MMM')}</p>
+                          <br />
                           <p>{endDate.diff(startDate, 'days')} days</p>
                         </div>
                       </td>
-                      <td className="tdWidth">
+                      <td style={{ width: '30%' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <img
-                            src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
+                          <i
+                            class="fas fa-location-dot"
+                            aria-hidden="true"
                             style={{
-                              marginRight: '15px',
+                              color: '#004F9B',
+                              fontSize: '1.5rem',
+                              margin: '0 25px 0 10px',
                             }}
-                          />
-                          <span>
+                          ></i>
+                          <span style={{ fontWeight: 'bold' }}>
                             <p>{e.training_name}</p>
                             <p>{e.location}</p>
                             <p>{e.classification_level} Training</p>
                           </span>
                         </div>
                       </td>
-                      <td className="tdWidth">
-                        <div
-                          style={{
-                            padding: '25px',
-                          }}
-                        >
+                      <td style={{ width: '40%', minWidth: '120px' }}>
+                        <div>
                           <label
-                            style={{ color: 'rgb(0, 79, 155)', cursor: 'pointer' }}
+                            style={{
+                              color: '#004F9B',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                            }}
                             onClick={() => {
                               navigate('/event/update/' + e.id)
                             }}
                           >
-                            + more information &amp; Registration
+                            Click here to Register Event
                           </label>
                         </div>
                       </td>
-                      <td className="tdWidth">
+                      <td style={{ width: '30%', maxWidth: '300px' }}>
                         <p
                           style={{
                             padding: '25px',
@@ -280,10 +287,10 @@ const EventScreen = () => {
                             overflowWrap: 'break-word',
                           }}
                         >
-                          {e.description.slice(0, 50) + '...'}
+                          {e.description}
                         </p>
                       </td>
-                      <td className="tdFirstAndLastWidth">
+                      <td style={{ width: '5%' }}>
                         <div
                           style={{
                             padding: '25px',
@@ -291,12 +298,12 @@ const EventScreen = () => {
                         >
                           {getUserRoles() == 'Technical Administrator' ||
                           getUserRoles() == 'PMK Administrator' ? (
-                            <img
-                              src="https://img.icons8.com/ios-glyphs/30/fa314a/trash--v1.png"
+                            <i
+                              className="fas fa-trash"
                               onClick={() => {
                                 openModal(e.id)
                               }}
-                              style={{ width: '1.5rem', cursor: 'pointer' }}
+                              style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
                             />
                           ) : null}
                         </div>
