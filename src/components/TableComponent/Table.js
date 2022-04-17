@@ -156,7 +156,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   }, [tableObject])
 
   return (
-    <div className="border w-100 mt-4">
+    <div className="border w-100 mt-4 p-0">
       <DataTable
         pagination={false}
         paginationPerPage={false}
