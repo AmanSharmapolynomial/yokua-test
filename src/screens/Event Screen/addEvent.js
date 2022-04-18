@@ -586,8 +586,12 @@ const AddEventScreen = () => {
                       className="col-md-8"
                     >
                       <label
-                        style={{ fontWeight: 'bold', marginLeft: !isAdmin ? '-15px' : 0 }}
-                        className="col-md-6"
+                        style={{
+                          fontWeight: 'bold',
+                          marginLeft: !isAdmin ? '-15px' : 0,
+                          whiteSpace: 'nowrap',
+                        }}
+                        className="ml-3 col-md-6"
                       >
                         Remaining Seats
                       </label>
@@ -828,11 +832,10 @@ const AddEventScreen = () => {
                         <div
                           style={{
                             display: 'flex',
-                            width: '40%',
+                            gap: '1rem',
                           }}
-                          className="row align-items-center"
                         >
-                          <div className="col-md-8">
+                          <div>
                             <input
                               type="text"
                               className="form-control"
@@ -842,7 +845,7 @@ const AddEventScreen = () => {
                               value={singleRequirement}
                             />
                           </div>
-                          <div className="btn-group col-md-2">
+                          <div className="btn-group">
                             <button
                               style={{
                                 width: 'auto',
