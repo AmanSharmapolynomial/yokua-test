@@ -63,6 +63,8 @@ const AddEventScreen = () => {
   const [dependOnButton, setDependOnButton] = useState('')
   const [linkModal, setLinkModal] = useState(false)
 
+  const requirementCountRef = useRef(0)
+
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
 
@@ -215,6 +217,9 @@ const AddEventScreen = () => {
   //handle publish event
   const handlePublishButton = async event => {
     event.preventDefault()
+    const preparedRequirementList = Object.values(requirement)
+    preparedRequirementList.sort((a, b) => a.id - b.id)
+
     const eventObject = {
       event_details: {
         cost: cost,
@@ -234,7 +239,7 @@ const AddEventScreen = () => {
         link_a: alinkMessage,
         link_b: blinkMessage,
       },
-      requirements: requirement,
+      requirements: preparedRequirementList.map(item => item.value),
     }
 
     //console.log('called api: ' + JSON.stringify(eventObject))
@@ -727,27 +732,78 @@ const AddEventScreen = () => {
                   <h4>Requirements for the event</h4>
                   <ul class="requirements-list">
                     {!eventId
-                      ? requirement.map(e => {
+                      ? Object.entries(requirement).map(([key, e]) => {
                           return (
-                            <li>
-                              <label>{e}</label>
-                              <i
-                                className="fa-solid fa-trash"
-                                style={{
-                                  marginLeft: '10px',
-                                  cursor: 'pointer',
-                                  color: '#cd2727',
-                                }}
-                                onClick={() => {
-                                  setRequirement(requirement.filter(r => r !== e))
-                                }}
-                              ></i>
+                            <li key={key}>
+                              {e.isEditing ? (
+                                <input
+                                  type="text"
+                                  value={e.value}
+                                  onChange={event => {
+                                    let value = event.target.value
+                                    setRequirement({
+                                      ...requirement,
+                                      [key]: {
+                                        ...e,
+                                        value,
+                                      },
+                                    })
+                                  }}
+                                />
+                              ) : (
+                                <label>{e.value}</label>
+                              )}
+                              <span>
+                                {e.isEditing ? (
+                                  <i
+                                    className="fa-solid fa-save"
+                                    style={{
+                                      marginLeft: '12px',
+                                      cursor: 'pointer',
+                                      color: '#004f9b',
+                                    }}
+                                    onClick={() => {
+                                      const newRequirement = { ...requirement }
+                                      newRequirement[key].isEditing = false
+                                      setRequirement(newRequirement)
+                                    }}
+                                  ></i>
+                                ) : (
+                                  <i
+                                    className="fa-solid fa-edit"
+                                    style={{
+                                      marginLeft: '10px',
+                                      cursor: 'pointer',
+                                      color: '#004f9b',
+                                    }}
+                                    onClick={() => {
+                                      const newRequirement = { ...requirement }
+                                      newRequirement[key].isEditing = true
+                                      setRequirement(newRequirement)
+                                    }}
+                                  ></i>
+                                )}
+                                <i
+                                  className="fa-solid fa-trash"
+                                  style={{
+                                    cursor: 'pointer',
+                                    color: '#cd2727',
+                                  }}
+                                  onClick={() => {
+                                    setRequirement(prev => {
+                                      const newRequirement = { ...prev }
+                                      delete newRequirement[key]
+                                      return newRequirement
+                                    })
+                                  }}
+                                ></i>
+                              </span>
                             </li>
                           )
                         })
                       : requirement.map(e => {
                           return (
-                            <li style={{ fontSize: '16px' }}>
+                            <li className="preview" style={{ fontSize: '16px' }}>
                               <label>{e}</label>
                             </li>
                           )
@@ -755,10 +811,9 @@ const AddEventScreen = () => {
                   </ul>
 
                   {!eventId && (
-                    <div>
+                    <div className="requirement-more-input">
                       {moreInputFlag == true ? (
                         <h6
-                          style={{ marginLeft: '29px' }}
                           onClick={() => {
                             setMoreInputFlag(!moreInputFlag)
                           }}
@@ -800,7 +855,15 @@ const AddEventScreen = () => {
                               onClick={event => {
                                 setMoreInputFlag(true)
                                 if (singleRequirement != null && singleRequirement != '') {
-                                  setRequirement(requirement => [...requirement, singleRequirement])
+                                  const newId = ++requirementCountRef.current
+                                  setRequirement(requirement => ({
+                                    ...requirement,
+                                    [newId]: {
+                                      id: newId,
+                                      value: singleRequirement,
+                                      isEditing: false,
+                                    },
+                                  }))
                                   setSingleRequirement('')
                                 }
                               }}
