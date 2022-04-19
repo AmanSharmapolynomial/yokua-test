@@ -58,14 +58,28 @@ export default () => {
           {companyList.map(data => (
             <div className="yk-dd row yk-data-row d-flex justify-content-between align-items-center p-3 dropright btn-group">
               <div
-                className="dropdown-toggle d-flex justify-content-between flex-fill"
-                data-offset="20,20"
+                className="dropdown-toggle d-flex justify-content-between flex-fill w-auto"
+                data-offset="-15,95"
                 data-toggle="dropdown"
               >
-                <div className="h6 text-align-center yg-font-capitalize-only">
+                <span className="h6 text-align-center yg-font-capitalize-only">
                   {data.company_name}
-                </div>
+                </span>
               </div>
+              {/* <div className="d-flex align-items-center"> */}
+              <i
+                className="fa fa-trash w-auto"
+                style={{ fontSize: '1rem' }}
+                aria-hidden="true"
+                onClick={e => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  setCurrentDeleteId(data.parent_company_id)
+                  setDelete(true)
+                }}
+              />
+              <i className="fa fa-caret-right w-auto" data-display="static" aria-hidden="true" />
+              {/* </div> */}
               <div className="yk-drop-m dropdown-menu">
                 {data.company_divisions.map((item, index) => (
                   <>
@@ -115,25 +129,12 @@ export default () => {
                   Add
                 </a>
               </div>
-              <div className="d-flex align-items-center">
-                <i
-                  className="fa fa-trash"
-                  style={{ fontSize: '1rem' }}
-                  aria-hidden="true"
-                  onClick={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    setCurrentDeleteId(data.parent_company_id)
-                    setDelete(true)
-                  }}
-                />
-                <i className="fa fa-caret-right" data-display="static" aria-hidden="true" />
-              </div>
             </div>
           ))}
 
           <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
             <div
+              className="w-auto"
               style={{ padding: '1.17rem' }}
               onClick={() => {
                 setShow(true)
