@@ -87,7 +87,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             className="save-icon"
             src={close}
             onClick={() => {
-              saveAndExit()
+              saveAndExit(change)
             }}
           />
         )}
@@ -232,7 +232,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             <button
               className="cancel-domain btn col-6 text-center"
               onClick={() => {
-                saveAndExit()
+                saveAndExit(change)
               }}
             >
               Cancel
@@ -259,7 +259,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
                   if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
                     if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
                       if (validator.isEmail(saveData.email)) {
-                        saveAndExit(saveData)
+                        saveAndExit(change, saveData)
                       } else toast.warning('Improper Email Format')
                     } else {
                       toast.error('First & Last Name should only contain letters')

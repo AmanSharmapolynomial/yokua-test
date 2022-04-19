@@ -236,8 +236,7 @@ const UserListView = () => {
               setDataToChange(index)
             }}
             addOrEditUser={payload => {
-              setChangeModal('Edit')
-              addOrEditUser(payload)
+              addOrEditUser('Edit', payload)
             }}
             userData={data}
           />
@@ -315,9 +314,9 @@ const UserListView = () => {
 
   // Useful Functions to manage Users from Table
 
-  const saveAndExitModal = data => {
+  const saveAndExitModal = (change, data) => {
     if (data?.email && data) {
-      addOrEditUser(data)
+      addOrEditUser(change, data)
       setOpenModal(false)
     } else {
       setOpenModal(false)
@@ -361,7 +360,7 @@ const UserListView = () => {
     setPageNoCall(1)
   }
 
-  const addOrEditUser = async data => {
+  const addOrEditUser = async (type, data) => {
     let payload = {
       email_id: data.email,
       first_name: data.firstName,
@@ -370,7 +369,7 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
-    if (changeModal === 'Edit') {
+    if (type === 'Edit' && contentRow[dataToChange]?.companyEmail) {
       payload = {
         ...payload,
         email_id: contentRow[dataToChange].companyEmail,
@@ -381,11 +380,11 @@ const UserListView = () => {
     }
     if (payload.email_id !== '') {
       const afterAddOrDeleteMsg = await API.post(
-        changeModal === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
+        type === 'Edit' ? 'admin/edit_user' : 'admin/add_user',
         payload
       )
 
-      if (data.imageFile !== backendData[dataToChange].avatar_link) {
+      if (data.imageFile && data.imageFile !== backendData[dataToChange].avatar_link) {
         const formData = new FormData()
 
         formData.append('image', data.imageFile)
@@ -398,6 +397,7 @@ const UserListView = () => {
             // toast.error('Error while updating Avatar')
           })
       }
+      setDataToChange()
       toast.success(afterAddOrDeleteMsg.data.message)
     } else {
       toast.error('Enter E-Mail')
