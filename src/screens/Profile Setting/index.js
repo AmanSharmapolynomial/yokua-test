@@ -43,7 +43,6 @@ const ProfileSettingScreen = () => {
   const [checkedIds, setCheckedIds] = useState([])
   const [reloadData, setReloadData] = useState(false)
 
-  const [SetImageFile] = useState(null)
   const imageFileInputRef = useRef()
   const [profilePicture, setProfilePicture] = useState(placeholder)
   const [actionLabel, setActionLabel] = useState('')
@@ -143,7 +142,6 @@ const ProfileSettingScreen = () => {
                   ref={imageFileInputRef}
                   className="inputfile yk-icon-hover"
                   onChange={e => {
-                    SetImageFile(e.target.files[0])
                     _updateAvatar(e.target.files[0])
                   }}
                 />

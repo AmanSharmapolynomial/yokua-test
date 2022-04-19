@@ -236,6 +236,7 @@ const UserListView = () => {
               setDataToChange(index)
             }}
             addOrEditUser={payload => {
+              setChangeModal('Edit')
               addOrEditUser(payload)
             }}
             userData={data}

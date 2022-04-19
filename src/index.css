@@ -149,3 +149,7 @@ body {
   background: #004f9b;
   border-radius: 64px;
 }
+
+.spinner-border {
+  color: var(--bgColor2);
+}

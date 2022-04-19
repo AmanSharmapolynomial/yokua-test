@@ -17,7 +17,6 @@ import { Link, Router } from 'react-router-dom'
 
 const ProductLine = () => {
   const navigate = useNavigate()
-  const { setLoading } = useLoading()
   const [archivedFilter, setArchivedFilter] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
@@ -89,7 +88,11 @@ const ProductLine = () => {
         <div className="col center py-md-3">
           <PrimaryHeading title={'Product Lines'} />
           {isLoading ? (
-            <div className="col text-center">Loading....</div>
+            <div className="col text-center mt-3">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
           ) : (
             <div className="col">{renderRow()}</div>
           )}

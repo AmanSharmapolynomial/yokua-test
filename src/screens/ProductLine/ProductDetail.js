@@ -137,23 +137,27 @@ const ProductDetail = () => {
     if (ele.type === 'binary') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2"
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div>
             {/* <span className="flex-fill">{ele.title}</span> */}
             <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
@@ -165,23 +169,27 @@ const ProductDetail = () => {
     } else if (ele.type === 'table') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                className="fa-solid fa-trash ml-2"
-                role={'button'}
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="row">
             <Table
               tableObject={ele.table_data}
@@ -196,26 +204,30 @@ const ProductDetail = () => {
     } else if (ele.type === 'link') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2"
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link}>
+            <a role={'button'} href={ele.link} target="_blank">
               {ele.title}
             </a>
           </div>
@@ -224,23 +236,27 @@ const ProductDetail = () => {
     } else if (ele.type === 'description') {
       return (
         <div className="col-12 mt-4">
-          <div className="row">
-          <div className="ml-auto w-auto my-2 my-2">
-              <i className="fa-solid fa-pen-to-square mr-2"></i>
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2"
-                onClick={() => {
-                  let payload = {
-                    section_id: section.section_id,
-                    component_id: ele.id,
-                    component_type: ele.type,
-                  }
-                  setShowDeleteModal(payload)
-                }}
-              ></i>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i className="fa-solid fa-pen-to-square mr-2"></i>
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
             </div>
-          </div>
+          )}
           <div className="row">{ele.description}</div>
         </div>
       )
@@ -261,23 +277,27 @@ const ProductDetail = () => {
         }
         return (
           <div className="col-12 mt-4">
-            <div className="row">
-            <div className="ml-auto w-auto my-2 my-2">
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+            {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
+              getUserRoles() == 'Technical Administrator') && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
               </div>
-            </div>
+            )}
             <div className="row">{IMAGES}</div>
           </div>
         )
@@ -296,16 +316,20 @@ const ProductDetail = () => {
         <div className="row">
           {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
         </div>
-        <div className="mt-3">
-          <button
-            className="btn create-domain-btn"
-            onClick={() => {
-              setIsAddComponentModalVisible(index)
-            }}
-          >
-            Add Component
-          </button>
-        </div>
+        {(getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'PMK Content Manager' ||
+          getUserRoles() == 'Technical Administrator') && (
+          <div className="mt-3">
+            <button
+              className="btn create-domain-btn"
+              onClick={() => {
+                setIsAddComponentModalVisible(index)
+              }}
+            >
+              Add Component
+            </button>
+          </div>
+        )}
       </div>
     ))
   const renderAddTable = () => {
@@ -405,6 +429,11 @@ const ProductDetail = () => {
                     />
                   ) : (
                     <input
+                      disabled={
+                        (index === 1 || index === 2) &&
+                        addComponentData?.table_data &&
+                        addComponentData?.table_data[i]?.is_link
+                      }
                       type="checkbox"
                       className={`${index === 0 ? 'col-4' : 'col-2'}`}
                       onChange={e => {
@@ -414,6 +443,13 @@ const ProductDetail = () => {
                           state.table_data[i] = {
                             ...state.table_data[i],
                             [item.key]: e.target.checked,
+                          }
+                          if (item.key === 'is_link' && e.target.checked === true) {
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              [columneNames[1].key]: false,
+                              [columneNames[2].key]: false,
+                            }
                           }
                           return state
                         })
@@ -443,6 +479,7 @@ const ProductDetail = () => {
           <button
             disabled={
               addComponentData?.table_name === undefined ||
+              addComponentData?.table_name === '' ||
               addComponentData?.columnsNum === undefined
             }
             className="btn btn-primary ml-2"
@@ -608,6 +645,7 @@ const ProductDetail = () => {
       <div className="row">
         <div className="input-group mb-3">
           <textarea
+            maxLength={100}
             style={{ minHeight: '8rem' }}
             onChange={e => {
               setAddComponentData(prevState => {
@@ -790,16 +828,20 @@ const ProductDetail = () => {
           ) : (
             <>
               <div className="row">{renderComponents()}</div>
-              <div className="mt-2 d-flex justify-content-center">
-                <button
-                  className="btn create-domain-btn mx-auto"
-                  onClick={() => {
-                    setIsAddSectionModalVisible(true)
-                  }}
-                >
-                  Add New Section
-                </button>
-              </div>
+              {(getUserRoles() == 'PMK Administrator' ||
+                getUserRoles() == 'PMK Content Manager' ||
+                getUserRoles() == 'Technical Administrator') && (
+                <div className="mt-2 d-flex justify-content-center">
+                  <button
+                    className="btn create-domain-btn mx-auto"
+                    onClick={() => {
+                      setIsAddSectionModalVisible(true)
+                    }}
+                  >
+                    Add New Section
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

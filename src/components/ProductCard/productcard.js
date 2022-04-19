@@ -3,6 +3,8 @@ import editIcon from '../../assets/Icon awesome-edit.png'
 import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
+import archive from '../../assets/archive.png'
+import { getUserRoles } from '../../utils/token'
 import './productcard.css'
 
 const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
@@ -69,75 +71,92 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
                   />
                 )}
               </div>
-              {isEditable ? (
-                <div className="border text-center rounded mt-2">
-                  <input ref={inputRef} />
-                </div>
-              ) : (
-                <div
-                  className="border text-center rounded mt-2"
-                  style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    wordBreak: 'break-word',
-                  }}
-                >
-                  {subProduct ? item.sub_product_name : item.name}
-                </div>
-              )}
+              {
+                /*isEditable*/ false ? (
+                  <div className="border text-center rounded mt-2">
+                    <input ref={inputRef} />
+                  </div>
+                ) : (
+                  <div
+                    className="border text-center rounded mt-2"
+                    style={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {subProduct ? item.sub_product_name : item.name}
+                  </div>
+                )
+              }
             </div>
 
             {isEditable ? (
               <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
             ) : (
-              <div className="col-6 d-flex align-items-center" style={{wordBreak:'break-all'}} >{item.description}</div>
+              <div className="col-6 d-flex align-items-center" style={{ wordBreak: 'break-all' }}>
+                {item.description}
+              </div>
             )}
           </div>
         </div>
-        <span className="col-auto d-none d-md-block">
-          <img
-            src={isEditable ? saveIcon : editIcon}
-            onClick={e => {
-              e.stopPropagation()
-              if (isEditable) {
-                try {
-                  if (
-                    inputRef.current.value.trim() !== '' &&
-                    inputRef.current.value.trim() !== '' &&
-                    item.id !== undefined &&
-                    item.id !== null
-                  ) {
-                    const payload = new FormData()
-                    if (subProduct)
-                      payload.append(
-                        'data',
-                        JSON.stringify({
-                          product_id: item.id,
-                          sub_product_name: inputRef.current.value,
-                          description: textareaRef.current.value,
-                        })
-                      )
-                    else
-                      payload.append(
-                        'data',
-                        JSON.stringify({
-                          id: item.id,
-                          product_name: inputRef.current.value,
-                          description: textareaRef.current.value,
-                        })
-                      )
-                    payload.append('file', imageInputRef.current.files[0])
-                    onUpdate(payload)
+        {(getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'PMK Content Manager' ||
+          getUserRoles() == 'Technical Administrator') && (
+          <span className="col-auto d-none d-md-block">
+            {!subProduct && (
+              <img
+                className="mr-3"
+                src={archive}
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+              />
+            )}
+            <img
+              src={isEditable ? saveIcon : editIcon}
+              onClick={e => {
+                e.stopPropagation()
+                if (isEditable) {
+                  try {
+                    if (
+                      inputRef.current.value.trim() !== '' &&
+                      inputRef.current.value.trim() !== '' &&
+                      item.id !== undefined &&
+                      item.id !== null
+                    ) {
+                      const payload = new FormData()
+                      if (subProduct)
+                        payload.append(
+                          'data',
+                          JSON.stringify({
+                            product_id: item.id,
+                            sub_product_name: /* inputRef.current.value*/ item.sub_product_name,
+                            description: textareaRef.current.value,
+                          })
+                        )
+                      else
+                        payload.append(
+                          'data',
+                          JSON.stringify({
+                            id: item.id,
+                            product_name: /*inputRef.current.value*/ item.name,
+                            description: textareaRef.current.value,
+                          })
+                        )
+                      payload.append('file', imageInputRef.current.files[0])
+                      onUpdate(payload)
+                    }
+                  } catch (error) {
+                    console.log(error)
                   }
-                } catch (error) {
-                  console.log(error)
+                  setPreview(undefined)
                 }
-                setPreview(undefined)
-              }
-              setIsEditable(!isEditable)
-            }}
-          />
-        </span>
+                setIsEditable(!isEditable)
+              }}
+            />
+          </span>
+        )}
       </div>
     </div>
   )
