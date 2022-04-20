@@ -30,6 +30,7 @@ import Tokuchu from '../screens/Admin Screens/Tokuchu/Tokuchu'
 import Impressum from '../components/Impressum'
 import PrivacyPolicy from '../components/PrivacyPolicy'
 import Contact from '../screens/contact/Contact'
+import EventManagement from '../screens/Admin Screens/EventManagement/EventManagement'
 
 const Routing = () => {
   return (
@@ -152,7 +153,14 @@ const Routing = () => {
               </React.Fragment>
             }
           />
-
+          <Route
+            path="event"
+            element={
+              <PrivateRoute>
+                <EventManagement />
+              </PrivateRoute>
+            }
+          />
           {/* <Route path="*" element={<Navigate to="/profile" />} /> */}
         </Route>
         <Route

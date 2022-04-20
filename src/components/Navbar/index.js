@@ -14,7 +14,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
 
   const navDropdownAdminData = [
     { name: 'User Management', url: '/admin/user/list-view' },
-    { name: 'Event Management', url: '/admin/user/list-view' },
+    { name: 'Event Management', url: '/admin/event' },
   ]
 
   const productLineDropdown = [

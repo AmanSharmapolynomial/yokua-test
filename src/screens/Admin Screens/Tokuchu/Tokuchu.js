@@ -26,6 +26,7 @@ export default () => {
 
   const [subProductLoading, setSubProductLoading] = useState(false)
   const [productItemLoading, setProductItemLoading] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState()
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -268,7 +269,7 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-md-5 vh-100">
         <div className="col center py-md-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="toku-dropdn mt-4">
@@ -312,7 +313,10 @@ export default () => {
                       <a className="dropdown-item" tabIndex="-1">
                         {item.name} <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                       </a>
-                      <ul className="dropdown-menu">
+                      <ul
+                        className="dropdown-menu"
+                        // style={{ maxHeight: '16rem', overflowX: 'hidden', overflowY: 'scroll' }}
+                      >
                         {subProductLoading && (
                           <li className="dropdown-submenu">
                             <li className="dropdown-submenu">
@@ -347,7 +351,7 @@ export default () => {
                                       key={prod.name}
                                       onClick={e => {
                                         e.stopPropagation()
-                                        _getDetails(prod.id)
+                                        setSelectedProduct(prod)
                                       }}
                                     >
                                       <a>{prod.name}</a>
@@ -409,9 +413,24 @@ export default () => {
           {/*    updateTableData={_updateTableData}*/}
           {/*  />*/}
           {/*)}*/}
-          {tableDetails && (
-            <TokochuTable tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
-          )}
+          <div className="mt-3">
+            <button
+              disabled={selectedProduct?.id === undefined}
+              className={`btn create-domain-btn${
+                selectedProduct?.id === undefined ? ' greyed' : ''
+              }`}
+              onClick={() => {
+                selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
+              }}
+            >
+              Load result
+            </button>
+          </div>
+          <div className="mt-5">
+            {tableDetails && (
+              <TokochuTable tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+            )}
+          </div>
         </div>
       </div>
     </>

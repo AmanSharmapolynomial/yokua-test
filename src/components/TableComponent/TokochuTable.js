@@ -228,7 +228,8 @@ export default ({ tableObject, setShowDeleteModal }) => {
         isBlankValue = true
       }
       dataArray.push({
-        [key]: rowName[key],
+        column_name: key,
+        values: rowName[key],
       })
     })
 
@@ -258,40 +259,46 @@ export default ({ tableObject, setShowDeleteModal }) => {
 
   return (
     <>
-      {tableObject && tableObject !== {} && (
-        <div
-          className="position-absolute text-primary"
-          style={{ zIndex: '4', right: '0', marginTop: '-36px' }}
-        >
-          {isEdit ? (
-            <i
-              className="fa-solid fa-solid fa-bookmark"
-              onClick={() => {
-                setEditModeData([...tableRows])
-                setEdit(false)
-              }}
-            />
-          ) : (
-            <i
-              className="fa-solid fa-pen-to-square"
-              aria-hidden="true"
-              onClick={() => {
-                setEditModeData([...tableRows])
-                setEdit(true)
-              }}
-            />
-          )}
-          <i
-            className="fa-solid fa-trash"
-            onClick={() => {
-              setShowDeleteModal(true)
-            }}
-          />
-        </div>
-      )}
-
-      <DataTable fixedHeader columns={tableHeader} data={tableRows} customStyles={customStyles} />
-
+      {tableObject &&
+        tableObject !== {} &&
+        (getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'PMK Content Manager' ||
+          getUserRoles() == 'Technical Administrator') && (
+          <div className="row text-primary">
+            <div className="ml-auto w-auto my-2 my-2">
+              {isEdit ? (
+                <i
+                  role={'button'}
+                  className="fa-solid fa-solid fa-bookmark ml-2"
+                  onClick={() => {
+                    setEditModeData([...tableRows])
+                    setEdit(false)
+                  }}
+                />
+              ) : (
+                <i
+                  role={'button'}
+                  className="fa-solid fa-pen-to-square ml-2"
+                  aria-hidden="true"
+                  onClick={() => {
+                    setEditModeData([...tableRows])
+                    setEdit(true)
+                  }}
+                />
+              )}
+              <i
+                role={'button'}
+                className="fa-solid fa-trash ml-2"
+                onClick={() => {
+                  setShowDeleteModal(true)
+                }}
+              />
+            </div>
+          </div>
+        )}
+      <div className="row">
+        <DataTable fixedHeader columns={tableHeader} data={tableRows} customStyles={customStyles} />
+      </div>
       {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
         isEdit && (
           <div
