@@ -15,9 +15,60 @@
 .user-list-view-table div:first-child {
   overflow-x: visible !important;
 }
-.lnndaO {
-  font-weight: 400;
-  font-size: 0.8rem;
+
+.list-view-table {
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 0px rgba(196, 196, 196, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.table-container {
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.event-list-table {
+  width: 100%;
+  box-shadow: 0px 0px 10px 0px rgb(196, 196, 196);
+}
+
+.event-list-table tbody {
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.event-list-table th {
+  position: sticky;
+  top: 0;
+  background: rgb(0, 79, 155);
+  color: #fff;
+  padding: 12px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.event-list-table td {
+  padding: 12px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.event-list-table td:hover {
+  background: #efefef;
+}
+
+.event-list-table td.active {
+  background: #c0c0c0;
 }
 
 .add_row {

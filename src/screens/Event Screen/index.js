@@ -27,6 +27,9 @@ const EventScreen = () => {
   const [eventDeleteMsg, setEventDeleteMsg] = useState([])
   const [modalIsOpen, setIsOpen] = useState(false)
 
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   useEffect(async () => {
     getAllEventList()
   }, [])
@@ -120,13 +123,13 @@ const EventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
-        <div className="col event-setting-container pb-5">
-          <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+      <div className="row mx-2 mx-md-5 my-4 h-100">
+        <div className="col event-setting-container">
+          <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
       {eventList.length > 0 ? (
-        <div className="calenderDiv" style={{ marginTop: '10px' }}>
+        <div className="calenderDiv" style={{ margin: '10px 0' }}>
           <div
             style={{
               display: 'flex',
@@ -135,6 +138,8 @@ const EventScreen = () => {
           >
             <Calendar
               //minDate={new Date()}
+              prevLabel={<i className="fas fa-caret-left"></i>}
+              nextLabel={<i className="fas fa-caret-right"></i>}
               formatShortWeekday={(locale, value) =>
                 ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
               }
@@ -143,10 +148,12 @@ const EventScreen = () => {
                 //console.log(calenderDate)
                 let dataList = eventList.filter(e => e.start_date === calenderDate)
                 return dataList.length > 0 ? (
-                  <div>
-                    <textarea className="eventPTag" disabled={true}>
-                      {dataList[0].description}
-                    </textarea>
+                  <div className="event-container">
+                    {dataList.slice(0, 3).map(data => (
+                      <div key={data.id} className="event-title">
+                        {data.training_name}
+                      </div>
+                    ))}
                   </div>
                 ) : null
               }}
@@ -158,108 +165,134 @@ const EventScreen = () => {
               responsive="sm"
               style={{
                 border: '1px solid',
+                margin: '20px auto 0',
+                maxHeight: '450px',
+                width: '100%',
               }}
             >
               <thead>
                 <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="5" style={{ width: '10%' }}>
-                    <div style={{ background: 'rgb(0, 79, 155)' }}>
-                      <input
-                        id="mainCheckbox"
-                        type="checkbox"
-                        style={{ margin: '5px', marginLeft: '25px' }}
-                        onChange={event => handleMainCheckBox(event.target.checked)}
-                      />
-                      <label
+                  <td colSpan="6">
+                    <div
+                      style={{
+                        background: 'rgb(0, 79, 155)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '5px 0',
+                        width: '15%',
+                      }}
+                    >
+                      {isAdmin && (
+                        <input
+                          id="mainCheckbox"
+                          type="checkbox"
+                          style={{ marginLeft: '10px' }}
+                          onChange={event => handleMainCheckBox(event.target.checked)}
+                        />
+                      )}
+                      <p
                         style={{
                           color: 'white',
                           fontSize: '20px',
-                          margin: '5px',
+                          width: '100%',
+                          marginBottom: 0,
+                          marginLeft: '25px',
                         }}
                       >
-                        Upcoming training
-                      </label>
+                        All Trainings
+                      </p>
                     </div>
                   </td>
                 </tr>
               </thead>
-              <tbody
-                style={{
-                  display: 'block',
-                  height: '450px',
-                  overflow: 'auto',
-                }}
-              >
+              <tbody>
                 {eventList.map(e => {
                   let startDate = moment(e.start_date, 'yyyy-MM-DD')
                   let endDate = moment(e.end_date, 'yyyy-MM-DD')
                   return (
                     <tr>
-                      <td className="tdFirstAndLastWidth">
-                        <div
-                          style={{
-                            padding: '25px',
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            id={e.id}
-                            checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
-                            onChange={event => {
-                              let temp = [...checkedBoxState]
-                              temp.forEach(data => {
-                                if (data.id == e.id) {
-                                  data.status = !data.status
-                                }
-                              })
-                              setCheckedBoxState([...temp])
-                            }}
-                          />
+                      <td style={{ width: '5%' }}>
+                        <div>
+                          {isAdmin && (
+                            <input
+                              type="checkbox"
+                              id={e.id}
+                              checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
+                              style={{ marginLeft: '10px' }}
+                              onChange={event => {
+                                let temp = [...checkedBoxState]
+                                temp.forEach(data => {
+                                  if (data.id == e.id) {
+                                    data.status = !data.status
+                                  }
+                                })
+                                setCheckedBoxState([...temp])
+                              }}
+                            />
+                          )}
                         </div>
                       </td>
-                      <td
-                        style={{
-                          width: '15%',
-                        }}
-                      >
+                      <td style={{ width: '15%', minWidth: '150px' }}>
                         <div
                           style={{
-                            fontWeight: 'bold',
                             borderRight: '1px solid',
+                            paddingRight: '15px',
+                            fontWeight: 'bold',
                           }}
                         >
-                          <span> {moment(startDate).format('ddd DD MMM')}</span>
+                          <p>{moment(startDate).format('ddd DD MMM')}</p>
+                          <p>{moment(endDate).format('ddd DD MMM')}</p>
                           <br />
-                          <span>{moment(endDate).format('ddd DD MMM')}</span>
-                          <br />
-                          <span>{endDate.diff(startDate, 'days')} days</span>
+                          <p>{endDate.diff(startDate, 'days')} days</p>
                         </div>
                       </td>
-                      <td className="tdWidth">
-                        <div
-                          onClick={() => {
-                            navigate('/event/update/' + e.id)
-                          }}
-                        >
-                          <img
-                            src="https://img.icons8.com/ios-filled/30/4a90e2/marker.png"
+                      <td style={{ width: '30%' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <i
+                            class="fas fa-location-dot"
+                            aria-hidden="true"
                             style={{
-                              padding: '25px',
+                              color: '#004F9B',
+                              fontSize: '1.5rem',
+                              margin: '0 25px 0 10px',
                             }}
-                          />
-                          {e.location}
+                          ></i>
+                          <span style={{ fontWeight: 'bold' }}>
+                            <p style={{ marginBottom: '10px' }}>{e.training_name}</p>
+                            <p style={{ marginBottom: '10px' }}>{e.location}</p>
+                            <p>{e.classification_level} Training</p>
+                          </span>
                         </div>
                       </td>
-                      <td className="tdWidth">
-                        <div
+                      <td style={{ width: '40%', minWidth: '120px' }}>
+                        <div>
+                          <label
+                            style={{
+                              color: '#004F9B',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                              navigate('/event/update/' + e.id)
+                            }}
+                          >
+                            Click here to Register Event
+                          </label>
+                        </div>
+                      </td>
+                      <td style={{ width: '30%', maxWidth: '300px' }}>
+                        <p
                           style={{
                             padding: '25px',
+                            wordWrap: 'break-word',
+                            overflowWrap: 'break-word',
                           }}
                         >
                           {e.description}
-                        </div>
+                        </p>
                       </td>
-                      <td className="tdFirstAndLastWidth">
+                      <td style={{ width: '5%' }}>
                         <div
                           style={{
                             padding: '25px',
@@ -267,11 +300,12 @@ const EventScreen = () => {
                         >
                           {getUserRoles() == 'Technical Administrator' ||
                           getUserRoles() == 'PMK Administrator' ? (
-                            <img
-                              src="https://img.icons8.com/ios-glyphs/30/fa314a/trash--v1.png"
+                            <i
+                              className="fas fa-trash"
                               onClick={() => {
                                 openModal(e.id)
                               }}
+                              style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
                             />
                           ) : null}
                         </div>
@@ -283,51 +317,38 @@ const EventScreen = () => {
             </Table>
           </div>
 
-          <div
-            className="row"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              marginLeft: '10%',
-              marginBottom: '4%',
-              marginRight: '10%',
-            }}
-          >
-            <div>
-              <button
-                onClick={() => {
-                  openModalForMultipleEvent()
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                  float: 'right',
-                }}
-              >
-                Delete
-              </button>
+          {isAdmin && (
+            <div className="row mx-2 mx-md-5 mb-5">
+              <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                <button
+                  onClick={() => {
+                    navigate('/event/add')
+                  }}
+                  style={{
+                    background: 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: '1px solid black',
+                    borderRadius: '3px',
+                  }}
+                >
+                  RYG Event creation
+                </button>
+                <button
+                  onClick={() => {
+                    openModalForMultipleEvent()
+                  }}
+                  style={{
+                    background: 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: '1px solid black',
+                    borderRadius: '3px',
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-            <div style={{ marginTop: '5%' }}>
-              <button
-                onClick={() => {
-                  navigate('/event/add')
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                }}
-              >
-                RYG Event creation
-              </button>
-            </div>
-          </div>
-          <br />
-          <br />
-
+          )}
           <div>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
               <div>

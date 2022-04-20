@@ -104,7 +104,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center !important;
-  border-top: 1px solid lightgrey;
+  padding: 10px;
+  border: 1px solid black;
+  border-top: none;
 }
 .dummy-col {
   flex: 1;

@@ -7,7 +7,7 @@ import archive from '../../assets/archive.png'
 import { getUserRoles } from '../../utils/token'
 import './productcard.css'
 
-const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
+const ProductCard = ({ index, item, onClick, subProduct, onUpdate, isAdmin }) => {
   const [isEditable, setIsEditable] = useState(false)
   const [preview, setPreview] = useState()
   const imageInputRef = useRef(null)
@@ -29,14 +29,14 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`col-12 col-md card shadow ${
+      className={`product-card col-12 col-md card shadow ${
         index % 2 === 0 ? 'mr-md-5' : 'ms-md-5'
       } px-2 py-3 mt-3 mt-md-0`}
     >
       <div className="row">
         <div className="col">
           <div className="row">
-            <div className="col-6">
+            <div className="col-6" style={{ padding: '0 20px' }}>
               <div className="img-box thumb rounded d-flex">
                 {isEditable ? (
                   <>

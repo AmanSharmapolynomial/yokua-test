@@ -12,6 +12,9 @@ import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 
 const ProductDetail = () => {
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   const navigate = useNavigate()
   const { state } = useLocation()
   const { setLoading } = useLoading()
@@ -24,6 +27,7 @@ const ProductDetail = () => {
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const sectionTitleRef = React.useRef(null)
+  const accordionRef = React.useRef(null)
   const components = [
     {
       title: 'Add Table',
@@ -94,7 +98,11 @@ const ProductDetail = () => {
   }
 
   const onAddComponentCancel = () => {
-    setIsAddComponentModalVisible(-1)
+    if (accordionRef.current) {
+      Array.from(accordionRef.current.querySelectorAll('div.show')).forEach(el =>
+        el.classList.remove('show')
+      )
+    }
     setAddComponentData({})
     setInputBinary()
   }
@@ -197,6 +205,7 @@ const ProductDetail = () => {
               onRefresh={() => {
                 getProductDetails()
               }}
+              isAdmin={isAdmin}
             />
           </div>
         </div>
@@ -335,11 +344,9 @@ const ProductDetail = () => {
   const renderAddTable = () => {
     return (
       <div className="row">
-        <div className="input-group mb-3">
+        <div className="input-group my-input-group">
           <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
-              {'Table Name'}
-            </span>
+            <span className="input-group-text font-8 font-weight-bold">Table Name</span>
           </div>
           <input
             onChange={e => {
@@ -357,16 +364,14 @@ const ProductDetail = () => {
             aria-describedby="basic-addon1"
           />
         </div>
-        <div className="input-group mb-3">
+        <div className="input-group my-input-group">
           <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
-              {'Add Number of Columns'}
-            </span>
+            <span className="input-group-text font-8 font-weight-bold">Add Number of Columns</span>
           </div>
           <input
             onChange={e => {
               setAddComponentData(prevState => {
-                return { ...prevState, columnsNum: parseInt(e.target.value) }
+                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
               })
             }}
             type="number"
@@ -379,17 +384,26 @@ const ProductDetail = () => {
         </div>
         {addComponentData?.columnsNum && addComponentData?.columnsNum > 0 && (
           <div className="col-12 font-8">
-            <div className="row">
+            <div className="row add-table-row">
               {columneNames.map((item, index) => (
-                <div className={`${index === 0 ? 'col-4' : 'col-2'}`}>{item.title}</div>
+                <div
+                  className={`${
+                    index === 0 ? 'col-4 add-table-col' : 'col-2 add-table-col text-center'
+                  }`}
+                >
+                  {item.title}
+                </div>
               ))}
             </div>
             {[...Array(addComponentData?.columnsNum)].map((e, i) => (
-              <div className="row d-flex align-items-center mt-2">
+              <div className="row add-table-row d-flex align-items-center">
                 {columneNames.map((item, index) =>
                   index === 0 ? (
                     <input
-                      className={`${index === 0 ? 'col-4' : 'col-2'}`}
+                      className={`${
+                        index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
+                      }`}
+                      placeholder="type column name"
                       onChange={e => {
                         setAddComponentData(prevState => {
                           let state = { ...prevState }
@@ -669,8 +683,7 @@ const ProductDetail = () => {
               }
             }}
             onClick={() => {
-              setIsAddComponentModalVisible(-1)
-              setAddComponentData({})
+              onAddComponentCancel()
             }}
             className="btn mr-2"
           >
@@ -739,8 +752,7 @@ const ProductDetail = () => {
               }
             }}
             onClick={() => {
-              setIsAddComponentModalVisible(-1)
-              setAddComponentData({})
+              onAddComponentCancel()
             }}
             className="btn mr-2"
           >
@@ -864,12 +876,17 @@ const ProductDetail = () => {
           <Modal.Title>List of Components</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
-          <div className="accordion" id="accordionExample">
+          <div
+            className="accordion"
+            id="accordionExample"
+            style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+            ref={accordionRef}
+          >
             {components.map((item, idx) => (
-              <div className="card">
-                <div className="card-header" id="headingOne">
+              <div className="card border border-secondary">
+                <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
                   <div
-                    className="accordian-title d-flex justify-content-between align-items-center font-8"
+                    className="accordian-title d-flex justify-content-between align-items-center font-10"
                     type="button"
                     data-toggle="collapse"
                     data-target={`#collapse${idx}`}
@@ -877,7 +894,7 @@ const ProductDetail = () => {
                     aria-controls={`collapse${idx}`}
                   >
                     <span>{item.title}</span>
-                    <i className="fa-solid fa-angle-right greyed" />
+                    <i className="fa-solid fa-angle-down greyed" />
                   </div>
                 </div>
                 <div

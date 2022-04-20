@@ -16,6 +16,8 @@ import Modal from 'react-modal'
 import CustomeModel from '../../components/Event Module/Modal'
 import PrimaryHeading from '../../components/Primary Headings'
 import CloseIcon from '../../assets/close_modal.png'
+import { max } from 'moment'
+import { validateUrl } from '../../utils/urlValidator'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
@@ -30,6 +32,7 @@ const AddEventScreen = () => {
   const [trainingFormDisable, setTrainingFormDisable] = useState(false)
 
   //register in event state variable
+  const [userProfile, setUserProfile] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -40,6 +43,7 @@ const AddEventScreen = () => {
   const [foodRequirement, setFoodRequirement] = useState('')
   const [foodRequirementList, setFoodRequirementList] = useState([])
   const [otherFoodRequirement, setOtherFoodRequirement] = useState('')
+  const [termsPolicy, setTermPolicy] = useState(false)
 
   //feature state varible
   const { eventId } = useParams()
@@ -51,8 +55,6 @@ const AddEventScreen = () => {
   const [singleRequirement, setSingleRequirement] = useState('')
   const [requirement, setRequirement] = useState([])
   const [disabled, setDisabled] = useState(false)
-  const [isStartDateOpen, setIsStartDateOpen] = useState(false)
-  const [isEndDateOpen, setIsEndDateOpen] = useState(false)
   const [modalIsOpen, setIsOpen] = useState(false)
   const [moreInputFlag, setMoreInputFlag] = useState(true)
   const [agendaMessage, setAgendaMessage] = useState('')
@@ -60,41 +62,48 @@ const AddEventScreen = () => {
   const [blinkMessage, setBlinkMessage] = useState('')
   const [dependOnButton, setDependOnButton] = useState('')
   const [linkModal, setLinkModal] = useState(false)
-  const [registeredAttendeesListModalOpen, setRegisteredAttendeesListModalOpen] = useState(false)
-  const [registeredAttendeesList, setRegisteredAttendeesList] = useState([])
+
+  const requirementCountRef = useRef(0)
+
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
 
   const [classificationLevel, setClassificationLevel] = useState({
     value: 'internal',
     label: 'Internal Training',
   })
+  const [registerationType, setRegistrationType] = useState(
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+      ? {
+          value: 'internal',
+          label: 'My self',
+        }
+      : { value: 'external', label: 'Others' }
+  )
   const [eventOption, setEventOption] = useState({
-    value: 'site_event',
+    value: 'site event',
     label: 'Site Event',
   })
   const eventOptionList = [
-    { value: 'site_event', label: 'Site Event' },
+    { value: 'site event', label: 'Site Event' },
     { value: 'webinar', label: 'Webinar' },
+  ]
+  const registerationTypeOption = [
+    { value: 'internal', label: 'My self' },
+    { value: 'external', label: 'Others' },
   ]
 
   const classificationOption = [
     { value: 'internal', label: 'Internal Training' },
-    { value: 'external', label: 'Enternal Training' },
+    { value: 'external', label: 'External Training' },
   ]
 
   useEffect(async () => {
-    let temp = []
-    // temp.push('min of 6 Months working for Yokogawa')
-    // temp.push('Fieldmate modem')
-    // temp.push('Travel Organisation')
-    // temp.push('optional visa if required')
-    // temp.push('Contact Rota Yokogawa for hotel reservation or assistance')
-
-    setRequirement(temp)
     if (eventId != null) {
       getEventDetailById(eventId)
-      getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
-        ? setTrainingFormDisable(false)
-        : setTrainingFormDisable(true)
+      //get Current User profile from token
+      getUserProfile()
+      setTrainingFormDisable(true)
     }
   }, [])
 
@@ -121,7 +130,33 @@ const AddEventScreen = () => {
       height: '60%',
     },
   }
-
+  const getUserProfile = async () => {
+    await API.get('auth/profile_settings/')
+      .then(async data => {
+        //toast.success('')
+        if (data.status == 200 || data.status == 201) {
+          const result = data.data
+          //console.log(result)
+          setUserProfile(result)
+          if (
+            getUserRoles() == 'Technical Administrator' ||
+            getUserRoles() == 'PMK Administrator'
+          ) {
+            setFirstName(result['basic_profile'].full_name)
+            setCompanyEmail(result['basic_profile'].email)
+            setCompanyName(result['basic_profile'].company_name)
+          }
+        } else {
+          toast.error('Error while getting record')
+          navigate('/event/all')
+        }
+        //setReloadData(true)
+      })
+      .catch(error => {
+        toast.error('Error while getting record')
+        navigate('/event/all')
+      })
+  }
   const getEventDetailById = async id => {
     await API.get('training/training_view/' + id)
       .then(async data => {
@@ -136,6 +171,9 @@ const AddEventScreen = () => {
           setCancelledDate(new Date(result.event_details['cancelled_date']))
           setDescription(result.event_details['description'])
           setLocation(result.event_details['location'])
+          setEventOption(
+            eventOptionList.find(event => event.value === result.event_details['event_type'])
+          )
           setMaxAttendeed(result.event_details['max_attendees'])
           setRemainSeats(result.event_details['remaining_seats'])
           setDuration(
@@ -147,34 +185,14 @@ const AddEventScreen = () => {
           setClassificationLevel(
             classificationOption.find(e => e.value == result.event_details['classification_level'])
           )
+          if (result.event_details.classification_level == 'internal') {
+            setRegistrationType(registerationTypeOption.find(e => e.value == 'internal'))
+          }
           setCost(result.event_details['cost'])
           setAgendaMessage(result.links['agenda_link'])
           setAlinkMessage(result.links['link_a'])
           setBlinkMessage(result.links['link_b'])
           setRequirement(result.requirements)
-
-          //call for get registered attendees
-          await getRegisteredAttendeesForEventByEventId(eventId)
-        } else {
-          toast.error('Error while getting record')
-          navigate('/event/all')
-        }
-        //setReloadData(true)
-      })
-      .catch(error => {
-        toast.error('Error while getting record')
-        navigate('/event/all')
-      })
-  }
-
-  const getRegisteredAttendeesForEventByEventId = async eventId => {
-    await API.get('training/training_registeration_view/' + eventId)
-      .then(async data => {
-        //toast.success('')
-        if (data.status == 200 || data.status == 201) {
-          const result = data.data
-          setRegisteredAttendeesList(result)
-          //console.log(result)
         } else {
           toast.error('Error while getting record')
           navigate('/event/all')
@@ -199,11 +217,15 @@ const AddEventScreen = () => {
   //handle publish event
   const handlePublishButton = async event => {
     event.preventDefault()
+    const preparedRequirementList = Object.values(requirement)
+    preparedRequirementList.sort((a, b) => a.id - b.id)
+
     const eventObject = {
       event_details: {
         cost: cost,
         max_attendees: maxAttendacees,
         remaining_seats: remainSeat,
+        event_type: eventOption.value,
         location: location,
         classification_level: classificationLevel.value,
         start_date: moment(startDate).format('YYYY-MM-DD'),
@@ -217,7 +239,7 @@ const AddEventScreen = () => {
         link_a: alinkMessage,
         link_b: blinkMessage,
       },
-      requirements: requirement,
+      requirements: preparedRequirementList.map(item => item.value),
     }
 
     //console.log('called api: ' + JSON.stringify(eventObject))
@@ -229,8 +251,7 @@ const AddEventScreen = () => {
           toast.error(data.data.message)
         }
       })
-      .catch(error => {
-        toast.error(error.message)
+      .catch(() => {
         navigate('/event/add')
       })
   }
@@ -241,7 +262,7 @@ const AddEventScreen = () => {
     foodRequirementList.push('No Pork')
     foodRequirementList.push('Vegetarian')
     let myObject = {
-      registeration_type: classificationLevel.value,
+      registeration_type: registerationType.value,
       event_id: eventId,
       first_name: firstName,
       last_name: lastName,
@@ -265,17 +286,17 @@ const AddEventScreen = () => {
           toast.error(data.data.message.Fail)
         }
       })
-      .catch(error => {
-        //console.log(error)
-        toast.error(error.message)
+      .catch(() => {
         navigate('/event/update/' + eventId)
       })
   }
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="event-screen-header">
-        <PrimaryHeading title={'RYC Event Calender'} backgroundImage={'yk-back-image-event'} />
+      <div className="row mx-2 mx-md-5 mt-4 mb-2 h-100">
+        <div className="col event-setting-container">
+          <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
+        </div>
       </div>
 
       <div
@@ -287,29 +308,17 @@ const AddEventScreen = () => {
           flexDirection: 'column',
         }}
       >
-        <div
-          style={
-            trainingFormDisable
-              ? {
-                  pointerEvents: 'none',
-                  opacity: '0.4',
-                  width: '100%',
-                  padding: '5px',
-                  marginTop: '30px',
-                }
-              : { marginTop: '30px' }
-          }
-        >
+        <div style={{ marginTop: '30px', marginBottom: eventId ? 0 : '60px' }}>
           <div
             style={{
-              marginRight: '1%',
-              boxShadow: '1px 0px 1px 1px #888888',
+              boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
+              borderRadius: '5px',
             }}
           >
             <h4 style={{ padding: '20px' }}>Rotomass TI Service Training</h4>
             <div
               style={{
-                padding: '20px',
+                padding: '0px 20px 20px',
                 width: '100%',
                 display: 'flex',
               }}
@@ -328,8 +337,8 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="text"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      disabled={eventId}
+                      className="form-control"
                       onChange={event => {
                         setTrainingName(event.target.value)
                       }}
@@ -344,38 +353,34 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={new Date()}
-                      className="col-md-3 form-control"
+                      className="form-control"
                       onChange={date => {
-                        setStartDate(date)
-                        if (endDate != null || endDate != undefined) {
+                        if (endDate != null && endDate != undefined && endDate >= date) {
                           setDuration(moment(endDate).diff(date, 'days'))
+                          setStartDate(date)
+                        } else {
+                          toast.error('End date should be greater than start date')
+                          setStartDate(new Date())
                         }
                       }}
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={startDate}
-                      style={{ width: '200px' }}
-                      open={isStartDateOpen}
-                      onSelect={() => {
-                        setIsStartDateOpen(false)
-                      }}
-                      onInputClick={() => {
-                        setIsStartDateOpen(!isStartDateOpen)
-                      }}
+                      disabled={eventId}
                     />
                     <div
-                      style={{
-                        zIndex: '1',
-                        marginLeft: '-30px',
-                        marginTop: '7px',
-                      }}
-                      onClick={() => {
-                        setIsStartDateOpen(!isStartDateOpen)
-                      }}
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
                     >
-                      {registeredAttendeesListModalOpen == false ? (
-                        <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
-                      ) : null}
+                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
                     </div>
                   </div>
                 </div>
@@ -386,44 +391,70 @@ const AddEventScreen = () => {
                     </label>
                     <DatePicker
                       minDate={startDate}
-                      className="col-md-3 form-control"
+                      className="form-control"
                       onChange={date => {
                         setEndDate(date)
                         if (startDate != null || startDate != undefined) {
-                          setDuration(moment(date).diff(startDate, 'days'))
+                          setDuration(moment(date).diff(startDate, 'days') + 1)
                         }
                       }}
                       placeholderText="DDMMYYYY"
                       dateFormat="dd/M/Y"
                       selected={endDate}
-                      style={{ width: '200px' }}
-                      open={isEndDateOpen}
-                      onSelect={() => {
-                        setIsEndDateOpen(false)
-                      }}
-                      onInputClick={() => {
-                        setIsEndDateOpen(!isEndDateOpen)
-                      }}
+                      disabled={eventId}
                     />
 
                     <div
-                      style={{
-                        zIndex: '1',
-                        marginLeft: '-30px',
-                        marginTop: '7px',
-                      }}
-                      onClick={() => {
-                        setIsEndDateOpen(!isEndDateOpen)
-                      }}
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
                     >
-                      {isStartDateOpen == true || registeredAttendeesListModalOpen == true ? (
-                        <i
-                          class="fa-solid fa-calendar-days"
-                          style={{ color: 'rgb(0, 79, 155)', display: 'none' }}
-                        />
-                      ) : (
-                        <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
-                      )}
+                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                    </div>
+                  </div>
+                </div>
+                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                  <div className="col-md-8" style={{ display: 'flex' }}>
+                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
+                      Cancel Date
+                    </label>
+                    <DatePicker
+                      minDate={new Date()}
+                      maxDate={moment(startDate).subtract(1, 'day').toDate()}
+                      className="form-control"
+                      onChange={date => {
+                        if (moment(date).isBefore(startDate)) {
+                          setCancelledDate(date)
+                        } else {
+                          toast.error('Cancel date should be before start date')
+                        }
+                      }}
+                      placeholderText="DDMMYYYY"
+                      dateFormat="dd/M/Y"
+                      selected={cancelledDate}
+                      disabled={eventId}
+                    />
+
+                    <div
+                      style={
+                        eventId
+                          ? { display: 'none' }
+                          : {
+                              zIndex: '1',
+                              marginLeft: '-30px',
+                              marginTop: '7px',
+                              pointerEvents: 'none',
+                            }
+                      }
+                    >
+                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
                     </div>
                   </div>
                 </div>
@@ -434,11 +465,11 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="number"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      className="form-control"
                       onChange={event => {
                         setDuration(event.target.value)
                       }}
+                      disabled
                       value={duration}
                     />
                   </div>
@@ -450,12 +481,14 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="number"
-                      className="col-md-3 form-control"
-                      style={{ width: '200px' }}
+                      className="form-control hide-spinners"
                       onChange={event => {
-                        setCost(event.target.value)
+                        //console.log()
+                        let value = event.target.value.match(/\d+/)?.join('')
+                        setCost(value)
                       }}
                       value={cost}
+                      disabled={eventId}
                     />
                   </div>
                 </div>
@@ -473,6 +506,7 @@ const AddEventScreen = () => {
                         setLocation(event.target.value)
                       }}
                       value={location}
+                      disabled={eventId}
                     />
                   </div>
                 </div>
@@ -483,76 +517,107 @@ const AddEventScreen = () => {
                       Type of Events
                     </label>
                     <Select
-                      className="col-md-2"
+                      className="select-box"
                       options={eventOptionList}
                       onChange={event => {
-                        //console.log(event.value)
                         if (event.value == 'webinar') {
                           setDisabled(true)
-                        } else if (event.value == 'site_event') {
+                        } else {
                           setDisabled(false)
                         }
-                        let obj = eventOptionList.filter(e => e.value == event.value)[0]
-                        //console.log(obj)
+                        let obj = eventOptionList.find(e => e.value == event.value)
                         setEventOption(obj)
                       }}
                       value={eventOption}
+                      isDisabled={eventId}
                     />
-                    <div className="col-md-10">
-                      <button
-                        onClick={event => {
-                          event.preventDefault()
-                          setRegisteredAttendeesListModalOpen(!registeredAttendeesListModalOpen)
-                        }}
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                          borderRadius: '3px',
-                          fontSize: '13px',
-                          float: 'right',
-                          padding: '1%',
-                        }}
-                      >
-                        Registered attendees list
-                      </button>
-                    </div>
                   </div>
                 </div>
 
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div
                     className="col-md-8"
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                    style={
+                      eventOption.value == 'webinar'
+                        ? {
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            pointerEvents: 'none',
+                            opacity: '0.4',
+                            userSelect: 'none',
+                          }
+                        : { display: 'flex', justifyContent: 'space-between' }
+                    }
                   >
-                    <div style={{ display: 'flex' }} className="col-md-8">
-                      <label style={{ fontWeight: 'bold' }} className="col-md-6">
-                        Max attendees
+                    {isAdmin && (
+                      <div style={{ display: 'flex' }} className="col-md-8">
+                        <label
+                          style={{ fontWeight: 'bold', marginLeft: '-15px' }}
+                          className="col-md-6"
+                        >
+                          Max attendees
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control col-md-8"
+                          pattern="[0-9]"
+                          style={{
+                            width: '70px',
+                            float: 'left',
+                            marginLeft: '15px',
+                          }}
+                          onChange={event => {
+                            let value = +event.target.value || 0
+                            setMaxAttendeed(value)
+                            setRemainSeats(value)
+                          }}
+                          onBlur={event => {
+                            if (remainSeat && remainSeat > maxAttendacees) {
+                              toast.error("Remaining seat can't greater that max attendees")
+                            }
+                          }}
+                          value={maxAttendacees}
+                          disabled={eventId}
+                        />
+                      </div>
+                    )}
+                    <div
+                      style={{ display: 'inline-flex', alignItems: 'center' }}
+                      className="col-md-8"
+                    >
+                      <label
+                        style={{
+                          fontWeight: 'bold',
+                          marginLeft: !isAdmin ? '-15px' : 0,
+                          whiteSpace: 'nowrap',
+                        }}
+                        className="ml-3 col-md-6"
+                      >
+                        Remaining Seats
                       </label>
                       <input
-                        type="number"
-                        className="form-control col-md-4"
-                        style={{ width: '70px', float: 'left' }}
-                        onChange={event => {
-                          setMaxAttendeed(event.target.value)
-                        }}
-                        value={maxAttendacees}
-                      />
-                    </div>
-                    <div style={{ display: 'flex' }} className="col-md-8">
-                      <label style={{ fontWeight: 'bold' }}>Remaining Seats</label>
-                      <input
-                        type="number"
-                        className="form-control col-md-4"
+                        type="text"
+                        className="form-control col-md-8"
                         style={{
                           width: '70px',
                           float: 'left',
-                          marginLeft: '45px',
+                          marginLeft: !isAdmin ? '15px' : '45px',
                         }}
+                        pattern="[0-9]"
                         onChange={event => {
-                          setRemainSeats(event.target.value)
+                          //console.log()
+                          let value = Number(event.target.value.match(/\d+/)?.join(''))
+                          console.log(maxAttendacees + ':' + value)
+                          setRemainSeats(value)
+                        }}
+                        onBlur={event => {
+                          if (maxAttendacees != remainSeat) {
+                            toast.error('Max attendees and remaining attendees should be equal')
+                            setRemainSeats(0)
+                          }
                         }}
                         value={remainSeat}
+                        disabled={eventId}
                       />
                     </div>
                   </div>
@@ -564,6 +629,7 @@ const AddEventScreen = () => {
                       Classification level
                     </label>
                     <Select
+                      className="select-box"
                       options={classificationOption}
                       onChange={event => {
                         //console.log(event.label + ' selected:' + event.value)
@@ -571,9 +637,17 @@ const AddEventScreen = () => {
                           value: event.value,
                           label: event.label,
                         })
+
+                        if (event.value === 'external') {
+                          setRegistrationType({
+                            value: 'internal',
+                            label: 'My self',
+                          })
+                        }
                       }}
                       selected={classificationLevel}
                       value={classificationLevel}
+                      isDisabled={eventId}
                     />
                   </div>
                 </div>
@@ -582,8 +656,8 @@ const AddEventScreen = () => {
                   <div
                     style={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '40%',
+                      gap: '0 20px',
+                      margin: '10px 15px 0',
                     }}
                   >
                     <button
@@ -597,9 +671,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('agenda')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('agenda')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(agendaMessage, '_blank')
+                        }
                       }}
                     >
                       Agenda
@@ -615,9 +694,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('alink')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('alink')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(alinkMessage, '_blank')
+                        }
                       }}
                     >
                       Other Possible link A
@@ -633,9 +717,14 @@ const AddEventScreen = () => {
                         padding: '5px',
                       }}
                       onClick={event => {
-                        setDependOnButton('blink')
-                        setLinkModal(true)
-                        openModal(event)
+                        if (isAdmin) {
+                          setDependOnButton('blink')
+                          setLinkModal(true)
+                          openModal(event)
+                        } else {
+                          event.preventDefault()
+                          window.open(blinkMessage, '_blank')
+                        }
                       }}
                     >
                       Other Possible Link B
@@ -643,101 +732,195 @@ const AddEventScreen = () => {
                   </div>
                 </div>
 
-                <div style={{ width: '100%', marginTop: '40px' }}>
+                <div style={{ width: '100%', marginTop: '40px', padding: '0 15px' }}>
                   <h4>Requirements for the event</h4>
-                  {requirement.map(e => {
-                    return (
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <li style={{ fontSize: '25px', color: 'rgb(0, 79, 155)' }}></li>
-                        <label
-                          onMouseOver={() => {
-                            console.log('hover_')
+                  <ul class="requirements-list">
+                    {!eventId
+                      ? Object.entries(requirement).map(([key, e]) => {
+                          return (
+                            <li key={key}>
+                              {e.isEditing ? (
+                                <input
+                                  type="text"
+                                  value={e.value}
+                                  onChange={event => {
+                                    let value = event.target.value
+                                    setRequirement({
+                                      ...requirement,
+                                      [key]: {
+                                        ...e,
+                                        value,
+                                      },
+                                    })
+                                  }}
+                                />
+                              ) : (
+                                <label>{e.value}</label>
+                              )}
+                              <span>
+                                {e.isEditing ? (
+                                  <i
+                                    className="fa-solid fa-save"
+                                    style={{
+                                      marginLeft: '12px',
+                                      cursor: 'pointer',
+                                      color: '#004f9b',
+                                    }}
+                                    onClick={() => {
+                                      const newRequirement = { ...requirement }
+                                      newRequirement[key].isEditing = false
+                                      setRequirement(newRequirement)
+                                    }}
+                                  ></i>
+                                ) : (
+                                  <i
+                                    className="fa-solid fa-edit"
+                                    style={{
+                                      marginLeft: '10px',
+                                      cursor: 'pointer',
+                                      color: '#004f9b',
+                                    }}
+                                    onClick={() => {
+                                      const newRequirement = { ...requirement }
+                                      newRequirement[key].isEditing = true
+                                      setRequirement(newRequirement)
+                                    }}
+                                  ></i>
+                                )}
+                                <i
+                                  className="fa-solid fa-trash"
+                                  style={{
+                                    cursor: 'pointer',
+                                    color: '#cd2727',
+                                  }}
+                                  onClick={() => {
+                                    setRequirement(prev => {
+                                      const newRequirement = { ...prev }
+                                      delete newRequirement[key]
+                                      return newRequirement
+                                    })
+                                  }}
+                                ></i>
+                              </span>
+                            </li>
+                          )
+                        })
+                      : requirement.map(e => {
+                          return (
+                            <li className="preview" style={{ fontSize: '16px' }}>
+                              <label>{e}</label>
+                            </li>
+                          )
+                        })}
+                  </ul>
+
+                  {!eventId && (
+                    <div className="requirement-more-input">
+                      {moreInputFlag == true ? (
+                        <h6
+                          onClick={() => {
+                            setMoreInputFlag(!moreInputFlag)
                           }}
                         >
-                          {e}
-                        </label>
-                      </div>
-                    )
-                  })}
-
-                  <div>
-                    {moreInputFlag == true ? (
-                      <h6
-                        style={{ marginLeft: '29px' }}
-                        onClick={() => {
-                          setMoreInputFlag(!moreInputFlag)
-                        }}
-                      >
-                        <i style={{ color: 'rgb(0, 79, 155)' }} class="fa-solid fa-circle-plus" />
-                        more
-                      </h6>
-                    ) : (
-                      <div
-                        style={{
-                          justifyContent: 'space-between',
-                          display: 'flex',
-                          width: '40%',
-                        }}
-                        className="row"
-                      >
-                        <div className="col-md-10">
-                          <input
-                            type="text"
-                            className="form-control"
-                            onChange={event => {
-                              setSingleRequirement(event.target.value)
-                            }}
-                            value={singleRequirement}
+                          <i
+                            style={{ color: 'rgb(0, 79, 155)', marginRight: '0.5rem' }}
+                            class="fa-solid fa-circle-plus"
                           />
-                        </div>
-                        <div className="col-md-2">
-                          <button
-                            style={{
-                              width: 'auto',
-                              background: 'rgb(0, 79, 155)',
-                              color: 'white',
-                              border: '1px solid black',
-                              borderRadius: '3px',
-                              fontSize: '15px',
-                            }}
-                            onClick={event => {
-                              setMoreInputFlag(true)
-                              if (singleRequirement != null && singleRequirement != '') {
-                                requirement.push(singleRequirement)
+                          <span>more</span>
+                        </h6>
+                      ) : (
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '1rem',
+                          }}
+                        >
+                          <div>
+                            <input
+                              type="text"
+                              className="form-control"
+                              onChange={event => {
+                                setSingleRequirement(event.target.value)
+                              }}
+                              value={singleRequirement}
+                            />
+                          </div>
+                          <div className="btn-group">
+                            <button
+                              style={{
+                                width: 'auto',
+                                background: 'rgb(0, 79, 155)',
+                                color: 'white',
+                                border: '1px solid black',
+                                borderRadius: '3px',
+                                fontSize: '15px',
+                              }}
+                              onClick={event => {
+                                setMoreInputFlag(true)
+                                if (singleRequirement != null && singleRequirement != '') {
+                                  const newId = ++requirementCountRef.current
+                                  setRequirement(requirement => ({
+                                    ...requirement,
+                                    [newId]: {
+                                      id: newId,
+                                      value: singleRequirement,
+                                      isEditing: false,
+                                    },
+                                  }))
+                                  setSingleRequirement('')
+                                }
+                              }}
+                            >
+                              Save
+                            </button>
+                            <button
+                              style={{
+                                marginLeft: '10px',
+                                width: 'auto',
+                                background: 'rgb(0, 79, 155)',
+                                color: 'white',
+                                border: '1px solid black',
+                                borderRadius: '3px',
+                                fontSize: '15px',
+                              }}
+                              onClick={() => {
                                 setSingleRequirement('')
-                              }
-                            }}
-                          >
-                            Save
-                          </button>
+                                setMoreInputFlag(true)
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  )}
 
-                  <button
-                    onClick={event => {
-                      handlePublishButton(event)
-                    }}
-                    style={{
-                      width: 'auto',
-                      background: 'rgb(0, 79, 155)',
-                      color: 'white',
-                      border: '1px solid black',
-                      borderRadius: '3px',
-                      fontSize: '13px',
-                      padding: '5px',
-                      marginTop: '15px',
-                    }}
-                  >
-                    Publish
-                  </button>
+                  {!eventId && (
+                    <button
+                      onClick={event => {
+                        handlePublishButton(event)
+                      }}
+                      style={{
+                        width: 'auto',
+                        background: 'rgb(0, 79, 155)',
+                        color: 'white',
+                        border: '1px solid black',
+                        borderRadius: '3px',
+                        fontSize: '13px',
+                        padding: '5px',
+                        marginTop: '15px',
+                      }}
+                    >
+                      Publish
+                    </button>
+                  )}
                 </div>
               </form>
 
               <div
                 style={{
-                  display: 'inline',
+                  width: '50%',
                 }}
               >
                 <div
@@ -751,13 +934,14 @@ const AddEventScreen = () => {
                   <textarea
                     style={{ marginTop: '10px' }}
                     rows="8"
-                    cols="30"
+                    // cols="30"
                     placeholder="Enter description..."
-                    className="form-control"
+                    className="form-control description-box"
                     onChange={event => {
                       setDescription(event.target.value)
                     }}
                     value={description}
+                    disabled={eventId}
                   />
                 </div>
               </div>
@@ -765,375 +949,387 @@ const AddEventScreen = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            width: '100%',
-            marginTop: '3%',
-          }}
-        >
+        {eventId && (
           <div
             style={{
-              boxShadow: '1px 0px 1px 1px #888888',
               width: '100%',
-              height: '100%',
-              marginBottom: '100px',
+              marginTop: '3%',
             }}
           >
-            <h4 style={{ padding: '20px' }}>Register for Trainings</h4>
             <div
               style={{
-                padding: '20px',
+                boxShadow: 'rgba(136, 136, 136, 0.8) 0px 0px 20px -5px',
+                borderRadius: '5px',
                 width: '100%',
-                display: 'flex',
+                paddingBottom: '50px',
+                marginBottom: '100px',
               }}
             >
-              <form style={{ alignItems: 'flex-start', width: '100%' }}>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="First Name"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={firstName}
-                      onChange={event => {
-                        setFirstName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="Last Name"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={lastName}
-                      onChange={event => {
-                        setLastName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="email"
-                      placeholder="Company Email address"
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={companyEmail}
-                      onChange={event => {
-                        setCompanyEmail(event.target.value)
-                      }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="row" style={{ width: '100%', marginTop: '10px' }}>
-                  <div className="col-md-8" style={{ display: 'flex' }}>
-                    <input
-                      type="text"
-                      placeholder="Company "
-                      className="col-md-3 form-control"
-                      style={{ width: '400px' }}
-                      value={companyName}
-                      onChange={event => {
-                        setCompanyName(event.target.value)
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="row"
-                  style={
-                    disabled
-                      ? {
-                          pointerEvents: 'none',
-                          opacity: '0.4',
-                          width: '100%',
-                          padding: '5px',
-                        }
-                      : { width: '100%', padding: '5px' }
-                  }
-                >
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-4">
-                      Hotel reservation required
-                    </label>
-                  </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={hotelReservation.name == 'hotelYes' ? true : false}
-                        name="hotelYes"
-                        onChange={event => {
-                          setHotelReservation(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={hotelReservation.name == 'hotelNo' ? true : false}
-                        name="hotelNo"
-                        onChange={event => {
-                          setHotelReservation(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-5">
-                      Assist with organization of shuttle transport
-                    </label>
-                  </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={shuttleTransport.name == 'shuttleYes' ? true : false}
-                        name="shuttleYes"
-                        onChange={event => {
-                          setShuttleTransport(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '6%',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={shuttleTransport.name == 'shuttleNo' ? true : false}
-                        name="shuttleNo"
-                        onChange={event => {
-                          setShuttleTransport(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="col-md-8" style={{ marginTop: '20px' }}>
-                    <label style={{ fontWeight: 'bold' }} className="col-md-5">
-                      Special food requirement
-                    </label>
-                  </div>
-                  <div className="row" style={{ width: '100%', display: 'inline' }}>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '250px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={foodRequirement.name == 'No Requirement' ? true : false}
-                        name="No Requirement"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="yes">
-                        No Special requirements
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '115px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={foodRequirement.name == 'No Pork' ? true : false}
-                        name="No Pork"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        No Pork
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '145px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={foodRequirement.name == 'Vegetarian' ? true : false}
-                        name="Vegetarian"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        Vegetarian
-                      </label>
-                    </div>
-                    <div
-                      className="col-md-3"
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '740px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={foodRequirement.name == 'Other, please specify' ? true : false}
-                        name="Other, please specify"
-                        onChange={event => {
-                          setFoodRequirement(event.target)
-                        }}
-                      />
-                      <label class="form-check-label" for="no">
-                        Other, please specify
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control "
-                        style={{ width: '500px' }}
-                        value={otherFoodRequirement}
-                        onChange={event => {
-                          setOtherFoodRequirement(event.target.value)
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className="row">
+              <div>
+                {eventId ? (
+                  <h4 style={{ padding: '20px 20px 0' }}>Register for {trainingName}</h4>
+                ) : (
+                  <h4 style={{ padding: '20px 20px 0' }}>Register for Trainings</h4>
+                )}
+              </div>
               <div
                 style={{
-                  width: '80%',
+                  padding: '20px 0 20px 35px',
+                  width: '100%',
                   display: 'flex',
-                  justifyContent: 'space-between',
                 }}
               >
-                <button
-                  onClick={handleRegisterButton}
+                <form style={{ alignItems: 'flex-start', width: '100%' }}>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-9" style={{ display: 'flex' }}>
+                      <Select
+                        className="select-box"
+                        options={
+                          classificationLevel.value === 'internal'
+                            ? registerationTypeOption.filter(e => e.value !== 'external')
+                            : registerationTypeOption
+                        }
+                        onChange={event => {
+                          //console.log(event.label + ' selected:' + event.value)
+                          setRegistrationType({
+                            value: event.value,
+                            label: event.label,
+                          })
+                          if (event.value == 'internal') {
+                            setFirstName(userProfile['basic_profile'].full_name)
+                            setCompanyEmail(userProfile['basic_profile'].email)
+                            setCompanyName(userProfile['basic_profile'].company_name)
+                          } else {
+                            setFirstName('')
+                            setCompanyEmail('')
+                            setCompanyName('')
+                          }
+                        }}
+                        value={registerationType}
+                      />
+                    </div>
+                  </div>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="First Name"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={firstName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setFirstName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="Last Name"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={lastName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setLastName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="email"
+                        placeholder="Company E-Mail ID"
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={companyEmail}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setCompanyEmail(event.target.value)
+                        }}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row" style={{ width: '100%', marginTop: '10px' }}>
+                    <div className="col-md-8" style={{ display: 'flex' }}>
+                      <input
+                        type="text"
+                        placeholder="Company "
+                        className="col-md-3 form-control"
+                        style={{ width: '400px' }}
+                        value={companyName}
+                        disabled={eventId && registerationType.value == 'internal'}
+                        onChange={event => {
+                          setCompanyName(event.target.value)
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="row" style={{ width: '100%', marginLeft: '8px' }}>
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
+                    </div>
+                    <div className="row">
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={hotelReservation.name == 'hotelYes' ? true : false}
+                          name="hotelYes"
+                          onChange={event => {
+                            setHotelReservation(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="yes">
+                          Yes
+                        </label>
+                      </div>
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={hotelReservation.name == 'hotelNo' ? true : false}
+                          name="hotelNo"
+                          onChange={event => {
+                            setHotelReservation(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="no">
+                          No
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }}>
+                        Assist with organization of shuttle transport
+                      </label>
+                    </div>
+                    <div className="row">
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={shuttleTransport.name == 'shuttleYes' ? true : false}
+                          name="shuttleYes"
+                          onChange={event => {
+                            setShuttleTransport(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="yes">
+                          Yes
+                        </label>
+                      </div>
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={shuttleTransport.name == 'shuttleNo' ? true : false}
+                          name="shuttleNo"
+                          onChange={event => {
+                            setShuttleTransport(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="no">
+                          No
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-8" style={{ marginTop: '20px', marginLeft: '-20px' }}>
+                      <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
+                    </div>
+                    <div className="row">
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'No Requirement' ? true : false}
+                          name="No Requirement"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="yes">
+                          No Special requirements
+                        </label>
+                      </div>
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'No Pork' ? true : false}
+                          name="No Pork"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="no">
+                          No Pork
+                        </label>
+                      </div>
+                      <div className="row ml-0">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'Vegetarian' ? true : false}
+                          name="Vegetarian"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="no">
+                          Vegetarian
+                        </label>
+                      </div>
+                      <div
+                        className="row ml-0"
+                        style={{
+                          position: 'relative',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={foodRequirement.name == 'Other, please specify' ? true : false}
+                          name="Other, please specify"
+                          onChange={event => {
+                            setFoodRequirement(event.target)
+                          }}
+                          disabled={eventOption.value === 'webinar'}
+                        />
+                        <label class="form-check-label" for="no">
+                          Other, please specify
+                        </label>
+                        {foodRequirement.name == 'Other, please specify' && (
+                          <input
+                            type="text"
+                            className="form-control "
+                            style={{ position: 'absolute', left: '200px', top: '-25%' }}
+                            value={otherFoodRequirement}
+                            onChange={event => {
+                              setOtherFoodRequirement(event.target.value)
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div className="row">
+                <div style={{ marginLeft: '55px', marginTop: '10px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '740px',
+                      marginTop: '10px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={termsPolicy}
+                      onChange={() => {
+                        setTermPolicy(!termsPolicy)
+                      }}
+                    />
+                  </div>
+                  <label style={{ marginLeft: '20px' }}>
+                    By signing up, you agree with{' '}
+                    <span
+                      style={{
+                        color: 'rgb(0, 79, 155)',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={() => {
+                        navigate('/privacy-policy')
+                      }}
+                    >
+                      Terms of service and Privacy Policy
+                    </span>
+                  </label>
+                </div>
+                <div
                   style={{
-                    background: 'rgb(0, 79, 155)',
-                    color: 'white',
-                    border: '1px solid black',
-                    borderRadius: '3px',
-                    fontSize: '13px',
-                    marginLeft: '30px',
+                    width: '80%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginLeft: '15px',
+                    marginTop: '10px',
                   }}
                 >
-                  Register
-                </button>
+                  <button
+                    onClick={() => {
+                      if (termsPolicy == true) handleRegisterButton()
+                      else {
+                        alert('Accept Term of service and policy')
+                      }
+                    }}
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      color: 'white',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                      fontSize: '14px',
+                      marginLeft: '20px',
+                    }}
+                  >
+                    Register
+                  </button>
 
-                <div
-                  style={
-                    trainingFormDisable
-                      ? {
-                          pointerEvents: 'none',
-                          opacity: '0.4',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '45%',
-                        }
-                      : {
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '45%',
-                        }
-                  }
-                >
-                  <label style={{ fontWeight: 'bold' }}>Registration can be cancelled untill</label>
-                  <DatePicker
-                    minDate={new Date()}
-                    className="col-md-3 form-control"
-                    onChange={date => setCancelledDate(date)}
-                    placeholderText="DDMMYYYY"
-                    dateFormat="dd/M/Y"
-                    selected={cancelledDate}
-                    style={{ width: '200px' }}
-                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: '45%',
+                    }}
+                  >
+                    <label style={{ fontWeight: 'bold', marginBottom: 0 }}>
+                      Registration can be cancelled until
+                    </label>
+                    <DatePicker
+                      disabled
+                      minDate={new Date()}
+                      className="form-control"
+                      onChange={date => setCancelledDate(date)}
+                      placeholderText="DDMMYYYY"
+                      dateFormat="dd/M/Y"
+                      selected={cancelledDate}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div style={{ marginLeft: '30px', marginTop: '10px' }}>
-              <label>By signing up, you agree with Terms of service and Privacy Policy</label>
-            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div>
-        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+        >
           {linkModal && (
             <CustomeModel
               title={
@@ -1146,6 +1342,15 @@ const AddEventScreen = () => {
                   : null
               }
               placeholder="Enter link"
+              validation={() => {
+                if (dependOnButton === 'agenda') {
+                  return validateUrl(agendaMessage)
+                } else if (dependOnButton === 'alink') {
+                  return validateUrl(alinkMessage)
+                } else if (dependOnButton === 'blink') {
+                  return validateUrl(blinkMessage)
+                }
+              }}
               setMessage={
                 dependOnButton == 'agenda'
                   ? setAgendaMessage
@@ -1155,70 +1360,28 @@ const AddEventScreen = () => {
                   ? setBlinkMessage
                   : null
               }
+              value={
+                dependOnButton == 'agenda'
+                  ? agendaMessage
+                  : dependOnButton == 'alink'
+                  ? alinkMessage
+                  : dependOnButton == 'blink'
+                  ? blinkMessage
+                  : null
+              }
+              onCancel={() => {
+                if (dependOnButton == 'agenda') {
+                  setAgendaMessage('')
+                } else if (dependOnButton == 'alink') {
+                  setAlinkMessage('')
+                } else if (dependOnButton == 'blink') {
+                  setBlinkMessage('')
+                }
+              }}
               closeModal={closeModal}
               handleSendButton={closeModal}
             />
           )}
-        </Modal>
-      </div>
-
-      {
-        // for Registered attendees list
-      }
-      <div>
-        <Modal
-          isOpen={registeredAttendeesListModalOpen}
-          onRequestClose={() => {
-            registeredAttendeesListModalOpen(false)
-          }}
-          style={customStyles2}
-        >
-          <div>
-            <div style={{ float: 'right' }}>
-              <img
-                style={{
-                  height: '20px',
-                  width: '20px',
-                }}
-                src={CloseIcon}
-                onClick={() => {
-                  //console.log('Close modal..')
-                  setRegisteredAttendeesListModalOpen(false)
-                }}
-              />
-            </div>
-            <div>
-              <h4>Registered attendees list</h4>
-              <Table
-                style={{
-                  border: '1px solid',
-                }}
-              >
-                <thead>
-                  <tr style={{ background: 'rgb(0, 79, 155)', color: 'white' }}>
-                    <td>Name</td>
-                    <td>Email Id</td>
-                    <td>User from Internal/External</td>
-                    <td>Register by</td>
-                    <td>Date</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {registeredAttendeesList.map(e => {
-                    return (
-                      <tr>
-                        <td>{e.name}</td>
-                        <td>{e.email_id}</td>
-                        <td>{classificationOption.find(ele => ele.value == e.category).label}</td>
-                        <td>{e.registeredBy}</td>
-                        <td>{e.date}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </Table>
-            </div>
-          </div>
         </Modal>
       </div>
     </>

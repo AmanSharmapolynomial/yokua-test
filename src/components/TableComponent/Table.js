@@ -30,17 +30,33 @@ import { toast } from 'react-toastify'
  * ]}
  *
  */
-export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
+export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
   const inputRef = useRef([])
   const customStyles = {
+    table: {
+      style: {
+        border: 'none',
+      },
+    },
     rows: {
       style: {
-        borderWidth: '10px',
-        borderBottomColor: 'black',
-        borderBottomWidth: '10px',
+        border: '1px solid black',
+      },
+    },
+    headRow: {
+      style: {
+        borderBottom: '1px solid var(--bgColor2)',
+        fontSize: '16px',
+      },
+    },
+    row: {
+      style: {
+        border: '2px solid black',
+        borderLeft: 'none',
+        borderRight: 'none',
       },
     },
     headCells: {
@@ -49,6 +65,8 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
         paddingRight: '8px',
         backgroundColor: 'var(--bgColor2)',
         color: 'white',
+        fontWeight: 'bold',
+        textTransform: 'capitalize',
       },
     },
     cells: {
@@ -56,6 +74,11 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
         fontSize: '0.8rem',
+      },
+    },
+    noData: {
+      style: {
+        border: '1px solid black',
       },
     },
   }
@@ -67,6 +90,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       tableColumns.push({
         name: column.column_name,
         selector: row => row[tempColumnName],
+        wrap: true,
         sortable: column.is_sortable,
         isLink: column.is_link,
         isDate: column.is_date,
@@ -87,7 +111,15 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
         tableData?.map(column_name => {
           const tempObject = new Object()
-          tempObject[column_name['column_name']] = column_name.values[index].value
+          let value = column_name.values[index].value
+          if (column_name.is_link) {
+            value = (
+              <a href={value} target="_blank">
+                {value}
+              </a>
+            )
+          }
+          tempObject[column_name['column_name']] = value
           Object.assign(tableRowObject, tempObject)
         })
         finalTableData.push(tableRowObject)
@@ -137,6 +169,10 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
                   src={accept}
                   className="mx-2"
                   onClick={() => {
+                    if (inputRef.current[idx].value === '') {
+                      toast.error('Cannot add with empty data')
+                      return
+                    }
                     callAddRowAPI()
                   }}
                 />
@@ -171,7 +207,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       />
       {isEditable ? (
         renderDummyRow()
-      ) : (
+      ) : isAdmin ? (
         <div
           role={'button'}
           className="add-row"
@@ -188,7 +224,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           />
           Add
         </div>
-      )}
+      ) : null}
     </div>
   )
 }

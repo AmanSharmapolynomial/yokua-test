@@ -1,6 +1,7 @@
 import React from 'react'
 import './style.css'
 import Modal from 'react-modal'
+import { toast } from 'react-toastify'
 const MyModel = props => {
   console.log(props)
   const customStyles = {
@@ -16,7 +17,22 @@ const MyModel = props => {
   }
   return (
     <div>
-      <div>
+      <div style={{ position: 'relative' }}>
+        <i
+          className="fa-solid fa-xmark"
+          style={{
+            position: 'absolute',
+            top: '-10px',
+            right: '-10px',
+            padding: '3px 5px',
+            borderRadius: '50%',
+            background: '#cd0000',
+            color: '#fff',
+            fontSize: '0.75rem',
+            cursor: 'pointer',
+          }}
+          onClick={() => props.closeModal()}
+        ></i>
         <p
           style={{
             fontWeight: 'bold',
@@ -37,7 +53,8 @@ const MyModel = props => {
           <input
             style={{
               borderRadius: '3px',
-              width: '75%',
+              flex: 1,
+              margin: '0 2.5rem',
             }}
             type="text"
             maxLength="255"
@@ -50,9 +67,7 @@ const MyModel = props => {
             value={props.value}
           />
         </div>
-        <br />
-        <br />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
           <button
             style={{
               background: 'white',
@@ -61,6 +76,9 @@ const MyModel = props => {
               borderRadius: '3px',
             }}
             onClick={() => {
+              if (typeof props.onCancel === 'function') {
+                props.onCancel()
+              }
               props.closeModal()
             }}
           >
@@ -69,6 +87,15 @@ const MyModel = props => {
           &nbsp;&nbsp;
           <button
             onClick={() => {
+              if (typeof props.validation === 'function') {
+                const validationResult = props.validation(props.message)
+                if (validationResult) {
+                  props.handleSendButton()
+                  return
+                }
+                toast.error('URL is not valid')
+                return
+              }
               props.handleSendButton()
             }}
             style={{
@@ -78,7 +105,7 @@ const MyModel = props => {
               borderRadius: '3px',
             }}
           >
-            Send
+            Save
           </button>
         </div>
       </div>

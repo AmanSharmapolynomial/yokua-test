@@ -16,6 +16,9 @@ import ProductCard from '../../components/ProductCard/productcard'
 import { Link, Router } from 'react-router-dom'
 
 const ProductLine = () => {
+  const isAdmin =
+    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+
   const navigate = useNavigate()
   const [archivedFilter, setArchivedFilter] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -28,7 +31,9 @@ const ProductLine = () => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductList(res.data)
+          const productList = res.data.slice()
+          productList.sort((a, b) => a.name.localeCompare(b.name))
+          setProductList(productList)
         }
         setIsLoading(false)
       })
@@ -52,6 +57,7 @@ const ProductLine = () => {
           key={item.id}
           index={index}
           item={item}
+          isAdmin={isAdmin}
           onClick={() => {
             navigate('/product-lines/sub-product', { state: item })
           }}
@@ -94,7 +100,9 @@ const ProductLine = () => {
               </div>
             </div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="col" style={{ paddingRight: '10%' }}>
+              {renderRow()}
+            </div>
           )}
 
           {/* {(getUserRoles() == 'PMK Administrator' ||

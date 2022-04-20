@@ -1,5 +1,24 @@
-.react-datepicker-wrapper {
+.react-datepicker-wrapper,
+.form-control,
+.select-box > div {
   width: 200px !important;
+}
+
+.react-datepicker-popper {
+  z-index: 2;
+}
+
+.description-box {
+  width: 100% !important;
+}
+
+input.hide-spinners::-webkit-outer-spin-button,
+input.hide-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input.hide-spinners[type=number] {
+  -moz-appearance: textfield;
 }
 
 select {
@@ -7,4 +26,68 @@ select {
   height: 40px;
   border: 1px solid lightgrey;
   border-radius: 5px;
+}
+
+.requirements-list {
+  max-width: fit-content;
+  min-width: 400px;
+  font-size: 16px;
+  list-style: none;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.requirements-list li:not(.preview) {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.161);
+}
+
+.requirements-list li > label, .requirements-list li > input {
+  flex: 1;
+}
+
+.requirements-list li > input:focus {
+  outline: none;
+}
+
+.requirements-list li > label {
+  margin-bottom: 0;
+  padding: 5px 2px;
+}
+
+.requirements-list li span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.161);
+}
+
+.requirements-list li::before {
+  content: '\2022';
+  color: rgb(0, 79, 155);
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.requirement-more-input {
+  margin-left: 32px;
+  margin-top: 10px;
+}
+
+.requirement-more-input input {
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.161);
+  border: none;
+  height: 26px;
+}
+
+.requirement-more-input input:focus {
+  outline: none;
 }
