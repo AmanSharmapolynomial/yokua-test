@@ -3,152 +3,203 @@ import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable from 'react-data-table-component'
 import './style.css'
 import { Pagination } from 'antd'
+import Dropdown from '../../../components/Dropdown'
+import UserDetailsModal from '../../../components/Modals/User Detail Modal'
 import API from '../../../utils/api'
 import { toast } from 'react-toastify'
+import { getUserRoles } from '../../../utils/token'
+import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
+import Plusicon from '../../../assets/Group 331.png'
+import Filtermg from '../../../assets/Icon awesome-filter.png'
 import { useLoading } from '../../../utils/LoadingContext'
-import Modal from 'react-modal'
-import axios from 'axios'
 
-const customStyles = {
-  headCells: {
-    style: {
-      paddingLeft: '16px', // override the cell padding for head cells
-      paddingRight: '16px',
-      backgroundColor: 'var(--bgColor2)',
-      color: 'white',
-    },
-  },
-  cells: {
-    style: {
-      paddingLeft: '16px', // override the cell padding for data cells
-      paddingRight: '16px',
-      fontSize: '0.8rem',
-    },
-  },
-}
+const NEW_TO_OLD = 'latest'
+const OLD_TO_NEW = 'old'
+const A_TO_Z = 'ascending'
+const Z_TO_A = 'descending'
 
-const customModalStyles = {
-  overlay: {
-    zIndex: 10,
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '30%',
-    overflow: 'auto',
-  },
-}
-
-let cancelToken
+const nto = 'New to Old'
+const otn = 'Old to New'
+const atz = 'A to Z'
+const zta = 'Z to A'
 
 const UserListView = () => {
-  const { isLoading, setLoading } = useLoading()
-  const [notificationTableData, setNotificationTableData] = useState([])
-  const [notificationPage, setNotificationPage] = useState(1)
-  const [notificationPagesTotal, setNotificationPagesTotal] = useState(1)
-  const [notificationSelectedRows, setNotificationSelectedRows] = useState([])
+  const { setLoading } = useLoading()
 
-  const [eventsList, setEventsList] = useState([])
-  const [selectedEvent, setSelectedEvent] = useState(null)
-  const [eventAttendees, setEventAttendees] = useState([])
-  const [eventAttendeesPage, setEventAttendeesPage] = useState(1)
-  const [eventAttendeesPageTotal, setEventAttendeesPageTotal] = useState(1)
+  // states
+  const [openModal, setOpenModal] = useState(false)
+  const [modelTitle, setModalTitle] = useState('View User')
+  const [changeModal, setChangeModal] = useState('')
+  const [filterCheckboxPMK, setFilterCheckboxPMK] = useState(true)
+  const [filterCheckboxCM, setFilterCheckboxCM] = useState(true)
+  const [filterCheckboxUser, setFilterCheckboxUser] = useState(true)
+  const [filterActive, setFilterActive] = useState('')
 
-  const [isEventDataLoading, setIsEventDataLoading] = useState(false)
-
-  const [isModalLoading, setIsModalLoading] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalData, setModalData] = useState({})
-
-  const columnsNotificationTable = [
+  const [selectedRowsState, setSelectedRowsState] = useState([])
+  const dropdownData = ['PMK Administrator', 'PMK Content Manager', 'User']
+  const customeSortDown = [
     {
-      name: 'SL.No',
-      selector: row => row.id,
+      key: NEW_TO_OLD,
+      value: nto,
     },
     {
-      name: 'Name',
-      selector: row => row.full_name,
+      key: OLD_TO_NEW,
+      value: otn,
     },
     {
-      name: 'E-Mail',
-      selector: row => row.email,
-      grow: 2,
+      key: A_TO_Z,
+      value: atz,
     },
     {
-      name: 'Event Name',
-      selector: row => row.event_name,
-    },
-    {
-      name: 'Date',
-      selector: row => row.created_date,
-    },
-    {
-      name: 'Change Preferences',
-      selector: row => row.changed_preference,
-      grow: 4,
+      key: Z_TO_A,
+      value: zta,
     },
   ]
+  const [showSortDropDown, setShowDropDown] = useState(false)
 
-  const columnsEventDetails = [
+  const filter1Ref = useRef()
+  const filter2Ref = useRef()
+  const filterFromCheckbox1Ref = useRef()
+  const filterFromCheckbox2Ref = useRef()
+  const filterFromCheckbox3Ref = useRef()
+
+  // // data from backedn to be stored here
+  const [backendData, setBackendData] = useState([])
+  const [dataToChange, setDataToChange] = useState()
+
+  // refs
+  let [contentRow, setContentRow] = useState([])
+  const [reloadTable, setReloadTable] = useState(false)
+
+  const [openBasicDeleteModal, setOpenBasicDeleteModal] = useState(false)
+  const [deleteEmail, setDeleteEmail] = useState('')
+  const [sortMethod, setSortMethod] = useState({
+    key: NEW_TO_OLD,
+    value: nto,
+  })
+  const [pageNoCall, setPageNoCall] = useState(1)
+  const [totalPages, setTotalPages] = useState()
+
+  const columns = [
     {
       name: 'Name',
       selector: row => row.name,
+      minWidth: '10rem',
     },
     {
-      name: 'Email',
-      selector: row => row.email_id,
+      name: 'Role',
+      selector: row => row.role,
+      minWidth: '15rem',
     },
     {
-      name: 'Register For',
-      selector: row => row.registeredBy,
+      name: 'E-mail',
+      selector: row => row.companyEmail,
+      grow: 2,
+      minWidth: '15rem',
     },
     {
-      name: 'Preferences',
-      cell: row => (
-        <button
-          className="btn create-domain-btn py-1 px-2"
-          onClick={() => {
-            onClickViewPreferences(row.event_id, row.email_id)
-          }}
-        >
-          View
-        </button>
+      name: (
+        <div className="dropdown">
+          <img
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style={{ width: '14px', height: '14px' }}
+            className="dropdown-toggle"
+            src={require('../../../assets/Rearrange order.png')}
+          />
+
+          <div className="dropdown-menu">
+            {customeSortDown.map((element, index) => (
+              <span
+                style={{
+                  color: 'rgba(0,0,0,0.87)',
+                  fontWeight: element.key === sortMethod.key ? '600' : '400',
+                }}
+                key={index}
+                className="dropdown-item filter-item"
+                onClick={() => {
+                  setSortMethod(element)
+                  setShowDropDown(false)
+                  // _handleSort(element);
+                }}
+              >
+                {element.value}
+              </span>
+            ))}
+          </div>
+        </div>
       ),
+    },
+    {
+      name: 'Company',
+      selector: row => row.company,
+      width: '130px',
+    },
+    {
+      name: 'Status',
+      selector: row => row.status,
+      sortable: true,
+    },
+    {
+      name: '',
+      selector: row => row.edit,
+      width: '80px',
     },
   ]
 
-  const onClickViewPreferences = (event_id, email) => {
-    setIsModalOpen(true)
-    setIsModalLoading(true)
-    API.post('/training/get_user_preference', {
-      event_id,
-      email,
-    })
-      .then(res => {
-        if (res.status === 200) {
-          setModalData(res.data)
-        } else {
-          toast.error(res.data?.message ?? 'Some error occurred')
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        setIsModalLoading(false)
-      })
+  useEffect(() => {
+    filterFromCheckbox1Ref.current.checked = true
+    filterFromCheckbox2Ref.current.checked = true
+    filterFromCheckbox3Ref.current.checked = true
+  }, [])
+
+  const _handleSort = () => {
+    setLoading(true)
+    const updatedUserList = backendData
+    let sortedArray = []
+    if (sortMethod === NEW_TO_OLD) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) > new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod === OLD_TO_NEW) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        new Date(a.date_joined) < new Date(b.date_joined) ? 1 : -1
+      )
+    } else if (sortMethod === A_TO_Z) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() > b.first_name.toLowerCase() ? 1 : -1
+      )
+    } else if (sortMethod === Z_TO_A) {
+      sortedArray = updatedUserList.sort((a, b) =>
+        a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
+      )
+    } else {
+      toast.error('No Filtes found')
+      return
+    }
+    if (sortedArray.length > 0) {
+      setBackendData(p => [...sortedArray])
+      toast.success('Filters applied')
+    } else {
+    }
+    setLoading(false)
   }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setModalData({})
-  }
+  useEffect(async () => {
+    const payload = {
+      pmk_admin: filterCheckboxPMK,
+      content_manager: filterCheckboxCM,
+      user: filterCheckboxUser,
+      filter: filterActive,
+      page_index: pageNoCall,
+      sort_by: sortMethod.key,
+    }
+    _getUserList(payload)
+  }, [reloadTable, filterActive, pageNoCall, sortMethod])
 
-  const loadNotifications = async () => {
+  const _getUserList = async payload => {
     setLoading(true)
 
     const listuserdata = await API.post('admin/list_users', payload)
@@ -158,101 +209,110 @@ const UserListView = () => {
 
     setTotalPages(listuserdata.data.total_pages)
     const contentRowData = []
-    sortedArray
-      .map((data, index) => {
-        contentRowData.push({
-          name: (
-            <span
+    sortedArray.map((data, index) => {
+      contentRowData.push({
+        name: (
+          <span
+            style={{
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              setChangeModal('View')
+              setOpenModal(true)
+              setModalTitle('View user detail')
+              document.body.style.overflow = 'hidden'
+              setDataToChange(index)
+            }}
+          >
+            {data.first_name + ' ' + data.last_name}
+          </span>
+        ),
+        id: index,
+        role: (
+          <Dropdown
+            value={data.role}
+            data={dropdownData}
+            changeIndex={() => {
+              setDataToChange(index)
+            }}
+            addOrEditUser={payload => {
+              addOrEditUser('Edit', payload)
+            }}
+            userData={data}
+          />
+        ),
+        companyEmail: data.email,
+        status: data.status,
+        company: data.company_name,
+        edit: (getUserRoles() === 'PMK Administrator' ||
+          getUserRoles() === 'Technical Administrator') && (
+          <div className="edit-icons" key={index}>
+            <i
+              className="fa-solid fa-pen-to-square mx-2"
+              data={dropdownData}
               style={{
-                cursor: 'pointer',
+                color: 'var(--bgColor2)',
               }}
               onClick={() => {
-                setChangeModal('View')
+                setChangeModal('Edit')
                 setOpenModal(true)
-                setModalTitle('View user detail')
+                setModalTitle('Update user detail')
+
+                document.documentElement.scrollTop = 0
                 document.body.style.overflow = 'hidden'
                 setDataToChange(index)
               }}
-            >
-              {data.first_name + ' ' + data.last_name}
-            </span>
-          ),
-          id: index,
-          role: (
-            <Dropdown
-              value={data.role}
-              data={dropdownData}
-              changeIndex={() => {
-                setDataToChange(index)
-              }}
-              addOrEditUser={payload => {
-                addOrEditUser('Edit', payload)
-              }}
-              userData={data}
             />
-          ),
-          companyEmail: data.email,
-          status: data.status,
-          company: data.company_name,
-          edit: (getUserRoles() === 'PMK Administrator' ||
-            getUserRoles() === 'Technical Administrator') && (
-            <div className="edit-icons" key={index}>
-              <i
-                className="fa-solid fa-pen-to-square mx-2"
-                data={dropdownData}
-                style={{
-                  color: 'var(--bgColor2)',
-                }}
-                onClick={() => {
-                  setChangeModal('Edit')
-                  setOpenModal(true)
-                  setModalTitle('Update user detail')
+            <i
+              className="fa-solid fa-trash mx-2"
+              style={{
+                color: '#CD2727',
+              }}
+              onClick={() => {
+                // delete single user
+                setDeleteEmail(data.email)
+                setOpenBasicDeleteModal(true)
+              }}
+            />
+          </div>
+        ),
+      })
+    })
 
-                  document.documentElement.scrollTop = 0
-                  document.body.style.overflow = 'hidden'
-                  setDataToChange(index)
-                }}
-              />
-              <i
-                className="fa-solid fa-trash mx-2"
-                style={{
-                  color: '#CD2727',
-                }}
-                onClick={() => {
-                  // delete single user
-                  setDeleteEmail(data.email)
-                  setOpenBasicDeleteModal(true)
-                }}
-              />
-            </div>
-          ),
-        })
-      })
-      .then(data => {
-        setNotificationTableData(data.data.page_data)
-        setNotificationPagesTotal(data.data.total_pages)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    setBackendData(sortedArray)
+    setContentRow(contentRowData)
+    setLoading(false)
   }
 
-  const loadEvents = () => {
-    setLoading(true)
-    API.get('training/training_list')
-      .then(data => {
-        setEventsList(data.data)
-      })
-      .finally(setLoading(false))
+  const conditionalRowStyles = [
+    {
+      when: row => row.id % 2 !== 0,
+      style: {},
+    },
+  ]
+  const customStyles = {
+    rows: {
+      style: {},
+    },
+    headCells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for head cells
+        paddingRight: '8px',
+        backgroundColor: 'var(--bgColor2)',
+        color: 'white',
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for data cells
+        paddingRight: '8px',
+
+        fontSize: '0.8rem',
+      },
+    },
   }
 
-  const loadEventData = () => {
-    if (selectedEvent) {
-      if (cancelToken !== undefined) {
-        cancelToken.cancel('Operation canceled by the user')
-      }
-    }
-  }
+  // Useful Functions to manage Users from Table
 
   const saveAndExitModal = (change, data) => {
     if (data?.email && data) {
@@ -261,34 +321,33 @@ const UserListView = () => {
     } else {
       setOpenModal(false)
     }
+    setOpenBasicDeleteModal(false)
+    document.body.style.overflow = 'auto'
   }
 
-  const handleRowSelected = React.useCallback(state => {
-    setNotificationSelectedRows(state.selectedRows)
-  }, [])
+  const selectedRowsAction = ({ selectedRows }) => {
+    // do anything with selected rows
+    console.log('do anything with', selectedRows)
+    setSelectedRowsState(selectedRows)
+  }
 
-  const clearNotifications = () => {
-    if (notificationSelectedRows.length > 0) {
-      const id = notificationSelectedRows.map(row => row.id)
-      API.post('/training/delete_preference_notification', {
-        id,
+  const deleteUser = async () => {
+    // write delete user api call here
+    if (selectedRowsState.length > 0) {
+      const deleteUserEmails = []
+      console.log(selectedRowsState)
+      selectedRowsState.map((row, index) => {
+        deleteUserEmails.push(row.companyEmail)
       })
-        .then(res => {
-          if (res.status === 200) {
-            toast.success(res.data.message)
-            setNotificationSelectedRows([])
-            setNotificationTableData(prev => {
-              const f = prev.filter(row => !id.includes(row.id))
-              return f
-            })
-          } else {
-            toast.error('Error: ', res.data.message)
-          }
-        })
-        .catch(() => {
-          console.error('Error occurred')
-        })
+      const payload = {
+        email: deleteUserEmails,
+      }
+      console.log(payload)
+      const afterDeleteMsg = await API.post('admin/delete_user', payload)
+      setPageNoCall(1)
+      console.log(afterDeleteMsg)
     }
+    console.log('deleted Selected Users', selectedRowsState)
   }
 
   const deleteSingleUser = async userEmail => {
@@ -332,11 +391,13 @@ const UserListView = () => {
         formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)
           .then(data => {
-            // setReloadData(true)
+            setReloadData(true)
           })
           .catch(error => {
             // toast.error('Error while updating Avatar')
           })
+      } else {
+        setReloadData(true)
       }
       setDataToChange()
       toast.success(afterAddOrDeleteMsg.data.message)
@@ -346,331 +407,213 @@ const UserListView = () => {
     setReloadTable(!reloadTable)
   }
 
-  useEffect(() => {
-    loadNotifications()
-  }, [notificationPage])
+  // filters
+  const filterTable = value => {
+    setFilterActive(value)
+  }
+  function onChange(pageNumber) {
+    setPageNoCall(pageNumber)
+  }
 
   return (
     <>
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col user-approval-screen">
-          <h2 className="secondary-heading h4 mt-4">Event Management</h2>
+        <div className="col user-list-view">
+          <SecondaryHeading title={'Users list view'} />
 
-          <div className="d-flex justify-content-between align-items-center">
-            <SecondaryHeading title="Notification" />
-            <button className="btn create-domain-btn" onClick={clearNotifications}>
-              Clear Notifications
-            </button>
-          </div>
-          <div>
-            <div className="list-view-table mt-3">
-              {isLoading ? (
+          <div className="col filter-actions">
+            <div className="filter-icons">
+              <div className="dropdown">
+                <img
+                  data-spy="affix"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  className={
+                    filterActive === ''
+                      ? 'dropdown-toggle greyed filter-icon'
+                      : 'dropdown-toggle filter-icon'
+                  }
+                  src={Filtermg}
+                />
+
                 <div
+                  className="dropdown-menu"
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '5rem 0',
+                    overflowY: 'scroll',
+                    maxHeight: '10rem',
                   }}
                 >
-                  Loading...
-                </div>
-              ) : (
-                <>
-                  <DataTable
-                    columns={columnsNotificationTable}
-                    data={notificationTableData}
-                    selectableRows
-                    customStyles={customStyles}
-                    progressPending={isLoading}
-                    onSelectedRowsChange={handleRowSelected}
-                    fixedHeader
-                    fixedHeaderScrollHeight="400px"
-                  />
-
-                  <Pagination
-                    key="userApproval"
-                    current={notificationPage}
-                    total={notificationPagesTotal}
-                    showQuickJumper
-                    showSizeChanger={false}
-                    onChange={newPage => {
-                      setNotificationPage(newPage)
+                  <span
+                    className="dropdown-item"
+                    ref={filter1Ref}
+                    onClick={() => {
+                      if (filterActive == 'active') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter1Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('active')
+                        filter1Ref.current.style.fontWeight = 'bold'
+                        filter2Ref.current.style.fontWeight = '300'
+                      }
                     }}
-                    style={{ border: 'none' }}
-                  />
-                </>
-              )}
-            </div>
-          </div>
-          <h2 className="col secondary-heading h4 mt-4">View Attendees List</h2>
-          <div className="domain-user-list mt-4">
-            <div>
-              <div className="row">
-                <div className="table-container col-3">
-                  <table className="event-list-table">
-                    <thead>
-                      <tr>
-                        <th>Event Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {eventsList.map(training => (
-                        <tr key={training.id} onClick={() => setSelectedEvent(training.id)}>
-                          <td className={training.id === selectedEvent ? 'active' : ''}>
-                            <span>{training.training_name}</span>
-                            <i className="fa fa-caret-right" aria-hidden="true"></i>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="domain-user-table-content col-9">
-                  <div className="list-view-table">
-                    {isLoading ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        Loading...
-                      </div>
-                    ) : (
-                      <>
-                        <DataTable
-                          columns={columnsEventDetails}
-                          data={eventAttendees}
-                          customStyles={customStyles}
-                          fixedHeader
-                          fixedHeaderScrollHeight="400px"
-                          progressPending={isEventDataLoading}
-                        />
-                        <Pagination
-                          current={eventAttendeesPage}
-                          key="trainingPage"
-                          showQuickJumper
-                          showSizeChanger={false}
-                          total={eventAttendeesPageTotal}
-                          onChange={num => {
-                            setEventAttendeesPage(num)
-                          }}
-                          style={{ border: 'none' }}
-                        />
-                      </>
-                    )}
-                  </div>
+                  >
+                    Active
+                  </span>
+                  <span
+                    className="dropdown-item"
+                    ref={filter2Ref}
+                    onClick={() => {
+                      if (filterActive == 'inactive') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter2Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('inactive')
+                        filter2Ref.current.style.fontWeight = 'bold'
+                        filter1Ref.current.style.fontWeight = '300'
+                      }
+                    }}
+                  >
+                    Inactive
+                  </span>
                 </div>
               </div>
             </div>
+            <div className="row">
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox1Ref}
+                  value="PMK Administrator"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxPMK(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxPMK(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                PMK Administrator
+              </div>
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox2Ref}
+                  value="Content Manager"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxCM(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxCM(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                Content Manager
+              </div>
+              <div className="col-auto filter-checkbox d-flex align-items-center">
+                <input
+                  className="w-auto mr-2"
+                  type="checkbox"
+                  ref={filterFromCheckbox3Ref}
+                  value="User"
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setPageNoCall(1)
+                      setFilterCheckboxUser(true)
+                      setReloadTable(!reloadTable)
+                    } else {
+                      setPageNoCall(1)
+                      setFilterCheckboxUser(false)
+                      setReloadTable(!reloadTable)
+                    }
+                  }}
+                />
+                User
+              </div>
+            </div>
+          </div>
+          <div className="user-list-view-table mt-3">
+            <DataTable
+              columns={columns}
+              data={contentRow}
+              selectableRows
+              customStyles={customStyles}
+              conditionalRowStyles={conditionalRowStyles}
+              onSelectedRowsChange={selectedRowsAction}
+            />
+          </div>
+          {(getUserRoles() === 'PMK Administrator' ||
+            getUserRoles() === 'Technical Administrator') && (
+            <div
+              className="add_row"
+              style={{ fontSize: '1rem', background: 'none' }}
+              onClick={() => {
+                document.documentElement.scrollTop = 0
+                document.body.style.overflow = 'hidden'
+                setChangeModal('Add')
+                setOpenModal(true)
+                setModalTitle('Add/Update user detail')
+              }}
+            >
+              <img
+                src={Plusicon}
+                style={{
+                  width: '1rem',
+                  marginRight: '0.2rem',
+                }}
+                className={'mr-2'}
+              />
+              {'Add'}
+            </div>
+          )}
+          <div className="pagination my-3">
+            <Pagination
+              showQuickJumper
+              current={pageNoCall}
+              showSizeChanger={false}
+              total={totalPages * 10}
+              onChange={onChange}
+              style={{ border: 'none' }}
+            />
           </div>
         </div>
-        <Modal
-          isOpen={isModalOpen}
-          style={customModalStyles}
-          onRequestClose={handleCloseModal}
-          ariaHideApp={false}
-        >
-          <div style={{ position: 'relative' }}>
-            <h3 className="text-center mb-3">View Preferences</h3>
-            <i
-              className="fa-solid fa-xmark"
-              style={{
-                position: 'absolute',
-                top: '-10px',
-                right: '-10px',
-                padding: '3px 5px',
-                borderRadius: '50%',
-                background: '#cd0000',
-                color: '#fff',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-              }}
-              onClick={handleCloseModal}
-            ></i>
-            {isModalLoading ? (
-              <h3>Loading...</h3>
-            ) : (
-              <form style={{ width: '100%' }}>
-                <div className="row w-100">
-                  <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
-                  <div className="row">
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={modalData?.hotel_reservation === true}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={modalData?.hotel_reservation === false}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: '20px' }}>
-                    <label style={{ fontWeight: 'bold' }}>
-                      Assist with organization of shuttle transport
-                    </label>
-                  </div>
-                  <div className="row">
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={modalData?.shuttle_transport === true}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="yes">
-                        Yes
-                      </label>
-                    </div>
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={modalData?.shuttle_transport === false}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="no">
-                        No
-                      </label>
-                    </div>
-                  </div>
-
-                  <div style={{ marginTop: '20px' }}>
-                    <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
-                  </div>
-                  <div className="row">
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={modalData?.food_requirements === 'No Requirement'}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="yes">
-                        No Special requirements
-                      </label>
-                    </div>
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={modalData?.food_requirements === 'No Pork'}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="no">
-                        No Pork
-                      </label>
-                    </div>
-                    <div
-                      className="row"
-                      style={{
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="col-md-4 form-check-input"
-                        checked={modalData?.food_requirements === 'Vegetarian'}
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="no">
-                        Vegetarian
-                      </label>
-                    </div>
-                    <div
-                      className="row"
-                      style={{
-                        position: 'relative',
-                        marginLeft: '30px',
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        checked={
-                          !(
-                            modalData?.food_requirements === 'No Requirement' ||
-                            modalData?.food_requirements === 'No Pork' ||
-                            modalData?.food_requirements === 'Vegetarian'
-                          )
-                        }
-                        disabled
-                      />
-                      <label className="form-check-label" htmlFor="no">
-                        Other, please specify
-                      </label>
-                      {!(
-                        modalData?.food_requirements === 'No Requirement' ||
-                        modalData?.food_requirements === 'No Pork' ||
-                        modalData?.food_requirements === 'Vegetarian'
-                      ) && (
-                        <input
-                          type="text"
-                          className="form-control"
-                          style={{
-                            position: 'absolute',
-                            left: '200px',
-                            top: '-25%',
-                            maxWidth: '150px',
-                          }}
-                          value={modalData?.food_requirements}
-                          disabled
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </form>
-            )}
-          </div>
-        </Modal>
       </div>
+      {openBasicDeleteModal && (
+        <DeleteModal
+          setShow={setOpenBasicDeleteModal}
+          show={openBasicDeleteModal}
+          title={'Are you sure want to delete this user?'}
+          runDelete={deleteSingleUser}
+          saveAndExit={saveAndExitModal}
+          data={deleteEmail}
+          req={'User'}
+        />
+      )}
+      {openModal && (
+        <UserDetailsModal
+          key={backendData[dataToChange]?.id}
+          title={modelTitle}
+          DetailsModal
+          data={backendData[dataToChange]}
+          change={changeModal}
+          saveAndExit={saveAndExitModal}
+        />
+      )}
     </>
   )
 }

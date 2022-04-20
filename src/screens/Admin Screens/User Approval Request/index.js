@@ -72,6 +72,7 @@ const UserApprovalScreen = () => {
             <div className="edit-icons">
               <div className="icon reject">
                 <i
+                  role="button"
                   className="fa-solid fa-xmark reject"
                   onClick={() => {
                     // document.body.scrollTop = 0
@@ -90,6 +91,7 @@ const UserApprovalScreen = () => {
               </div>
               <div className="icon accept">
                 <i
+                  role="button"
                   className="fa-solid fa-check"
                   onClick={() => {
                     // document.body.scrollTop = 0

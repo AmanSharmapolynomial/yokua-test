@@ -161,10 +161,15 @@ export default ({ tableObject, setShowDeleteModal }) => {
       edit: (
         <div className="edit-icons">
           <div className="icon reject">
-            <i className="fa-solid fa-xmark reject" onClick={() => _setTableData(false)} />
+            <i
+              className="fa-solid fa-xmark reject"
+              onClick={() => _setTableData(false)}
+              role="button"
+            />
           </div>
           <div className="icon accept">
             <i
+              role="button"
               className="fa-solid fa-check"
               onClick={() => {
                 convertData()

@@ -178,7 +178,7 @@ const NewsScreen = () => {
                     <img
                       data-spy="affix"
                       id="dropdownMenuButton"
-                      data-toggle="dropdown"
+                      data-toggle={categoryFilter && 'dropdown'}
                       aria-haspopup="true"
                       aria-expanded="false"
                       className={
