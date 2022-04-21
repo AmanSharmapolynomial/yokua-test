@@ -391,13 +391,13 @@ const UserListView = () => {
         formData.append('email', data.email)
         await API.post('auth/update_avatar', formData)
           .then(data => {
-            setReloadData(true)
+            setReloadTable(!reloadTable)
           })
           .catch(error => {
             // toast.error('Error while updating Avatar')
           })
       } else {
-        setReloadData(true)
+        setReloadTable(!reloadTable)
       }
       setDataToChange()
       toast.success(afterAddOrDeleteMsg.data.message)
