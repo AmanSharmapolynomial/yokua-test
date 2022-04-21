@@ -372,7 +372,6 @@ const UserApprovalScreen = () => {
     } else {
       setSelectedCheckbox('')
     }
-
     setSelectedRowsState(selectedRows)
   }
 

@@ -63,6 +63,7 @@ const EventManagement = () => {
   const [isModalLoading, setIsModalLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalData, setModalData] = useState({})
+  const [toggledClearRows, setToggleClearRows] = useState(true)
 
   const columnsNotificationTable = [
     {
@@ -211,15 +212,18 @@ const EventManagement = () => {
           if (res.status === 200) {
             toast.success(res.data.message)
             setNotificationSelectedRows([])
-            setNotificationTableData(prev => {
-              const f = prev.filter(row => !id.includes(row.id))
-              return f
-            })
+            loadNotifications()
+            setToggleClearRows(!toggledClearRows)
           } else {
+            setNotificationSelectedRows([])
+            loadNotifications()
+            setToggleClearRows(!toggledClearRows)
             toast.error('Error: ', res.data.message)
           }
         })
         .catch(() => {
+          setNotificationSelectedRows([])
+          setToggleClearRows(!toggledClearRows)
           console.error('Error occurred')
         })
     }
@@ -274,6 +278,7 @@ const EventManagement = () => {
                     onSelectedRowsChange={handleRowSelected}
                     fixedHeader
                     fixedHeaderScrollHeight="400px"
+                    clearSelectedRows={toggledClearRows}
                   />
 
                   <Pagination

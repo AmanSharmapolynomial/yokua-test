@@ -317,15 +317,13 @@ export default () => {
                         className="dropdown-menu"
                         // style={{ maxHeight: '16rem', overflowX: 'hidden', overflowY: 'scroll' }}
                       >
-                        {subProductLoading && (
+                        {subProductLoading ? (
                           <li className="dropdown-submenu">
                             <li className="dropdown-submenu">
                               <a className="dropdown-item">Please wait Fetching ..</a>
                             </li>
                           </li>
-                        )}
-
-                        {item.subProducts.length > 0 &&
+                        ) : item.subProducts.length > 0 ? (
                           item.subProducts.map((sub, i) => (
                             <li
                               className="dropdown-submenu"
@@ -340,23 +338,28 @@ export default () => {
                                   <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                                 </a>
                                 <ul className="dropdown-menu">
-                                  {productItemLoading && (
+                                  {productItemLoading ? (
                                     <li className="dropdown-item" key={'Sub Fetching'}>
                                       <a>Please wait Fetching</a>
                                     </li>
-                                  )}
-                                  {sub.productItems.map(prod => (
-                                    <li
-                                      className="dropdown-item"
-                                      key={prod.name}
-                                      onClick={e => {
-                                        e.stopPropagation()
-                                        setSelectedProduct(prod)
-                                      }}
-                                    >
-                                      <a>{prod.name}</a>
+                                  ) : sub.productItems.length > 0 ? (
+                                    sub.productItems.map(prod => (
+                                      <li
+                                        className="dropdown-item"
+                                        key={prod.name}
+                                        onClick={e => {
+                                          e.stopPropagation()
+                                          setSelectedProduct(prod)
+                                        }}
+                                      >
+                                        <a>{prod.name}</a>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <li className="dropdown-item" key={'Sub Fetching'}>
+                                      <a>No Data Found ..</a>
                                     </li>
-                                  ))}
+                                  )}
 
                                   {/*<div className="col d-flex justify-content-center">*/}
                                   {/*  <button*/}
@@ -373,7 +376,14 @@ export default () => {
                                 </ul>
                               </li>
                             </li>
-                          ))}
+                          ))
+                        ) : (
+                          <li className="dropdown-submenu">
+                            <li className="dropdown-submenu">
+                              <a className="dropdown-item">No Data Found ..</a>
+                            </li>
+                          </li>
+                        )}
 
                         {/*<div className="col d-flex justify-content-center">*/}
                         {/*  <button*/}
