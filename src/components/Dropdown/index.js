@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Dropdown = ({ value, data, userData, addOrEditUser, changeIndex }) => {
+const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   return (
     <div className="dropdown">
       <div
@@ -21,7 +21,6 @@ const Dropdown = ({ value, data, userData, addOrEditUser, changeIndex }) => {
             key={index}
             className="dropdown-item filter-item"
             onClick={() => {
-              changeIndex()
               const payload = {
                 email: userData.email,
                 firstName: userData.first_name,

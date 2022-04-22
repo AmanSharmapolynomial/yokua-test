@@ -98,6 +98,22 @@ const UserListView = () => {
       minWidth: '15rem',
     },
     {
+      name: 'Company',
+      selector: row => row.company,
+      width: '130px',
+      // sortable: true,
+    },
+    {
+      name: 'Status',
+      selector: row => row.status,
+      sortable: true,
+    },
+    {
+      name: '',
+      selector: row => row.edit,
+      width: '80px',
+    },
+    {
       name: (
         <div className="dropdown">
           <img
@@ -131,21 +147,6 @@ const UserListView = () => {
           </div>
         </div>
       ),
-    },
-    {
-      name: 'Company',
-      selector: row => row.company,
-      width: '130px',
-    },
-    {
-      name: 'Status',
-      selector: row => row.status,
-      sortable: true,
-    },
-    {
-      name: '',
-      selector: row => row.edit,
-      width: '80px',
     },
   ]
 
@@ -232,11 +233,8 @@ const UserListView = () => {
           <Dropdown
             value={data.role}
             data={dropdownData}
-            changeIndex={() => {
-              setDataToChange(index)
-            }}
             addOrEditUser={payload => {
-              addOrEditUser('Edit', payload)
+              addOrEditUser('Edit', payload, index)
             }}
             userData={data}
           />
@@ -360,7 +358,8 @@ const UserListView = () => {
     setPageNoCall(1)
   }
 
-  const addOrEditUser = async (type, data) => {
+  const addOrEditUser = async (type, data, idx) => {
+    let index
     let payload = {
       email_id: data.email,
       first_name: data.firstName,
@@ -369,12 +368,18 @@ const UserListView = () => {
       password: data.password,
       company_name: data.company_name,
     }
-    if (type === 'Edit' && contentRow[dataToChange]?.companyEmail) {
+    if (idx === undefined || idx === null) {
+      index = dataToChange
+    } else {
+      index = idx
+    }
+
+    if (type === 'Edit' && contentRow[index]?.companyEmail) {
       payload = {
         ...payload,
-        email_id: contentRow[dataToChange].companyEmail,
+        email_id: contentRow[index].companyEmail,
       }
-      if (data.email !== contentRow[dataToChange].companyEmail) {
+      if (data.email !== contentRow[index].companyEmail) {
         payload = { ...payload, new_email: data.email }
       }
     }
@@ -384,7 +389,7 @@ const UserListView = () => {
         payload
       )
 
-      if (data.imageFile && data.imageFile !== backendData[dataToChange].avatar_link) {
+      if (data.imageFile && data.imageFile !== backendData[index].avatar_link) {
         const formData = new FormData()
 
         formData.append('image', data.imageFile)
@@ -441,7 +446,7 @@ const UserListView = () => {
                 <div
                   className="dropdown-menu"
                   style={{
-                    overflowY: 'scroll',
+                    overflowY: 'auto',
                     maxHeight: '10rem',
                   }}
                 >

@@ -155,7 +155,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </li>
           <li className="nav-item px-3">
             <Link className="nav-link" to="/profile">
-              Profile Setting
+              Profile Settings
             </Link>
           </li>
           {getUserRoles() === 'Technical Administrator' ||

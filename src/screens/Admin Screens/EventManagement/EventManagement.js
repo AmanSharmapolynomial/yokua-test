@@ -246,7 +246,9 @@ const EventManagement = () => {
     <>
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col user-approval-screen">
-          <h2 className="secondary-heading h4 mt-4">Event Management</h2>
+          <div className="secondary-heading h4 mt-4">
+            <SecondaryHeading title={'Event Management'} />
+          </div>
 
           <div className="d-flex justify-content-between align-items-center">
             <SecondaryHeading title="Notification" />

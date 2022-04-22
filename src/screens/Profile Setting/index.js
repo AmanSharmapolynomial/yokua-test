@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router'
 import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
 import Modal from 'react-modal'
-
+import { Modal as BSModal } from 'react-bootstrap'
 const customStyles = {
   overlay: {
     zIndex: 10,
@@ -222,7 +222,6 @@ const ProfileSettingScreen = () => {
       })
       .catch(e => {
         console.error(e)
-        toast.error('Some error occurred')
         setIsModalSubmitting(false)
       })
   }
@@ -244,7 +243,7 @@ const ProfileSettingScreen = () => {
             data={profileData.basic_profile?.email}
           />
         )}
-        <div className="col profile-setting-container pb-5">
+        <div className="col profile-setting-container pb-5 py-md-3">
           <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
           <div className="profile-setting">
             <div className="profile-setting__info">
@@ -656,32 +655,43 @@ const ProfileSettingScreen = () => {
                 ) : (
                   <div className="profile-setting__basic-profile-edit">
                     {profileData.future_trainings?.map((training, index) => (
-                      <div className="edit_training" key={index}>
-                        <i
-                          className="fa-solid fa-calendar-check"
-                          style={{ color: '#004f9b', fontSize: '20px' }}
-                        />
-                        <div className="training_text">
-                          <span>{training.training_topic}</span>
-                          <span>{training.date}</span>
-                          <span>Latest cancellation date {training.cancellation_date}</span>
-                          <span>{training.address}</span>
+                      <>
+                        <div className="edit_training" key={index}>
+                          <i
+                            className="fa-solid fa-calendar-check"
+                            style={{ color: '#004f9b', fontSize: '20px' }}
+                          />
+                          <div className="training_text">
+                            <span>{training.training_name}</span>
+                            <span>{training.training_topic}</span>
+                            <span>{training.date}</span>
+                            <span>Latest cancellation date {training.cancellation_date}</span>
+                          </div>
                         </div>
+                        <div className="edit_training" key={index}>
+                          <i
+                            className="fa-solid fa-location-dot"
+                            style={{ color: '#004f9b', fontSize: '20px' }}
+                          />
+                          <div className="training_text">
+                            <span>{training.address}</span>
+                          </div>
 
-                        <i
-                          onClick={() => {
-                            setIsModalOpen(true)
-                            fetchEventData(training.event_id, training.participant_email)
-                          }}
-                          style={{
-                            cursor: 'pointer',
-                            color: '#004f9b',
-                            fontSize: '20px',
-                            marginLeft: 'auto',
-                          }}
-                          className="fa-solid fa-pen-to-square"
-                        />
-                      </div>
+                          <i
+                            onClick={() => {
+                              setIsModalOpen(true)
+                              fetchEventData(training.event_id, training.participant_email)
+                            }}
+                            style={{
+                              cursor: 'pointer',
+                              color: '#004f9b',
+                              fontSize: '20px',
+                              marginLeft: 'auto',
+                            }}
+                            className="fa-solid fa-pen-to-square"
+                          />
+                        </div>
+                      </>
                     ))}
                   </div>
                 )}
@@ -728,20 +738,22 @@ const ProfileSettingScreen = () => {
           </div>
         </div>
       </div>
-      <Modal
-        isOpen={isModalOpen}
-        style={customStyles}
-        onRequestClose={handleModalClose}
+      <BSModal
+        show={isModalOpen}
+        // style={customStyles}
+        centered
+        onHide={() => handleModalClose()}
         ariaHideApp={false}
       >
-        <div style={{ position: 'relative' }}>
+        <BSModal.Header>
           <h3 className="text-center mb-3">View Preferences</h3>
           <i
             className="fa-solid fa-xmark"
             style={{
-              position: 'absolute',
-              top: '-10px',
-              right: '-10px',
+              marginBottom: '1rem',
+              // position: 'absolute',
+              // top: '-10px',
+              // right: '-10px',
               padding: '3px 5px',
               borderRadius: '50%',
               background: '#cd0000',
@@ -751,6 +763,8 @@ const ProfileSettingScreen = () => {
             }}
             onClick={handleModalClose}
           ></i>
+        </BSModal.Header>
+        <BSModal.Body>
           {isModalLoading ? (
             <h3>Loading...</h3>
           ) : (
@@ -1005,8 +1019,8 @@ const ProfileSettingScreen = () => {
               </div>
             </div>
           )}
-        </div>
-      </Modal>
+        </BSModal.Body>
+      </BSModal>
       <Modal
         isOpen={showCancelModal}
         style={cancelModalStyle}
