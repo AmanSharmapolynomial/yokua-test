@@ -120,8 +120,8 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate, isAdmin }) =>
                 if (isEditable) {
                   try {
                     if (
-                      inputRef.current.value.trim() !== '' &&
-                      inputRef.current.value.trim() !== '' &&
+                      /*inputRef.current.value.trim() !== '' &&*/
+                      textareaRef.current.value.trim() !== '' &&
                       item.id !== undefined &&
                       item.id !== null
                     ) {
@@ -144,7 +144,8 @@ const ProductCard = ({ index, item, onClick, subProduct, onUpdate, isAdmin }) =>
                             description: textareaRef.current.value,
                           })
                         )
-                      payload.append('file', imageInputRef.current.files[0])
+                      imageInputRef.current.files[0] &&
+                        payload.append('file', imageInputRef.current.files[0])
                       onUpdate(payload)
                     }
                   } catch (error) {
