@@ -250,7 +250,7 @@ const EventScreen = () => {
                       <td style={{ width: '30%' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <i
-                            class="fas fa-location-dot"
+                            className="fas fa-location-dot"
                             aria-hidden="true"
                             style={{
                               color: '#004F9B',

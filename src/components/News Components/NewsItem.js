@@ -581,9 +581,9 @@ const NewsItem = ({
             </div>
           </div>
         </div>
-        // <div class="dropdown">
+        // <div className="dropdown">
         //   <div
-        //     class="dropdown-toggle"
+        //     className="dropdown-toggle"
         //     type="button"
         //     id="dropdownMenuButton"
         //     data-toggle="dropdown"
@@ -592,7 +592,7 @@ const NewsItem = ({
         //   >
         //     {data?.sub_category[0] !== undefined ? data?.sub_category[0]['sub_category_name'] : ''}
         //   </div>
-        //   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        //   <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
         //     {data?.sub_category.map((item, index) => {
         //       return <div>{item.sub_category_name}</div>
         //     })}

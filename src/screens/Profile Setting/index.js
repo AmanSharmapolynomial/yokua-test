@@ -160,7 +160,7 @@ const ProfileSettingScreen = () => {
     setIsModalOpen(false)
   }
 
-  const fetchEventData = (event_id, email) => {
+  const fetchEventData = (event_id, email, type) => {
     setIsModalLoading(true)
     API.post('training/get_user_preference', {
       event_id,
@@ -172,6 +172,7 @@ const ProfileSettingScreen = () => {
             ...res.data,
             event_id,
             email,
+            type,
             isOtherSelected: !(
               res.data?.food_requirements === 'No Requirement' ||
               res.data?.food_requirements === 'No Pork' ||
@@ -667,20 +668,14 @@ const ProfileSettingScreen = () => {
                             <span>{training.date}</span>
                             <span>Latest cancellation date {training.cancellation_date}</span>
                           </div>
-                        </div>
-                        <div className="edit_training" key={index}>
-                          <i
-                            className="fa-solid fa-location-dot"
-                            style={{ color: '#004f9b', fontSize: '20px' }}
-                          />
-                          <div className="training_text">
-                            <span>{training.address}</span>
-                          </div>
-
                           <i
                             onClick={() => {
                               setIsModalOpen(true)
-                              fetchEventData(training.event_id, training.participant_email)
+                              fetchEventData(
+                                training.event_id,
+                                training.participant_email,
+                                training.type
+                              )
                             }}
                             style={{
                               cursor: 'pointer',
@@ -690,6 +685,15 @@ const ProfileSettingScreen = () => {
                             }}
                             className="fa-solid fa-pen-to-square"
                           />
+                        </div>
+                        <div className="edit_training" key={index} style={{ margin: 0 }}>
+                          <i
+                            className="fa-solid fa-location-dot"
+                            style={{ color: '#004f9b', fontSize: '20px' }}
+                          />
+                          <div className="training_text">
+                            <span>{training.address}</span>
+                          </div>
                         </div>
                       </>
                     ))}
@@ -746,14 +750,14 @@ const ProfileSettingScreen = () => {
         ariaHideApp={false}
       >
         <BSModal.Header>
-          <h3 className="text-center mb-3">View Preferences</h3>
+          <h3 className="text-center mb-3 w-100">View Preferences</h3>
           <i
             className="fa-solid fa-xmark"
             style={{
               marginBottom: '1rem',
-              // position: 'absolute',
-              // top: '-10px',
-              // right: '-10px',
+              position: 'absolute',
+              // top: '0.6rem',
+              right: '1rem',
               padding: '3px 5px',
               borderRadius: '50%',
               background: '#cd0000',
@@ -779,6 +783,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent?.hotel_reservation === true}
@@ -801,6 +806,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent?.hotel_reservation === false}
@@ -831,6 +837,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent?.shuttle_transport === true}
@@ -853,6 +860,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent?.shuttle_transport === false}
@@ -881,6 +889,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent?.food_requirements === 'No Requirement'}
@@ -904,6 +913,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="col-md-4 form-check-input"
                       checked={selectedEvent?.food_requirements === 'No Pork'}
@@ -927,6 +937,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="col-md-4 form-check-input"
                       checked={selectedEvent?.food_requirements === 'Vegetarian'}
@@ -951,6 +962,7 @@ const ProfileSettingScreen = () => {
                     }}
                   >
                     <input
+                      disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
                       className="form-check-input"
                       checked={selectedEvent.isOtherSelected}

@@ -30,7 +30,7 @@ import Uploadicon from '../../assets/Icon awesome-file-upload.png'
  *
  */
 
-export default ({ tableObject, setShowDeleteModal }) => {
+export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -147,6 +147,7 @@ export default ({ tableObject, setShowDeleteModal }) => {
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
         toast.success('New row added Successfully')
+        onRefresh()
       })
       .catch(err => {})
   }
@@ -297,7 +298,13 @@ export default ({ tableObject, setShowDeleteModal }) => {
           </div>
         )}
       <div className="row">
-        <DataTable fixedHeader columns={tableHeader} data={tableRows} customStyles={customStyles} />
+        <DataTable
+          fixedHeader
+          persistTableHead
+          columns={tableHeader}
+          data={tableRows}
+          customStyles={customStyles}
+        />
       </div>
       {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
         isEdit && (

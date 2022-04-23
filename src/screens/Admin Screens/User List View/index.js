@@ -221,7 +221,7 @@ const UserListView = () => {
               setChangeModal('View')
               setOpenModal(true)
               setModalTitle('View user detail')
-              document.body.style.overflow = 'hidden'
+              // document.body.style.overflow = 'hidden'
               setDataToChange(index)
             }}
           >
@@ -256,8 +256,8 @@ const UserListView = () => {
                 setOpenModal(true)
                 setModalTitle('Update user detail')
 
-                document.documentElement.scrollTop = 0
-                document.body.style.overflow = 'hidden'
+                // document.documentElement.scrollTop = 0
+                // document.body.style.overflow = 'hidden'
                 setDataToChange(index)
               }}
             />
@@ -320,7 +320,7 @@ const UserListView = () => {
       setOpenModal(false)
     }
     setOpenBasicDeleteModal(false)
-    document.body.style.overflow = 'auto'
+    // document.body.style.overflow = 'auto'
   }
 
   const selectedRowsAction = ({ selectedRows }) => {
@@ -568,8 +568,8 @@ const UserListView = () => {
               className="add_row"
               style={{ fontSize: '1rem', background: 'none' }}
               onClick={() => {
-                document.documentElement.scrollTop = 0
-                document.body.style.overflow = 'hidden'
+                // document.documentElement.scrollTop = 0
+                // document.body.style.overflow = 'hidden'
                 setChangeModal('Add')
                 setOpenModal(true)
                 setModalTitle('Add/Update user detail')
@@ -611,6 +611,7 @@ const UserListView = () => {
       )}
       {openModal && (
         <UserDetailsModal
+          show={openModal}
           key={backendData[dataToChange]?.id}
           title={modelTitle}
           DetailsModal

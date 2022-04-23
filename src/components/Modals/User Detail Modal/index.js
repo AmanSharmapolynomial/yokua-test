@@ -7,6 +7,7 @@ import placeholder from '../../News Components/placeholder.png'
 import Select from 'react-select'
 
 import close from '../../../assets/close_black.png'
+import { Modal } from 'react-bootstrap'
 
 const options = [
   { value: 'User', label: 'User' },
@@ -14,7 +15,7 @@ const options = [
   { value: 'PMK Administrator', label: 'PMK Administrator' },
 ]
 
-const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
+const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
   const imageFileInputRef = useRef()
   const [imageFile, SetImageFile] = useState(data?.avatar_link ? data?.avatar_link : placeholder)
 
@@ -80,8 +81,8 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
   }, [imageFile])
 
   return (
-    <div className="modal-background">
-      <div className="modal-wrapper">
+    <Modal centered show={show}>
+      <Modal.Body className="modal-wrapper">
         {change == 'View' && (
           <img
             className="save-icon"
@@ -93,12 +94,12 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
         )}
         <h3 className="modal-heading">{title}</h3>
         <div
-          className="modal-content flex-row"
+          className="row flex-row modal-content justify-content-center"
           style={{
             border: '0',
           }}
         >
-          <div className="user-img">
+          <div className="col-auto user-img">
             <input
               type="file"
               accept="image/png, image/gif, image/jpeg"
@@ -122,7 +123,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
               onError={() => setProfilePicture(placeholder)}
             />
           </div>
-          <div className="user-details-form">
+          <div className="col user-details-form">
             <div className="input-field-container">
               <label className="input-label font-weight-bold">First Name</label>
               <input
@@ -304,8 +305,8 @@ const UserDetailsModal = ({ change, data, saveAndExit, title }) => {
             </button>
           </div>
         )}
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   )
 }
 

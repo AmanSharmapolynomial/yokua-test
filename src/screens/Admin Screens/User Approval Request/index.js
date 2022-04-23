@@ -76,8 +76,8 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-xmark reject"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    document.documentElement.scrollTop = 0
-                    document.body.style.overflow = 'hidden'
+                    // document.documentElement.scrollTop = 0
+                    // document.body.style.overflow = 'hidden'
                     const sendData = {
                       email: data.email_id,
                       status: 'deactivate',
@@ -95,8 +95,8 @@ const UserApprovalScreen = () => {
                   className="fa-solid fa-check"
                   onClick={() => {
                     // document.body.scrollTop = 0
-                    document.documentElement.scrollTop = 0
-                    document.body.style.overflow = 'hidden'
+                    // document.documentElement.scrollTop = 0
+                    // document.body.style.overflow = 'hidden'
                     setAcceptData(data.email_id)
                     setChangeModal('Accepted')
                     setOpenARModal(true)
@@ -253,7 +253,7 @@ const UserApprovalScreen = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
     setOpenDeleteDomainModal(false)
-    document.body.style.overflow = 'auto'
+    // document.body.style.overflow = 'auto'
   }
 
   const deleteAllDUL = async () => {
@@ -383,6 +383,7 @@ const UserApprovalScreen = () => {
     <>
       {openARModal && (
         <AcceptRejectModal
+          show={openARModal}
           title={modalTitle}
           change={changeModal}
           saveAndExit={saveAndExitModal}
@@ -394,6 +395,7 @@ const UserApprovalScreen = () => {
       )}
       {openDeleteDomainModal && (
         <DeleteDomainModal
+          show={openDeleteDomainModal}
           saveAndExit={saveAndExitModal}
           deleteDomain={deleteDomain}
           data={deleteDomainData}
@@ -535,8 +537,8 @@ const UserApprovalScreen = () => {
                                   associated_users: 'false',
                                 }
                                 // document.body.scrollTop = 0
-                                document.documentElement.scrollTop = 0
-                                document.body.style.overflow = 'hidden'
+                                // document.documentElement.scrollTop = 0
+                                // document.body.style.overflow = 'hidden'
                                 setDeleteDomainData(sendData)
                                 setOpenDeleteDomainModal(true)
                               }}
@@ -554,8 +556,8 @@ const UserApprovalScreen = () => {
                     className="btn create-domain-btn"
                     onClick={() => {
                       // document.body.scrollTop = 0
-                      document.documentElement.scrollTop = 0
-                      document.body.style.overflow = 'hidden'
+                      // document.documentElement.scrollTop = 0
+                      // document.body.style.overflow = 'hidden'
                       setOpenDomainModal(true)
                     }}
                   >
@@ -621,7 +623,11 @@ const UserApprovalScreen = () => {
           </div>
         </div>
         {openDomainModal && (
-          <CreateNewDomain saveAndExit={saveAndExitModal} addDomain={createDomain} />
+          <CreateNewDomain
+            show={openDomainModal}
+            saveAndExit={saveAndExitModal}
+            addDomain={createDomain}
+          />
         )}
       </div>
     </>

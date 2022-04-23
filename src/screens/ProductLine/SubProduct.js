@@ -20,7 +20,7 @@ const SubProduct = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
   const { setLoading } = useLoading()
-  const [archivedFilter, setArchivedFilter] = useState(false)
+  const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
 
@@ -59,6 +59,7 @@ const SubProduct = () => {
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
+          archive={archivedFilter}
           key={item.id}
           index={index}
           item={item}

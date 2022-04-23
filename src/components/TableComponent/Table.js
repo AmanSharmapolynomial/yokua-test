@@ -34,6 +34,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
+  const [sortMethod, setSortMethod] = useState('')
   const inputRef = useRef([])
   const customStyles = {
     table: {
@@ -49,7 +50,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
     headRow: {
       style: {
         borderBottom: '1px solid var(--bgColor2)',
-        fontSize: '16px',
+        fontSize: '0.8rem',
       },
     },
     row: {
@@ -83,21 +84,104 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
     },
   }
 
-  const _setTableHeaders = () => {
+  const _setTableHeaders = sort => {
     const tableColumns = []
     tableObject?.map((column, index) => {
       const tempColumnName = column.column_name
-      tableColumns.push({
-        name: column.column_name,
-        selector: row => row[tempColumnName],
-        wrap: true,
-        sortable: column.is_sortable,
-        isLink: column.is_link,
-        isDate: column.is_date,
-        filterable: column.is_filterable,
-      })
+      if (!column.is_filterable) {
+        tableColumns.push({
+          name: column.column_name,
+          selector: row => row[tempColumnName],
+          wrap: true,
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      } else {
+        const filters = column.values.map(item => item.value)
+        tableColumns.push({
+          name: (
+            <div className="dropdown">
+              <div
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                className="dropdown-toggle"
+                src={require('../../assets/Rearrange order.png')}
+              >
+                {column.column_name}
+              </div>
+
+              <div className="dropdown-menu">
+                {filters.map((element, index) => (
+                  <span
+                    style={{
+                      color: 'rgba(0,0,0,0.87)',
+                      fontWeight: element === sort ? '600' : '400',
+                    }}
+                    key={index}
+                    className="dropdown-item filter-item"
+                    onClick={() => {
+                      if (element !== sort) {
+                        setSortMethod(element)
+                        handleSort(column.column_name, element)
+                        _setTableHeaders(element)
+                      } else {
+                        setSortMethod('')
+                        handleSort(column.column_name, undefined)
+                        _setTableHeaders(undefined)
+                      }
+                    }}
+                  >
+                    {element}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ),
+          selector: row => row[tempColumnName],
+          wrap: true,
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      }
     })
     setTableHeader([...tableColumns])
+  }
+  const handleSort = (column, type) => {
+    const tableData = tableObject
+    const finalTableData = []
+    tableData &&
+      tableData[0]?.values?.map((item, index) => {
+        const tableRowObject = {
+          id: item.id,
+        }
+
+        tableData?.map(column_name => {
+          const tempObject = new Object()
+          let value = column_name.values[index].value
+          if (column_name.is_link) {
+            value = (
+              <a href={value} target="_blank">
+                {value}
+              </a>
+            )
+          }
+          tempObject[column_name['column_name']] = value
+          Object.assign(tableRowObject, tempObject)
+        })
+        finalTableData.push(tableRowObject)
+      })
+    if (type) {
+      const filteredItems = finalTableData.filter(item => item[column] === type)
+      setTableRows([...filteredItems])
+    } else {
+      setTableRows([...finalTableData])
+    }
   }
 
   const _setTableData = () => {
@@ -192,7 +276,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
   }, [tableObject])
 
   return (
-    <div className="border w-100 mt-4 p-0">
+    <div className="border w-100 mt-4 p-0 product-detail-table">
       <DataTable
         pagination={false}
         paginationPerPage={false}

@@ -380,7 +380,10 @@ const AddEventScreen = () => {
                             }
                       }
                     >
-                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                      <i
+                        className="fa-solid fa-calendar-days"
+                        style={{ color: 'rgb(0, 79, 155)' }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -416,7 +419,10 @@ const AddEventScreen = () => {
                             }
                       }
                     >
-                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                      <i
+                        className="fa-solid fa-calendar-days"
+                        style={{ color: 'rgb(0, 79, 155)' }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -454,7 +460,10 @@ const AddEventScreen = () => {
                             }
                       }
                     >
-                      <i class="fa-solid fa-calendar-days" style={{ color: 'rgb(0, 79, 155)' }} />
+                      <i
+                        className="fa-solid fa-calendar-days"
+                        style={{ color: 'rgb(0, 79, 155)' }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -734,7 +743,7 @@ const AddEventScreen = () => {
 
                 <div style={{ width: '100%', marginTop: '40px', padding: '0 15px' }}>
                   <h4>Requirements for the event</h4>
-                  <ul class="requirements-list">
+                  <ul className="requirements-list">
                     {!eventId
                       ? Object.entries(requirement).map(([key, e]) => {
                           return (
@@ -824,7 +833,7 @@ const AddEventScreen = () => {
                         >
                           <i
                             style={{ color: 'rgb(0, 79, 155)', marginRight: '0.5rem' }}
-                            class="fa-solid fa-circle-plus"
+                            className="fa-solid fa-circle-plus"
                           />
                           <span>more</span>
                         </h6>
@@ -1089,7 +1098,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="yes">
+                        <label className="form-check-label" for="yes">
                           Yes
                         </label>
                       </div>
@@ -1104,7 +1113,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="no">
+                        <label className="form-check-label" for="no">
                           No
                         </label>
                       </div>
@@ -1127,7 +1136,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="yes">
+                        <label className="form-check-label" for="yes">
                           Yes
                         </label>
                       </div>
@@ -1142,7 +1151,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="no">
+                        <label className="form-check-label" for="no">
                           No
                         </label>
                       </div>
@@ -1163,7 +1172,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="yes">
+                        <label className="form-check-label" for="yes">
                           No Special requirements
                         </label>
                       </div>
@@ -1178,7 +1187,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="no">
+                        <label className="form-check-label" for="no">
                           No Pork
                         </label>
                       </div>
@@ -1193,7 +1202,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="no">
+                        <label className="form-check-label" for="no">
                           Vegetarian
                         </label>
                       </div>
@@ -1213,7 +1222,7 @@ const AddEventScreen = () => {
                           }}
                           disabled={eventOption.value === 'webinar'}
                         />
-                        <label class="form-check-label" for="no">
+                        <label className="form-check-label" for="no">
                           Other, please specify
                         </label>
                         {foodRequirement.name == 'Other, please specify' && (

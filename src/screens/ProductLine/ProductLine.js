@@ -48,16 +48,36 @@ const ProductLine = () => {
     getProductList()
     toast.success(response.data.message)
   }
+
+  const archiveProducts = id => {
+    setIsLoading(true)
+    API.post('products/page/set_archive', {
+      id: id,
+      archive_type: 'product',
+    })
+      .then(res => {
+        toast.success(res.message)
+        getProductList()
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   const renderRow = () => {
     let rows = []
     let col = []
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
+          archive={archivedFilter}
           key={item.id}
           index={index}
           item={item}
           isAdmin={isAdmin}
+          onArchiveClick={() => {
+            archiveProducts(item.id)
+          }}
           onClick={() => {
             navigate('/product-lines/sub-product', { state: item })
           }}
@@ -95,8 +115,8 @@ const ProductLine = () => {
           <PrimaryHeading title={'Product Lines'} />
           {isLoading ? (
             <div className="col text-center mt-3">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
               </div>
             </div>
           ) : (

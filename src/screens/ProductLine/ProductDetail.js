@@ -18,7 +18,7 @@ const ProductDetail = () => {
   const navigate = useNavigate()
   const { state } = useLocation()
   const { setLoading } = useLoading()
-  const [archivedFilter, setArchivedFilter] = useState(false)
+  const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])
@@ -26,8 +26,10 @@ const ProductDetail = () => {
   const [inputBinary, setInputBinary] = useState()
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
+
   const components = [
     {
       title: 'Add Table',
@@ -150,7 +152,6 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
                 <i
                   role={'button'}
                   className="fa-solid fa-trash ml-2"
@@ -276,7 +277,7 @@ const ProductDetail = () => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-3${index === idx ? ' pl-0' : ''}`}>
+              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
                 <Image src={ele.image_link} className="border rounded img-product-line" />
               </div>
             )
@@ -291,7 +292,6 @@ const ProductDetail = () => {
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
                 <div className="ml-auto w-auto my-2 my-2">
-                  <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2"
@@ -313,6 +313,41 @@ const ProductDetail = () => {
       } else {
         return null
       }
+    } else if (ele.type === 'image_grid') {
+      let IMAGES = []
+      for (let index = idx; index < ele.images.length; index++) {
+        const element = ele.images[index]
+        IMAGES.push(
+          <div className={`col-3${index === idx ? ' pl-0' : ''}`}>
+            <Image src={element.image_link} className="border rounded img-product-line" />
+          </div>
+        )
+      }
+      return (
+        <div className="col-12 mt-4">
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 my-2">
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              </div>
+            </div>
+          )}
+          <div className="row">{IMAGES}</div>
+        </div>
+      )
     }
   }
 
@@ -349,6 +384,7 @@ const ProductDetail = () => {
             <span className="input-group-text font-8 font-weight-bold">Table Name</span>
           </div>
           <input
+            style={{ textTransform: 'capitalize' }}
             onChange={e => {
               setAddComponentData(prevState => {
                 return {
@@ -400,6 +436,7 @@ const ProductDetail = () => {
                 {columneNames.map((item, index) =>
                   index === 0 ? (
                     <input
+                      style={{ textTransform: 'capitalize' }}
                       className={`${
                         index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
                       }`}
@@ -485,6 +522,7 @@ const ProductDetail = () => {
             }}
             onClick={() => {
               onAddComponentCancel()
+              setExpandedAccordian(-1)
             }}
             className="btn mr-2"
           >
@@ -561,6 +599,7 @@ const ProductDetail = () => {
             }}
             onClick={() => {
               onAddComponentCancel()
+              setExpandedAccordian(-1)
             }}
             className="btn mr-2"
           >
@@ -632,6 +671,7 @@ const ProductDetail = () => {
             }}
             onClick={() => {
               onAddComponentCancel()
+              setExpandedAccordian(-1)
             }}
             className="btn mr-2"
           >
@@ -684,6 +724,7 @@ const ProductDetail = () => {
             }}
             onClick={() => {
               onAddComponentCancel()
+              setExpandedAccordian(-1)
             }}
             className="btn mr-2"
           >
@@ -753,6 +794,7 @@ const ProductDetail = () => {
             }}
             onClick={() => {
               onAddComponentCancel()
+              setExpandedAccordian(-1)
             }}
             className="btn mr-2"
           >
@@ -863,6 +905,7 @@ const ProductDetail = () => {
         centered
         onHide={() => {
           setIsAddComponentModalVisible(-1)
+          setExpandedAccordian(-1)
         }}
       >
         <Modal.Header
@@ -886,6 +929,10 @@ const ProductDetail = () => {
               <div className="card border border-secondary">
                 <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
                   <div
+                    onClick={() => {
+                      if (idx === expandedAccordian) setExpandedAccordian(-1)
+                      else setExpandedAccordian(idx)
+                    }}
                     className="accordian-title d-flex justify-content-between align-items-center font-10"
                     type="button"
                     data-toggle="collapse"
@@ -894,7 +941,11 @@ const ProductDetail = () => {
                     aria-controls={`collapse${idx}`}
                   >
                     <span>{item.title}</span>
-                    <i className="fa-solid fa-angle-down greyed" />
+                    <i
+                      className={`fa-solid ${
+                        idx === expandedAccordian ? 'fa-angle-up' : 'fa-angle-down'
+                      } greyed`}
+                    />
                   </div>
                 </div>
                 <div

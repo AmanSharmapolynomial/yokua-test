@@ -93,8 +93,8 @@ export default () => {
   }
 
   const _deleteComponent = () => {
-    const sectionId = tableDetails?.id
-    const componentId = pageDetails[0]?.id
+    const sectionId = pageDetails[0]?.section_id
+    const componentId = tableDetails?.id
     if (sectionId && componentId) {
       API.post('tokuchu/page/delete_component', {
         section_id: sectionId,
@@ -102,6 +102,7 @@ export default () => {
       })
         .then(data => {
           toast.success('Component Deleted Successfully')
+          selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
         })
         .catch(err => {})
     } else {
@@ -269,7 +270,7 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="row mx-2 mx-md-5 vh-100">
+      <div className="row mx-2 mx-md-5 min-vh-100">
         <div className="col center py-md-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="toku-dropdn mt-4">
@@ -284,7 +285,7 @@ export default () => {
                   aria-hidden="true"
                   data-toggle="dropdown"
                 >
-                  Choose your Product line
+                  {selectedProduct?.name ? selectedProduct.name : 'Choose your Product line'}
                 </button>
                 <button
                   aria-haspopup="true"
@@ -438,7 +439,13 @@ export default () => {
           </div>
           <div className="mt-5">
             {tableDetails && (
-              <TokochuTable tableObject={tableDetails} setShowDeleteModal={setShowDeleteModal} />
+              <TokochuTable
+                tableObject={tableDetails}
+                setShowDeleteModal={setShowDeleteModal}
+                onRefresh={() => {
+                  selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
+                }}
+              />
             )}
           </div>
         </div>

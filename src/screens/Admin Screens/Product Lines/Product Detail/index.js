@@ -238,6 +238,7 @@ const ProductDetail = () => {
       <div className="container font-poppins">
         {openDeleteModal && (
           <DeleteModal
+            show={openDeleteModal}
             deleteCancel={deleteCancel}
             deleteConfirm={deleteConfirm}
             deleteMessage={'Are you sure you want to delete this component ?'}
