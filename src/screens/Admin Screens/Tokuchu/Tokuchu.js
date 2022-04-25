@@ -270,7 +270,7 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="row mx-2 mx-md-5" style={{ minHeight: '120rem' }}>
+      <div className="row mx-2 mx-md-5" style={{ minHeight: '120vh' }}>
         <div className="col center py-md-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="toku-dropdn mt-4">
@@ -341,7 +341,14 @@ export default () => {
                                   {sub.name}
                                   <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                                 </a>
-                                <ul className="dropdown-menu">
+                                <ul
+                                  className="dropdown-menu"
+                                  style={{
+                                    maxHeight: '16rem',
+                                    overflowX: 'hidden',
+                                    overflowY: 'scroll',
+                                  }}
+                                >
                                   {productItemLoading ? (
                                     <li className="dropdown-item" key={'Sub Fetching'}>
                                       <a>Please wait Fetching</a>
