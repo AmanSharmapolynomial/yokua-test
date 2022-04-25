@@ -270,13 +270,16 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="row mx-2 mx-md-5 min-vh-100">
+      <div className="row mx-2 mx-md-5" style={{ minHeight: '120rem' }}>
         <div className="col center py-md-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="toku-dropdn mt-4">
             <div className="dropdown p-0">
               <div className="btn-group">
                 <button
+                  style={{
+                    width: '15.6rem',
+                  }}
                   className="btn btn-secondary btn-main btn-sm"
                   type="button"
                   aria-haspopup="true"
@@ -361,19 +364,6 @@ export default () => {
                                       <a>No Data Found ..</a>
                                     </li>
                                   )}
-
-                                  {/*<div className="col d-flex justify-content-center">*/}
-                                  {/*  <button*/}
-                                  {/*    className="btn yg-font-size"*/}
-                                  {/*    onClick={() => {*/}
-                                  {/*      setParentId(sub.id)*/}
-                                  {/*      setCurrentEdit(EDIT_SUB_PRODUCT_ITEM)*/}
-                                  {/*      setShowAddModal(true)*/}
-                                  {/*    }}*/}
-                                  {/*  >*/}
-                                  {/*    Add*/}
-                                  {/*  </button>*/}
-                                  {/*</div>*/}
                                 </ul>
                               </li>
                             </li>
@@ -385,45 +375,13 @@ export default () => {
                             </li>
                           </li>
                         )}
-
-                        {/*<div className="col d-flex justify-content-center">*/}
-                        {/*  <button*/}
-                        {/*    className="btn yg-font-size"*/}
-                        {/*    onClick={() => {*/}
-                        {/*      setParentId(item.id)*/}
-                        {/*      setCurrentEdit(EDIT_SUB_PRODUCT)*/}
-                        {/*      setShowAddModal(true)*/}
-                        {/*    }}*/}
-                        {/*  >*/}
-                        {/*    Add*/}
-                        {/*  </button>*/}
-                        {/*</div>*/}
                       </ul>
                     </li>
                   ))}
-
-                  {/*<div className="col d-flex justify-content-center">*/}
-                  {/*  <button*/}
-                  {/*    className="btn yg-font-size"*/}
-                  {/*    onClick={() => {*/}
-                  {/*      setCurrentEdit(EDIT_PRODUCT)*/}
-                  {/*      setShowAddModal(true)*/}
-                  {/*    }}*/}
-                  {/*  >*/}
-                  {/*    Add*/}
-                  {/*  </button>*/}
-                  {/*</div>*/}
                 </ul>
               </div>
             </div>
           </div>
-          {/*{tableDetails && (*/}
-          {/*  <TableTok*/}
-          {/*    tableObject={tableDetails}*/}
-          {/*    setShowDeleteModal={setShowDeleteModal}*/}
-          {/*    updateTableData={_updateTableData}*/}
-          {/*  />*/}
-          {/*)}*/}
           <div className="mt-3">
             <button
               disabled={selectedProduct?.id === undefined}
