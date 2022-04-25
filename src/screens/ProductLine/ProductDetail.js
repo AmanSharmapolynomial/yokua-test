@@ -40,7 +40,7 @@ const ProductDetail = () => {
       type: 'table',
     },
     { title: 'Link', type: 'link' },
-    { title: 'Binary', type: 'binary' },
+    // { title: 'Binary', type: 'binary' },
     { title: 'Description', type: 'description' },
     { title: 'Image', type: 'image' },
   ]
@@ -191,199 +191,8 @@ const ProductDetail = () => {
         <div className="col-12 mt-4">
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
-              </div>
-            </div>
-          )}
-          <div>
-            {/* <span className="flex-fill">{ele.title}</span> */}
-            <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
-              Download
-            </a>
-          </div>
-        </div>
-      )
-    } else if (ele.type === 'table') {
-      return (
-        <div className="col-12 mt-4">
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
-              </div>
-            </div>
-          )}
-          <div className="row">
-            <Table
-              tableObject={ele.table_data}
-              setShowDeleteModal={false}
-              onRefresh={() => {
-                getProductDetails()
-              }}
-              isAdmin={isAdmin}
-            />
-          </div>
-        </div>
-      )
-    } else if (ele.type === 'link') {
-      return (
-        <div className="col-12 mt-4">
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
-              </div>
-            </div>
-          )}
-          <div className="row">
-            {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank">
-              {ele.title}
-            </a>
-          </div>
-        </div>
-      )
-    } else if (ele.type === 'description') {
-      return (
-        <div className="col-12 mt-4">
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i className="fa-solid fa-pen-to-square mr-2"></i>
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
-              </div>
-            </div>
-          )}
-          <div className="row">{ele.description}</div>
-        </div>
-      )
-    } else if (ele.type === 'image') {
-      if (arr[idx - 1]?.type !== 'image') {
-        let IMAGES = []
-        for (let index = idx; index < arr.length; index++) {
-          const element = arr[index]
-          if (element.type === 'image') {
-            IMAGES.push(
-              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
-                <Image src={ele.image_link} className="border rounded img-product-line" />
-              </div>
-            )
-          } else {
-            break
-          }
-        }
-        return (
-          <div className="col-12 mt-4">
-            {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') && (
+            getUserRoles() == 'Technical Administrator') &&
+            !archivedFilter && (
               <div className="row">
                 <div className="ml-auto w-auto my-2 my-2">
                   <Image
@@ -414,6 +223,202 @@ const ProductDetail = () => {
                 </div>
               </div>
             )}
+          <div>
+            {/* <span className="flex-fill">{ele.title}</span> */}
+            <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
+              Download
+            </a>
+          </div>
+        </div>
+      )
+    } else if (ele.type === 'table') {
+      return (
+        <div className="col-12 mt-4">
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') &&
+            !archivedFilter && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
+                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
+              </div>
+            )}
+          <div className="row">
+            <Table
+              tableObject={ele.table_data}
+              setShowDeleteModal={false}
+              onRefresh={() => {
+                getProductDetails()
+              }}
+              isAdmin={isAdmin}
+            />
+          </div>
+        </div>
+      )
+    } else if (ele.type === 'link') {
+      return (
+        <div className="col-12 mt-4">
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') &&
+            !archivedFilter && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
+                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
+              </div>
+            )}
+          <div className="row">
+            {/* <span className="flex-fill">{ele.title}</span> */}
+            <a role={'button'} href={ele.link} target="_blank">
+              {ele.title}
+            </a>
+          </div>
+        </div>
+      )
+    } else if (ele.type === 'description') {
+      return (
+        <div className="col-12 mt-4">
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') &&
+            !archivedFilter && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
+                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
+              </div>
+            )}
+          <div className="row">{ele.description}</div>
+        </div>
+      )
+    } else if (ele.type === 'image') {
+      if (arr[idx - 1]?.type !== 'image') {
+        let IMAGES = []
+        for (let index = idx; index < arr.length; index++) {
+          const element = arr[index]
+          if (element.type === 'image') {
+            IMAGES.push(
+              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
+                <Image src={ele.image_link} className="border rounded img-product-line" />
+              </div>
+            )
+          } else {
+            break
+          }
+        }
+        return (
+          <div className="col-12 mt-4">
+            {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
+              getUserRoles() == 'Technical Administrator') &&
+              !archivedFilter && (
+                <div className="row">
+                  <div className="ml-auto w-auto my-2 my-2">
+                    <Image
+                      className="mr-2"
+                      style={{ width: '1.4rem' }}
+                      role={'button'}
+                      src={ic_link}
+                      onClick={() => {
+                        setIsSubProductsModalVisible(true)
+                        setComponentToLink({
+                          component_id: ele.id,
+                          component_type: ele.type,
+                        })
+                      }}
+                    />
+                    <i
+                      role={'button'}
+                      className="fa-solid fa-trash ml-2"
+                      onClick={() => {
+                        let payload = {
+                          section_id: section.section_id,
+                          component_id: ele.id,
+                          component_type: ele.type,
+                        }
+                        setShowDeleteModal(payload)
+                      }}
+                    ></i>
+                  </div>
+                </div>
+              )}
             <div className="row">{IMAGES}</div>
           </div>
         )
@@ -434,37 +439,38 @@ const ProductDetail = () => {
         <div className="col-12 mt-4">
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 my-2">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+            getUserRoles() == 'Technical Administrator') &&
+            !archivedFilter && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 my-2">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.images[ele.images.length - 1].id,
+                        component_type: 'image',
+                      })
+                    }}
+                  />
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.images[ele.images.length - 1].id,
+                        component_type: 'image',
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <div className="row">{IMAGES}</div>
         </div>
       )
@@ -482,18 +488,19 @@ const ProductDetail = () => {
         </div>
         {(getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
-          getUserRoles() == 'Technical Administrator') && (
-          <div className="mt-3">
-            <button
-              className="btn create-domain-btn"
-              onClick={() => {
-                setIsAddComponentModalVisible(index)
-              }}
-            >
-              Add Component
-            </button>
-          </div>
-        )}
+          getUserRoles() == 'Technical Administrator') &&
+          !archivedFilter && (
+            <div className="mt-3">
+              <button
+                className="btn create-domain-btn"
+                onClick={() => {
+                  setIsAddComponentModalVisible(index)
+                }}
+              >
+                Add Component
+              </button>
+            </div>
+          )}
       </div>
     ))
 
@@ -561,7 +568,7 @@ const ProductDetail = () => {
                       className={`${
                         index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
                       }`}
-                      placeholder="type column name"
+                      placeholder="column name"
                       onChange={e => {
                         setAddComponentData(prevState => {
                           let state = { ...prevState }
@@ -602,7 +609,7 @@ const ProductDetail = () => {
                   ) : (
                     <input
                       disabled={
-                        (index === 1 || index === 2) &&
+                        (index === 1 || index === 2 || index === 4) &&
                         addComponentData?.table_data &&
                         addComponentData?.table_data[i]?.is_link
                       }
@@ -621,6 +628,7 @@ const ProductDetail = () => {
                               ...state.table_data[i],
                               [columneNames[1].key]: false,
                               [columneNames[2].key]: false,
+                              [columneNames[4].key]: false,
                             }
                           }
                           return state
@@ -993,7 +1001,7 @@ const ProductDetail = () => {
                   <u
                     role="button"
                     onClick={e => {
-                      navigate('/product-lines')
+                      navigate(-2)
                     }}
                   >
                     Product Lines
@@ -1010,18 +1018,19 @@ const ProductDetail = () => {
               <div className="row">{renderComponents()}</div>
               {(getUserRoles() == 'PMK Administrator' ||
                 getUserRoles() == 'PMK Content Manager' ||
-                getUserRoles() == 'Technical Administrator') && (
-                <div className="mt-2 d-flex justify-content-center">
-                  <button
-                    className="btn create-domain-btn mx-auto"
-                    onClick={() => {
-                      setIsAddSectionModalVisible(true)
-                    }}
-                  >
-                    Add New Section
-                  </button>
-                </div>
-              )}
+                getUserRoles() == 'Technical Administrator') &&
+                !archivedFilter && (
+                  <div className="mt-2 d-flex justify-content-center">
+                    <button
+                      className="btn create-domain-btn mx-auto"
+                      onClick={() => {
+                        setIsAddSectionModalVisible(true)
+                      }}
+                    >
+                      Add New Section
+                    </button>
+                  </div>
+                )}
             </>
           )}
         </div>

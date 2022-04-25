@@ -81,7 +81,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
   }, [imageFile])
 
   return (
-    <Modal centered show={show}>
+    <Modal show={show} dialogClassName="modal-90w">
       <Modal.Body className="modal-wrapper">
         {change == 'View' && (
           <img

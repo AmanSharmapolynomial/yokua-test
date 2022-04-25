@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 
-const DeleteDomainModal = ({ saveAndExit, deleteDomain, data }) => {
+const DeleteDomainModal = ({ saveAndExit, deleteDomain, data, show }) => {
   return (
     <Modal centered show={show} className="modal-background">
       <Modal.Body>

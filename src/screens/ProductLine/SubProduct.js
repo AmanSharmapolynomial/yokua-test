@@ -23,7 +23,6 @@ const SubProduct = () => {
   const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
-
   const getProductList = () => {
     setIsLoading(true)
     API.post('products/list_view/sub_products/', {
@@ -34,7 +33,9 @@ const SubProduct = () => {
         if (res.status === 200 && res.data !== undefined) {
           if (res.data.length === 1 && res.data[0].sub_product_name === 'proxy') {
             const item = res.data[0]
-            navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+            navigate('/product-lines/product-detail', {
+              state: { ...item, sub_product_name: state.name, parentId: state.id },
+            })
           } else {
             setProductList(res.data)
           }
