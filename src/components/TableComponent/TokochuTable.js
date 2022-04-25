@@ -111,12 +111,13 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <img
-                  src={Uploadicon}
-                  style={{ width: '15px', marginRight: '10px' }}
-                  alt={'FileImage'}
-                />
-                <a target="_blank" href={tableC.values[index].value} />
+                <a target="_blank" href={tableC.values[index].value}>
+                  <img
+                    src={Uploadicon}
+                    style={{ width: '15px', marginRight: '10px' }}
+                    alt={'FileImage'}
+                  />
+                </a>
               </>
             )
           } else {
