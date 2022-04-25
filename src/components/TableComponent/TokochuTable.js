@@ -120,7 +120,10 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               </>
             )
           } else {
-            tempObject[tableC['column_name']] = tableC.values[index].value
+            console.log(tableC.values)
+            tempObject[tableC['column_name']] = tableC?.values[index]
+              ? tableC?.values[index]?.value
+              : []
           }
 
           Object.assign(tableRowObject, tempObject)
