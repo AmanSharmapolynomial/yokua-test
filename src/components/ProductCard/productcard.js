@@ -144,7 +144,8 @@ const ProductCard = ({
                           payload.append(
                             'data',
                             JSON.stringify({
-                              product_id: item.id,
+                              id: item.id,
+                              product_id: item.product_id,
                               sub_product_name: /* inputRef.current.value*/ item.sub_product_name,
                               description: textareaRef.current.value,
                             })

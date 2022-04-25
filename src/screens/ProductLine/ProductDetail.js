@@ -10,7 +10,7 @@ import Table from '../../components/TableComponent/Table'
 import { Modal, Image } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
-
+import ic_link from '../../assets/link_icon.png'
 const ProductDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
@@ -22,10 +22,14 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])
+  const [subProductList, setSubProductList] = useState([])
   const [addComponentData, setAddComponentData] = useState({})
   const [inputBinary, setInputBinary] = useState()
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
+  const [selectedSubProducts, setSelectedSubproducts] = useState([])
+  const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
@@ -64,6 +68,44 @@ const ProductDetail = () => {
       .catch(error => {
         console.log(error)
         setIsLoading(false)
+      })
+  }
+
+  const linkComponentToSections = () => {
+    let data = { ...componentToLink }
+    for (let index = 0; index < selectedSubProducts.length; index++) {
+      data.section_id = selectedSubProducts[index]
+      API.post('products/page/link_component_to_sections', data)
+        .then(res => {
+          if (res.status === 200 && res.data !== undefined) {
+            index === 0 && res.data?.message && toast.success(res.data?.message)
+          }
+          setIsSubProductsModalVisible(false)
+          setComponentToLink({})
+          setSelectedSubproducts([])
+          index === 0 && setIsLoading(false)
+        })
+        .catch(error => {
+          console.log(error)
+          index === 0 && setIsLoading(false)
+          setIsSubProductsModalVisible(false)
+          setComponentToLink({})
+          setSelectedSubproducts([])
+        })
+    }
+  }
+
+  const getSubProductsList = () => {
+    API.post('products/page/list_sections', {
+      is_archived: archivedFilter,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          setSubProductList(res.data)
+        }
+      })
+      .catch(error => {
+        console.log(error)
       })
   }
 
@@ -152,6 +194,19 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
                 <i
                   role={'button'}
                   className="fa-solid fa-trash ml-2"
@@ -183,6 +238,19 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
                 <i className="fa-solid fa-pen-to-square mr-2"></i>
                 <i
                   role={'button'}
@@ -219,6 +287,19 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
                 <i className="fa-solid fa-pen-to-square mr-2"></i>
                 <i
                   role={'button'}
@@ -251,6 +332,19 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
                 <i className="fa-solid fa-pen-to-square mr-2"></i>
                 <i
                   role={'button'}
@@ -292,6 +386,19 @@ const ProductDetail = () => {
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
                 <div className="ml-auto w-auto my-2 my-2">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2"
@@ -330,6 +437,19 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ml-auto w-auto my-2 my-2">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
                 <i
                   role={'button'}
                   className="fa-solid fa-trash ml-2"
@@ -376,6 +496,7 @@ const ProductDetail = () => {
         )}
       </div>
     ))
+
   const renderAddTable = () => {
     return (
       <div className="row">
@@ -545,6 +666,7 @@ const ProductDetail = () => {
       </div>
     )
   }
+
   const renderAddLink = () => {
     return (
       <div className="row">
@@ -618,6 +740,7 @@ const ProductDetail = () => {
       </div>
     )
   }
+
   const renderAddBinary = () => {
     return (
       <div className="row">
@@ -694,6 +817,7 @@ const ProductDetail = () => {
       </div>
     )
   }
+
   const renderAddDescription = () => {
     return (
       <div className="row">
@@ -743,6 +867,7 @@ const ProductDetail = () => {
       </div>
     )
   }
+
   const renderAddImage = () => {
     return (
       <div className="row">
@@ -834,6 +959,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getProductDetails()
+    getSubProductsList()
   }, [])
 
   return (
@@ -1086,6 +1212,131 @@ const ProductDetail = () => {
             </button>
           </div>
         </Modal.Body>
+      </Modal>
+      <Modal
+        show={isSubProductsModalVisible}
+        centered
+        onHide={() => {
+          setIsSubProductsModalVisible(false)
+          setComponentToLink({})
+          setSelectedSubproducts([])
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Link Component</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div
+            className="accordion"
+            id="accordionExample"
+            style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+            ref={accordionRef}
+          >
+            {Object.keys(subProductList).map((title, idx) => {
+              return (
+                <div className="card border border-secondary">
+                  <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
+                    <div
+                      onClick={() => {
+                        if (idx === expandedAccordian) setExpandedAccordian(-1)
+                        else setExpandedAccordian(idx)
+                      }}
+                      className="accordian-title d-flex justify-content-between align-items-center font-10"
+                      type="button"
+                      data-toggle="collapse"
+                      data-target={`#collapse${idx}`}
+                      aria-expanded="false"
+                      aria-controls={`collapse${idx}`}
+                    >
+                      <span>{title}</span>
+                      <i
+                        className={`fa-solid ${
+                          idx === expandedAccordian ? 'fa-angle-up' : 'fa-angle-down'
+                        } greyed`}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    id={`collapse${idx}`}
+                    className="collapse hide"
+                    aria-labelledby="headingOne"
+                    data-parent="#accordionExample"
+                  >
+                    <div className="card-body">
+                      {Array.isArray(subProductList[title]) &&
+                        subProductList[title].map(section => (
+                          <div class="py-1 px-3 d-flex">
+                            <input
+                              checked={selectedSubProducts.indexOf(section.section_id) !== -1}
+                              onChange={e => {
+                                setSelectedSubproducts(prevState => {
+                                  let arr = [...prevState]
+                                  const itemIndex = arr.indexOf(section.section_id)
+                                  if (itemIndex === -1) {
+                                    arr.push(section.section_id)
+                                  } else {
+                                    arr.splice(itemIndex, 1)
+                                  }
+                                  return arr
+                                })
+                              }}
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            />
+                            <label class="form-check-label" for="flexCheckDefault">
+                              {section.name}
+                            </label>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderTop: '0',
+          }}
+          centered
+        >
+          <button
+            id="mybtn"
+            className="btn btn-background mr-4"
+            onClick={() => {
+              setIsSubProductsModalVisible(false)
+              setComponentToLink({})
+              setSelectedSubproducts([])
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={selectedSubProducts.length === 0}
+            className={`btn${selectedSubProducts.length === 0 ? ' greyed' : ''}`}
+            onClick={() => {
+              if (selectedSubProducts.length > 0) {
+                linkComponentToSections()
+              }
+            }}
+          >
+            Save
+          </button>
+        </Modal.Footer>
       </Modal>
     </>
   )

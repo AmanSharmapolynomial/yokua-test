@@ -18,8 +18,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   ]
 
   const productLineDropdown = [
-    { name: 'Approved Tokuchu', url: '/admin/approved-tokuchus' },
-    { name: 'Product Line', url: '/product-lines' },
+    { name: 'Approved Tokuchus', url: '/admin/approved-tokuchus' },
+    { name: 'Product Lines', url: '/product-lines' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
