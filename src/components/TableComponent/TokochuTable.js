@@ -40,7 +40,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   const [emptyNewRow, setEmptyNewRow] = useState(null)
   const [rowName, setRowName] = useState({})
-  const [isEdit, setEdit] = useState(false)
+  const [isEdit, setEdit] = useState(true)
   const customStyles = {
     rows: {
       style: {
@@ -111,7 +111,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <a target="_blank" href={tableC.values[index].value}>
+                <a href={tableC.values[index].value} download>
                   <img
                     src={Uploadicon}
                     style={{ width: '15px', marginRight: '10px' }}
@@ -121,7 +121,6 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               </>
             )
           } else {
-            console.log(tableC.values)
             tempObject[tableC['column_name']] = tableC?.values[index]
               ? tableC?.values[index]?.value
               : []
@@ -141,6 +140,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     const formData = new FormData()
     if (!image) {
       toast.error('Please provide the Tokuchu')
+      return
     }
     if (image) {
       formData.append('file', image)
@@ -264,7 +264,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   return (
     <>
-      {tableObject &&
+      {/* {tableObject &&
         tableObject !== {} &&
         (getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
@@ -300,7 +300,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               />
             </div>
           </div>
-        )}
+        )} */}
       <div className="row">
         <DataTable
           fixedHeader

@@ -359,7 +359,7 @@ export default () => {
                                         className="dropdown-item"
                                         key={prod.name}
                                         onClick={e => {
-                                          e.stopPropagation()
+                                          // e.stopPropagation()
                                           setSelectedProduct(prod)
                                         }}
                                       >

@@ -136,7 +136,7 @@ const SubProduct = () => {
           ) : (
             <div className="col">{renderRow()}</div>
           )}
-          <div className="archived-filter mt-5">
+          {/* <div className="archived-filter mt-5">
             {archivedFilter ? (
               <button
                 className="btn"
@@ -158,7 +158,7 @@ const SubProduct = () => {
                 Product Archive
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </>
