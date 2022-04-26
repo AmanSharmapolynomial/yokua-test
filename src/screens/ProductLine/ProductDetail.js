@@ -1249,7 +1249,7 @@ const ProductDetail = () => {
             style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
             ref={accordionRef}
           >
-            {Object.keys(subProductList).map((title, idx) => {
+            {subProductList.map((productList, idx) => {
               return (
                 <div className="card border border-secondary">
                   <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
@@ -1265,7 +1265,7 @@ const ProductDetail = () => {
                       aria-expanded="false"
                       aria-controls={`collapse${idx}`}
                     >
-                      <span>{title}</span>
+                      <span>{productList.name}</span>
                       <i
                         className={`fa-solid ${
                           idx === expandedAccordian ? 'fa-angle-up' : 'fa-angle-down'
@@ -1280,33 +1280,32 @@ const ProductDetail = () => {
                     data-parent="#accordionExample"
                   >
                     <div className="card-body">
-                      {Array.isArray(subProductList[title]) &&
-                        subProductList[title].map(section => (
-                          <div class="py-1 px-3 d-flex">
-                            <input
-                              checked={selectedSubProducts.indexOf(section.section_id) !== -1}
-                              onChange={e => {
-                                setSelectedSubproducts(prevState => {
-                                  let arr = [...prevState]
-                                  const itemIndex = arr.indexOf(section.section_id)
-                                  if (itemIndex === -1) {
-                                    arr.push(section.section_id)
-                                  } else {
-                                    arr.splice(itemIndex, 1)
-                                  }
-                                  return arr
-                                })
-                              }}
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckDefault"
-                            />
-                            <label class="form-check-label" for="flexCheckDefault">
-                              {section.name}
-                            </label>
-                          </div>
-                        ))}
+                      {subProductList[idx].sections.map(section => (
+                        <div class="py-1 px-3 d-flex">
+                          <input
+                            checked={selectedSubProducts.indexOf(section.section_id) !== -1}
+                            onChange={e => {
+                              setSelectedSubproducts(prevState => {
+                                let arr = [...prevState]
+                                const itemIndex = arr.indexOf(section.section_id)
+                                if (itemIndex === -1) {
+                                  arr.push(section.section_id)
+                                } else {
+                                  arr.splice(itemIndex, 1)
+                                }
+                                return arr
+                              })
+                            }}
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          />
+                          <label class="form-check-label" for="flexCheckDefault">
+                            {section.name}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
