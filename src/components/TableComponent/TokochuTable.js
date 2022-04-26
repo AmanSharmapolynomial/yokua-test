@@ -125,9 +125,9 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               ? tableC?.values[index]?.value
               : []
           }
-
           Object.assign(tableRowObject, tempObject)
         })
+        tableRowObject.edit = <i className="fa-solid fa-trash" role={'button'} />
         finalTableData.push(tableRowObject)
       })
     if (isEdit && emptyNewRow) {
@@ -207,7 +207,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
                 borderRight: 'none',
                 borderLeft: 'none',
               }}
-              type="text form-control"
+              type={item.isDate ? 'date' : 'text form-control'}
               id={rowName[item['name']] + Math.random().toString()}
               key={rowName[item['name']] + Math.random().toString()}
               value={rowName[item['name']]}
@@ -270,7 +270,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') && (
           <div className="row text-primary">
-            <div className="ml-auto w-auto my-2 my-2">
+            <div className="ml-auto w-auto my-2">
               {isEdit ? (
                 <i
                   role={'button'}

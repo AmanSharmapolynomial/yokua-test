@@ -124,46 +124,7 @@ const ProductLine = () => {
               {renderRow()}
             </div>
           )}
-
-          {/* {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') &&
-              !archivedFilter && (
-                <div
-                  className="add_row"
-                  onClick={() => {
-                    if (!isAnyNewsUnderEdit) {
-                      setNewsUnderEdit(true)
-                      setNewsData([...newsData, { id: Math.random() }])
-                    } else {
-                      toast.error('Please finish current news edit.')
-                    }
-                  }}
-                >
-                  <img
-                    src={Plusicon}
-                    style={{
-                      width: '22px',
-                      marginRight: '12px',
-                    }}
-                  />
-                  Add
-                </div>
-              )}
-          </div>
-        )} */}
-          {/* {productList.length > 0 && (
-          <div className="pagination">
-            <Pagination
-              total={totalPages * 10}
-              showQuickJumper
-              showSizeChanger={false}
-              // onChange={onChange}
-              style={{ border: 'none' }}
-            />
-          </div>
-        )} */}
-          <div className="archived-filter mt-5 mb-5">
+          {/* <div className="archived-filter mt-5 mb-5">
             {archivedFilter ? (
               <button
                 className="btn"
@@ -185,7 +146,7 @@ const ProductLine = () => {
                 Product Archive
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

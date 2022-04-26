@@ -194,7 +194,7 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 my-2">
+                <div className="ml-auto w-auto my-2 p-0">
                   <Image
                     className="mr-2"
                     style={{ width: '1.4rem' }}
@@ -210,7 +210,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2"
+                    className="fa-solid fa-trash ml-2 mr-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -223,9 +223,14 @@ const ProductDetail = () => {
                 </div>
               </div>
             )}
-          <div>
+          <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a className="bordered-btn rounded" role={'button'} href={ele.binary_link} download>
+            <a
+              className="bordered-btn rounded w-auto"
+              role={'button'}
+              href={ele.binary_link}
+              download
+            >
               Download
             </a>
           </div>
@@ -234,12 +239,15 @@ const ProductDetail = () => {
     } else if (ele.type === 'table') {
       return (
         <div className="col-12 mt-4">
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') &&
-            !archivedFilter && (
-              <div className="row">
-                <div className="ml-auto w-auto my-2 my-2">
+          <div className="row">
+            <div className="col p-0" style={{ verticalAlign: 'middle', lineHeight: '2.8rem' }}>
+              {ele.table_name}
+            </div>
+            {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
+              getUserRoles() == 'Technical Administrator') &&
+              !archivedFilter && (
+                <div className="col-auto my-2 p-0">
                   <Image
                     className="mr-2"
                     style={{ width: '1.4rem' }}
@@ -256,7 +264,7 @@ const ProductDetail = () => {
                   <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2"
+                    className="fa-solid fa-trash ml-2 mr-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -267,8 +275,8 @@ const ProductDetail = () => {
                     }}
                   ></i>
                 </div>
-              </div>
-            )}
+              )}
+          </div>
           <div className="row">
             <Table
               tableObject={ele.table_data}
@@ -289,7 +297,7 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 my-2">
+                <div className="ml-auto w-auto my-2 p-0">
                   <Image
                     className="mr-2"
                     style={{ width: '1.4rem' }}
@@ -306,7 +314,7 @@ const ProductDetail = () => {
                   <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2"
+                    className="fa-solid fa-trash ml-2 mr-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -321,7 +329,7 @@ const ProductDetail = () => {
             )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank">
+            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0">
               {ele.title}
             </a>
           </div>
@@ -335,7 +343,7 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 my-2">
+                <div className="ml-auto w-auto my-2 p-0">
                   <Image
                     className="mr-2"
                     style={{ width: '1.4rem' }}
@@ -352,7 +360,7 @@ const ProductDetail = () => {
                   <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2"
+                    className="fa-solid fa-trash ml-2 mr-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -390,7 +398,7 @@ const ProductDetail = () => {
               getUserRoles() == 'Technical Administrator') &&
               !archivedFilter && (
                 <div className="row">
-                  <div className="ml-auto w-auto my-2 my-2">
+                  <div className="ml-auto w-auto my-2 p-0">
                     <Image
                       className="mr-2"
                       style={{ width: '1.4rem' }}
@@ -406,7 +414,7 @@ const ProductDetail = () => {
                     />
                     <i
                       role={'button'}
-                      className="fa-solid fa-trash ml-2"
+                      className="fa-solid fa-trash ml-2 mr-0"
                       onClick={() => {
                         let payload = {
                           section_id: section.section_id,
@@ -442,7 +450,7 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 my-2">
+                <div className="ml-auto w-auto my-2 p-0">
                   <Image
                     className="mr-2"
                     style={{ width: '1.4rem' }}
@@ -458,7 +466,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2"
+                    className="fa-solid fa-trash ml-2 mr-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -481,7 +489,7 @@ const ProductDetail = () => {
     productDetail.map((item, index) => (
       <div className="col-12 mt-5">
         <div className="row">
-          <span className="text-bold">{item.sectionName}</span>
+          <span className="text-bold p-0">{item.sectionName}</span>
         </div>
         <div className="row">
           {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
@@ -490,9 +498,9 @@ const ProductDetail = () => {
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') &&
           !archivedFilter && (
-            <div className="mt-3">
+            <div className="row mt-3">
               <button
-                className="btn create-domain-btn"
+                className="btn create-domain-btn w-auto"
                 onClick={() => {
                   setIsAddComponentModalVisible(index)
                 }}
@@ -967,7 +975,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getProductDetails()
-    getSubProductsList()
+    ;(getUserRoles() == 'PMK Administrator' ||
+      getUserRoles() == 'PMK Content Manager' ||
+      getUserRoles() == 'Technical Administrator') &&
+      getSubProductsList()
   }, [])
 
   return (
