@@ -427,7 +427,7 @@ const ProductDetail = () => {
       }
     } else if (ele.type === 'image_grid') {
       let IMAGES = []
-      for (let index = idx; index < ele.images.length; index++) {
+      for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
           <div className={`col-3${index === idx ? ' pl-0' : ''}`}>
