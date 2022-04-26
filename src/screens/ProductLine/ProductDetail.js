@@ -284,7 +284,7 @@ const ProductDetail = () => {
               onRefresh={() => {
                 getProductDetails()
               }}
-              isAdmin={false}
+              isAdmin={true}
             />
           </div>
         </div>
