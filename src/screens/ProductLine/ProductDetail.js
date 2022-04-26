@@ -1199,7 +1199,7 @@ const ProductDetail = () => {
               ref={sectionTitleRef}
               placeholder="Enter new title"
               type="text"
-              className="form-control"
+              className="form-control w-100"
               aria-label={'Title'}
             />
           </div>
