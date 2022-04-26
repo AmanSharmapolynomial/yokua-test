@@ -152,6 +152,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       .then(data => {
         toast.success('New row added Successfully')
         onRefresh()
+        _setTableData(false)
       })
       .catch(err => {})
   }
