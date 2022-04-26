@@ -30,7 +30,7 @@ import { toast } from 'react-toastify'
  * ]}
  *
  */
-export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
+export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin, isTableEditable }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
@@ -184,6 +184,13 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
     }
   }
 
+  const handleChange = (name, value, index) => {
+    console.log(name, value, index, tableRows)
+    // const updatedRowName = rowName
+    // updatedRowName[name] = value
+    // setRowName({ ...updatedRowName })
+  }
+
   const _setTableData = () => {
     const tableData = tableObject
     const finalTableData = []
@@ -193,18 +200,39 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
           id: item.id,
         }
 
-        tableData?.map(column_name => {
-          const tempObject = new Object()
-          let value = column_name.values[index].value
-          if (column_name.is_link) {
-            value = (
-              <a href={value} target="_blank">
-                {value}
-              </a>
+        tableData?.map((column_name, column_index) => {
+          if (!isTableEditable) {
+            const tempObject = new Object()
+            let value = column_name.values[index].value
+            if (column_name.is_link) {
+              value = (
+                <a href={value} target="_blank">
+                  {value}
+                </a>
+              )
+            }
+            tempObject[column_name['column_name']] = value
+            Object.assign(tableRowObject, tempObject)
+          } else {
+            const tempObject = new Object()
+            let value = column_name.values[index].value
+            tempObject[column_name['column_name']] = (
+              <>
+                <input
+                  style={{
+                    borderBottom: '1px solid rgb(0, 79, 155)',
+                    borderTop: 'none',
+                    borderRight: 'none',
+                    borderLeft: 'none',
+                  }}
+                  type={item.isDate ? 'date' : 'text form-control'}
+                  value={value}
+                  onChange={e => handleChange(item['column_name'], e.target.value, index)}
+                />
+              </>
             )
+            Object.assign(tableRowObject, tempObject)
           }
-          tempObject[column_name['column_name']] = value
-          Object.assign(tableRowObject, tempObject)
         })
         finalTableData.push(tableRowObject)
       })
@@ -273,7 +301,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin }) => {
       _setTableHeaders()
       _setTableData()
     }
-  }, [tableObject])
+  }, [tableObject, isTableEditable])
 
   return (
     <div className="border w-100 mt-4 p-0 product-detail-table">

@@ -28,6 +28,7 @@ const ProductDetail = () => {
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
+  const [isEditable, setIsEditable] = useState(false)
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
@@ -261,7 +262,13 @@ const ProductDetail = () => {
                       })
                     }}
                   />
-                  <i className="fa-solid fa-pen-to-square mr-2"></i>
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-pen-to-square mr-2"
+                    onClick={() => {
+                      setIsEditable(true)
+                    }}
+                  />
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2 mr-0"
@@ -284,6 +291,7 @@ const ProductDetail = () => {
               onRefresh={() => {
                 getProductDetails()
               }}
+              isTableEditable={isEditable}
               isAdmin={true}
             />
           </div>
