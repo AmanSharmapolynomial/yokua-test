@@ -170,3 +170,6 @@ body {
   overflow-y: visible !important;
   white-space: normal !important;
 }
+.react-calendar__tile--now {
+  background-color: #00509b55 !important;
+}

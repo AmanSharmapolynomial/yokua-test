@@ -128,86 +128,86 @@ const EventScreen = () => {
           <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
       </div>
-      {eventList.length > 0 ? (
-        <div className="calenderDiv" style={{ margin: '10px 0' }}>
-          <div
+      <div className="calenderDiv" style={{ margin: '10px 0' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Calendar
+            //minDate={new Date()}
+            prevLabel={<i className="fas fa-caret-left"></i>}
+            nextLabel={<i className="fas fa-caret-right"></i>}
+            formatShortWeekday={(locale, value) =>
+              ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
+            }
+            tileContent={({ date, view }) => {
+              let calenderDate = moment(date).format('yyyy-MM-DD').toString()
+              //console.log(calenderDate)
+              let dataList = eventList.filter(e => e.start_date === calenderDate)
+              return dataList.length > 0 ? (
+                <div className="event-container">
+                  {dataList.slice(0, 3).map(data => (
+                    <div key={data.id} className="event-title">
+                      {data.training_name}
+                    </div>
+                  ))}
+                </div>
+              ) : null
+            }}
+          />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Table
+            responsive="sm"
             style={{
-              display: 'flex',
-              justifyContent: 'center',
+              border: '1px solid',
+              margin: '20px auto 0',
+              maxHeight: '450px',
+              width: '100%',
             }}
           >
-            <Calendar
-              //minDate={new Date()}
-              prevLabel={<i className="fas fa-caret-left"></i>}
-              nextLabel={<i className="fas fa-caret-right"></i>}
-              formatShortWeekday={(locale, value) =>
-                ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
-              }
-              tileContent={({ date, view }) => {
-                let calenderDate = moment(date).format('yyyy-MM-DD').toString()
-                //console.log(calenderDate)
-                let dataList = eventList.filter(e => e.start_date === calenderDate)
-                return dataList.length > 0 ? (
-                  <div className="event-container">
-                    {dataList.slice(0, 3).map(data => (
-                      <div key={data.id} className="event-title">
-                        {data.training_name}
-                      </div>
-                    ))}
-                  </div>
-                ) : null
-              }}
-            />
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Table
-              responsive="sm"
-              style={{
-                border: '1px solid',
-                margin: '20px auto 0',
-                maxHeight: '450px',
-                width: '100%',
-              }}
-            >
-              <thead>
-                <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                  <td colSpan="6">
-                    <div
+            <thead>
+              <tr style={{ background: 'rgb(0, 79, 155)' }}>
+                <td colSpan="6">
+                  <div
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '5px 0',
+                      width: '15%',
+                    }}
+                  >
+                    {isAdmin && (
+                      <input
+                        id="mainCheckbox"
+                        type="checkbox"
+                        style={{ marginLeft: '10px' }}
+                        onChange={event => handleMainCheckBox(event.target.checked)}
+                      />
+                    )}
+                    <p
                       style={{
-                        background: 'rgb(0, 79, 155)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '5px 0',
-                        width: '15%',
+                        color: 'white',
+                        fontSize: '20px',
+                        width: '100%',
+                        marginBottom: 0,
+                        marginLeft: '25px',
                       }}
                     >
-                      {isAdmin && (
-                        <input
-                          id="mainCheckbox"
-                          type="checkbox"
-                          style={{ marginLeft: '10px' }}
-                          onChange={event => handleMainCheckBox(event.target.checked)}
-                        />
-                      )}
-                      <p
-                        style={{
-                          color: 'white',
-                          fontSize: '20px',
-                          width: '100%',
-                          marginBottom: 0,
-                          marginLeft: '25px',
-                        }}
-                      >
-                        All Trainings
-                      </p>
-                    </div>
-                  </td>
-                </tr>
-              </thead>
-              <tbody>
-                {eventList.map(e => {
+                      All Trainings
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {eventList.length > 0 ? (
+                eventList.map(e => {
                   let startDate = moment(e.start_date, 'yyyy-MM-DD')
                   let endDate = moment(e.end_date, 'yyyy-MM-DD')
                   return (
@@ -312,30 +312,103 @@ const EventScreen = () => {
                       </td>
                     </tr>
                   )
-                })}
-              </tbody>
-            </Table>
-          </div>
+                })
+              ) : (
+                <tr>
+                  <div className="text-center">No Events Found</div>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </div>
 
-          {isAdmin && (
-            <div className="row mx-2 mx-md-5 mb-5">
-              <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-                <button
-                  onClick={() => {
-                    navigate('/event/add')
-                  }}
+        {isAdmin && (
+          <div className="row mx-2 mx-md-5 mb-5">
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+              <button
+                onClick={() => {
+                  navigate('/event/add')
+                }}
+                style={{
+                  background: 'rgb(0, 79, 155)',
+                  color: 'white',
+                  border: '1px solid black',
+                  borderRadius: '3px',
+                }}
+              >
+                RYG Event creation
+              </button>
+              <button
+                onClick={() => {
+                  openModalForMultipleEvent()
+                }}
+                style={{
+                  background: 'rgb(0, 79, 155)',
+                  color: 'white',
+                  border: '1px solid black',
+                  borderRadius: '3px',
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        )}
+        <div>
+          <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+            <div>
+              <p
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '20px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                Event Cancellation
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+                className="row"
+              >
+                <input
                   style={{
-                    background: 'rgb(0, 79, 155)',
-                    color: 'white',
+                    borderRadius: '3px',
+                    width: '75%',
+                  }}
+                  type="text"
+                  maxLength="255"
+                  placeholder="Maximum 255 character support..."
+                  onChange={e => {
+                    setEventDeleteMsg(e.target.value)
+                  }}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <br />
+              <br />
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  style={{
+                    background: 'white',
+                    color: 'rgb(0, 79, 155)',
                     border: '1px solid black',
                     borderRadius: '3px',
                   }}
+                  onClick={() => {
+                    closeModal()
+                  }}
                 >
-                  RYG Event creation
+                  Cancel
                 </button>
+                &nbsp;&nbsp;
                 <button
                   onClick={() => {
-                    openModalForMultipleEvent()
+                    handleDeleteEvent()
                   }}
                   style={{
                     background: 'rgb(0, 79, 155)',
@@ -344,82 +417,13 @@ const EventScreen = () => {
                     borderRadius: '3px',
                   }}
                 >
-                  Delete
+                  Send
                 </button>
               </div>
             </div>
-          )}
-          <div>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-              <div>
-                <p
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: '20px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  Event Cancellation
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                  className="row"
-                >
-                  <input
-                    style={{
-                      borderRadius: '3px',
-                      width: '75%',
-                    }}
-                    type="text"
-                    maxLength="255"
-                    placeholder="Maximum 255 character support..."
-                    onChange={e => {
-                      setEventDeleteMsg(e.target.value)
-                    }}
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <br />
-                <br />
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <button
-                    style={{
-                      background: 'white',
-                      color: 'rgb(0, 79, 155)',
-                      border: '1px solid black',
-                      borderRadius: '3px',
-                    }}
-                    onClick={() => {
-                      closeModal()
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  &nbsp;&nbsp;
-                  <button
-                    onClick={() => {
-                      handleDeleteEvent()
-                    }}
-                    style={{
-                      background: 'rgb(0, 79, 155)',
-                      color: 'white',
-                      border: '1px solid black',
-                      borderRadius: '3px',
-                    }}
-                  >
-                    Send
-                  </button>
-                </div>
-              </div>
-            </Modal>
-          </div>
+          </Modal>
         </div>
-      ) : null}
+      </div>
     </>
   )
 }

@@ -247,6 +247,7 @@ const AddEventScreen = () => {
       .then(data => {
         if (data.status == 200 || data.status == 201) {
           toast.success(data.data.message)
+          navigate(-1)
         } else {
           toast.error(data.data.message)
         }
@@ -281,6 +282,7 @@ const AddEventScreen = () => {
       .then(data => {
         //console.log(data)
         if (data.status == 200 || data.status == 201) {
+          navigate(-1)
           toast.success(data.data.message)
         } else if (data.message.Fail) {
           toast.error(data.data.message.Fail)
@@ -626,7 +628,7 @@ const AddEventScreen = () => {
                           }
                         }}
                         value={remainSeat}
-                        disabled={eventId}
+                        disabled={true}
                       />
                     </div>
                   </div>
