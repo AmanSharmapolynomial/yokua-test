@@ -75,6 +75,7 @@ const ProductDetail = () => {
 
   const updateTableValues = tableObject => {
     setLoading(true)
+    let promises = []
     for (let index = 0; index < tableObject.length; index++) {
       if (tableObject[index].isEdited) {
         const values = tableObject[index].values.filter(value => value.isEdited)
@@ -88,23 +89,29 @@ const ProductDetail = () => {
               row_index: val.row_index,
               value: val.value,
             }
-            API.post('products/page/update_table_data', payload)
-              .then(res => {
-                if (res.status === 200 && res.data !== undefined) {
-                  if (index < tableObject.length && valIdx < values.length) {
-                    index === 0 && res.data?.message && toast.success(res.data?.message)
-                    getProductDetails()
-                  }
-                }
-              })
-              .catch(error => {
-                console.log(error)
-              })
+            promises.push(API.post('products/page/update_table_data', payload))
           }
         }
       }
     }
-    setLoading(false)
+    if (promises.length > 0) {
+      Promise.all(promises)
+        .then(res => {
+          if (res.length > 0) {
+            if (res[0].status === 200 && res[0].data !== undefined) {
+              if (res[0].data?.message) {
+                toast.success(res[0].data?.message)
+              }
+            }
+            getProductDetails()
+            setLoading(false)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          setLoading(false)
+        })
+    }
   }
 
   const linkComponentToSections = () => {
