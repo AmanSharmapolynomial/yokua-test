@@ -42,6 +42,12 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [rowName, setRowName] = useState({})
   const [isEdit, setEdit] = useState(true)
   const customStyles = {
+    table: {
+      style: {
+        width: '150%',
+        maxWidth: '150%',
+      },
+    },
     rows: {
       style: {
         borderWidth: '10px',
@@ -147,12 +153,12 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     }
 
     formData.append('data', payload)
-
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
         toast.success('New row added Successfully')
+        setRowName({})
+        setEmptyNewRow(null)
         onRefresh()
-        _setTableData(false)
       })
       .catch(err => {})
   }
@@ -169,7 +175,11 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           <div className="icon reject">
             <i
               className="fa-solid fa-xmark reject"
-              onClick={() => _setTableData(false)}
+              onClick={() => {
+                _setTableData()
+                setRowName({})
+                setEmptyNewRow(null)
+              }}
               role="button"
             />
           </div>
