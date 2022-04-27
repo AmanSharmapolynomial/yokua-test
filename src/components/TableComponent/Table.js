@@ -6,7 +6,8 @@ import decline from '../../assets/Icon ionic-md-close-circle.png'
 import { Image } from 'react-bootstrap'
 import API from '../../utils/api'
 import { toast } from 'react-toastify'
-
+import { getUserRoles } from '../../utils/token'
+import ic_link from '../../assets/link_icon.png'
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -30,11 +31,24 @@ import { toast } from 'react-toastify'
  * ]}
  *
  */
-export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin, isTableEditable }) => {
+export default ({
+  tableObject,
+  setShowDeleteModal,
+  onRefresh,
+  isAdmin,
+  isTableEditable,
+  onDeleteComponent,
+  onLinkClick,
+  table_name,
+  onEditableClick,
+  archivedFilter,
+  onTableUpdate,
+}) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
   const [sortMethod, setSortMethod] = useState('')
+  const [editedTableObject, setEditedTableObject] = useState(tableObject)
   const inputRef = useRef([])
   const customStyles = {
     table: {
@@ -185,14 +199,24 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin, isTableEd
   }
 
   const handleChange = (name, value, index) => {
-    console.log(name, value, index, tableRows)
-    // const updatedRowName = rowName
-    // updatedRowName[name] = value
-    // setRowName({ ...updatedRowName })
+    setEditedTableObject(prevState => {
+      let arr = [...prevState]
+      const columnIndex = arr.findIndex(ele => ele.column_name === name)
+      if (columnIndex !== -1) {
+        try {
+          arr[columnIndex].isEdited = true
+          arr[columnIndex].values[index].isEdited = true
+          arr[columnIndex].values[index].value = value
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      return arr
+    })
   }
 
   const _setTableData = () => {
-    const tableData = tableObject
+    const tableData = isTableEditable ? editedTableObject : tableObject
     const finalTableData = []
     tableData &&
       tableData[0]?.values?.map((item, index) => {
@@ -227,7 +251,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin, isTableEd
                   }}
                   type={item.isDate ? 'date' : 'text form-control'}
                   value={value}
-                  onChange={e => handleChange(item['column_name'], e.target.value, index)}
+                  onChange={e => handleChange(column_name['column_name'], e.target.value, index)}
                 />
               </>
             )
@@ -303,40 +327,96 @@ export default ({ tableObject, setShowDeleteModal, onRefresh, isAdmin, isTableEd
     }
   }, [tableObject, isTableEditable])
 
+  useEffect(() => {
+    if (isTableEditable) {
+      _setTableData()
+    } else {
+      setEditedTableObject(tableObject)
+    }
+
+    return () => {
+      setEditedTableObject(tableObject)
+    }
+  }, [editedTableObject, isTableEditable])
+
   return (
-    <div className="border w-100 mt-4 p-0 product-detail-table">
-      <DataTable
-        pagination={false}
-        paginationPerPage={false}
-        fixedHeader
-        columns={tableHeader}
-        data={tableRows}
-        customStyles={customStyles}
-        persistTableHead
-        // conditionalRowStyles={conditionalRowStyles}
-        // selectableRows
-        // onSelectedRowsChange={selectedRowsActionUA}
-      />
-      {isEditable ? (
-        renderDummyRow()
-      ) : isAdmin ? (
-        <div
-          role={'button'}
-          className="add-row"
-          onClick={() => {
-            setIsEditable(true)
-          }}
-        >
-          <img
-            src={Plusicon}
-            style={{
-              width: '16px',
-              marginRight: '12px',
-            }}
-          />
-          Add
+    <div className="col-12 mt-4">
+      <div className="row">
+        <div className="col p-0" style={{ verticalAlign: 'middle', lineHeight: '2.8rem' }}>
+          {table_name}
         </div>
-      ) : null}
+        {(getUserRoles() == 'PMK Administrator' ||
+          getUserRoles() == 'PMK Content Manager' ||
+          getUserRoles() == 'Technical Administrator') &&
+          !archivedFilter && (
+            <div className="col-auto my-2 p-0">
+              <Image
+                className="mr-2"
+                style={{ width: '1.4rem' }}
+                role={'button'}
+                src={ic_link}
+                onClick={() => {
+                  onLinkClick()
+                }}
+              />
+              <i
+                role={'button'}
+                className={
+                  !isTableEditable ? 'fa-solid fa-pen-to-square mr-2' : 'fa-solid fa-floppy-disk'
+                }
+                onClick={() => {
+                  onEditableClick()
+                  if (isTableEditable) {
+                    onTableUpdate(editedTableObject)
+                  }
+                }}
+              />
+              <i
+                role={'button'}
+                className="fa-solid fa-trash ml-2 mr-0"
+                onClick={() => {
+                  onDeleteComponent()
+                }}
+              ></i>
+            </div>
+          )}
+      </div>
+      <div className="row">
+        <div className="border w-100 mt-4 p-0 product-detail-table">
+          <DataTable
+            pagination={false}
+            paginationPerPage={false}
+            fixedHeader
+            columns={tableHeader}
+            data={tableRows}
+            customStyles={customStyles}
+            persistTableHead
+            // conditionalRowStyles={conditionalRowStyles}
+            // selectableRows
+            // onSelectedRowsChange={selectedRowsActionUA}
+          />
+          {isEditable ? (
+            renderDummyRow()
+          ) : isAdmin && !isTableEditable ? (
+            <div
+              role={'button'}
+              className="add-row"
+              onClick={() => {
+                setIsEditable(true)
+              }}
+            >
+              <img
+                src={Plusicon}
+                style={{
+                  width: '16px',
+                  marginRight: '12px',
+                }}
+              />
+              Add
+            </div>
+          ) : null}
+        </div>
+      </div>
     </div>
   )
 }

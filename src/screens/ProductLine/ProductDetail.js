@@ -21,7 +21,6 @@ const ProductDetail = () => {
   const { state } = useLocation()
   const { setLoading } = useLoading()
   const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
-  const [isLoading, setIsLoading] = useState(false)
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])
   const [subProductList, setSubProductList] = useState([])
@@ -30,7 +29,7 @@ const ProductDetail = () => {
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
-  const [isEditable, setIsEditable] = useState(false)
+  const [isEditable, setIsEditable] = useState(-1)
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
@@ -57,7 +56,7 @@ const ProductDetail = () => {
   ]
 
   const getProductDetails = () => {
-    setIsLoading(true)
+    setLoading(true)
     API.post('products/details/', {
       is_archived: archivedFilter,
       parent_id: state.id,
@@ -66,12 +65,46 @@ const ProductDetail = () => {
         if (res.status === 200 && res.data !== undefined) {
           setProductDetail(res.data)
         }
-        setIsLoading(false)
+        setLoading(false)
       })
       .catch(error => {
         console.log(error)
-        setIsLoading(false)
+        setLoading(false)
       })
+  }
+
+  const updateTableValues = tableObject => {
+    setLoading(true)
+    for (let index = 0; index < tableObject.length; index++) {
+      if (tableObject[index].isEdited) {
+        const values = tableObject[index].values.filter(value => value.isEdited)
+        if (values.length > 0) {
+          for (let valIdx = 0; valIdx < values.length; valIdx++) {
+            const val = values[valIdx]
+            const payload = {
+              table_id: tableObject[index].table_id,
+              action_type: 'update_cell',
+              column_name: tableObject[index].column_name,
+              row_index: val.row_index,
+              value: val.value,
+            }
+            API.post('products/page/update_table_data', payload)
+              .then(res => {
+                if (res.status === 200 && res.data !== undefined) {
+                  if (index < tableObject.length && valIdx < values.length) {
+                    index === 0 && res.data?.message && toast.success(res.data?.message)
+                    getProductDetails()
+                  }
+                }
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          }
+        }
+      }
+    }
+    setLoading(false)
   }
 
   const linkComponentToSections = () => {
@@ -86,11 +119,11 @@ const ProductDetail = () => {
           setIsSubProductsModalVisible(false)
           setComponentToLink({})
           setSelectedSubproducts([])
-          index === 0 && setIsLoading(false)
+          index === 0 && setLoading(false)
         })
         .catch(error => {
           console.log(error)
-          index === 0 && setIsLoading(false)
+          index === 0 && setLoading(false)
           setIsSubProductsModalVisible(false)
           setComponentToLink({})
           setSelectedSubproducts([])
@@ -241,63 +274,39 @@ const ProductDetail = () => {
       )
     } else if (ele.type === 'table') {
       return (
-        <div className="col-12 mt-4">
-          <div className="row">
-            <div className="col p-0" style={{ verticalAlign: 'middle', lineHeight: '2.8rem' }}>
-              {ele.table_name}
-            </div>
-            {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') &&
-              !archivedFilter && (
-                <div className="col-auto my-2 p-0">
-                  <Image
-                    className="mr-2"
-                    style={{ width: '1.4rem' }}
-                    role={'button'}
-                    src={ic_link}
-                    onClick={() => {
-                      setIsSubProductsModalVisible(true)
-                      setComponentToLink({
-                        component_id: ele.id,
-                        component_type: ele.type,
-                      })
-                    }}
-                  />
-                  {/* <i
-                    role={'button'}
-                    className="fa-solid fa-pen-to-square mr-2"
-                    onClick={() => {
-                      setIsEditable(true)
-                    }}
-                  /> */}
-                  <i
-                    role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
-                    onClick={() => {
-                      let payload = {
-                        section_id: section.section_id,
-                        component_id: ele.id,
-                        component_type: ele.type,
-                      }
-                      setShowDeleteModal(payload)
-                    }}
-                  ></i>
-                </div>
-              )}
-          </div>
-          <div className="row">
-            <Table
-              tableObject={ele.table_data}
-              setShowDeleteModal={false}
-              onRefresh={() => {
-                getProductDetails()
-              }}
-              isTableEditable={isEditable}
-              isAdmin={isAdmin}
-            />
-          </div>
-        </div>
+        <Table
+          archivedFilter={archivedFilter}
+          onEditableClick={() => {
+            if (ele.id !== isEditable) setIsEditable(ele.id)
+            else setIsEditable(-1)
+          }}
+          table_name={ele.table_name}
+          onLinkClick={() => {
+            setIsSubProductsModalVisible(true)
+            setComponentToLink({
+              component_id: ele.id,
+              component_type: ele.type,
+            })
+          }}
+          onDeleteComponent={() => {
+            let payload = {
+              section_id: section.section_id,
+              component_id: ele.id,
+              component_type: ele.type,
+            }
+            setShowDeleteModal(payload)
+          }}
+          tableObject={ele.table_data}
+          setShowDeleteModal={false}
+          onRefresh={() => {
+            getProductDetails()
+          }}
+          isTableEditable={ele.id === isEditable}
+          isAdmin={isAdmin}
+          onTableUpdate={tableObject => {
+            updateTableValues(tableObject)
+          }}
+        />
       )
     } else if (ele.type === 'link') {
       return (
@@ -1030,28 +1039,24 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-          {isLoading ? (
-            <div className="col text-center">Loading....</div>
-          ) : (
-            <>
-              <div className="row">{renderComponents()}</div>
-              {(getUserRoles() == 'PMK Administrator' ||
-                getUserRoles() == 'PMK Content Manager' ||
-                getUserRoles() == 'Technical Administrator') &&
-                !archivedFilter && (
-                  <div className="mt-2 d-flex justify-content-center">
-                    <button
-                      className="btn create-domain-btn mx-auto"
-                      onClick={() => {
-                        setIsAddSectionModalVisible(true)
-                      }}
-                    >
-                      Add New Section
-                    </button>
-                  </div>
-                )}
-            </>
-          )}
+          <>
+            <div className="row">{renderComponents()}</div>
+            {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
+              getUserRoles() == 'Technical Administrator') &&
+              !archivedFilter && (
+                <div className="mt-2 d-flex justify-content-center">
+                  <button
+                    className="btn create-domain-btn mx-auto"
+                    onClick={() => {
+                      setIsAddSectionModalVisible(true)
+                    }}
+                  >
+                    Add New Section
+                  </button>
+                </div>
+              )}
+          </>
         </div>
       </div>
       <Modal
