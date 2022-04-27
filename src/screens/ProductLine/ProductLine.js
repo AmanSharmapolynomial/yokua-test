@@ -124,29 +124,33 @@ const ProductLine = () => {
               {renderRow()}
             </div>
           )}
-          {/* <div className="archived-filter mt-5 mb-5">
-            {archivedFilter ? (
-              <button
-                className="btn"
-                style={{ display: 'grid', placeItems: 'center' }}
-                onClick={() => {
-                  setArchivedFilter(false)
-                }}
-              >
-                Live Product
-              </button>
-            ) : (
-              <button
-                className="btn"
-                style={{ display: 'grid', placeItems: 'center' }}
-                onClick={() => {
-                  setArchivedFilter(true)
-                }}
-              >
-                Product Archive
-              </button>
-            )}
-          </div> */}
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="archived-filter mt-5 mb-5">
+              {archivedFilter ? (
+                <button
+                  className="btn"
+                  style={{ display: 'grid', placeItems: 'center' }}
+                  onClick={() => {
+                    setArchivedFilter(false)
+                  }}
+                >
+                  Live Product
+                </button>
+              ) : (
+                <button
+                  className="btn"
+                  style={{ display: 'grid', placeItems: 'center' }}
+                  onClick={() => {
+                    setArchivedFilter(true)
+                  }}
+                >
+                  Product Archive
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

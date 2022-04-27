@@ -286,7 +286,7 @@ const EventManagement = () => {
                   <Pagination
                     key="userApproval"
                     current={notificationPage}
-                    total={notificationPagesTotal}
+                    total={notificationPagesTotal * 10}
                     showQuickJumper
                     showSizeChanger={false}
                     onChange={newPage => {

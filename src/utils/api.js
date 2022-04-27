@@ -25,7 +25,7 @@ API.interceptors.response.use(null, e => {
 
   if (Array.isArray(e.response.data?.message)) {
     toast.error(e.response.data?.message[0])
-  } else if (e.response.data?.message[0]) {
+  } else if (e.response.data?.message && e.response.data?.message[0]) {
     toast.error(e.response.data?.message)
   }
   toast.error(e.response.data?.email[0])

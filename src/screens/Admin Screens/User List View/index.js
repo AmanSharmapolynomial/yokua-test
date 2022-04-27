@@ -65,7 +65,7 @@ const UserListView = () => {
 
   // // data from backedn to be stored here
   const [backendData, setBackendData] = useState([])
-  const [dataToChange, setDataToChange] = useState()
+  const [dataToChange, setDataToChange] = useState(null)
 
   // refs
   let [contentRow, setContentRow] = useState([])
@@ -371,9 +371,8 @@ const UserListView = () => {
     if (idx === undefined || idx === null) {
       index = dataToChange
     } else {
-      index = idx
+      index = idx + pageNoCall * 10
     }
-
     if (type === 'Edit' && contentRow[index]?.companyEmail) {
       payload = {
         ...payload,
@@ -383,6 +382,7 @@ const UserListView = () => {
         payload = { ...payload, new_email: data.email }
       }
     }
+
     if (payload.email_id !== '') {
       const afterAddOrDeleteMsg = await API.post(
         type === 'Edit' ? 'admin/edit_user' : 'admin/add_user',

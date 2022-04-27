@@ -279,6 +279,7 @@ export default () => {
                 <button
                   style={{
                     width: '15.6rem',
+                    fontWeight: '600',
                   }}
                   className="btn btn-secondary btn-main btn-sm"
                   type="button"
@@ -314,7 +315,13 @@ export default () => {
                         _getSubProducts(item.id)
                       }}
                     >
-                      <a className="dropdown-item" tabIndex="-1">
+                      <a
+                        style={{
+                          fontWeight: '600',
+                        }}
+                        className="dropdown-item"
+                        tabIndex="-1"
+                      >
                         {item.name} <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                       </a>
                       <ul
@@ -337,7 +344,12 @@ export default () => {
                               }}
                             >
                               <li className="dropdown-submenu">
-                                <a className="dropdown-item">
+                                <a
+                                  style={{
+                                    fontWeight: '600',
+                                  }}
+                                  className="dropdown-item"
+                                >
                                   {sub.name}
                                   <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                                 </a>
@@ -363,7 +375,13 @@ export default () => {
                                           setSelectedProduct(prod)
                                         }}
                                       >
-                                        <a>{prod.name}</a>
+                                        <a
+                                          style={{
+                                            fontWeight: '600',
+                                          }}
+                                        >
+                                          {prod.name}
+                                        </a>
                                       </li>
                                     ))
                                   ) : (

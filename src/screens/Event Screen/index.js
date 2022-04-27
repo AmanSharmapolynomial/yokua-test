@@ -150,7 +150,7 @@ const EventScreen = () => {
                 <div className="event-container">
                   {dataList.slice(0, 3).map(data => (
                     <div key={data.id} className="event-title">
-                      {data.training_name}
+                      {data.training_name} - {data.duration}
                     </div>
                   ))}
                 </div>

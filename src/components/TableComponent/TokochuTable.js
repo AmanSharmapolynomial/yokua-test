@@ -4,31 +4,7 @@ import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
 import { toast } from 'react-toastify'
-import Uploadicon from '../../assets/Icon awesome-file-upload.png'
-
-/**
- *
- * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
- *   {
- *                      id,
-                        column_name,
-                        is_sortable,
-                        is_link,
-                        is_filterable,
-                        is_date,
-                        table_id,
-                        values: [{
-                                 "id": 35,
-                                "column_name": "Column1",
-                                "row_index": 1,
-                                "value": "value 1",
-                                "table_id": 12
-                                }
-                        ]
- *   }
- * ]}
- *
- */
+import Uploadicon from '../../assets/Icon awesome-file-download.png'
 
 export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [imageFile, setImageFile] = useState(null)
@@ -40,19 +16,28 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   const [emptyNewRow, setEmptyNewRow] = useState(null)
   const [rowName, setRowName] = useState({})
-  const [isEdit, setEdit] = useState(true)
+  const [isEdit, setEdit] = useState(false)
   const customStyles = {
+    // table: {
+    //   style: {
+    //     width: '150%',
+    //     maxWidth: '150%',
+    //   },
+    // },
     table: {
       style: {
-        width: '150%',
-        maxWidth: '150%',
+        border: 'none',
       },
     },
     rows: {
       style: {
-        borderWidth: '10px',
-        borderBottomColor: 'black',
-        borderBottomWidth: '10px',
+        border: '1px solid black',
+      },
+    },
+    headRow: {
+      style: {
+        borderBottom: '1px solid var(--bgColor2)',
+        fontSize: '0.8rem',
       },
     },
     headCells: {
@@ -68,9 +53,11 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
         paddingLeft: '8px', // override the cell padding for data cells
         paddingRight: '8px',
         fontSize: '0.8rem',
-        borderBottomStyle: 'solid',
-        borderBottomColor: 'black',
-        borderBottomWidth: '1px',
+      },
+    },
+    noData: {
+      style: {
+        border: '1px solid black',
       },
     },
   }
@@ -133,10 +120,19 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           }
           Object.assign(tableRowObject, tempObject)
         })
-        tableRowObject.edit = <i className="fa-solid fa-trash" role={'button'} />
+        if (isEdit)
+          tableRowObject.edit = (
+            <i
+              className="fa-solid fa-trash"
+              role={'button'}
+              onClick={() => {
+                deleteRow(item)
+              }}
+            />
+          )
         finalTableData.push(tableRowObject)
       })
-    if (isEdit && emptyNewRow) {
+    if (emptyNewRow) {
       finalTableData.push(emptyNewRow)
     }
     setTableRows([...finalTableData])
@@ -156,6 +152,20 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
         toast.success('New row added Successfully')
+        setRowName({})
+        setEmptyNewRow(null)
+        onRefresh()
+      })
+      .catch(err => {})
+  }
+
+  const deleteRow = item => {
+    API.post('tokuchu/page/delete_table_row', {
+      table_id: item.table_id,
+      row_index: item.row_index,
+    })
+      .then(data => {
+        toast.success('Row deleted Successfully')
         setRowName({})
         setEmptyNewRow(null)
         onRefresh()
@@ -275,7 +285,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   return (
     <>
-      {/* {tableObject &&
+      {tableObject &&
         tableObject !== {} &&
         (getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
@@ -285,7 +295,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               {isEdit ? (
                 <i
                   role={'button'}
-                  className="fa-solid fa-solid fa-bookmark ml-2"
+                  className="fa-solid fa-floppy-disk"
                   onClick={() => {
                     setEditModeData([...tableRows])
                     setEdit(false)
@@ -302,50 +312,51 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
                   }}
                 />
               )}
-              <i
+              {/* <i
                 role={'button'}
                 className="fa-solid fa-trash ml-2"
                 onClick={() => {
                   setShowDeleteModal(true)
                 }}
-              />
+              /> */}
             </div>
           </div>
-        )} */}
-      <div className="row">
-        <DataTable
-          fixedHeader
-          persistTableHead
-          columns={tableHeader}
-          data={tableRows}
-          customStyles={customStyles}
-        />
-      </div>
-      {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
-        isEdit && (
-          <div
-            className="add_row"
-            style={{ fontSize: '1rem', background: 'none' }}
-            onClick={() => {
-              if (!emptyNewRow) {
-                addRow()
-              } else {
-                toast.error('Please finish current edit.')
-              }
-            }}
-          >
-            <img
-              src={Plusicon}
-              style={{
-                width: '1rem',
-                marginRight: '0.2rem',
-              }}
-              className={'mr-2'}
-              alt={'icon'}
-            />
-            {'Add'}
-          </div>
         )}
+      <div className="row">
+        <div className="border w-100 p-0">
+          <DataTable
+            fixedHeader
+            persistTableHead
+            columns={tableHeader}
+            data={tableRows}
+            customStyles={customStyles}
+          />
+        </div>
+      </div>
+      {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') && (
+        <div
+          className="add_row"
+          style={{ fontSize: '1rem', background: 'none' }}
+          onClick={() => {
+            if (!emptyNewRow) {
+              addRow()
+            } else {
+              toast.error('Please finish current edit.')
+            }
+          }}
+        >
+          <img
+            src={Plusicon}
+            style={{
+              width: '1rem',
+              marginRight: '0.2rem',
+            }}
+            className={'mr-2'}
+            alt={'icon'}
+          />
+          {'Add'}
+        </div>
+      )}
     </>
   )
 }

@@ -354,6 +354,7 @@ const AddEventScreen = () => {
                       Start date
                     </label>
                     <DatePicker
+                      calendarStartDay={1}
                       minDate={new Date()}
                       className="form-control"
                       onChange={date => {
@@ -395,6 +396,7 @@ const AddEventScreen = () => {
                       End date
                     </label>
                     <DatePicker
+                      calendarStartDay={1}
                       minDate={startDate}
                       className="form-control"
                       onChange={date => {
@@ -434,6 +436,7 @@ const AddEventScreen = () => {
                       Cancel Date
                     </label>
                     <DatePicker
+                      calendarStartDay={1}
                       minDate={new Date()}
                       maxDate={moment(startDate).subtract(1, 'day').toDate()}
                       className="form-control"

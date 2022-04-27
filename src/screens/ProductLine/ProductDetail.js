@@ -13,7 +13,9 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 const ProductDetail = () => {
   const isAdmin =
-    getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
+    getUserRoles() == 'Technical Administrator' ||
+    getUserRoles() == 'PMK Administrator' ||
+    getUserRoles() == 'PMK Content Manager'
 
   const navigate = useNavigate()
   const { state } = useLocation()
@@ -262,13 +264,13 @@ const ProductDetail = () => {
                       })
                     }}
                   />
-                  <i
+                  {/* <i
                     role={'button'}
                     className="fa-solid fa-pen-to-square mr-2"
                     onClick={() => {
                       setIsEditable(true)
                     }}
-                  />
+                  /> */}
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2 mr-0"
@@ -292,7 +294,7 @@ const ProductDetail = () => {
                 getProductDetails()
               }}
               isTableEditable={isEditable}
-              isAdmin={true}
+              isAdmin={isAdmin}
             />
           </div>
         </div>
@@ -319,7 +321,6 @@ const ProductDetail = () => {
                       })
                     }}
                   />
-                  <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2 mr-0"
@@ -365,7 +366,6 @@ const ProductDetail = () => {
                       })
                     }}
                   />
-                  <i className="fa-solid fa-pen-to-square mr-2"></i>
                   <i
                     role={'button'}
                     className="fa-solid fa-trash ml-2 mr-0"

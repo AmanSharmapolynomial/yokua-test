@@ -173,3 +173,7 @@ body {
 .react-calendar__tile--now {
   background-color: #00509b55 !important;
 }
+.rdt_TableCol > div > div {
+  white-space: normal !important;
+  font-size: 1rem;
+}
