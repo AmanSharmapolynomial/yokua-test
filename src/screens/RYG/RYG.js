@@ -42,7 +42,7 @@ const RYG = () => {
   }
 
   const updateProduct = async payload => {
-    const response = await API.post('products/add/product', payload)
+    const response = await API.post('/ryg_info/upsert/ryg_info', payload)
     getProductList()
     toast.success(response.data.message)
   }
@@ -61,7 +61,7 @@ const RYG = () => {
             navigate('/ryg-information/details', { state: item })
           }}
           onUpdate={payload => {
-            // updateProduct(payload)
+            updateProduct(payload)
           }}
         />
       )

@@ -123,7 +123,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                         'data',
                         JSON.stringify({
                           id: item.id,
-                          product_name: /*inputRef.current.value*/ item.page_title,
+                          page_title: /*inputRef.current.value*/ item.page_title,
                           description: textareaRef.current.value,
                         })
                       )
