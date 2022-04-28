@@ -127,17 +127,17 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </li>
 
           <li className="nav-item dropdown px-3">
-            <a
+            <Link
               className="nav-link dropdown-toggle"
-              href="#"
               id="navbarDropdown"
               role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
+              to={'/ryg-information'}
             >
               RYG Information
-            </a>
+            </Link>
           </li>
 
           <li className="nav-item px-3">

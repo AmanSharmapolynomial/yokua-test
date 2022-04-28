@@ -31,6 +31,8 @@ import Impressum from '../components/Impressum'
 import PrivacyPolicy from '../components/PrivacyPolicy'
 import Contact from '../screens/contact/Contact'
 import EventManagement from '../screens/Admin Screens/EventManagement/EventManagement'
+import RYG from '../screens/RYG/RYG'
+import RYGDetail from '../screens/RYG/RYGDetail'
 
 const Routing = () => {
   return (
@@ -193,6 +195,22 @@ const Routing = () => {
           element={
             <PrivateRoute>
               <ProductDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ryg-information"
+          element={
+            <PrivateRoute>
+              <RYG />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ryg-information/details"
+          element={
+            <PrivateRoute>
+              <RYGDetail />
             </PrivateRoute>
           }
         />

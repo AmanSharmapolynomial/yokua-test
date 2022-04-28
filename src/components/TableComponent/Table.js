@@ -43,6 +43,7 @@ export default ({
   onEditableClick,
   archivedFilter,
   onTableUpdate,
+  isRYG = false,
 }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -278,7 +279,10 @@ export default ({
       action_type: 'add_row',
       data: data,
     }
-    const response = await API.post('/products/page/update_table_data', payload)
+    const response = await API.post(
+      !isRYG ? '/products/page/update_table_data' : '/ryg_info/page/update_table_data',
+      payload
+    )
     toast.success(response.data.message)
     onRefresh()
     setIsEditable(false)
