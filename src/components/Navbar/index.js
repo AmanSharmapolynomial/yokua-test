@@ -11,6 +11,7 @@ import API from '../../utils/api'
 const Navbar = ({ isAdmin, isLogedIn }) => {
   const navigate = useNavigate()
   const [unreadNewsCount, setUnreadNewsCount] = useState(0)
+  const [productList, setProductList] = useState([])
 
   const navDropdownAdminData = [
     { name: 'User Management', url: '/admin/user/list-view' },
@@ -46,8 +47,24 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
       console.log(error)
     }
   }
+
+  const getProductList = () => {
+    API.get('/ryg_info/list_view')
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          setProductList(res.data)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  console.log(productList)
+
   useEffect(() => {
     getUnreadNewsCount()
+    productList.length === 0 && getProductList()
   }, [])
 
   return (
@@ -126,18 +143,50 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </div>
           </li>
 
-          <li className="nav-item dropdown px-3">
+          <li className="nav-item dropdown px-3 btn-group">
             <Link
-              className="nav-link dropdown-toggle"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
+              className="nav-link"
+              // id="navbarDropdown"
+              // role="button"
+              // data-toggle="dropdown"
+              // aria-haspopup="true"
+              // aria-expanded="false"
               to={'/ryg-information'}
             >
               RYG Information
             </Link>
+            <div
+              role={'button'}
+              type="button"
+              class="dropdown-toggle dropdown-toggle-split"
+              data-toggle="dropdown"
+              aria-expanded="false"
+              aria-haspopup="true"
+              style={{
+                display: 'flex',
+                color: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <span class="sr-only">Toggle Dropdown</span>
+            </div>
+            {productList.length > 0 && (
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                {productList.map((element, index) => (
+                  <div
+                    role={'button'}
+                    onClick={() => {
+                      navigate('/ryg-information/details', { state: element })
+                    }}
+                    key={index}
+                    className="dropdown-item font-6"
+                  >
+                    {element.page_title}
+                  </div>
+                ))}
+              </div>
+            )}
           </li>
 
           <li className="nav-item px-3">
