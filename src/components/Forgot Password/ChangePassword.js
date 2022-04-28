@@ -61,7 +61,7 @@ const ChnagePassword = () => {
             position: 'relative',
           }}
         >
-          <div className="row align-items-center input-field">
+          <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">
               <input
                 type={passwordVisible ? 'text' : 'password'}
@@ -78,7 +78,7 @@ const ChnagePassword = () => {
             />
           </div>
 
-          <div className="row align-items-center input-field">
+          <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">
               <input
                 type={confirmVisible ? 'text' : 'password'}
