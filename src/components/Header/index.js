@@ -26,17 +26,26 @@ const Header = ({ isLogedIn, isAdmin }) => {
             </div>
             <div className="col-4 d-none d-md-block">
               {isLogedIn && (
-                <div className="input-group search float-right px-3">
-                  <span className="input-group-addon">
-                    <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="What are you looking for?"
-                    className="search_input ml-3"
-                    autoComplete="false"
-                  />
-                </div>
+                <form
+                  className="w-auto float-right"
+                  onSubmit={e => {
+                    e.preventDefault()
+                    navigate(`/search/${e.target.search.value}`)
+                  }}
+                >
+                  <div className="input-group search px-3">
+                    <span className="input-group-addon">
+                      <i className="fa-solid fa-magnifying-glass" style={{ color: 'white' }} />
+                    </span>
+                    <input
+                      name="search"
+                      type="text"
+                      placeholder="What are you looking for?"
+                      className="search_input ml-3"
+                      autoComplete="false"
+                    />
+                  </div>
+                </form>
               )}
             </div>
           </div>

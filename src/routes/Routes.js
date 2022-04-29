@@ -33,6 +33,7 @@ import Contact from '../screens/contact/Contact'
 import EventManagement from '../screens/Admin Screens/EventManagement/EventManagement'
 import RYG from '../screens/RYG/RYG'
 import RYGDetail from '../screens/RYG/RYGDetail'
+import Search from '../screens/Search/Search'
 
 const Routing = () => {
   return (
@@ -211,6 +212,14 @@ const Routing = () => {
           element={
             <PrivateRoute>
               <RYGDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/search/:query"
+          element={
+            <PrivateRoute>
+              <Search />
             </PrivateRoute>
           }
         />

@@ -178,7 +178,7 @@ export default ({
 
         tableData?.map(column_name => {
           const tempObject = new Object()
-          let value = column_name.values[index].value
+          let value = column_name.values[index]?.value
           if (column_name.is_link) {
             value = (
               <a href={value} target="_blank">
@@ -228,7 +228,7 @@ export default ({
         tableData?.map((column_name, column_index) => {
           if (!isTableEditable) {
             const tempObject = new Object()
-            let value = column_name.values[index].value
+            let value = column_name.values[index]?.value
             if (column_name.is_link) {
               value = (
                 <a href={value} target="_blank">
@@ -240,7 +240,7 @@ export default ({
             Object.assign(tableRowObject, tempObject)
           } else {
             const tempObject = new Object()
-            let value = column_name.values[index].value
+            let value = column_name.values[index]?.value
             tempObject[column_name['column_name']] = (
               <>
                 <input
@@ -349,41 +349,38 @@ export default ({
         <div className="col p-0" style={{ verticalAlign: 'middle', lineHeight: '2.8rem' }}>
           {table_name}
         </div>
-        {(getUserRoles() == 'PMK Administrator' ||
-          getUserRoles() == 'PMK Content Manager' ||
-          getUserRoles() == 'Technical Administrator') &&
-          !archivedFilter && (
-            <div className="col-auto my-2 p-0">
-              <Image
-                className="mr-2"
-                style={{ width: '1.4rem' }}
-                role={'button'}
-                src={ic_link}
-                onClick={() => {
-                  onLinkClick()
-                }}
-              />
-              <i
-                role={'button'}
-                className={
-                  !isTableEditable ? 'fa-solid fa-pen-to-square mr-2' : 'fa-solid fa-floppy-disk'
+        {isAdmin && !archivedFilter && (
+          <div className="col-auto my-2 p-0">
+            <Image
+              className="mr-2"
+              style={{ width: '1.4rem' }}
+              role={'button'}
+              src={ic_link}
+              onClick={() => {
+                onLinkClick()
+              }}
+            />
+            <i
+              role={'button'}
+              className={
+                !isTableEditable ? 'fa-solid fa-pen-to-square mr-2' : 'fa-solid fa-floppy-disk'
+              }
+              onClick={() => {
+                onEditableClick()
+                if (isTableEditable) {
+                  onTableUpdate(editedTableObject)
                 }
-                onClick={() => {
-                  onEditableClick()
-                  if (isTableEditable) {
-                    onTableUpdate(editedTableObject)
-                  }
-                }}
-              />
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ml-2 mr-0"
-                onClick={() => {
-                  onDeleteComponent()
-                }}
-              ></i>
-            </div>
-          )}
+              }}
+            />
+            <i
+              role={'button'}
+              className="fa-solid fa-trash ml-2 mr-0"
+              onClick={() => {
+                onDeleteComponent()
+              }}
+            ></i>
+          </div>
+        )}
       </div>
       <div className="row">
         <div className="border w-100 mt-4 p-0 product-detail-table">

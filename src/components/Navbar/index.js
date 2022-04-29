@@ -60,8 +60,6 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
       })
   }
 
-  console.log(productList)
-
   useEffect(() => {
     getUnreadNewsCount()
     productList.length === 0 && getProductList()
