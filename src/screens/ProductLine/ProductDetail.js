@@ -53,6 +53,7 @@ const ProductDetail = () => {
     { title: 'Date', key: 'is_date' },
     { title: 'Link', key: 'is_link' },
     { title: 'Filter', key: 'is_filterable' },
+    { title: 'File', key: 'is_file' },
   ]
 
   const getProductDetails = () => {
@@ -536,6 +537,19 @@ const ProductDetail = () => {
       </div>
     ))
 
+  const getFileDisabled = componentArr => {
+    let bool = false
+    if (componentArr !== undefined) {
+      componentArr.every(ele => {
+        if (ele.is_file) {
+          bool = true
+          return
+        }
+      })
+    }
+    return bool
+  }
+
   const renderAddTable = () => {
     return (
       <div className="row">
@@ -584,7 +598,7 @@ const ProductDetail = () => {
               {columneNames.map((item, index) => (
                 <div
                   className={`${
-                    index === 0 ? 'col-4 add-table-col' : 'col-2 add-table-col text-center'
+                    index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center'
                   }`}
                 >
                   {item.title}
@@ -598,7 +612,7 @@ const ProductDetail = () => {
                     <input
                       style={{ textTransform: 'capitalize' }}
                       className={`${
-                        index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
+                        index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
                       }`}
                       placeholder="column name"
                       onChange={e => {
@@ -634,6 +648,12 @@ const ProductDetail = () => {
                               is_filterable: false,
                             }
                           }
+                          if (state.table_data[i]?.is_file === undefined) {
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              is_file: false,
+                            }
+                          }
                           return state
                         })
                       }}
@@ -641,12 +661,19 @@ const ProductDetail = () => {
                   ) : (
                     <input
                       disabled={
-                        (index === 1 || index === 2 || index === 4) &&
-                        addComponentData?.table_data &&
-                        addComponentData?.table_data[i]?.is_link
+                        ((index === 1 || index === 2 || index === 4 || index === 5) &&
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i]?.is_link) ||
+                        (index !== 5 &&
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i] &&
+                          addComponentData?.table_data[i]?.is_file) ||
+                        (index === 5 &&
+                          getFileDisabled(addComponentData?.table_data) &&
+                          addComponentData?.table_data[i].is_file !== true)
                       }
                       type="checkbox"
-                      className={`${index === 0 ? 'col-4' : 'col-2'}`}
+                      className={`${index === 0 ? 'col-4' : 'col'}`}
                       onChange={e => {
                         setAddComponentData(prevState => {
                           let state = { ...prevState }
@@ -660,6 +687,16 @@ const ProductDetail = () => {
                               ...state.table_data[i],
                               [columneNames[1].key]: false,
                               [columneNames[2].key]: false,
+                              [columneNames[4].key]: false,
+                              [columneNames[5].key]: false,
+                            }
+                          }
+                          if (item.key === 'is_file' && e.target.checked === true) {
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              [columneNames[1].key]: false,
+                              [columneNames[2].key]: false,
+                              [columneNames[3].key]: false,
                               [columneNames[4].key]: false,
                             }
                           }
@@ -1312,7 +1349,7 @@ const ProductDetail = () => {
                   >
                     <div className="card-body">
                       {subProductList[idx].sections.map(section => (
-                        <div class="py-1 px-3 d-flex">
+                        <div className="py-1 px-3 d-flex">
                           <input
                             checked={selectedSubProducts.indexOf(section.section_id) !== -1}
                             onChange={e => {
@@ -1327,12 +1364,12 @@ const ProductDetail = () => {
                                 return arr
                               })
                             }}
-                            class="form-check-input"
+                            className="form-check-input"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
                           />
-                          <label class="form-check-label" for="flexCheckDefault">
+                          <label className="form-check-label" for="flexCheckDefault">
                             {section.name}
                           </label>
                         </div>

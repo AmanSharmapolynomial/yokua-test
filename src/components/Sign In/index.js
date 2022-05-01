@@ -33,7 +33,7 @@ const SignIn = () => {
       if (logindata) {
         setUser(logindata)
         toast.success('Login Successful')
-        navigate('/profile')
+        navigate('/home')
       }
     }
     setLoading(false)

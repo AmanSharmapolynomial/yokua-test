@@ -1302,7 +1302,7 @@ const RYGDetail = () => {
                     >
                       <div className="card-body">
                         {subProductList[idx].sections.map(section => (
-                          <div class="py-1 px-3 d-flex">
+                          <div className="py-1 px-3 d-flex">
                             <input
                               checked={selectedSubProducts.indexOf(section.section_id) !== -1}
                               onChange={e => {
@@ -1317,12 +1317,12 @@ const RYGDetail = () => {
                                   return arr
                                 })
                               }}
-                              class="form-check-input"
+                              className="form-check-input"
                               type="checkbox"
                               value=""
                               id="flexCheckDefault"
                             />
-                            <label class="form-check-label" for="flexCheckDefault">
+                            <label className="form-check-label" for="flexCheckDefault">
                               {section.name}
                             </label>
                           </div>

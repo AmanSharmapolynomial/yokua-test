@@ -5,7 +5,7 @@ import { getToken } from '../utils/token'
 
 const AuthLayout = ({ children }) => {
   if (getToken()) {
-    return <Navigate to="/profile" replace />
+    return <Navigate to="/home" replace />
   }
   const { pathname } = useLocation()
   if (pathname == '/auth') {

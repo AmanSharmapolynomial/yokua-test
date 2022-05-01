@@ -34,12 +34,14 @@ import EventManagement from '../screens/Admin Screens/EventManagement/EventManag
 import RYG from '../screens/RYG/RYG'
 import RYGDetail from '../screens/RYG/RYGDetail'
 import Search from '../screens/Search/Search'
+import Home from '../screens/Home/Home'
 
 const Routing = () => {
   return (
     <React.Fragment>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
+        <Route path="/home" element={<Home />} />
         <Route
           path="/auth"
           element={

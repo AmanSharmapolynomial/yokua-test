@@ -86,7 +86,9 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
       >
         <ul className="navbar-nav mx-auto text-md-center text-left">
           <li className="nav-item px-3">
-            <a className="nav-link">Home</a>
+            <Link className="nav-link" to={'/home'}>
+              Home
+            </Link>
           </li>
           <li className="nav-item px-3">
             <Link className="nav-link" to="/news">
@@ -156,7 +158,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             <div
               role={'button'}
               type="button"
-              class="dropdown-toggle dropdown-toggle-split"
+              className="dropdown-toggle dropdown-toggle-split"
               data-toggle="dropdown"
               aria-expanded="false"
               aria-haspopup="true"
@@ -167,7 +169,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
                 alignItems: 'center',
               }}
             >
-              <span class="sr-only">Toggle Dropdown</span>
+              <span className="sr-only">Toggle Dropdown</span>
             </div>
             {productList.length > 0 && (
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -203,6 +205,11 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           <li className="nav-item px-3">
             <Link className="nav-link" to="/profile">
               Profile Settings
+            </Link>
+          </li>
+          <li className="nav-item px-3">
+            <Link className="nav-link" to="/contact">
+              Contact
             </Link>
           </li>
           {getUserRoles() === 'Technical Administrator' ||

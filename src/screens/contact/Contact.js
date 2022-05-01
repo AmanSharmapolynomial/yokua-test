@@ -7,9 +7,6 @@ import PrimaryHeading from '../../components/Primary Headings'
 
 export default () => {
   const [contact, setContact] = useState({})
-  useEffect(() => {
-    _getContact()
-  }, [])
 
   const _getContact = () => {
     API.get('contact').then(data => {
@@ -17,11 +14,16 @@ export default () => {
       setContact(data.data)
     })
   }
+
+  useEffect(() => {
+    _getContact()
+  }, [])
+
   return (
     <>
       <Header isLogedIn={getToken()} />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col profile-setting-container pb-5">
+        <div className="col center py-md-3">
           <PrimaryHeading title={'Contact'} backgroundImage={'yk-back-image-profile'} />
           <div className="yk-admin-contact mt-5">
             <div className="container-fluid`">

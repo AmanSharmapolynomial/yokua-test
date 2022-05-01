@@ -27,7 +27,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`product-card col-12 col-md card shadow ${
+      className={`product-card col-12 col-md-4 card shadow ${
         index % 3 === 0 ? 'mr-md-3' : 'ms-md-3'
       } px-3 py-3 mt-3 mt-md-0`}
     >

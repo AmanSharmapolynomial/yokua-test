@@ -266,12 +266,18 @@ export default ({
 
   const callAddRowAPI = async () => {
     let data = []
+    let file = undefined
     tableObject.forEach(col => {
-      data.push({ column_name: col.column_name /*, values*/ })
+      if (col?.is_file === false) data.push({ column_name: col.column_name /*, values*/ })
     })
-
-    inputRef.current.forEach((input, idx) => {
-      data[idx] = { ...data[idx], values: [/*...data[idx].values,*/ input.value] }
+    let dataIdx = 0
+    inputRef.current.forEach(input => {
+      if (input?.files && input?.files[0]) {
+        file = input.files[0]
+      } else {
+        data[dataIdx] = { ...data[dataIdx], values: /*...data[idx].values,*/ input.value }
+        dataIdx++
+      }
     })
 
     const payload = {
@@ -279,9 +285,14 @@ export default ({
       action_type: 'add_row',
       data: data,
     }
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    if (file !== undefined) {
+      formData.append('file', file)
+    }
     const response = await API.post(
       !isRYG ? '/products/page/update_table_data' : '/ryg_info/page/update_table_data',
-      payload
+      formData
     )
     toast.success(response.data.message)
     onRefresh()
@@ -291,35 +302,41 @@ export default ({
   const renderDummyRow = () => {
     return (
       <div className="add-row overflow-auto">
-        {tableObject.map((ele, idx) => (
-          <div className="dummy-col" style={{ minWidth: '100px' }}>
-            <input ref={el => (inputRef.current[idx] = el)} />
-            {tableObject.length === idx + 1 && (
-              <>
-                <Image
-                  role={'button'}
-                  src={decline}
-                  className="ml-2"
-                  onClick={() => {
-                    setIsEditable(false)
-                  }}
-                />
-                <Image
-                  role={'button'}
-                  src={accept}
-                  className="mx-2"
-                  onClick={() => {
-                    if (inputRef.current[idx].value === '') {
-                      toast.error('Cannot add with empty data')
-                      return
-                    }
-                    callAddRowAPI()
-                  }}
-                />
-              </>
-            )}
-          </div>
-        ))}
+        {tableObject.map((ele, idx) => {
+          return (
+            <div className="dummy-col" style={{ minWidth: '100px' }}>
+              {!ele.is_file ? (
+                <input ref={el => (inputRef.current[idx] = el)} />
+              ) : (
+                <input ref={el => (inputRef.current[idx] = el)} type="file" />
+              )}
+              {tableObject.length === idx + 1 && (
+                <>
+                  <Image
+                    role={'button'}
+                    src={decline}
+                    className="ml-2"
+                    onClick={() => {
+                      setIsEditable(false)
+                    }}
+                  />
+                  <Image
+                    role={'button'}
+                    src={accept}
+                    className="mx-2"
+                    onClick={() => {
+                      if (inputRef.current[idx].value === '') {
+                        toast.error('Cannot add with empty data')
+                        return
+                      }
+                      callAddRowAPI()
+                    }}
+                  />
+                </>
+              )}
+            </div>
+          )
+        })}
       </div>
     )
   }
