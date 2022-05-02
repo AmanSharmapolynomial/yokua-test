@@ -76,43 +76,32 @@ const ProductDetail = () => {
 
   const updateTableValues = tableObject => {
     setLoading(true)
-    let promises = []
+    let payload = {
+      action_type: 'update_cell',
+      update_objs: [],
+    }
     for (let index = 0; index < tableObject.length; index++) {
       if (tableObject[index].isEdited) {
         const values = tableObject[index].values.filter(value => value.isEdited)
-        if (values.length > 0) {
-          for (let valIdx = 0; valIdx < values.length; valIdx++) {
-            const val = values[valIdx]
-            const payload = {
-              table_id: tableObject[index].table_id,
-              action_type: 'update_cell',
-              column_name: tableObject[index].column_name,
-              row_index: val.row_index,
-              value: val.value,
-            }
-            promises.push(API.post('products/page/update_table_data', payload))
-          }
-        }
+        payload.update_objs.push(...values)
       }
     }
-    if (promises.length > 0) {
-      Promise.all(promises)
-        .then(res => {
-          if (res.length > 0) {
-            if (res[0].status === 200 && res[0].data !== undefined) {
-              if (res[0].data?.message) {
-                toast.success(res[0].data?.message)
-              }
-            }
-            getProductDetails()
-            setLoading(false)
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    API.post('products/page/update_table_data', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
           }
-        })
-        .catch(err => {
-          console.log(err)
-          setLoading(false)
-        })
-    }
+        }
+        getProductDetails()
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
   }
 
   const linkComponentToSections = () => {
@@ -580,9 +569,10 @@ const ProductDetail = () => {
           </div>
           <input
             onChange={e => {
-              setAddComponentData(prevState => {
-                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
-              })
+              if (parseInt(e.target.value) <= 10)
+                setAddComponentData(prevState => {
+                  return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
+                })
             }}
             type="number"
             min={1}

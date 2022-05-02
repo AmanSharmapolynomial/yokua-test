@@ -73,43 +73,32 @@ const RYGDetail = () => {
 
   const updateTableValues = tableObject => {
     setLoading(true)
-    let promises = []
+    let payload = {
+      action_type: 'update_cell',
+      update_objs: [],
+    }
     for (let index = 0; index < tableObject.length; index++) {
       if (tableObject[index].isEdited) {
         const values = tableObject[index].values.filter(value => value.isEdited)
-        if (values.length > 0) {
-          for (let valIdx = 0; valIdx < values.length; valIdx++) {
-            const val = values[valIdx]
-            const payload = {
-              table_id: tableObject[index].table_id,
-              action_type: 'update_cell',
-              column_name: tableObject[index].column_name,
-              row_index: val.row_index,
-              value: val.value,
-            }
-            promises.push(API.post('/ryg_info/page/update_table_data', payload))
-          }
-        }
+        payload.update_objs.push(...values)
       }
     }
-    if (promises.length > 0) {
-      Promise.all(promises)
-        .then(res => {
-          if (res.length > 0) {
-            if (res[0].status === 200 && res[0].data !== undefined) {
-              if (res[0].data?.message) {
-                toast.success(res[0].data?.message)
-              }
-            }
-            getProductDetails()
-            setLoading(false)
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    API.post('/ryg_info/page/update_table_data', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
           }
-        })
-        .catch(err => {
-          console.log(err)
-          setLoading(false)
-        })
-    }
+        }
+        getProductDetails()
+        setLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
   }
 
   const linkComponentToSections = () => {
@@ -394,61 +383,61 @@ const RYGDetail = () => {
         </div>
       )
     } else if (ele.type === 'image') {
-      if (arr[idx - 1]?.type !== 'image') {
-        let IMAGES = []
-        for (let index = idx; index < arr.length; index++) {
-          const element = arr[index]
-          if (element.type === 'image') {
-            IMAGES.push(
-              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
-                <Image src={ele.image_link} className="border rounded img-product-line" />
+      // if (arr[idx - 1]?.type !== 'image') {
+      let IMAGES = []
+      // for (let index = idx; index < arr.length; index++) {
+      // const element = arr[index]
+      // if (element.type === 'image') {
+      IMAGES.push(
+        <div className={`col-6 p-0`}>
+          <Image src={ele.image_link} className="border rounded img-product-line" />
+        </div>
+      )
+      // } else {
+      //   break
+      // }
+      // }
+      return (
+        <div className="col-12 mt-4">
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div className="row">
+              <div className="ml-auto w-auto my-2 p-0">
+                <Image
+                  className="mr-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    setIsSubProductsModalVisible(true)
+                    setComponentToLink({
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    })
+                  }}
+                />
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ml-2 mr-0"
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: ele.id,
+                      component_type: ele.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
               </div>
-            )
-          } else {
-            break
-          }
-        }
-        return (
-          <div className="col-12 mt-4">
-            {(getUserRoles() == 'PMK Administrator' ||
-              getUserRoles() == 'PMK Content Manager' ||
-              getUserRoles() == 'Technical Administrator') && (
-              <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
-                  <Image
-                    className="mr-2"
-                    style={{ width: '1.4rem' }}
-                    role={'button'}
-                    src={ic_link}
-                    onClick={() => {
-                      setIsSubProductsModalVisible(true)
-                      setComponentToLink({
-                        component_id: ele.id,
-                        component_type: ele.type,
-                      })
-                    }}
-                  />
-                  <i
-                    role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
-                    onClick={() => {
-                      let payload = {
-                        section_id: section.section_id,
-                        component_id: ele.id,
-                        component_type: ele.type,
-                      }
-                      setShowDeleteModal(payload)
-                    }}
-                  ></i>
-                </div>
-              </div>
-            )}
-            <div className="row">{IMAGES}</div>
-          </div>
-        )
-      } else {
-        return null
-      }
+            </div>
+          )}
+          <div className="row">{IMAGES}</div>
+        </div>
+      )
+      // } else {
+      //   return null
+      // }
     } else if (ele.type === 'image_grid') {
       let IMAGES = []
       for (let index = 0; index < ele.images.length; index++) {
@@ -556,9 +545,10 @@ const RYGDetail = () => {
           </div>
           <input
             onChange={e => {
-              setAddComponentData(prevState => {
-                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
-              })
+              if (parseInt(e.target.value) <= 10)
+                setAddComponentData(prevState => {
+                  return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
+                })
             }}
             type="number"
             min={1}
