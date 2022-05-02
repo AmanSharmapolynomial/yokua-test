@@ -120,9 +120,7 @@ const ProductLine = () => {
               </div>
             </div>
           ) : (
-            <div className="col" style={{ paddingRight: '10%' }}>
-              {renderRow()}
-            </div>
+            <div className="col">{renderRow()}</div>
           )}
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||

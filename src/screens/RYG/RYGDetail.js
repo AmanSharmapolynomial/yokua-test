@@ -588,7 +588,7 @@ const RYGDetail = () => {
                     <input
                       style={{ textTransform: 'capitalize' }}
                       className={`${
-                        index === 0 ? 'col-4 add-table-col-input' : 'col-2 add-table-col-input'
+                        index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
                       }`}
                       placeholder="column name"
                       onChange={e => {
@@ -624,6 +624,12 @@ const RYGDetail = () => {
                               is_filterable: false,
                             }
                           }
+                          if (state.table_data[i]?.is_file === undefined) {
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              is_file: false,
+                            }
+                          }
                           return state
                         })
                       }}
@@ -631,12 +637,21 @@ const RYGDetail = () => {
                   ) : (
                     <input
                       disabled={
-                        (index === 1 || index === 2 || index === 4) &&
-                        addComponentData?.table_data &&
-                        addComponentData?.table_data[i]?.is_link
+                        ((index === 1 || index === 2 || index === 4 || index === 5) &&
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i]?.is_link) ||
+                        (index !== 5 &&
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i] &&
+                          addComponentData?.table_data[i]?.is_file) ||
+                        (index === 5 &&
+                          getFileDisabled(addComponentData?.table_data) &&
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i] &&
+                          addComponentData?.table_data[i]?.is_file !== true)
                       }
                       type="checkbox"
-                      className={`${index === 0 ? 'col-4' : 'col-2'}`}
+                      className={`${index === 0 ? 'col-4' : 'col'}`}
                       onChange={e => {
                         setAddComponentData(prevState => {
                           let state = { ...prevState }
@@ -650,6 +665,16 @@ const RYGDetail = () => {
                               ...state.table_data[i],
                               [columneNames[1].key]: false,
                               [columneNames[2].key]: false,
+                              [columneNames[4].key]: false,
+                              [columneNames[5].key]: false,
+                            }
+                          }
+                          if (item.key === 'is_file' && e.target.checked === true) {
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              [columneNames[1].key]: false,
+                              [columneNames[2].key]: false,
+                              [columneNames[3].key]: false,
                               [columneNames[4].key]: false,
                             }
                           }
@@ -993,7 +1018,7 @@ const RYGDetail = () => {
       getUserRoles() == 'PMK Content Manager' ||
       getUserRoles() == 'Technical Administrator') &&
       getSubProductsList()
-  }, [])
+  }, [state])
 
   return (
     <>
@@ -1026,7 +1051,7 @@ const RYGDetail = () => {
                   <u
                     role="button"
                     onClick={e => {
-                      navigate(-2)
+                      navigate(-1)
                     }}
                   >
                     RYG Information

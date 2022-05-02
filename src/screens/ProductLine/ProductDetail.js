@@ -670,7 +670,9 @@ const ProductDetail = () => {
                           addComponentData?.table_data[i]?.is_file) ||
                         (index === 5 &&
                           getFileDisabled(addComponentData?.table_data) &&
-                          addComponentData?.table_data[i].is_file !== true)
+                          addComponentData?.table_data &&
+                          addComponentData?.table_data[i] &&
+                          addComponentData?.table_data[i]?.is_file !== true)
                       }
                       type="checkbox"
                       className={`${index === 0 ? 'col-4' : 'col'}`}

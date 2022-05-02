@@ -187,7 +187,7 @@ const Search = props => {
 
   useEffect(() => {
     getSearchResults()
-  }, [])
+  }, [query])
 
   return (
     <>

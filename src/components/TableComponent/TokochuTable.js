@@ -104,7 +104,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <a href={tableC.values[index].value} download>
+                <a href={tableC.values[index].value} download target={'_blank'}>
                   <img
                     src={Uploadicon}
                     style={{ width: '15px', marginRight: '10px' }}

@@ -8,6 +8,8 @@ import API from '../../utils/api'
 import { toast } from 'react-toastify'
 import { getUserRoles } from '../../utils/token'
 import ic_link from '../../assets/link_icon.png'
+import Uploadicon from '../../assets/Icon awesome-file-download.png'
+
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -236,6 +238,17 @@ export default ({
                 </a>
               )
             }
+            if (column_name.is_file) {
+              value = (
+                <a href={value} download>
+                  <img
+                    src={Uploadicon}
+                    style={{ width: '15px', marginRight: '10px' }}
+                    alt={'FileImage'}
+                  />
+                </a>
+              )
+            }
             tempObject[column_name['column_name']] = value
             Object.assign(tableRowObject, tempObject)
           } else {
@@ -268,15 +281,16 @@ export default ({
     let data = []
     let file = undefined
     tableObject.forEach(col => {
-      if (col?.is_file === false) data.push({ column_name: col.column_name /*, values*/ })
+      /*if (col?.is_file === false) */ data.push({ column_name: col.column_name /*, values*/ })
     })
-    let dataIdx = 0
-    inputRef.current.forEach(input => {
+    // let dataIdx = 0
+    inputRef.current.forEach((input, idx) => {
       if (input?.files && input?.files[0]) {
         file = input.files[0]
+        data[idx] = { ...data[idx], values: /*...data[idx].values,*/ '' }
       } else {
-        data[dataIdx] = { ...data[dataIdx], values: /*...data[idx].values,*/ input.value }
-        dataIdx++
+        data[idx] = { ...data[idx], values: /*...data[idx].values,*/ input.value }
+        // dataIdx++
       }
     })
 

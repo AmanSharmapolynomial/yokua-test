@@ -40,139 +40,139 @@ const ProductCard = ({
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`product-card col-12 col-md card shadow ${
-        index % 2 === 0 ? 'mr-md-5' : 'ms-md-5'
-      } px-2 py-3 mt-3 mt-md-0`}
+      className={`product-card col-12 col-md-6 mt-3`}
     >
-      <div className="row">
-        <div className="col">
-          <div className="row">
-            <div className="col-6" style={{ padding: '0 20px' }}>
-              <div className="img-box thumb rounded d-flex">
-                {isEditable ? (
-                  <>
-                    <input
-                      ref={imageInputRef}
-                      type="file"
-                      accept="image/png, image/gif, image/jpeg"
-                      className="d-none"
-                      onChange={e => {
-                        if (!e.target.files[0]) {
-                          setPreview(undefined)
-                          return
-                        }
+      <div className="card shadow px-3 py-3">
+        <div className="row">
+          <div className="col">
+            <div className="row">
+              <div className="col-6" style={{ padding: '0 20px' }}>
+                <div className="img-box thumb rounded d-flex">
+                  {isEditable ? (
+                    <>
+                      <input
+                        ref={imageInputRef}
+                        type="file"
+                        accept="image/png, image/gif, image/jpeg"
+                        className="d-none"
+                        onChange={e => {
+                          if (!e.target.files[0]) {
+                            setPreview(undefined)
+                            return
+                          }
 
-                        const objectUrl = URL.createObjectURL(e.target.files[0])
-                        setPreview(objectUrl)
-                      }}
-                    />
+                          const objectUrl = URL.createObjectURL(e.target.files[0])
+                          setPreview(objectUrl)
+                        }}
+                      />
+                      <img
+                        className="img-thumbnail"
+                        src={preview ? preview : item?.image_link ? item.image_link : upload}
+                        onClick={e => {
+                          e.stopPropagation()
+                          imageInputRef.current.click()
+                        }}
+                      />
+                    </>
+                  ) : (
                     <img
                       className="img-thumbnail"
-                      src={preview ? preview : item?.image_link ? item.image_link : upload}
-                      onClick={e => {
-                        e.stopPropagation()
-                        imageInputRef.current.click()
-                      }}
+                      src={item.image_link ? item.image_link : placeholder}
                     />
-                  </>
-                ) : (
+                  )}
+                </div>
+                {
+                  /*isEditable*/ false ? (
+                    <div className="border text-center rounded mt-2">
+                      <input ref={inputRef} />
+                    </div>
+                  ) : (
+                    <div
+                      className="border text-center rounded mt-2"
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        wordBreak: 'break-word',
+                      }}
+                    >
+                      {subProduct ? item.sub_product_name : item.name}
+                    </div>
+                  )
+                }
+              </div>
+
+              {isEditable ? (
+                <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
+              ) : (
+                <div className="col-6 d-flex align-items-center" style={{ wordBreak: 'break-all' }}>
+                  {item.description}
+                </div>
+              )}
+            </div>
+          </div>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') &&
+            !archive && (
+              <span className="col-auto d-none d-md-block">
+                {!subProduct && (
                   <img
-                    className="img-thumbnail"
-                    src={item.image_link ? item.image_link : placeholder}
+                    className="mr-3"
+                    src={archiveIcon}
+                    onClick={e => {
+                      e.stopPropagation()
+                      setShowArchiveModal(true)
+                      // onArchiveClick()
+                    }}
                   />
                 )}
-              </div>
-              {
-                /*isEditable*/ false ? (
-                  <div className="border text-center rounded mt-2">
-                    <input ref={inputRef} />
-                  </div>
-                ) : (
-                  <div
-                    className="border text-center rounded mt-2"
-                    style={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      wordBreak: 'break-word',
-                    }}
-                  >
-                    {subProduct ? item.sub_product_name : item.name}
-                  </div>
-                )
-              }
-            </div>
-
-            {isEditable ? (
-              <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
-            ) : (
-              <div className="col-6 d-flex align-items-center" style={{ wordBreak: 'break-all' }}>
-                {item.description}
-              </div>
-            )}
-          </div>
-        </div>
-        {(getUserRoles() == 'PMK Administrator' ||
-          getUserRoles() == 'PMK Content Manager' ||
-          getUserRoles() == 'Technical Administrator') &&
-          !archive && (
-            <span className="col-auto d-none d-md-block">
-              {!subProduct && (
                 <img
-                  className="mr-3"
-                  src={archiveIcon}
+                  src={isEditable ? saveIcon : editIcon}
                   onClick={e => {
                     e.stopPropagation()
-                    setShowArchiveModal(true)
-                    // onArchiveClick()
+                    if (isEditable) {
+                      try {
+                        if (
+                          /*inputRef.current.value.trim() !== '' &&*/
+                          textareaRef.current.value.trim() !== '' &&
+                          item.id !== undefined &&
+                          item.id !== null
+                        ) {
+                          const payload = new FormData()
+                          if (subProduct)
+                            payload.append(
+                              'data',
+                              JSON.stringify({
+                                id: item.id,
+                                product_id: item.product_id,
+                                sub_product_name: /* inputRef.current.value*/ item.sub_product_name,
+                                description: textareaRef.current.value,
+                              })
+                            )
+                          else
+                            payload.append(
+                              'data',
+                              JSON.stringify({
+                                id: item.id,
+                                product_name: /*inputRef.current.value*/ item.name,
+                                description: textareaRef.current.value,
+                              })
+                            )
+                          imageInputRef.current.files[0] &&
+                            payload.append('file', imageInputRef.current.files[0])
+                          onUpdate(payload)
+                        }
+                      } catch (error) {
+                        console.log(error)
+                      }
+                      setPreview(undefined)
+                    }
+                    setIsEditable(!isEditable)
                   }}
                 />
-              )}
-              <img
-                src={isEditable ? saveIcon : editIcon}
-                onClick={e => {
-                  e.stopPropagation()
-                  if (isEditable) {
-                    try {
-                      if (
-                        /*inputRef.current.value.trim() !== '' &&*/
-                        textareaRef.current.value.trim() !== '' &&
-                        item.id !== undefined &&
-                        item.id !== null
-                      ) {
-                        const payload = new FormData()
-                        if (subProduct)
-                          payload.append(
-                            'data',
-                            JSON.stringify({
-                              id: item.id,
-                              product_id: item.product_id,
-                              sub_product_name: /* inputRef.current.value*/ item.sub_product_name,
-                              description: textareaRef.current.value,
-                            })
-                          )
-                        else
-                          payload.append(
-                            'data',
-                            JSON.stringify({
-                              id: item.id,
-                              product_name: /*inputRef.current.value*/ item.name,
-                              description: textareaRef.current.value,
-                            })
-                          )
-                        imageInputRef.current.files[0] &&
-                          payload.append('file', imageInputRef.current.files[0])
-                        onUpdate(payload)
-                      }
-                    } catch (error) {
-                      console.log(error)
-                    }
-                    setPreview(undefined)
-                  }
-                  setIsEditable(!isEditable)
-                }}
-              />
-            </span>
-          )}
+              </span>
+            )}
+        </div>
       </div>
       <Modal centered show={showArchiveModal}>
         <Modal.Body>
