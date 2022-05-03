@@ -134,14 +134,14 @@ const Search = props => {
   }
 
   const renderComponents = () => (
-    <div className="accordion" id="accordion">
+    <div className="accordion" id="accordion" style={{ width: '100%' }}>
       {searchResults.map((item, index) => (
         <div className="col-12 mt-5">
           <div className="row">
             <div
               data-toggle="collapse"
               data-target={`#collapse${index}`}
-              aria-expanded="false"
+              aria-expanded="true"
               aria-controls={`collapse${index}`}
               className="btn-group border rounded-right w-auto p-0" /*collapsed*/
               role={'button'}
@@ -172,7 +172,7 @@ const Search = props => {
           </div>
           <div
             id={`collapse${index}`}
-            className="row collapse"
+            className="row collapse show"
             aria-labelledby="headingTwo"
             // data-parent={`#accordion`}
           >
@@ -182,8 +182,6 @@ const Search = props => {
       ))}
     </div>
   )
-
-  console.log(searchResults)
 
   useEffect(() => {
     getSearchResults()
