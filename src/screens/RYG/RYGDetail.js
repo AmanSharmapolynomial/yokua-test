@@ -412,61 +412,61 @@ const RYGDetail = () => {
         </div>
       )
     } else if (ele.type === 'image') {
-      // if (arr[idx - 1]?.type !== 'image') {
-      let IMAGES = []
-      // for (let index = idx; index < arr.length; index++) {
-      // const element = arr[index]
-      // if (element.type === 'image') {
-      IMAGES.push(
-        <div className={`col-6 p-0`}>
-          <Image src={ele.image_link} className="border rounded img-product-line" />
-        </div>
-      )
-      // } else {
-      //   break
-      // }
-      // }
-      return (
-        <div className="col-12 mt-4">
-          {(getUserRoles() == 'PMK Administrator' ||
-            getUserRoles() == 'PMK Content Manager' ||
-            getUserRoles() == 'Technical Administrator') && (
-            <div className="row">
-              <div className="ml-auto w-auto my-2 p-0">
-                <Image
-                  className="mr-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ml-2 mr-0"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+      if (arr[idx - 1]?.type !== 'image') {
+        let IMAGES = []
+        for (let index = idx; index < arr.length; index++) {
+          const element = arr[index]
+          if (element.type === 'image') {
+            IMAGES.push(
+              <div className={`col-6 p-0 mt-2${index % 2 === 0 ? ' pl-2' : ' pr-2'}`}>
+                <Image src={element.image_link} className="border rounded img-product-line" />
               </div>
-            </div>
-          )}
-          <div className="row">{IMAGES}</div>
-        </div>
-      )
-      // } else {
-      //   return null
-      // }
+            )
+          } else {
+            break
+          }
+        }
+        return (
+          <div className="col-12 mt-4">
+            {(getUserRoles() == 'PMK Administrator' ||
+              getUserRoles() == 'PMK Content Manager' ||
+              getUserRoles() == 'Technical Administrator') && (
+              <div className="row">
+                <div className="ml-auto w-auto my-2 p-0">
+                  <Image
+                    className="mr-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ml-2 mr-0"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </div>
+              </div>
+            )}
+            <div className="row">{IMAGES}</div>
+          </div>
+        )
+      } else {
+        return null
+      }
     } else if (ele.type === 'image_grid') {
       let IMAGES = []
       for (let index = 0; index < ele.images.length; index++) {

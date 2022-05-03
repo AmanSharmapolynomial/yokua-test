@@ -108,7 +108,7 @@ const ProductList = () => {
             {productList.map((item, index) => (
               <div
                 key={item.id}
-                className="img-main me-5 mb-5"
+                className="img-main mr-5 mb-5"
                 onClick={() => handleProductClick(item.id, item.name, item.isStatic, item.route)}
               >
                 <div className="img-box">

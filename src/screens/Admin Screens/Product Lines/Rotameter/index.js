@@ -96,7 +96,7 @@ const Rotameter = () => {
           {productList.map((item, index) => (
             <div
               key={item.id}
-              className="img-main me-5 mb-5"
+              className="img-main mr-5 mb-5"
               onClick={() =>
                 navigate(`/admin/product-detail/${item.id}`, {
                   state: {
@@ -127,7 +127,7 @@ const Rotameter = () => {
           {productListGlass.map((item, index) => (
             <div
               key={item.id}
-              className="img-main me-5 mb-5"
+              className="img-main mr-5 mb-5"
               onClick={() =>
                 navigate(`/admin/product-detail/${item.id}`, {
                   state: {
