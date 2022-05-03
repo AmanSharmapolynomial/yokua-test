@@ -3,7 +3,6 @@ import Routing from './routes/Routes'
 import { ToastContainer, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { TailSpin } from 'react-loader-spinner'
 import styled from 'styled-components'
 import { useLoading } from './utils/LoadingContext'

@@ -11,6 +11,7 @@ import { Modal, Image } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
+import RYGFlowComponent from '../../components/RYGFlowComponent/RYGFlowComponent'
 const RYGDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -213,8 +214,36 @@ const RYGDetail = () => {
       })
   }
 
+  const updateRYGComponent = payload => {
+    let promises = []
+    for (let index = 0; index < payload.length; index++) {
+      promises.push(API.post('/ryg_info/page/update_component', payload[index]))
+    }
+    Promise.all(promises)
+      .then(res => {
+        if (res[0].status === 200 && res[0].data !== undefined) {
+          res[0].data?.message && toast.success(res[0].data?.message)
+          getProductDetails()
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        getProductDetails()
+      })
+  }
+
   const renderType = (ele, idx, arr, section) => {
-    if (ele.type === 'binary') {
+    if (ele.type === 'flow_Configurator_component') {
+      return (
+        <RYGFlowComponent
+          data={ele}
+          isAdmin={isAdmin}
+          onUpdate={data => {
+            updateRYGComponent(data)
+          }}
+        />
+      )
+    } else if (ele.type === 'binary') {
       return (
         <div className="col-12 mt-4">
           {(getUserRoles() == 'PMK Administrator' ||

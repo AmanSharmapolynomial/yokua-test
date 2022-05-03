@@ -46,12 +46,6 @@
 .accordian-title[aria-expanded='true'] .fa-angle-right {
   transform: rotate(-90deg);
 }
-.img-product-line {
-  height: 100%;
-  width: 100%;
-  aspect-ratio: 3/2;
-  object-fit: cover;
-}
 
 .add-table-row {
   border-bottom: 1px solid lightgrey;
@@ -82,6 +76,7 @@
   height: 100%;
 }
 
-.add-table-col-input:focus, .add-table-col-input:active {
+.add-table-col-input:focus,
+.add-table-col-input:active {
   outline: none;
 }
