@@ -53,6 +53,7 @@ const RYGDetail = () => {
     { title: 'Date', key: 'is_date' },
     { title: 'Link', key: 'is_link' },
     { title: 'Filter', key: 'is_filterable' },
+    { title: 'File', key: 'is_file' },
   ]
 
   const getProductDetails = () => {
