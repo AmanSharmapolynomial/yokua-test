@@ -544,7 +544,7 @@ const RYGDetail = () => {
         )}
       </div>
     ))
-
+    
     const getFileDisabled = componentArr => {
       let bool = false
       if (componentArr !== undefined) {
