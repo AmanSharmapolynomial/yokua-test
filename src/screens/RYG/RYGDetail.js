@@ -544,7 +544,7 @@ const RYGDetail = () => {
         )}
       </div>
     ))
-    
+
     const getFileDisabled = componentArr => {
       let bool = false
       if (componentArr !== undefined) {
@@ -607,7 +607,7 @@ const RYGDetail = () => {
               {columneNames.map((item, index) => (
                 <div
                   className={`${
-                    index === 0 ? 'col-4 add-table-col' : 'col-2 add-table-col text-center'
+                    index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center'
                   }`}
                 >
                   {item.title}
