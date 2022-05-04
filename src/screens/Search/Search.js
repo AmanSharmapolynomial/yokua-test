@@ -24,12 +24,13 @@ const Search = props => {
   const { setLoading } = useLoading()
   const [searchResults, setSearchResults] = useState([])
   const [expanded, setExpanded] = useState(-1)
+  const [isHistory, setIsHistory] = useState(false)
 
   const getSearchResults = () => {
     setLoading(true)
     API.post('/search/', {
       query: query,
-      search_history: false,
+      search_history: isHistory,
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
@@ -136,7 +137,7 @@ const Search = props => {
   const renderComponents = () => (
     <div className="accordion" id="accordion" style={{ width: '100%' }}>
       {searchResults.map((item, index) => (
-        <div className="col-12 mt-5">
+        <div className="mt-5">
           <div className="row">
             <div
               data-toggle="collapse"
@@ -163,7 +164,7 @@ const Search = props => {
               >
                 <i
                   className={`fa-solid ${
-                    index !== expanded ? 'fa-angle-up' : 'fa-angle-down'
+                    index !== expanded ? 'fa-angle-down' : 'fa-angle-up'
                   } mx-2`}
                   style={{ fontSize: '1rem' }}
                 />
@@ -184,8 +185,13 @@ const Search = props => {
   )
 
   useEffect(() => {
+    setIsHistory(false)
     getSearchResults()
   }, [query])
+
+  useEffect(() => {
+    getSearchResults()
+  }, [isHistory])
 
   return (
     <>
@@ -196,7 +202,7 @@ const Search = props => {
         }
       />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col center py-3">
+        <div className="col center py-md-3">
           <PrimaryHeading title={'Search Results'} />
           <div className="col">
             <div className="row">
@@ -205,6 +211,16 @@ const Search = props => {
               </div>
             </div>
             <div className="row">{renderComponents()}</div>
+            <div className="row mt-3">
+              <button
+                className="btn create-domain-btn w-auto mx-auto"
+                onClick={() => {
+                  setIsHistory(true)
+                }}
+              >
+                Result from history
+              </button>
+            </div>
           </div>
         </div>
       </div>
