@@ -614,7 +614,6 @@ const RYGDetail = () => {
                 </div>
               ))}
             </div>
-            
             {[...Array(addComponentData?.columnsNum)].map((e, i) => (
               <div className="row add-table-row d-flex align-items-center">
                 {columneNames.map((item, index) =>
