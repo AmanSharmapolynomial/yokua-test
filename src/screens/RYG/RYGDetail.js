@@ -558,202 +558,202 @@ const RYGDetail = () => {
       return bool
     }
 
-  const renderAddTable = () => {
-    return (
-      <div className="row">
-        <div className="input-group my-input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold">Table Name</span>
-          </div>
-          <input
-            style={{ textTransform: 'capitalize' }}
-            onChange={e => {
-              setAddComponentData(prevState => {
-                return {
-                  ...prevState,
-                  table_name: e.target.value,
-                  title: e.target.value,
-                }
-              })
-            }}
-            type="text"
-            className="form-control"
-            aria-label={'Table Name'}
-            aria-describedby="basic-addon1"
-          />
-        </div>
-        <div className="input-group my-input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text font-8 font-weight-bold">Add Number of Columns</span>
-          </div>
-          <input
-            onChange={e => {
-              if (parseInt(e.target.value) <= 10)
+    const renderAddTable = () => {
+      return (
+        <div className="row">
+          <div className="input-group my-input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text font-8 font-weight-bold">Table Name</span>
+            </div>
+            <input
+              style={{ textTransform: 'capitalize' }}
+              onChange={e => {
                 setAddComponentData(prevState => {
-                  return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
+                  return {
+                    ...prevState,
+                    table_name: e.target.value,
+                    title: e.target.value,
+                  }
                 })
-            }}
-            type="number"
-            min={1}
-            max={10}
-            className="form-control"
-            aria-label={'Add Number of Columns'}
-            aria-describedby="basic-addon1"
-          />
-        </div>
-        {addComponentData?.columnsNum && addComponentData?.columnsNum > 0 && (
-          <div className="col-12 font-8">
-            <div className="row add-table-row">
-              {columneNames.map((item, index) => (
-                <div
-                  className={`${
-                    index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center'
-                  }`}
-                >
-                  {item.title}
+              }}
+              type="text"
+              className="form-control"
+              aria-label={'Table Name'}
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          <div className="input-group my-input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text font-8 font-weight-bold">Add Number of Columns</span>
+            </div>
+            <input
+              onChange={e => {
+                if (parseInt(e.target.value) <= 10)
+                  setAddComponentData(prevState => {
+                    return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
+                  })
+              }}
+              type="number"
+              min={1}
+              max={10}
+              className="form-control"
+              aria-label={'Add Number of Columns'}
+              aria-describedby="basic-addon1"
+            />
+          </div>
+          {addComponentData?.columnsNum && addComponentData?.columnsNum > 0 && (
+            <div className="col-12 font-8">
+              <div className="row add-table-row">
+                {columneNames.map((item, index) => (
+                  <div
+                    className={`${
+                      index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center'
+                    }`}
+                  >
+                    {item.title}
+                  </div>
+                ))}
+              </div>
+              {[...Array(addComponentData?.columnsNum)].map((e, i) => (
+                <div className="row add-table-row d-flex align-items-center">
+                  {columneNames.map((item, index) =>
+                    index === 0 ? (
+                      <input
+                        style={{ textTransform: 'capitalize' }}
+                        className={`${
+                          index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
+                        }`}
+                        placeholder="column name"
+                        onChange={e => {
+                          setAddComponentData(prevState => {
+                            let state = { ...prevState }
+                            if (prevState.table_data === undefined) state.table_data = []
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              values: [],
+                              [item.key]: e.target.value,
+                            }
+                            if (state.table_data[i]?.is_sortable === undefined) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                is_sortable: false,
+                              }
+                            }
+                            if (state.table_data[i]?.is_date === undefined) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                is_date: false,
+                              }
+                            }
+                            if (state.table_data[i]?.is_link === undefined) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                is_link: false,
+                              }
+                            }
+                            if (state.table_data[i]?.is_filterable === undefined) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                is_filterable: false,
+                              }
+                            }
+                            if (state.table_data[i]?.is_file === undefined) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                is_file: false,
+                              }
+                            }
+                            return state
+                          })
+                        }}
+                      />
+                    ) : (
+                      <input
+                        disabled={
+                          ((index === 1 || index === 2 || index === 4 || index === 5) &&
+                            addComponentData?.table_data &&
+                            addComponentData?.table_data[i]?.is_link) ||
+                          (index !== 5 &&
+                            addComponentData?.table_data &&
+                            addComponentData?.table_data[i] &&
+                            addComponentData?.table_data[i]?.is_file) ||
+                          (index === 5 &&
+                            getFileDisabled(addComponentData?.table_data) &&
+                            addComponentData?.table_data &&
+                            addComponentData?.table_data[i] &&
+                            addComponentData?.table_data[i]?.is_file !== true)
+                        }
+                        type="checkbox"
+                        className={`${index === 0 ? 'col-4' : 'col'}`}
+                        onChange={e => {
+                          setAddComponentData(prevState => {
+                            let state = { ...prevState }
+                            if (prevState.table_data === undefined) state.table_data = []
+                            state.table_data[i] = {
+                              ...state.table_data[i],
+                              [item.key]: e.target.checked,
+                            }
+                            if (item.key === 'is_link' && e.target.checked === true) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                [columneNames[1].key]: false,
+                                [columneNames[2].key]: false,
+                                [columneNames[4].key]: false,
+                                [columneNames[5].key]: false,
+                              }
+                            }
+                            if (item.key === 'is_file' && e.target.checked === true) {
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                [columneNames[1].key]: false,
+                                [columneNames[2].key]: false,
+                                [columneNames[3].key]: false,
+                                [columneNames[4].key]: false,
+                              }
+                            }
+                            return state
+                          })
+                        }}
+                      />
+                    )
+                  )}
                 </div>
               ))}
             </div>
-            {[...Array(addComponentData?.columnsNum)].map((e, i) => (
-              <div className="row add-table-row d-flex align-items-center">
-                {columneNames.map((item, index) =>
-                  index === 0 ? (
-                    <input
-                      style={{ textTransform: 'capitalize' }}
-                      className={`${
-                        index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
-                      }`}
-                      placeholder="column name"
-                      onChange={e => {
-                        setAddComponentData(prevState => {
-                          let state = { ...prevState }
-                          if (prevState.table_data === undefined) state.table_data = []
-                          state.table_data[i] = {
-                            ...state.table_data[i],
-                            values: [],
-                            [item.key]: e.target.value,
-                          }
-                          if (state.table_data[i]?.is_sortable === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_sortable: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_date === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_date: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_link === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_link: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_filterable === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_filterable: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_file === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_file: false,
-                            }
-                          }
-                          return state
-                        })
-                      }}
-                    />
-                  ) : (
-                    <input
-                      disabled={
-                        ((index === 1 || index === 2 || index === 4 || index === 5) &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i]?.is_link) ||
-                        (index !== 5 &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i] &&
-                          addComponentData?.table_data[i]?.is_file) ||
-                        (index === 5 &&
-                          getFileDisabled(addComponentData?.table_data) &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i] &&
-                          addComponentData?.table_data[i]?.is_file !== true)
-                      }
-                      type="checkbox"
-                      className={`${index === 0 ? 'col-4' : 'col'}`}
-                      onChange={e => {
-                        setAddComponentData(prevState => {
-                          let state = { ...prevState }
-                          if (prevState.table_data === undefined) state.table_data = []
-                          state.table_data[i] = {
-                            ...state.table_data[i],
-                            [item.key]: e.target.checked,
-                          }
-                          if (item.key === 'is_link' && e.target.checked === true) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              [columneNames[1].key]: false,
-                              [columneNames[2].key]: false,
-                              [columneNames[4].key]: false,
-                              [columneNames[5].key]: false,
-                            }
-                          }
-                          if (item.key === 'is_file' && e.target.checked === true) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              [columneNames[1].key]: false,
-                              [columneNames[2].key]: false,
-                              [columneNames[3].key]: false,
-                              [columneNames[4].key]: false,
-                            }
-                          }
-                          return state
-                        })
-                      }}
-                    />
-                  )
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="col-12 justify-content-center d-flex mt-3">
-          <button
-            ref={element => {
-              if (element) {
-                element.style.setProperty('background-color', 'transparent', 'important')
-                element.style.setProperty('color', 'var(--bgColor2)', 'important')
+          )}
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                onAddComponentCancel()
+                setExpandedAccordian(-1)
+              }}
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              disabled={
+                addComponentData?.table_name === undefined ||
+                addComponentData?.table_name === '' ||
+                addComponentData?.columnsNum === undefined
               }
-            }}
-            onClick={() => {
-              onAddComponentCancel()
-              setExpandedAccordian(-1)
-            }}
-            className="btn mr-2"
-          >
-            Cancel
-          </button>
-          <button
-            disabled={
-              addComponentData?.table_name === undefined ||
-              addComponentData?.table_name === '' ||
-              addComponentData?.columnsNum === undefined
-            }
-            className="btn btn-primary ml-2"
-            onClick={() => {
-              callAddComponentAPI('table')
-            }}
-          >
-            Create
-          </button>
+              className="btn btn-primary ml-2"
+              onClick={() => {
+                callAddComponentAPI('table')
+              }}
+            >
+              Create
+            </button>
+          </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 
   const renderAddLink = () => {
     return (
