@@ -5,6 +5,7 @@ import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
 import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
+import { Modal } from 'react-bootstrap'
 
 export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [imageFile, setImageFile] = useState(null)
@@ -17,6 +18,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
   const [emptyNewRow, setEmptyNewRow] = useState(null)
   const [rowName, setRowName] = useState({})
   const [isEdit, setEdit] = useState(false)
+  const [deleteSelected, setDeleteSelected] = useState(null)
   const customStyles = {
     // table: {
     //   style: {
@@ -126,7 +128,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               className="fa-solid fa-trash"
               role={'button'}
               onClick={() => {
-                deleteRow(item)
+                setDeleteSelected(item)
               }}
             />
           )
@@ -169,6 +171,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
         setRowName({})
         setEmptyNewRow(null)
         onRefresh()
+        setDeleteSelected(null)
       })
       .catch(err => {})
   }
@@ -357,6 +360,63 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           {'Add'}
         </div>
       )}
+      <Modal
+        show={deleteSelected !== null && Object.keys(deleteSelected).length > 0}
+        centered
+        onHide={() => {
+          setDeleteSelected(null)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+          }}
+        >
+          <Modal.Title>Are you sure you want to delete row</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            borderBottom: '0',
+            fontWeight: '600',
+          }}
+        >
+          The row will be deleted
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderTop: '0',
+          }}
+          centered
+        >
+          <button
+            id="mybtn"
+            className="btn btn-background me-4"
+            onClick={() => {
+              setDeleteSelected(null)
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              deleteRow(deleteSelected)
+            }}
+          >
+            Confirm
+          </button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

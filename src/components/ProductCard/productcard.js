@@ -66,7 +66,7 @@ const ProductCard = ({
                         }}
                       />
                       <img
-                        className="img-thumbnail"
+                        className="img-thumbnail border-black"
                         src={preview ? preview : item?.image_link ? item.image_link : upload}
                         onClick={e => {
                           e.stopPropagation()
@@ -76,19 +76,19 @@ const ProductCard = ({
                     </>
                   ) : (
                     <img
-                      className="img-thumbnail"
+                      className="img-thumbnail border-black"
                       src={item.image_link ? item.image_link : placeholder}
                     />
                   )}
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border text-center rounded mt-2">
+                    <div className="border-black text-center rounded mt-2">
                       <input ref={inputRef} />
                     </div>
                   ) : (
                     <div
-                      className="border text-center rounded mt-2"
+                      className="border-black text-center rounded mt-2"
                       style={{
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',

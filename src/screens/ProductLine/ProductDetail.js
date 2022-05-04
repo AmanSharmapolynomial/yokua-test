@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
-import './style.css'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -452,7 +451,9 @@ const ProductDetail = () => {
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
-          <div className={`col-3${index === 0 ? ' ps-0' : ''}`}>
+          <div
+            className={`col-3 mt-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
+          >
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
         )

@@ -81,7 +81,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
   }, [imageFile])
 
   return (
-    <Modal show={show} dialogClassName="modal-90w">
+    <Modal show={show} centered dialogClassName="max-width-40">
       <Modal.Body className="modal-wrapper">
         {change == 'View' && (
           <img
@@ -94,7 +94,7 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
         )}
         <h3 className="modal-heading">{title}</h3>
         <div
-          className="row flex-row modal-content justify-content-center"
+          className="row flex-row modal-content justify-content-center mt-4"
           style={{
             border: '0',
           }}

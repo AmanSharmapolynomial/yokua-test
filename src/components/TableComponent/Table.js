@@ -429,7 +429,7 @@ export default ({
           />
           {isEditable ? (
             renderDummyRow()
-          ) : isAdmin && !isTableEditable ? (
+          ) : isAdmin && !isTableEditable && !archivedFilter ? (
             <div
               role={'button'}
               className="add-row"

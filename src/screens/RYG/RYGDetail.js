@@ -473,7 +473,9 @@ const RYGDetail = () => {
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
-          <div className={`col-3${index === 0 ? ' ps-0' : ''}`}>
+          <div
+            className={`col-3 mt-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
+          >
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
         )
