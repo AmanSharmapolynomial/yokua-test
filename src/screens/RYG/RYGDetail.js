@@ -545,6 +545,19 @@ const RYGDetail = () => {
       </div>
     ))
 
+    const getFileDisabled = componentArr => {
+      let bool = false
+      if (componentArr !== undefined) {
+        componentArr.every(ele => {
+          if (ele.is_file) {
+            bool = true
+            return
+          }
+        })
+      }
+      return bool
+    }
+
   const renderAddTable = () => {
     return (
       <div className="row">
