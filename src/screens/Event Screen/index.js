@@ -124,17 +124,10 @@ const EventScreen = () => {
     <>
       <Header isLogedIn={getToken()} />
       <div className="row mx-2 mx-md-5 my-4 h-100">
-        <div className="col event-setting-container">
+        <div className="col-12 center py-md-3">
           <PrimaryHeading title="RYG Event Calender" backgroundImage={'yk-back-image-event'} />
         </div>
-      </div>
-      <div className="calenderDiv" style={{ margin: '10px 0' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="col-12">
           <Calendar
             //minDate={new Date()}
             prevLabel={<i className="fas fa-caret-left"></i>}
@@ -157,258 +150,175 @@ const EventScreen = () => {
               ) : null
             }}
           />
-        </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Table
-            responsive="sm"
-            style={{
-              border: '1px solid',
-              margin: '20px auto 0',
-              maxHeight: '450px',
-              width: '100%',
-            }}
-          >
-            <thead>
-              <tr style={{ background: 'rgb(0, 79, 155)' }}>
-                <td colSpan="6">
-                  <div
-                    style={{
-                      background: 'rgb(0, 79, 155)',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: '5px 0',
-                      width: '15%',
-                    }}
-                  >
-                    {isAdmin && (
-                      <input
-                        id="mainCheckbox"
-                        type="checkbox"
-                        style={{ marginLeft: '10px' }}
-                        onChange={event => handleMainCheckBox(event.target.checked)}
-                      />
-                    )}
-                    <p
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Table
+              responsive="sm"
+              style={{
+                border: '1px solid',
+                maxHeight: '450px',
+                width: '100%',
+              }}
+            >
+              <thead>
+                <tr style={{ background: 'rgb(0, 79, 155)' }}>
+                  <td colSpan="6">
+                    <div
                       style={{
-                        color: 'white',
-                        fontSize: '20px',
-                        width: '100%',
-                        marginBottom: 0,
-                        marginLeft: '25px',
+                        background: 'rgb(0, 79, 155)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '5px 0',
+                        width: '15%',
                       }}
                     >
-                      All Trainings
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {eventList.length > 0 ? (
-                eventList.map(e => {
-                  let startDate = moment(e.start_date, 'yyyy-MM-DD')
-                  let endDate = moment(e.end_date, 'yyyy-MM-DD')
-                  return (
-                    <tr>
-                      <td style={{ width: '5%' }}>
-                        <div>
-                          {isAdmin && (
-                            <input
-                              type="checkbox"
-                              id={e.id}
-                              checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
-                              style={{ marginLeft: '10px' }}
-                              onChange={event => {
-                                let temp = [...checkedBoxState]
-                                temp.forEach(data => {
-                                  if (data.id == e.id) {
-                                    data.status = !data.status
-                                  }
-                                })
-                                setCheckedBoxState([...temp])
-                              }}
-                            />
-                          )}
-                        </div>
-                      </td>
-                      <td style={{ width: '15%', minWidth: '150px' }}>
-                        <div
-                          style={{
-                            borderRight: '1px solid',
-                            paddingRight: '15px',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          <p>{moment(startDate).format('ddd DD MMM')}</p>
-                          <p>{moment(endDate).format('ddd DD MMM')}</p>
-                          <br />
-                          <p>{endDate.diff(startDate, 'days')} days</p>
-                        </div>
-                      </td>
-                      <td style={{ width: '30%' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <i
-                            className="fas fa-location-dot"
-                            aria-hidden="true"
+                      {isAdmin && (
+                        <input
+                          id="mainCheckbox"
+                          type="checkbox"
+                          style={{ marginLeft: '10px' }}
+                          onChange={event => handleMainCheckBox(event.target.checked)}
+                        />
+                      )}
+                      <p
+                        style={{
+                          color: 'white',
+                          fontSize: '20px',
+                          width: '100%',
+                          marginBottom: 0,
+                          marginLeft: '25px',
+                        }}
+                      >
+                        All Trainings
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {eventList.length > 0 ? (
+                  eventList.map(e => {
+                    let startDate = moment(e.start_date, 'yyyy-MM-DD')
+                    let endDate = moment(e.end_date, 'yyyy-MM-DD')
+                    return (
+                      <tr>
+                        <td style={{ width: '5%' }}>
+                          <div>
+                            {isAdmin && (
+                              <input
+                                type="checkbox"
+                                id={e.id}
+                                checked={checkedBoxState.filter(data => data.id == e.id)[0]?.status}
+                                style={{ marginLeft: '10px' }}
+                                onChange={event => {
+                                  let temp = [...checkedBoxState]
+                                  temp.forEach(data => {
+                                    if (data.id == e.id) {
+                                      data.status = !data.status
+                                    }
+                                  })
+                                  setCheckedBoxState([...temp])
+                                }}
+                              />
+                            )}
+                          </div>
+                        </td>
+                        <td style={{ width: '15%', minWidth: '150px' }}>
+                          <div
                             style={{
-                              color: '#004F9B',
-                              fontSize: '1.5rem',
-                              margin: '0 25px 0 10px',
-                            }}
-                          ></i>
-                          <span style={{ fontWeight: 'bold' }}>
-                            <p style={{ marginBottom: '10px' }}>{e.training_name}</p>
-                            <p style={{ marginBottom: '10px' }}>{e.location}</p>
-                            <p>{e.classification_level} Training</p>
-                          </span>
-                        </div>
-                      </td>
-                      <td style={{ width: '40%', minWidth: '120px' }}>
-                        <div>
-                          <label
-                            style={{
-                              color: '#004F9B',
-                              textDecoration: 'underline',
-                              cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                              navigate('/event/update/' + e.id)
+                              borderRight: '1px solid',
+                              paddingRight: '15px',
+                              fontWeight: 'bold',
                             }}
                           >
-                            Click here to Register Event
-                          </label>
-                        </div>
-                      </td>
-                      <td style={{ width: '30%', maxWidth: '300px' }}>
-                        <p
-                          style={{
-                            padding: '25px',
-                            wordWrap: 'break-word',
-                            overflowWrap: 'break-word',
-                          }}
-                        >
-                          {e.description}
-                        </p>
-                      </td>
-                      <td style={{ width: '5%' }}>
-                        <div
-                          style={{
-                            padding: '25px',
-                          }}
-                        >
-                          {getUserRoles() == 'Technical Administrator' ||
-                          getUserRoles() == 'PMK Administrator' ? (
+                            <p>{moment(startDate).format('ddd DD MMM')}</p>
+                            <p>{moment(endDate).format('ddd DD MMM')}</p>
+                            <br />
+                            <p>{endDate.diff(startDate, 'days')} days</p>
+                          </div>
+                        </td>
+                        <td style={{ width: '30%' }}>
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
                             <i
-                              className="fas fa-trash"
-                              onClick={() => {
-                                openModal(e.id)
+                              className="fas fa-location-dot"
+                              aria-hidden="true"
+                              style={{
+                                color: '#004F9B',
+                                fontSize: '1.5rem',
+                                margin: '0 25px 0 10px',
                               }}
-                              style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
-                            />
-                          ) : null}
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                })
-              ) : (
-                <tr>
-                  <div className="text-center">No Events Found</div>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </div>
-
-        {isAdmin && (
-          <div className="row mx-2 mx-md-5 mb-5">
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-              <button
-                onClick={() => {
-                  navigate('/event/add')
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                }}
-              >
-                RYG Event creation
-              </button>
-              <button
-                onClick={() => {
-                  openModalForMultipleEvent()
-                }}
-                style={{
-                  background: 'rgb(0, 79, 155)',
-                  color: 'white',
-                  border: '1px solid black',
-                  borderRadius: '3px',
-                }}
-              >
-                Delete
-              </button>
-            </div>
+                            ></i>
+                            <span style={{ fontWeight: 'bold' }}>
+                              <p style={{ marginBottom: '10px' }}>{e.training_name}</p>
+                              <p style={{ marginBottom: '10px' }}>{e.location}</p>
+                              <p>{e.classification_level} Training</p>
+                            </span>
+                          </div>
+                        </td>
+                        <td style={{ width: '40%', minWidth: '120px' }}>
+                          <div>
+                            <label
+                              style={{
+                                color: '#004F9B',
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => {
+                                navigate('/event/update/' + e.id)
+                              }}
+                            >
+                              Click here to Register Event
+                            </label>
+                          </div>
+                        </td>
+                        <td style={{ width: '30%', maxWidth: '300px' }}>
+                          <p
+                            style={{
+                              padding: '25px',
+                              wordWrap: 'break-word',
+                              overflowWrap: 'break-word',
+                            }}
+                          >
+                            {e.description}
+                          </p>
+                        </td>
+                        <td style={{ width: '5%' }}>
+                          <div
+                            style={{
+                              padding: '25px',
+                            }}
+                          >
+                            {getUserRoles() == 'Technical Administrator' ||
+                            getUserRoles() == 'PMK Administrator' ? (
+                              <i
+                                className="fas fa-trash"
+                                onClick={() => {
+                                  openModal(e.id)
+                                }}
+                                style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
+                              />
+                            ) : null}
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })
+                ) : (
+                  <tr>
+                    <div className="text-center">No Events Found</div>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
           </div>
-        )}
-        <div>
-          <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-            <div>
-              <p
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: '20px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                Event Cancellation
-              </p>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-                className="row"
-              >
-                <input
-                  style={{
-                    borderRadius: '3px',
-                    width: '75%',
-                  }}
-                  type="text"
-                  maxLength="255"
-                  placeholder="Maximum 255 character support..."
-                  onChange={e => {
-                    setEventDeleteMsg(e.target.value)
-                  }}
-                  className="form-control"
-                  required
-                />
-              </div>
-              <br />
-              <br />
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button
-                  style={{
-                    background: 'white',
-                    color: 'rgb(0, 79, 155)',
-                    border: '1px solid black',
-                    borderRadius: '3px',
-                  }}
-                  onClick={() => {
-                    closeModal()
-                  }}
-                >
-                  Cancel
-                </button>
-                &nbsp;&nbsp;
+
+          {isAdmin && (
+            <div className="row mb-5">
+              <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
                 <button
                   onClick={() => {
-                    handleDeleteEvent()
+                    navigate('/event/add')
                   }}
                   style={{
                     background: 'rgb(0, 79, 155)',
@@ -417,11 +327,93 @@ const EventScreen = () => {
                     borderRadius: '3px',
                   }}
                 >
-                  Send
+                  RYG Event creation
+                </button>
+                <button
+                  onClick={() => {
+                    openModalForMultipleEvent()
+                  }}
+                  style={{
+                    background: 'rgb(0, 79, 155)',
+                    color: 'white',
+                    border: '1px solid black',
+                    borderRadius: '3px',
+                  }}
+                >
+                  Delete
                 </button>
               </div>
             </div>
-          </Modal>
+          )}
+          <div>
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+              <div>
+                <p
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  Event Cancellation
+                </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                  className="row"
+                >
+                  <input
+                    style={{
+                      borderRadius: '3px',
+                      width: '75%',
+                    }}
+                    type="text"
+                    maxLength="255"
+                    placeholder="Maximum 255 character support..."
+                    onChange={e => {
+                      setEventDeleteMsg(e.target.value)
+                    }}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <br />
+                <br />
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <button
+                    style={{
+                      background: 'white',
+                      color: 'rgb(0, 79, 155)',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                    }}
+                    onClick={() => {
+                      closeModal()
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  &nbsp;&nbsp;
+                  <button
+                    onClick={() => {
+                      handleDeleteEvent()
+                    }}
+                    style={{
+                      background: 'rgb(0, 79, 155)',
+                      color: 'white',
+                      border: '1px solid black',
+                      borderRadius: '3px',
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
+              </div>
+            </Modal>
+          </div>
         </div>
       </div>
     </>

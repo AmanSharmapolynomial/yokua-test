@@ -4,7 +4,7 @@
   text-decoration: none !important;
 }
 .react-calendar {
-  width: 92% !important;
+  width: 100% !important;
   border: 1px solid;
 }
 .react-calendar__viewContainer {
@@ -13,7 +13,7 @@
 .table-responsive-sm {
   overflow: auto;
   margin-top: 20px;
-  width: 92% !important;
+  width: 100% !important;
 }
 .eventPTag {
   border-radius: 5px;
