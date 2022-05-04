@@ -36,7 +36,7 @@ const Forgot = () => {
         <div className="container-head">
           <span className="position-absolute float-left">
             <i
-              className="fa-solid fa-arrow-left back-arrow-btn mr-2"
+              className="fa-solid fa-arrow-left back-arrow-btn me-2"
               onClick={() => {
                 navigate('/auth/login')
               }}

@@ -251,9 +251,9 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ml-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0">
                 <Image
-                  className="mr-2"
+                  className="me-2"
                   style={{ width: '1.4rem' }}
                   role={'button'}
                   src={ic_link}
@@ -267,7 +267,7 @@ const RYGDetail = () => {
                 />
                 <i
                   role={'button'}
-                  className="fa-solid fa-trash ml-2 mr-0"
+                  className="fa-solid fa-trash ms-2 me-0"
                   onClick={() => {
                     let payload = {
                       section_id: section.section_id,
@@ -336,9 +336,9 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ml-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0">
                 <Image
-                  className="mr-2"
+                  className="me-2"
                   style={{ width: '1.4rem' }}
                   role={'button'}
                   src={ic_link}
@@ -352,7 +352,7 @@ const RYGDetail = () => {
                 />
                 <i
                   role={'button'}
-                  className="fa-solid fa-trash ml-2 mr-0"
+                  className="fa-solid fa-trash ms-2 me-0"
                   onClick={() => {
                     let payload = {
                       section_id: section.section_id,
@@ -380,9 +380,9 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ml-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0">
                 <Image
-                  className="mr-2"
+                  className="me-2"
                   style={{ width: '1.4rem' }}
                   role={'button'}
                   src={ic_link}
@@ -396,7 +396,7 @@ const RYGDetail = () => {
                 />
                 <i
                   role={'button'}
-                  className="fa-solid fa-trash ml-2 mr-0"
+                  className="fa-solid fa-trash ms-2 me-0"
                   onClick={() => {
                     let payload = {
                       section_id: section.section_id,
@@ -419,7 +419,7 @@ const RYGDetail = () => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-6 p-0 mt-2${index % 2 === 0 ? ' pl-2' : ' pr-2'}`}>
+              <div className={`col-6 p-0 mt-2${index % 2 === 0 ? ' ps-2' : ' pe-2'}`}>
                 <Image src={element.image_link} className="border rounded img-product-line" />
               </div>
             )
@@ -433,9 +433,9 @@ const RYGDetail = () => {
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0">
                   <Image
-                    className="mr-2"
+                    className="me-2"
                     style={{ width: '1.4rem' }}
                     role={'button'}
                     src={ic_link}
@@ -449,7 +449,7 @@ const RYGDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
+                    className="fa-solid fa-trash ms-2 me-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -473,7 +473,7 @@ const RYGDetail = () => {
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
-          <div className={`col-3${index === 0 ? ' pl-0' : ''}`}>
+          <div className={`col-3${index === 0 ? ' ps-0' : ''}`}>
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
         )
@@ -484,9 +484,9 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ml-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0">
                 <Image
-                  className="mr-2"
+                  className="me-2"
                   style={{ width: '1.4rem' }}
                   role={'button'}
                   src={ic_link}
@@ -500,7 +500,7 @@ const RYGDetail = () => {
                 />
                 <i
                   role={'button'}
-                  className="fa-solid fa-trash ml-2 mr-0"
+                  className="fa-solid fa-trash ms-2 me-0"
                   onClick={() => {
                     let payload = {
                       section_id: section.section_id,
@@ -734,7 +734,7 @@ const RYGDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -744,7 +744,7 @@ const RYGDetail = () => {
               addComponentData?.table_name === '' ||
               addComponentData?.columnsNum === undefined
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('table')
             }}
@@ -812,13 +812,13 @@ const RYGDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
           <button
             disabled={addComponentData?.title === undefined || addComponentData?.link === undefined}
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('link')
             }}
@@ -885,7 +885,7 @@ const RYGDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -895,7 +895,7 @@ const RYGDetail = () => {
               inputBinary === undefined ||
               inputBinary === null
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('binary')
             }}
@@ -939,13 +939,13 @@ const RYGDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
           <button
             disabled={addComponentData?.description === undefined}
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('description')
             }}
@@ -1010,7 +1010,7 @@ const RYGDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -1020,7 +1020,7 @@ const RYGDetail = () => {
               inputBinary === undefined ||
               inputBinary === null
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('image')
             }}
@@ -1183,7 +1183,7 @@ const RYGDetail = () => {
           }}
           centered
         >
-          <button id="mybtn" className="btn btn-background mr-4" onClick={() => {}}>
+          <button id="mybtn" className="btn btn-background me-4" onClick={() => {}}>
             Cancel
           </button>
           <button className="btn" onClick={() => {}}>
@@ -1228,12 +1228,12 @@ const RYGDetail = () => {
               onClick={() => {
                 setShowDeleteModal({})
               }}
-              className="btn mr-2"
+              className="btn me-2"
             >
               Cancel
             </button>
             <button
-              className="btn btn-primary ml-2"
+              className="btn btn-primary ms-2"
               onClick={() => {
                 onComponentDelete()
               }}
@@ -1282,12 +1282,12 @@ const RYGDetail = () => {
               onClick={() => {
                 setIsAddSectionModalVisible(false)
               }}
-              className="btn mr-2"
+              className="btn me-2"
             >
               Cancel
             </button>
             <button
-              className="btn btn-primary ml-2"
+              className="btn btn-primary ms-2"
               onClick={() => {
                 if (sectionTitleRef.current.value.length > 0) {
                   onAddSection()
@@ -1404,7 +1404,7 @@ const RYGDetail = () => {
         >
           <button
             id="mybtn"
-            className="btn btn-background mr-4"
+            className="btn btn-background me-4"
             onClick={() => {
               setIsSubProductsModalVisible(false)
               setComponentToLink({})

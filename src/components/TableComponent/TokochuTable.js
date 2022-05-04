@@ -291,7 +291,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') && (
           <div className="row text-primary">
-            <div className="ml-auto w-auto my-2">
+            <div className="ms-auto w-auto my-2">
               {isEdit ? (
                 <i
                   role={'button'}
@@ -304,7 +304,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               ) : (
                 <i
                   role={'button'}
-                  className="fa-solid fa-pen-to-square ml-2"
+                  className="fa-solid fa-pen-to-square ms-2"
                   aria-hidden="true"
                   onClick={() => {
                     setEditModeData([...tableRows])
@@ -314,7 +314,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               )}
               {/* <i
                 role={'button'}
-                className="fa-solid fa-trash ml-2"
+                className="fa-solid fa-trash ms-2"
                 onClick={() => {
                   setShowDeleteModal(true)
                 }}
@@ -351,7 +351,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               width: '1rem',
               marginRight: '0.2rem',
             }}
-            className={'mr-2'}
+            className={'me-2'}
             alt={'icon'}
           />
           {'Add'}

@@ -38,23 +38,23 @@ export default () => {
                   <div className="cont-detail mt-2">
                     <i className="fa fa-home mb-4 d-flex" aria-hidden="true">
                       {'  '}
-                      <p className="sm-h1 pl-3">{contact?.general_info?.address}</p>
+                      <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
                     </i>
                     <i className="fa fa-address-book mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 pl-3">{contact?.general_info?.address}</p>
+                      <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
                     </i>
                     <i className="fa fa-phone mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 pl-3">{contact?.general_info?.phone_no}</p>
+                      <p className="sm-h1 ps-3">{contact?.general_info?.phone_no}</p>
                     </i>
                     <i className="fa fa-video-camera mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 pl-3">Video conferencing</p>
+                      <p className="sm-h1 ps-3">Video conferencing</p>
                     </i>
                   </div>
                 </div>
 
                 <div className="col-md-5 col-lg-5 col-xl-5">
                   <div className="boxes d-flex">
-                    <div className="box-one border border-dark rounded p-4 mr-4">
+                    <div className="box-one border border-dark rounded p-4 me-4">
                       <p className="sm-h">Opening Hours</p>
                       <p className="sm-txt">{contact?.general_info?.opening_hours}</p>
                     </div>
@@ -80,18 +80,18 @@ export default () => {
                   return (
                     <div className="row mb-4 mt-5">
                       <div className="col-md-4 col-lg-4 col-xl-4">
-                        <div className="gen-product-item d-flex ml-2 mb-4">
+                        <div className="gen-product-item d-flex ms-2 mb-4">
                           <div className="sm-img-box border border-dark rounded">
                             <img src={item.image_link} />
                           </div>
                           <div>
-                            <div className="Product-item-deatail ml-3 ">
+                            <div className="Product-item-deatail ms-3 ">
                               <div className="product-item-name">
                                 <div className="sm-h-box border border-dark rounded px-2 py-2">
                                   <p className="sm-h m-0">{item.name}</p>
                                 </div>
                                 <i className="fa fa-envelope d-flex mt-4" aria-hidden="true">
-                                  <p className="sm-txt ml-2">{item.email}</p>
+                                  <p className="sm-txt ms-2">{item.email}</p>
                                 </i>
                               </div>
                             </div>
@@ -143,7 +143,7 @@ export default () => {
                     <div className="row">
                       <div className="col-md-6 col-lg-6 col-xl-6">
                         <div className="d-flex ">
-                          <div className="sm-img-box-two border border-dark rounded mr-4">
+                          <div className="sm-img-box-two border border-dark rounded me-4">
                             <img src={item.detail?.image_link} />
                           </div>
 
@@ -158,7 +158,7 @@ export default () => {
                               <div className="d-flex mb-2  align-items-center">
                                 <i className="fa fa-phone" aria-hidden="true"></i>
                                 <p
-                                  className="ml-2 pl-2 mb-0 border border-dark"
+                                  className="ms-2 ps-2 mb-0 border border-dark"
                                   style={{ width: '180px' }}
                                 >
                                   {item.detail?.phone_no}
@@ -168,7 +168,7 @@ export default () => {
                             {item.detail?.email && (
                               <div className="d-flex mb-2 align-items-center">
                                 <i className="fa fa-envelope mb-3" aria-hidden="true" />
-                                <p className="pl-2">{item.detail?.email}</p>
+                                <p className="ps-2">{item.detail?.email}</p>
                               </div>
                             )}
                           </div>

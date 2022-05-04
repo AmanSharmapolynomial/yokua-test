@@ -492,7 +492,7 @@ const UserListView = () => {
             <div className="row">
               <div className="col-auto filter-checkbox d-flex align-items-center">
                 <input
-                  className="w-auto mr-2"
+                  className="w-auto me-2"
                   type="checkbox"
                   ref={filterFromCheckbox1Ref}
                   value="PMK Administrator"
@@ -512,7 +512,7 @@ const UserListView = () => {
               </div>
               <div className="col-auto filter-checkbox d-flex align-items-center">
                 <input
-                  className="w-auto mr-2"
+                  className="w-auto me-2"
                   type="checkbox"
                   ref={filterFromCheckbox2Ref}
                   value="Content Manager"
@@ -532,7 +532,7 @@ const UserListView = () => {
               </div>
               <div className="col-auto filter-checkbox d-flex align-items-center">
                 <input
-                  className="w-auto mr-2"
+                  className="w-auto me-2"
                   type="checkbox"
                   ref={filterFromCheckbox3Ref}
                   value="User"
@@ -581,7 +581,7 @@ const UserListView = () => {
                   width: '1rem',
                   marginRight: '0.2rem',
                 }}
-                className={'mr-2'}
+                className={'me-2'}
               />
               {'Add'}
             </div>

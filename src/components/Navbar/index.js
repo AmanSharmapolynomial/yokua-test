@@ -95,7 +95,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               News
               {unreadNewsCount !== 0 && (
                 <svg
-                  className="ml-2"
+                  className="ms-2"
                   xmlns="http://www.w3.org/2000/svg"
                   width="19.313"
                   height="19.313"

@@ -4,7 +4,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
   return (
     <div className="dropdown">
       <div
-        className="d-flex justify-content-between pr-3"
+        className="d-flex justify-content-between pe-3"
         id="dropdownMenuButton"
         data-toggle="dropdown"
         aria-haspopup="true"
@@ -13,7 +13,7 @@ const Dropdown = ({ value, data, userData, addOrEditUser }) => {
         aria-hidden="true"
       >
         <a>{value}</a>
-        <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
+        <i className="fa fa-caret-down ms-2" aria-hidden="true"></i>
       </div>
       <div className="dropdown-menu">
         {data.map((element, index) => (

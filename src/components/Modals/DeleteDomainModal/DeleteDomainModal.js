@@ -38,7 +38,7 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data, show }) => {
             </div>
             <div className="domain-modal-cta mt-3">
               <button
-                className="btn cancel-domain mr-4"
+                className="btn cancel-domain me-4"
                 onClick={() => {
                   saveAndExit()
                 }}

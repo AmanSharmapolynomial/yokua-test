@@ -21,7 +21,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 }}
               />
             </div>
-            <div className="header__title col-12 col-md-4 mr-md-auto text-center my-2 my-md-0">
+            <div className="header__title col-12 col-md-4 me-md-auto text-center my-2 my-md-0">
               FLOW CENTER PAGES
             </div>
             <div className="col-4 d-none d-md-block">
@@ -41,7 +41,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                       name="search"
                       type="text"
                       placeholder="What are you looking for?"
-                      className="search_input ml-3"
+                      className="search_input ms-3"
                       autoComplete="false"
                     />
                   </div>

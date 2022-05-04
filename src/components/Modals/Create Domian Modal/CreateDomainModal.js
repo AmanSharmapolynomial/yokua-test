@@ -43,7 +43,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
                 Cancel
               </button>
               <button
-                className="btn mr-4"
+                className="btn me-4"
                 onClick={() => {
                   if (domain) {
                     if (domain.includes('.')) {

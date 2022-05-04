@@ -227,9 +227,9 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0">
                   <Image
-                    className="mr-2"
+                    className="me-2"
                     style={{ width: '1.4rem' }}
                     role={'button'}
                     src={ic_link}
@@ -243,7 +243,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
+                    className="fa-solid fa-trash ms-2 me-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -313,9 +313,9 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0">
                   <Image
-                    className="mr-2"
+                    className="me-2"
                     style={{ width: '1.4rem' }}
                     role={'button'}
                     src={ic_link}
@@ -329,7 +329,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
+                    className="fa-solid fa-trash ms-2 me-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -358,9 +358,9 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0">
                   <Image
-                    className="mr-2"
+                    className="me-2"
                     style={{ width: '1.4rem' }}
                     role={'button'}
                     src={ic_link}
@@ -374,7 +374,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
+                    className="fa-solid fa-trash ms-2 me-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -397,7 +397,7 @@ const ProductDetail = () => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
+              <div className={`col-6${index === idx ? ' ps-0' : ''}`}>
                 <Image src={ele.image_link} className="border rounded img-product-line" />
               </div>
             )
@@ -412,9 +412,9 @@ const ProductDetail = () => {
               getUserRoles() == 'Technical Administrator') &&
               !archivedFilter && (
                 <div className="row">
-                  <div className="ml-auto w-auto my-2 p-0">
+                  <div className="ms-auto w-auto my-2 p-0">
                     <Image
-                      className="mr-2"
+                      className="me-2"
                       style={{ width: '1.4rem' }}
                       role={'button'}
                       src={ic_link}
@@ -428,7 +428,7 @@ const ProductDetail = () => {
                     />
                     <i
                       role={'button'}
-                      className="fa-solid fa-trash ml-2 mr-0"
+                      className="fa-solid fa-trash ms-2 me-0"
                       onClick={() => {
                         let payload = {
                           section_id: section.section_id,
@@ -452,7 +452,7 @@ const ProductDetail = () => {
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
-          <div className={`col-3${index === 0 ? ' pl-0' : ''}`}>
+          <div className={`col-3${index === 0 ? ' ps-0' : ''}`}>
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
         )
@@ -464,9 +464,9 @@ const ProductDetail = () => {
             getUserRoles() == 'Technical Administrator') &&
             !archivedFilter && (
               <div className="row">
-                <div className="ml-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0">
                   <Image
-                    className="mr-2"
+                    className="me-2"
                     style={{ width: '1.4rem' }}
                     role={'button'}
                     src={ic_link}
@@ -480,7 +480,7 @@ const ProductDetail = () => {
                   />
                   <i
                     role={'button'}
-                    className="fa-solid fa-trash ml-2 mr-0"
+                    className="fa-solid fa-trash ms-2 me-0"
                     onClick={() => {
                       let payload = {
                         section_id: section.section_id,
@@ -714,7 +714,7 @@ const ProductDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -724,7 +724,7 @@ const ProductDetail = () => {
               addComponentData?.table_name === '' ||
               addComponentData?.columnsNum === undefined
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('table')
             }}
@@ -792,13 +792,13 @@ const ProductDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
           <button
             disabled={addComponentData?.title === undefined || addComponentData?.link === undefined}
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('link')
             }}
@@ -865,7 +865,7 @@ const ProductDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -875,7 +875,7 @@ const ProductDetail = () => {
               inputBinary === undefined ||
               inputBinary === null
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('binary')
             }}
@@ -919,13 +919,13 @@ const ProductDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
           <button
             disabled={addComponentData?.description === undefined}
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('description')
             }}
@@ -990,7 +990,7 @@ const ProductDetail = () => {
               onAddComponentCancel()
               setExpandedAccordian(-1)
             }}
-            className="btn mr-2"
+            className="btn me-2"
           >
             Cancel
           </button>
@@ -1000,7 +1000,7 @@ const ProductDetail = () => {
               inputBinary === undefined ||
               inputBinary === null
             }
-            className="btn btn-primary ml-2"
+            className="btn btn-primary ms-2"
             onClick={() => {
               callAddComponentAPI('image')
             }}
@@ -1164,7 +1164,7 @@ const ProductDetail = () => {
           }}
           centered
         >
-          <button id="mybtn" className="btn btn-background mr-4" onClick={() => {}}>
+          <button id="mybtn" className="btn btn-background me-4" onClick={() => {}}>
             Cancel
           </button>
           <button className="btn" onClick={() => {}}>
@@ -1209,12 +1209,12 @@ const ProductDetail = () => {
               onClick={() => {
                 setShowDeleteModal({})
               }}
-              className="btn mr-2"
+              className="btn me-2"
             >
               Cancel
             </button>
             <button
-              className="btn btn-primary ml-2"
+              className="btn btn-primary ms-2"
               onClick={() => {
                 onComponentDelete()
               }}
@@ -1263,12 +1263,12 @@ const ProductDetail = () => {
               onClick={() => {
                 setIsAddSectionModalVisible(false)
               }}
-              className="btn mr-2"
+              className="btn me-2"
             >
               Cancel
             </button>
             <button
-              className="btn btn-primary ml-2"
+              className="btn btn-primary ms-2"
               onClick={() => {
                 if (sectionTitleRef.current.value.length > 0) {
                   onAddSection()
@@ -1384,7 +1384,7 @@ const ProductDetail = () => {
         >
           <button
             id="mybtn"
-            className="btn btn-background mr-4"
+            className="btn btn-background me-4"
             onClick={() => {
               setIsSubProductsModalVisible(false)
               setComponentToLink({})

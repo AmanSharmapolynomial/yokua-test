@@ -193,7 +193,7 @@ const SignUp = () => {
           <div className="col-12 p-0">
             <div className="form-group">
               <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />
-              <span className="checkbox-text mr-auto ml-2">
+              <span className="checkbox-text me-auto ms-2">
                 Accept the Terms of Service and Privacy Policies
               </span>
             </div>

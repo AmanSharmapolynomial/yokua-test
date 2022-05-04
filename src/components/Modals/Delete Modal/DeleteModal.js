@@ -40,7 +40,7 @@ function Example({ show, setShow, req, saveAndExit, runDelete, title, data, isBo
         >
           <button
             id="mybtn"
-            className="btn btn-background mr-4"
+            className="btn btn-background me-4"
             onClick={() => {
               saveAndExit()
               setShow(false)

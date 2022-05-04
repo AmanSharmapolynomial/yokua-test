@@ -99,7 +99,7 @@ const Search = props => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-6${index === idx ? ' pl-0' : ''}`}>
+              <div className={`col-6${index === idx ? ' ps-0' : ''}`}>
                 <Image src={ele.image_link} className="border rounded img-product-line" />
               </div>
             )
@@ -120,7 +120,7 @@ const Search = props => {
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
-          <div className={`col-3${index === 0 ? ' pl-0' : ''}`}>
+          <div className={`col-3${index === 0 ? ' ps-0' : ''}`}>
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
         )

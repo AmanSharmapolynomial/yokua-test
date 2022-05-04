@@ -329,7 +329,7 @@ export default ({
                   <Image
                     role={'button'}
                     src={decline}
-                    className="ml-2"
+                    className="ms-2"
                     onClick={() => {
                       setIsEditable(false)
                     }}
@@ -383,7 +383,7 @@ export default ({
         {isAdmin && !archivedFilter && (
           <div className="col-auto my-2 p-0">
             <Image
-              className="mr-2"
+              className="me-2"
               style={{ width: '1.4rem' }}
               role={'button'}
               src={ic_link}
@@ -394,7 +394,7 @@ export default ({
             <i
               role={'button'}
               className={
-                !isTableEditable ? 'fa-solid fa-pen-to-square mr-2' : 'fa-solid fa-floppy-disk'
+                !isTableEditable ? 'fa-solid fa-pen-to-square me-2' : 'fa-solid fa-floppy-disk'
               }
               onClick={() => {
                 onEditableClick()
@@ -405,7 +405,7 @@ export default ({
             />
             <i
               role={'button'}
-              className="fa-solid fa-trash ml-2 mr-0"
+              className="fa-solid fa-trash ms-2 me-0"
               onClick={() => {
                 onDeleteComponent()
               }}

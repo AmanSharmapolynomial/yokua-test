@@ -195,7 +195,7 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
       >
         <button
           id="mybtn"
-          className="btn btn-background mr-4"
+          className="btn btn-background me-4"
           onClick={() => {
             handleClose()
           }}

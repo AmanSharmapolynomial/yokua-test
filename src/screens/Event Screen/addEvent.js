@@ -605,7 +605,7 @@ const AddEventScreen = () => {
                           marginLeft: !isAdmin ? '-15px' : 0,
                           whiteSpace: 'nowrap',
                         }}
-                        className="ml-3 col-md-6"
+                        className="ms-3 col-md-6"
                       >
                         Remaining Seats
                       </label>
@@ -1092,7 +1092,7 @@ const AddEventScreen = () => {
                       <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
                     </div>
                     <div className="row">
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1107,7 +1107,7 @@ const AddEventScreen = () => {
                           Yes
                         </label>
                       </div>
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1130,7 +1130,7 @@ const AddEventScreen = () => {
                       </label>
                     </div>
                     <div className="row">
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1145,7 +1145,7 @@ const AddEventScreen = () => {
                           Yes
                         </label>
                       </div>
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1166,7 +1166,7 @@ const AddEventScreen = () => {
                       <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
                     </div>
                     <div className="row">
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1181,7 +1181,7 @@ const AddEventScreen = () => {
                           No Special requirements
                         </label>
                       </div>
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1196,7 +1196,7 @@ const AddEventScreen = () => {
                           No Pork
                         </label>
                       </div>
-                      <div className="row ml-0">
+                      <div className="row ms-0">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -1212,7 +1212,7 @@ const AddEventScreen = () => {
                         </label>
                       </div>
                       <div
-                        className="row ml-0"
+                        className="row ms-0"
                         style={{
                           position: 'relative',
                         }}

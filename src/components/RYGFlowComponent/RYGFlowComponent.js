@@ -115,7 +115,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                 <i
                   role={'button'}
                   className={
-                    !isEditable ? 'fa-solid fa-pen-to-square mr-2' : 'fa-solid fa-floppy-disk'
+                    !isEditable ? 'fa-solid fa-pen-to-square me-2' : 'fa-solid fa-floppy-disk'
                   }
                   onClick={() => {
                     if (isEditable) {

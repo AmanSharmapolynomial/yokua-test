@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="container-fluid footer mt-auto">
       <div className="footerBtn">
         <button
-          className="btn mr-2"
+          className="btn me-2"
           onClick={() => {
             navigate('/impressum')
           }}

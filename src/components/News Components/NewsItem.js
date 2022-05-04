@@ -564,7 +564,7 @@ const NewsItem = ({
                 {data?.sub_category[0] !== undefined
                   ? data?.sub_category[0]['sub_category_name']
                   : ''}
-                <i className="fa-solid fa-angle-up ml-3 theme" />
+                <i className="fa-solid fa-angle-up ms-3 theme" />
               </div>
             </div>
             <div
@@ -717,7 +717,7 @@ const NewsItem = ({
                           >
                             {selectedTopic}
                           </a>
-                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ms-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -785,7 +785,7 @@ const NewsItem = ({
                                 setToggleDropDown(0)
                               }}
                               variant="outline-secondary"
-                              className="yg-font-size ml-2"
+                              className="yg-font-size ms-2"
                               id="button-addon2"
                             >
                               Save
@@ -832,7 +832,7 @@ const NewsItem = ({
                           >
                             {_getSelectedItems()}
                           </a>
-                          <i className="fa fa-caret-down ml-2" aria-hidden="true"></i>
+                          <i className="fa fa-caret-down ms-2" aria-hidden="true"></i>
                         </div>
                       </div>
 
@@ -905,7 +905,7 @@ const NewsItem = ({
                                       }
                                     }}
                                     variant="outline-secondary"
-                                    className="yg-font-size ml-2"
+                                    className="yg-font-size ms-2"
                                     id="button-addon2"
                                   >
                                     Save
@@ -1011,7 +1011,7 @@ const NewsItem = ({
                                 }
                               }}
                               variant="outline-secondary"
-                              className="yg-font-size ml-2"
+                              className="yg-font-size ms-2"
                               id="button-addon2"
                             >
                               Save
@@ -1418,7 +1418,7 @@ function AddCategoryModal({
         >
           <button
             id="mybtn"
-            className="btn btn-background mr-4"
+            className="btn btn-background me-4"
             onClick={() => {
               setCategoryName('')
               SetImageFile(null)

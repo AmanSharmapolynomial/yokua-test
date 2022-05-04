@@ -248,7 +248,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
         >
           <button
             id="mybtn"
-            className="btn btn-background mr-4"
+            className="btn btn-background me-4"
             onClick={() => {
               setName('')
               setShow(false)

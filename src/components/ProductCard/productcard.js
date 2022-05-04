@@ -117,7 +117,7 @@ const ProductCard = ({
               <span className="col-auto d-none d-md-block">
                 {!subProduct && (
                   <img
-                    className="mr-3"
+                    className="me-3"
                     src={archiveIcon}
                     onClick={e => {
                       e.stopPropagation()

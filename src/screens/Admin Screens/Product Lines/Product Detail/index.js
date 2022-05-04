@@ -258,7 +258,7 @@ const ProductDetail = () => {
                 <>
                   <div className={'row mt-3 mb-3 '}>
                     <div className={'col-6 d-flex align-items-center '}>
-                      <i className="fa-solid fa-circle align-self-center mr-1"></i>
+                      <i className="fa-solid fa-circle align-self-center me-1"></i>
                       <h5 className={'head-5'}>
                         {item.sectionName}
                         <span></span>
@@ -267,7 +267,7 @@ const ProductDetail = () => {
                   </div>
                 </>
 
-                {item.components.length < 1 && <p className={'ml-5'}>No Components Found</p>}
+                {item.components.length < 1 && <p className={'ms-5'}>No Components Found</p>}
 
                 {item.components.length > 0 &&
                   item.components.map((component, i) => {
@@ -329,13 +329,13 @@ const ProductDetail = () => {
           <hr className={'mt-3'} />
           <h6>{'Create Section'}</h6>
           <button
-            className="add-table mt-2 ml-3 mb-3"
+            className="add-table mt-2 ms-3 mb-3"
             onClick={() => setSectionOpen(!isSectionOpen)}
           >
             Create Section
           </button>
           {isSectionOpen && (
-            <div className={'row font-size ml-3'}>
+            <div className={'row font-size ms-3'}>
               <div className={'col-3'}>
                 <div className="input-group input-group-sm  mb-3">
                   <input
@@ -367,13 +367,13 @@ const ProductDetail = () => {
 
           <h6>{'Create Link'}</h6>
           <button
-            className="add-table color mt-2 ml-3 mb-3"
+            className="add-table color mt-2 ms-3 mb-3"
             onClick={() => setLinkOpen(!isLinkOpen)}
           >
             Create Link
           </button>
           {isLinkOpen && (
-            <div className={'row font-size ml-3'}>
+            <div className={'row font-size ms-3'}>
               <div className={'col-8'}>
                 <div className="input-group input-group-sm  mb-3">
                   <div className="input-group-prepend">
@@ -424,13 +424,13 @@ const ProductDetail = () => {
 
           <h6>{'Create Image'}</h6>
           <button
-            className="add-table color mt-2 ml-3 mb-3"
+            className="add-table color mt-2 ms-3 mb-3"
             onClick={() => setImageOpen(!isImageOpen)}
           >
             Create Image
           </button>
           {isImageOpen && (
-            <div className={'row font-size ml-3'}>
+            <div className={'row font-size ms-3'}>
               <div className={'col-8'}>
                 <div className="input-group input-group-sm  mb-3">
                   <div className="input-group-prepend">
@@ -485,13 +485,13 @@ const ProductDetail = () => {
 
           <h6>{'Create File'}</h6>
           <button
-            className="add-table color mt-2 ml-3 mb-3"
+            className="add-table color mt-2 ms-3 mb-3"
             onClick={() => setFileOpen(!isFileOpen)}
           >
             Create File
           </button>
           {isFileOpen && (
-            <div className={'row font-size ml-3'}>
+            <div className={'row font-size ms-3'}>
               <div className={'col-8'}>
                 <div className="input-group input-group-sm  mb-3">
                   <div className="input-group-prepend">
@@ -548,13 +548,13 @@ const ProductDetail = () => {
 
           <h6>{'Create Description'}</h6>
           <button
-            className="add-table color mt-2 ml-3"
+            className="add-table color mt-2 ms-3"
             onClick={() => setDescriptionOpen(!isDescriptionOpen)}
           >
             Create Description
           </button>
           {isDescriptionOpen && (
-            <div className={'row font-size ml-3'}>
+            <div className={'row font-size ms-3'}>
               <div className={'col-8'}>
                 <div className="input-group input-group-sm  mb-3">
                   <div className="input-group-prepend">
@@ -598,7 +598,7 @@ const ProductDetail = () => {
           <hr />
 
           <h6>{'Create Table'}</h6>
-          <button className="add-table color mt-2 ml-3" onClick={() => setTableOpen(!isTableOpen)}>
+          <button className="add-table color mt-2 ms-3" onClick={() => setTableOpen(!isTableOpen)}>
             Create Table
           </button>
           <hr />

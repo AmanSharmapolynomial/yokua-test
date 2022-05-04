@@ -90,7 +90,7 @@ const ProductLine = () => {
         rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
         col = []
       } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-        col.push(<div key={item.id} className={`col-12 col-md ml-md-5 px-2 py-3`}></div>)
+        col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
         rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
         col = []
       }

@@ -404,7 +404,7 @@ const ProfileSettingScreen = () => {
                 <></>
               ) : (
                 <button
-                  className="delete-btn mr-3"
+                  className="delete-btn me-3"
                   style={{
                     cursor: 'pointer',
                   }}
