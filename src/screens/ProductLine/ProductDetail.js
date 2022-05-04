@@ -569,14 +569,14 @@ const ProductDetail = () => {
           </div>
           <input
             onChange={e => {
-              if (parseInt(e.target.value) <= 10)
-                setAddComponentData(prevState => {
-                  return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
-                })
+              // if (parseInt(e.target.value) <= 10)
+              setAddComponentData(prevState => {
+                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
+              })
             }}
             type="number"
             min={1}
-            max={10}
+            // max={10}
             className="form-control"
             aria-label={'Add Number of Columns'}
             aria-describedby="basic-addon1"
