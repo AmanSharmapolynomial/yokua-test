@@ -588,7 +588,7 @@ const ProductDetail = () => {
               {columneNames.map((item, index) => (
                 <div
                   className={`${
-                    index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center'
+                    index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center p-0'
                   }`}
                 >
                   {item.title}
