@@ -190,7 +190,7 @@ const EventScreen = () => {
                           marginLeft: '25px',
                         }}
                       >
-                        All Trainings
+                        {isAdmin ? 'All Trainings' : 'Upcoming Trainings'}
                       </p>
                     </div>
                   </td>
@@ -368,7 +368,6 @@ const EventScreen = () => {
                   <input
                     style={{
                       borderRadius: '3px',
-                      width: '75%',
                     }}
                     type="text"
                     maxLength="255"
@@ -376,7 +375,7 @@ const EventScreen = () => {
                     onChange={e => {
                       setEventDeleteMsg(e.target.value)
                     }}
-                    className="form-control"
+                    className="form-control w-100"
                     required
                   />
                 </div>

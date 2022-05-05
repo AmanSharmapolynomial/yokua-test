@@ -5,7 +5,7 @@ import { getToken, getUserRoles } from '../../utils/token'
 import './style.css'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Table from '../../components/TableComponent/Table'
 import { Modal, Image } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
@@ -742,8 +742,8 @@ const RYGDetail = () => {
           </button>
           <button
             disabled={
-              addComponentData?.table_name === undefined ||
-              addComponentData?.table_name === '' ||
+              // addComponentData?.table_name === undefined ||
+              // addComponentData?.table_name === '' ||
               addComponentData?.columnsNum === undefined
             }
             className="btn btn-primary ms-2"
@@ -1069,14 +1069,8 @@ const RYGDetail = () => {
           <div className="row">
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
-                <span
-                  role="button"
-                  className="col-6 light-grey"
-                  onClick={() => {
-                    navigate(-1)
-                  }}
-                >
-                  Previous page
+                <span role="button" className="col-6 light-grey">
+                  <Link to={'/ryg-information'}>Previous page</Link>
                 </span>
                 <span
                   className="col-6"

@@ -721,8 +721,8 @@ const ProductDetail = () => {
           </button>
           <button
             disabled={
-              addComponentData?.table_name === undefined ||
-              addComponentData?.table_name === '' ||
+              // addComponentData?.table_name === undefined ||
+              // addComponentData?.table_name === '' ||
               addComponentData?.columnsNum === undefined
             }
             className="btn btn-primary ms-2"

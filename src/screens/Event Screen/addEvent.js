@@ -142,7 +142,13 @@ const AddEventScreen = () => {
             getUserRoles() == 'Technical Administrator' ||
             getUserRoles() == 'PMK Administrator'
           ) {
-            setFirstName(result['basic_profile'].full_name)
+            const name = result['basic_profile'].full_name.split(' ')
+            setFirstName(name[0])
+            if (name.length > 1) {
+              setLastName(name.slice(1).join(' '))
+            } else {
+              setLastName(' ')
+            }
             setCompanyEmail(result['basic_profile'].email)
             setCompanyName(result['basic_profile'].company_name)
           }
@@ -1010,7 +1016,13 @@ const AddEventScreen = () => {
                             label: event.label,
                           })
                           if (event.value == 'internal') {
-                            setFirstName(userProfile['basic_profile'].full_name)
+                            const name = userProfile['basic_profile'].full_name.split(' ')
+                            setFirstName(name[0])
+                            if (name.length > 1) {
+                              setLastName(name.slice(1).join(' '))
+                            } else {
+                              setLastName(' ')
+                            }
                             setCompanyEmail(userProfile['basic_profile'].email)
                             setCompanyName(userProfile['basic_profile'].company_name)
                           } else {
