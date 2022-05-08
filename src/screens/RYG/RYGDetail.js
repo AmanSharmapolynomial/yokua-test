@@ -140,6 +140,7 @@ const RYGDetail = () => {
   }
 
   const callAddComponentAPI = type => {
+    setLoading(true)
     const payload = {
       type: type,
       section_id: productDetail[isAddComponentModalVisible].section_id,
@@ -165,9 +166,11 @@ const RYGDetail = () => {
           setAddComponentData({})
           if (type === 'binary' || type === 'image') setInputBinary()
         }
+        setLoading(false)
       })
       .catch(error => {
         console.log(error)
+        setLoading(false)
       })
   }
 
@@ -182,6 +185,7 @@ const RYGDetail = () => {
   }
 
   const onAddSection = () => {
+    setLoading(true)
     API.post('/ryg_info/create_section', {
       page_id: state.page_id,
       section_name: sectionTitleRef.current.value,
@@ -192,15 +196,18 @@ const RYGDetail = () => {
           res.data?.message && toast.success(res.data?.message)
           getProductDetails()
           setIsAddSectionModalVisible(false)
+          setLoading(false)
         }
       })
       .catch(error => {
         setIsAddSectionModalVisible(false)
         console.log(error)
+        setLoading(false)
       })
   }
 
   const onComponentDelete = () => {
+    setLoading(true)
     API.post('/ryg_info/page/delete_component', showDeleteModal)
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
@@ -208,14 +215,17 @@ const RYGDetail = () => {
           getProductDetails()
           setShowDeleteModal({})
         }
+        setLoading(false)
       })
       .catch(error => {
         setShowDeleteModal({})
         console.log(error)
+        setLoading(false)
       })
   }
 
   const updateRYGComponent = payload => {
+    setLoading(true)
     let promises = []
     for (let index = 0; index < payload.length; index++) {
       promises.push(API.post('/ryg_info/page/update_component', payload[index]))
@@ -226,10 +236,12 @@ const RYGDetail = () => {
           res[0].data?.message && toast.success(res[0].data?.message)
           getProductDetails()
         }
+        setLoading(false)
       })
       .catch(error => {
         console.log(error)
         getProductDetails()
+        setLoading(false)
       })
   }
 
@@ -367,7 +379,7 @@ const RYGDetail = () => {
           )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0">
+            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0 theme">
               {ele.title}
             </a>
           </div>
@@ -1018,9 +1030,8 @@ const RYGDetail = () => {
           </button>
           <button
             disabled={
-              addComponentData?.title === undefined ||
-              inputBinary === undefined ||
-              inputBinary === null
+              // addComponentData?.title === undefined ||
+              inputBinary === undefined || inputBinary === null
             }
             className="btn btn-primary ms-2"
             onClick={() => {

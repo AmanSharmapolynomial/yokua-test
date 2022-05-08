@@ -136,9 +136,17 @@ const EventScreen = () => {
               ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
             }
             tileContent={({ date, view }) => {
-              let calenderDate = moment(date).format('yyyy-MM-DD').toString()
-              //console.log(calenderDate)
-              let dataList = eventList.filter(e => e.start_date === calenderDate)
+              const calenderDate = Date.parse(moment(date).format('yyyy-MM-DD')).toString().trim()
+              // let calenderDate = moment(date).format('yyyy-MM-DD')
+              let dataList = eventList.filter(e => {
+                const startDate = Date.parse(e.start_date).toString().trim()
+                const endDate = Date.parse(e.end_date).toString().trim()
+                return (
+                  // startDate === calenderDate ||
+                  // endDate === calenderDate ||
+                  startDate <= calenderDate && endDate > calenderDate
+                )
+              })
               return dataList.length > 0 ? (
                 <div className="event-container">
                   {dataList.slice(0, 3).map(data => (

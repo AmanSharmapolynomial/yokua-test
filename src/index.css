@@ -133,7 +133,7 @@ body {
   white-space: normal !important;
 } */
 .theme {
-  color: var(--bgColor2);
+  color: var(--bgColor2) !important;
 }
 /* tablet view */
 ::-webkit-scrollbar {

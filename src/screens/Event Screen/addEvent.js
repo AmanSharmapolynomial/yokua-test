@@ -256,6 +256,7 @@ const AddEventScreen = () => {
           navigate(-1)
         } else {
           toast.error(data.data.message)
+          navigate(-1)
         }
       })
       .catch(() => {
@@ -368,8 +369,10 @@ const AddEventScreen = () => {
                           setDuration(moment(endDate).diff(date, 'days'))
                           setStartDate(date)
                         } else {
-                          toast.error('End date should be greater than start date')
-                          setStartDate(new Date())
+                          setDuration(moment(date).diff(date, 'days'))
+                          setStartDate(date)
+                          setEndDate(date)
+                          // toast.error('End date should be greater than start date')
                         }
                       }}
                       placeholderText="DDMMYYYY"

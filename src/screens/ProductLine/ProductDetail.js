@@ -343,7 +343,12 @@ const ProductDetail = () => {
             )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0 text-bold">
+            <a
+              role={'button'}
+              href={ele.link}
+              target="_blank"
+              className="w-auto p-0 text-bold theme"
+            >
               {ele.title}
             </a>
           </div>
@@ -997,9 +1002,8 @@ const ProductDetail = () => {
           </button>
           <button
             disabled={
-              addComponentData?.title === undefined ||
-              inputBinary === undefined ||
-              inputBinary === null
+              // addComponentData?.title === undefined ||
+              inputBinary === undefined || inputBinary === null
             }
             className="btn btn-primary ms-2"
             onClick={() => {

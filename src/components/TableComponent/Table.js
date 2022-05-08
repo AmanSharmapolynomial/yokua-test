@@ -397,7 +397,9 @@ export default ({
             <i
               role={'button'}
               className={
-                !isTableEditable ? 'fa-solid fa-pen-to-square me-2' : 'fa-solid fa-floppy-disk'
+                !isTableEditable
+                  ? 'fa-solid fa-pen-to-square me-2 theme'
+                  : 'fa-solid fa-floppy-disk theme'
               }
               onClick={() => {
                 onEditableClick()
