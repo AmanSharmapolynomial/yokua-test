@@ -564,7 +564,7 @@ const NewsItem = ({
                 {data?.sub_category[0] !== undefined
                   ? data?.sub_category[0]['sub_category_name']
                   : ''}
-                <i className="fa-solid fa-angle-up ms-3 theme" />
+                <i className="fa-solid fa-angle-down ms-3 theme" />
               </div>
             </div>
             <div
@@ -886,7 +886,7 @@ const NewsItem = ({
                                         fontSize: '20px',
                                         cursor: 'pointer',
                                       }}
-                                      onClick={() => {
+                                      onClick={e => {
                                         _editSubCategory()
                                       }}
                                     />
@@ -940,7 +940,8 @@ const NewsItem = ({
                                     fontSize: '20px',
                                     cursor: 'pointer',
                                   }}
-                                  onClick={() => {
+                                  onClick={e => {
+                                    e.stopPropagation()
                                     _editSubCategory(cat)
                                     // change box to edit version
                                   }}

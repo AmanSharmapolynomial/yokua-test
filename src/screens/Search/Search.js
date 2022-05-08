@@ -142,9 +142,9 @@ const Search = props => {
             <div
               data-toggle="collapse"
               data-target={`#collapse${index}`}
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls={`collapse${index}`}
-              className="btn-group border rounded-right w-auto p-0" /*collapsed*/
+              className="btn-group border rounded-right w-auto p-0 collapsed"
               role={'button'}
               onClick={() => {
                 if (index === expanded) setExpanded(-1)
@@ -173,7 +173,7 @@ const Search = props => {
           </div>
           <div
             id={`collapse${index}`}
-            className="row collapse show"
+            className="row collapse"
             aria-labelledby="headingTwo"
             // data-parent={`#accordion`}
           >

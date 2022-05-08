@@ -303,3 +303,335 @@ body {
 .max-width-40 {
   max-width: 40% !important;
 }
+
+.user-approval-screen {
+  width: 100%;
+  padding: 0.5rem 2.5rem;
+}
+.edit-icons {
+  display: flex;
+  flex-direction: row;
+}
+.icon {
+  color: white;
+  padding: 0;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.3rem;
+  width: 1.3rem;
+  margin: 0 0.3rem;
+}
+.reject {
+  background-color: #cd2727;
+}
+.accept {
+  background-color: #1cc745;
+}
+
+.btn {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  margin-right: 0rem;
+  outline: none;
+  border: none;
+  text-align: left !important;
+  border-radius: 5px;
+  background-color: var(--bgColor2) !important;
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 0.8rem !important;
+  width: max-content;
+  cursor: pointer;
+  border: 1px solid #000000 !important;
+  color: var(--textColor5) !important;
+}
+
+.modal-footer .btn-background {
+  background-color: transparent !important;
+  color: #004f9b !important;
+  border: 1px solid #004f9b !important;
+}
+
+.create-domain-btn {
+  border: 0.5px solid #707070;
+}
+
+.btn-container {
+  display: flex;
+  margin-right: 20px;
+  justify-content: right;
+}
+
+.action-btn-btn {
+  margin-bottom: 50px;
+  outline: none;
+  text-align: left !important;
+  border-radius: 5px;
+  background-color: var(--bgColor2) !important;
+  font-family: Poppins;
+  font-weight: normal;
+  font-size: 0.8rem !important;
+  width: max-content;
+  cursor: pointer;
+  border: 1px solid #000000 !important;
+  color: var(--textColor5) !important;
+  padding: 0.2rem 1rem !important;
+}
+.domain-user-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(196, 196, 196, 1);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(196, 196, 196, 1);
+  box-shadow: 0px 0px 5px 0px rgba(196, 196, 196, 1);
+  padding: 1rem;
+}
+.domain-user-list h3 {
+  font-size: 32px;
+  font-weight: 250px;
+}
+
+.domain-user-list-content {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.domain-list-content {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.domain-user-table-content {
+  width: 60%;
+  min-width: 500px;
+}
+
+.listed-domain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 0.7rem;
+  cursor: pointer;
+}
+
+.accept-request {
+  margin-right: 1rem !important;
+}
+
+.ant-pagination-item-link {
+  display: grid !important;
+  place-items: center !important;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+}
+
+.modal-background {
+  position: absolute;
+  z-index: 100000000;
+  background: rgba(0, 0, 0, 0.3);
+  /* padding: 1rem; */
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-wrapper {
+  /* background: white; */
+  /* opacity: 100%; */
+  color: black;
+  /* width: 100%; */
+  /* margin: 2rem; */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  /* -webkit-box-shadow: 0px 0px 11px -1px rgba(168, 168, 168, 1);
+  -moz-box-shadow: 0px 0px 11px -1px rgba(168, 168, 168, 1);
+  box-shadow: 0px 0px 11px -1px rgba(168, 168, 168, 1); */
+}
+
+.select-icon {
+  position: relative;
+}
+.drop-icon {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  margin-top: 0.3rem;
+  color: #000000;
+}
+.save-icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 1.6rem;
+  /* font-size: 1.5rem; */
+  aspect-ratio: 1;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.modal-content {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem;
+}
+
+.modal-content > .user-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+  /* min-width: 190px; */
+}
+
+.modal-content > .user-img > img {
+  width: 70%;
+  border: 1px solid;
+  border-radius: 0.2rem;
+}
+
+.modal-content > .user-details-form {
+  display: flex;
+  flex-direction: column;
+  /* min-width: 290px; */
+  /* max-width: 350px; */
+  font-size: 0.8rem;
+}
+
+.user-details-form > .input-field-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem;
+}
+
+.address-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  margin: 0.3rem 1.3rem;
+}
+
+.user-details-form > .input-field-container > input,
+.user-details-form > .input-field-container > .address-inputs > input,
+select {
+  width: 10rem;
+  height: 1.3rem;
+  outline: none;
+  border: 1px solid rgb(135, 135, 135);
+  border-radius: 3px;
+  padding: 14px 8px;
+  font-size: 0.8rem;
+  font-family: Poppins;
+}
+select {
+  height: 1.6rem;
+  font-size: 0.8rem !important;
+}
+
+.address-inputs > input {
+  margin-bottom: 0.3rem;
+}
+
+.state-and-code > input {
+  width: 45%;
+  height: 1.3rem;
+  border: 1px solid rgb(135, 135, 135);
+  border-radius: 3px;
+  padding: 0.07rem 0.6rem;
+  font-size: 0.8rem;
+  font-family: Poppins;
+}
+
+.state-and-code {
+  display: flex;
+  justify-content: space-between;
+  width: 11.3rem;
+}
+
+.address {
+  margin-top: 0.3rem;
+}
+
+.domain-modal-cta {
+  display: flex;
+  width: 11rem;
+  justify-content: center;
+}
+.domain-input {
+  /* width: 30rem; */
+  box-shadow: 0px 0px 8px #00000035;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  padding: 0.2rem 1.1rem;
+  color: #000000;
+}
+
+.domain-modal-cta .cancel-domain {
+  background-color: transparent !important;
+  color: #004f9b !important;
+  font-weight: 400;
+  border: 1px solid #004f9b;
+  margin-right: 1rem;
+}
+.domain-modal {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.yk-password-container {
+  position: relative;
+}
+.yk-eye-icon {
+  position: absolute;
+  right: 2px;
+  top: 10px !important;
+}
+
+.yg-custom-dropdowns {
+  background-color: white !important;
+  color: black !important;
+  border-color: #000 !important;
+  width: 162px !important;
+}
+
+@media (max-width: 800px) {
+  .domain-user-table-content {
+    min-width: 100px !important;
+    width: 100%;
+  }
+  .domain-list-content {
+    width: 100%;
+    min-width: 100px !important;
+  }
+  .listed-domain {
+    font-size: 0.8rem;
+  }
+}

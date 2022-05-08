@@ -102,7 +102,7 @@ export default () => {
                         onClick={e => {
                           e.stopPropagation()
                           e.preventDefault()
-                          setCurrentDeleteId(data.parent_company_id)
+                          setCurrentDeleteId(item.id)
                           setDelete(true)
                         }}
                       />
@@ -229,7 +229,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
         >
           <FormControl
             style={{ fontSize: 'small' }}
-            className="mt-2 mb-2"
+            className="mt-2 mb-2 w-100"
             placeholder="Name.."
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"

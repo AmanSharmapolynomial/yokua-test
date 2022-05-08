@@ -27,9 +27,9 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`product-card col-12 col-md-4 mt-3`}
+      className={`product-card col-12 col-md-4`}
     >
-      <div className="card shadow px-3 py-3">
+      <div className="card shadow px-3 py-3 h-100">
         <div className="row">
           <div className="col">
             <div className="row">

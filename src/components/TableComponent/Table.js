@@ -377,7 +377,10 @@ export default ({
   return (
     <div className="col-12 mt-4">
       <div className="row">
-        <div className="col p-0" style={{ verticalAlign: 'middle', lineHeight: '2.8rem' }}>
+        <div
+          className="col p-0"
+          style={{ verticalAlign: 'middle', lineHeight: '2.8rem', textTransform: 'capitalize' }}
+        >
           {table_name}
         </div>
         {isAdmin && !archivedFilter && (

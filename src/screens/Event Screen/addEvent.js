@@ -501,11 +501,13 @@ const AddEventScreen = () => {
                     </label>
                     <input
                       type="number"
+                      step=".01"
+                      presicion={2}
                       className="form-control hide-spinners"
                       onChange={event => {
                         //console.log()
-                        let value = event.target.value.match(/\d+/)?.join('')
-                        setCost(value)
+                        // let value = event.target.value.match(/\d+/)?.join('')
+                        setCost(event.target.value)
                       }}
                       value={cost}
                       disabled={eventId}
@@ -611,7 +613,7 @@ const AddEventScreen = () => {
                           marginLeft: !isAdmin ? '-15px' : 0,
                           whiteSpace: 'nowrap',
                         }}
-                        className="ms-3 col-md-6"
+                        className="ms-3 col-md-4"
                       >
                         Remaining Seats
                       </label>
@@ -1259,13 +1261,12 @@ const AddEventScreen = () => {
                 </form>
               </div>
               <div className="row">
-                <div style={{ marginLeft: '55px', marginTop: '10px' }}>
+                <div style={{ padding: '20px 0px 20px 35px' }}>
                   <div
+                    className="row"
                     style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      width: '740px',
-                      marginTop: '10px',
+                      paddingInlineStart: '2.8rem',
+                      position: 'relative',
                     }}
                   >
                     <input
@@ -1276,22 +1277,22 @@ const AddEventScreen = () => {
                         setTermPolicy(!termsPolicy)
                       }}
                     />
+                    <label>
+                      By signing up, you agree with{' '}
+                      <span
+                        style={{
+                          color: 'rgb(0, 79, 155)',
+                          cursor: 'pointer',
+                          textDecoration: 'underline',
+                        }}
+                        onClick={() => {
+                          navigate('/privacy-policy')
+                        }}
+                      >
+                        Terms of service and Privacy Policy
+                      </span>
+                    </label>
                   </div>
-                  <label style={{ marginLeft: '20px' }}>
-                    By signing up, you agree with{' '}
-                    <span
-                      style={{
-                        color: 'rgb(0, 79, 155)',
-                        cursor: 'pointer',
-                        textDecoration: 'underline',
-                      }}
-                      onClick={() => {
-                        navigate('/privacy-policy')
-                      }}
-                    >
-                      Terms of service and Privacy Policy
-                    </span>
-                  </label>
                 </div>
                 <div
                   style={{

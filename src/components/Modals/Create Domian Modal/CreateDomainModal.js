@@ -23,11 +23,12 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
               margin: 0,
             }}
           >
-            <div className="info-text">
+            <div className="info-text w-100 mt-3">
               <input
                 type="text"
-                className="domain-input"
+                className="domain-input w-100 py-2"
                 placeholder="Name"
+                style={{ fontSize: '0.8rem' }}
                 onChange={e => {
                   setDomain(e.target.value)
                 }}
@@ -43,7 +44,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
                 Cancel
               </button>
               <button
-                className="btn me-4"
+                className="btn"
                 onClick={() => {
                   if (domain) {
                     if (domain.includes('.')) {

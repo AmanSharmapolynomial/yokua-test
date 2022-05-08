@@ -37,11 +37,11 @@ const AcceptRejectModal = ({
             }}
           >
             {change == 'Rejected' ? (
-              <div className="info-text">
+              <div className="info-text w-100">
                 <input
                   ref={inputRef}
                   type="text"
-                  className="domain-input"
+                  className="domain-input w-100"
                   placeholder="maximun 255 character support"
                   onChange={e => setMsg(e.target.value)}
                 />

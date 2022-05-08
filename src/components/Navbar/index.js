@@ -81,16 +81,16 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         </span>
       </button>
       <div
-        className="collapse navbar-collapse justify-content-between align-items-center w-100"
+        className="collapse navbar-collapse justify-content-between align-items-center"
         id="navbar"
       >
         <ul className="navbar-nav mx-auto text-md-center text-left">
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <Link className="nav-link" to={'/home'}>
               Home
             </Link>
           </li>
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <Link className="nav-link" to="/news">
               News
               {unreadNewsCount !== 0 && (
@@ -122,7 +122,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               )}
             </Link>
           </li>
-          <li className="nav-item dropdown px-3">
+          <li className="nav-item dropdown px-xl-3">
             <a
               className="nav-link dropdown-toggle"
               href="#"
@@ -143,9 +143,9 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </div>
           </li>
 
-          <li className="nav-item dropdown px-3 btn-group">
+          <li className="nav-item dropdown px-xl-3 btn-group">
             <Link
-              className="nav-link"
+              className="nav-link pe-1"
               // id="navbarDropdown"
               // role="button"
               // data-toggle="dropdown"
@@ -158,7 +158,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             <div
               role={'button'}
               type="button"
-              className="dropdown-toggle dropdown-toggle-split"
+              className="dropdown-toggle dropdown-toggle-split ps-1"
               data-toggle="dropdown"
               aria-expanded="false"
               aria-haspopup="true"
@@ -189,32 +189,32 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             )}
           </li>
 
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <a
               className="nav-link"
               onClick={() => {
                 navigate('/event/all')
               }}
             >
-              Training
+              Training Material
             </a>
           </li>
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <a className="nav-link">Data History</a>
           </li>
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <Link className="nav-link" to="/profile">
               Profile Settings
             </Link>
           </li>
-          <li className="nav-item px-3">
+          <li className="nav-item px-xl-3">
             <Link className="nav-link" to="/contact">
               Contact
             </Link>
           </li>
           {getUserRoles() === 'Technical Administrator' ||
           getUserRoles() === 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-3">
+            <li className="nav-item dropdown px-xl-3">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"

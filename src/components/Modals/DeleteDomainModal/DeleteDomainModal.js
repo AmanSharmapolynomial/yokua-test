@@ -31,10 +31,11 @@ const DeleteDomainModal = ({ saveAndExit, deleteDomain, data, show }) => {
                 margin: '2rem 0',
                 color: 'var(--textColor2)',
                 textAlign: 'center',
+                fontWeight: 'bold',
               }}
             >
-              The domain will be deleted permanently from the whitelisted section.<br></br>{' '}
-              Remaining user data will be moved into UNK
+              The domain will be deleted permanently from the whitelisted section.Remaining user
+              data will be moved into Non-whitelisted.com
             </div>
             <div className="domain-modal-cta mt-3">
               <button

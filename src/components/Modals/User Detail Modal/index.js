@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import '../style.css'
 import validator from 'validator'
 import placeholder from '../../News Components/placeholder.png'
 

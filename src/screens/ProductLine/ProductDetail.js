@@ -343,7 +343,7 @@ const ProductDetail = () => {
             )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0">
+            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0 text-bold">
               {ele.title}
             </a>
           </div>

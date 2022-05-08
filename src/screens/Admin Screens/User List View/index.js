@@ -101,7 +101,7 @@ const UserListView = () => {
       name: 'Company',
       selector: row => row.company,
       width: '130px',
-      // sortable: true,
+      sortable: true,
     },
     {
       name: 'Status',

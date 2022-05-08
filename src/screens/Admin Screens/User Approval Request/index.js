@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import './style.css'
 import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable from 'react-data-table-component'
 import API from '../../../utils/api'
@@ -499,14 +498,7 @@ const UserApprovalScreen = () => {
             <div>
               <div className="row">
                 <div className="domain-list-content col-4">
-                  <div
-                    className="domain-list"
-                    style={
-                      {
-                        // maxHeight: '27rem',
-                      }
-                    }
-                  >
+                  <div className="domain-list">
                     {domainList.map((data, index) => (
                       <div
                         className="listed-domain"
@@ -519,8 +511,8 @@ const UserApprovalScreen = () => {
                           setDULfilter(data.id)
                         }}
                       >
-                        <span className="domain-text">{data.domain}</span>
-                        <span className="domain-value">({data.count})</span>
+                        <span className="d-flex flex-fill">{data.domain}</span>
+                        <span className="mx-2">({data.count})</span>
                         {data.id != 1 && data.id != 2 ? (
                           <div>
                             <i
@@ -547,7 +539,7 @@ const UserApprovalScreen = () => {
                             <i className="fa-solid fa-caret-right" />
                           </div>
                         ) : (
-                          <div style={{ padding: '0px 1.15rem' }}></div>
+                          <div style={{ padding: '0px 1rem' }}></div>
                         )}
                       </div>
                     ))}
