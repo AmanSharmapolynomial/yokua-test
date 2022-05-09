@@ -189,8 +189,8 @@ body {
 }
 .card-header-items {
   font-weight: 500;
-  font-size: 0.8rem;
-  margin-bottom: 1rem;
+  font-size: 0.8rem !important;
+  margin-bottom: 1rem !important;
 }
 .ryg-header-title {
   font-size: 1.6rem;

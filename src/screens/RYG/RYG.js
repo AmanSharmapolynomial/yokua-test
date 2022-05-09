@@ -58,7 +58,8 @@ const RYG = () => {
           item={item}
           isAdmin={isAdmin}
           onClick={() => {
-            navigate('/ryg-information/details', { state: item })
+            if (item?.event) navigate('/event/all')
+            else navigate('/ryg-information/details', { state: item })
           }}
           onUpdate={payload => {
             updateProduct(payload)

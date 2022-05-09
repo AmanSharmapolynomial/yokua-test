@@ -177,7 +177,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
                   <div
                     role={'button'}
                     onClick={() => {
-                      navigate('/ryg-information/details', { state: element })
+                      if (element?.event) navigate('/event/all')
+                      else navigate('/ryg-information/details', { state: element })
                     }}
                     key={index}
                     className="dropdown-item font-6"

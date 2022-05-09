@@ -211,7 +211,7 @@ const EventScreen = () => {
                     let endDate = moment(e.end_date, 'yyyy-MM-DD')
                     return (
                       <tr>
-                        <td style={{ width: '5%' }}>
+                        <td className="col-auto">
                           <div>
                             {isAdmin && (
                               <input
@@ -232,11 +232,10 @@ const EventScreen = () => {
                             )}
                           </div>
                         </td>
-                        <td style={{ width: '15%', minWidth: '150px' }}>
+                        <td className="col-2">
                           <div
                             style={{
                               borderRight: '1px solid',
-                              paddingRight: '15px',
                               fontWeight: 'bold',
                             }}
                           >
@@ -246,7 +245,7 @@ const EventScreen = () => {
                             <p>{endDate.diff(startDate, 'days')} days</p>
                           </div>
                         </td>
-                        <td style={{ width: '30%' }}>
+                        <td className="col-2">
                           <div style={{ display: 'flex', alignItems: 'center' }}>
                             <i
                               className="fas fa-location-dot"
@@ -264,7 +263,7 @@ const EventScreen = () => {
                             </span>
                           </div>
                         </td>
-                        <td style={{ width: '40%', minWidth: '120px' }}>
+                        <td className="col-2">
                           <div>
                             <label
                               style={{
@@ -280,18 +279,19 @@ const EventScreen = () => {
                             </label>
                           </div>
                         </td>
-                        <td style={{ width: '30%', maxWidth: '300px' }}>
+                        <td className="col-6">
                           <p
                             style={{
-                              padding: '25px',
                               wordWrap: 'break-word',
                               overflowWrap: 'break-word',
+                              maxHeight: '6rem',
+                              overflowY: 'auto',
                             }}
                           >
                             {e.description}
                           </p>
                         </td>
-                        <td style={{ width: '5%' }}>
+                        <td className="col-auto">
                           <div
                             style={{
                               padding: '25px',

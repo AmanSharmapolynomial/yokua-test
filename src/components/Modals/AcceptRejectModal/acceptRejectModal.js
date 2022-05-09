@@ -14,7 +14,7 @@ const AcceptRejectModal = ({
   const [msg, setMsg] = useState(null)
   const inputRef = useRef(null)
   return (
-    <Modal centered show={show} className="modal-background">
+    <Modal centered show={show} className="modal-background" dialogClassName="max-width-40">
       <Modal.Body>
         <div className="modal-wrapper">
           <h3
@@ -23,11 +23,7 @@ const AcceptRejectModal = ({
               marginBottom: 0,
             }}
           >
-            {change == 'Rejected'
-              ? 'Request Denied'
-              : title
-              ? title
-              : 'Approval E-Mail change request'}
+            {change == 'Rejected' ? 'Request Denied' : 'Confirm E-mail change request'}
           </h3>
           <div
             className="modal-content domain-modal"
@@ -52,7 +48,7 @@ const AcceptRejectModal = ({
                   padding: '1rem',
                 }}
               >
-                {title ? title : 'The user will be change the E-Mail'}
+                {'On confirmation E-mail of the user will be changed'}
               </span>
             )}
             {change == 'Rejected' ? (

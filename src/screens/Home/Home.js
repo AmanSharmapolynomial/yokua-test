@@ -7,6 +7,9 @@ import Header from '../../components/Header'
 import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import HomeCard from '../../components/ProductCard/HomeCard'
+import editIcon from '../../assets/Icon awesome-edit.png'
+import saveIcon from '../../assets/ic_save.png'
+import { Modal } from 'react-bootstrap'
 const Home = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -16,6 +19,13 @@ const Home = () => {
   const navigate = useNavigate()
   const { setLoading } = useLoading()
   const [home, setHome] = React.useState(null)
+  const [isQuickLinkEditable, setIsQuickLinkEditable] = React.useState(false)
+  const [isFavEditable, setIsFavEditable] = React.useState(false)
+  const [isAddModalVisible, setIsAddModalVisible] = React.useState(-1) // 0 -> Quick Links, 1 -> Fav Links
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(-1)
+  const [selectedItem, setSelectedItem] = React.useState(null)
+  const inputTitle = React.useRef(null)
+  const inputLink = React.useRef(null)
 
   const getHomeDetails = () => {
     setLoading(true)
@@ -32,21 +42,124 @@ const Home = () => {
       })
   }
 
-  console.log(home)
+  const addQuickLinks = payload => {
+    setLoading(true)
+    API.post('home/quick_links', payload)
+      .then(res => {
+        getHomeDetails()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
+  }
 
-  const HomeCardComponent = ({ title, data, isImage = false, image }) => {
+  const addFavLinks = payload => {
+    setLoading(true)
+    API.post('home/my_favorites', payload)
+      .then(res => {
+        getHomeDetails()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
+  }
+  const deleteQuickLinks = id => {
+    setLoading(true)
+    API.post('home/delete/quick_links', { id: [id] })
+      .then(res => {
+        getHomeDetails()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
+  }
+
+  const deleteFavLinks = id => {
+    setLoading(true)
+    API.post('home/delete/my_fav_links', { id: [id] })
+      .then(res => {
+        getHomeDetails()
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
+  }
+
+  const HomeCardComponent = ({
+    title,
+    data,
+    isImage = false,
+    image,
+    state,
+    set,
+    setAdd,
+    setDelete,
+  }) => {
     if (!isImage)
       return (
         <div className="col">
-          <div className="card">
+          <div className="card h-100">
             <div className="card-body">
-              <div className="card-header-title">{title}</div>
+              <div className="row card-header-title">
+                <span className="col">{title}</span>
+                {(getUserRoles() == 'PMK Administrator' ||
+                  getUserRoles() == 'PMK Content Manager' ||
+                  getUserRoles() == 'Technical Administrator') && (
+                  <span className="col-auto d-none d-md-block">
+                    <img
+                      style={{ width: '1.4rem', height: '1.4rem' }}
+                      src={state ? saveIcon : editIcon}
+                      onClick={e => {
+                        e.stopPropagation()
+                        if (state) {
+                        }
+                        set(!state)
+                      }}
+                    />
+                  </span>
+                )}
+              </div>
               {data &&
                 data.map((item, idx) => (
-                  <div className="card-header-items" role={'button'}>
-                    {item.link_text}
+                  <div className="row card-header-items">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      role={'button'}
+                      className="col text-decoration-none"
+                    >
+                      {item.name}
+                    </a>
+                    {state && (
+                      <i
+                        role={'button'}
+                        className="fa-solid fa-trash col-auto"
+                        style={{
+                          color: '#000',
+                        }}
+                        onClick={e => {
+                          setDelete(item)
+                        }}
+                      />
+                    )}
                   </div>
                 ))}
+              <button
+                className="btn card-header-items px-1 py-1"
+                onClick={() => {
+                  setAdd()
+                }}
+              >
+                Add Link
+              </button>
             </div>
           </div>
         </div>
@@ -77,13 +190,41 @@ const Home = () => {
         <div className="col center py-md-3">
           <PrimaryHeading title={'Home'} />
           <div className="row mt-4">
-            <HomeCardComponent title={'Quick Links'} data={home?.quick_links} />
-            <HomeCardComponent title={'My Favourites'} data={home?.my_favorites} />
+            <HomeCardComponent
+              title={'Quick Links'}
+              data={home?.quick_links}
+              state={isQuickLinkEditable}
+              set={bool => {
+                setIsQuickLinkEditable(bool)
+              }}
+              setAdd={() => {
+                setIsAddModalVisible(0)
+              }}
+              setDelete={item => {
+                setIsDeleteModalVisible(0)
+                setSelectedItem(item)
+              }}
+            />
+            <HomeCardComponent
+              title={'My Favourites'}
+              data={home?.my_favorites}
+              state={isFavEditable}
+              set={bool => {
+                setIsFavEditable(bool)
+              }}
+              setAdd={() => {
+                setIsAddModalVisible(1)
+              }}
+              setDelete={item => {
+                setIsDeleteModalVisible(1)
+                setSelectedItem(item)
+              }}
+            />
           </div>
           <div className="row mt-4">
-            <div>Product Related Information</div>
+            <div className="ryg-header-title">Product Related Information</div>
             {home?.product_related_info.map((item, index) => (
-              <HomeCard item={item} index={index} onClick={() => {}} onUpdate={() => {}} />
+              <HomeCard item={item} index={index} onClick={() => {}} />
             ))}
           </div>
           <div className="row mt-4 mb-4">
@@ -102,6 +243,164 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Modal
+        show={isAddModalVisible !== -1}
+        centered
+        onHide={() => {
+          setIsAddModalVisible(-1)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+          }}
+        >
+          <Modal.Title>{isAddModalVisible === 0 ? 'Quick Links' : 'My Favourites'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            borderBottom: '0',
+            fontWeight: '600',
+          }}
+        >
+          {/* <div className="row" style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}> */}
+          <form
+            onSubmit={e => {
+              if (inputTitle.current.value.trim() !== '' && inputLink.current.value.trim() !== '') {
+                if (isAddModalVisible === 0) {
+                  addQuickLinks({
+                    name: inputTitle.current.value.trim(),
+                    link: inputLink.current.value.trim(),
+                  })
+                } else if (isAddModalVisible === 1) {
+                  addFavLinks({
+                    name: inputTitle.current.value.trim(),
+                    link: inputLink.current.value.trim(),
+                  })
+                }
+              }
+            }}
+          >
+            <div
+              class="form-group w-100 border rounded"
+              // style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+            >
+              <input
+                required
+                className="form-control w-100 border-0 py-2 text-bold font-8"
+                type="text"
+                placeholder="Title"
+                ref={inputTitle}
+              />
+              <hr className="m-0"></hr>
+              <input
+                required
+                className="form-control w-100 border-0 py-2 text-bold font-8"
+                type="url"
+                placeholder="Link"
+                ref={inputLink}
+              />
+              <hr className="m-0"></hr>
+              <div className="py-2">
+                <button
+                  ref={ref => {
+                    if (ref) {
+                      ref.style.setProperty('background-color', 'white', 'important')
+                      ref.style.setProperty('color', 'var(--bgColor2)', 'important')
+                      ref.style.setProperty('font-size', '0.8rem', 'important')
+                    }
+                  }}
+                  className="btn me-4 font-8 px-1 py-1"
+                  onClick={() => {
+                    setIsAddModalVisible(-1)
+                  }}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn font-8 px-1 py-1">
+                  Save
+                </button>
+              </div>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={isDeleteModalVisible !== -1}
+        centered
+        onHide={() => {
+          setIsDeleteModalVisible(-1)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+          }}
+        >
+          <Modal.Title>Are you sure you want to delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            borderBottom: '0',
+            fontWeight: '600',
+          }}
+        >
+          The {isDeleteModalVisible === 0 ? ' quick links' : ' my favourites'} of{' '}
+          {selectedItem?.name} will be deleted
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <button
+            ref={ref => {
+              if (ref) {
+                ref.style.setProperty('background-color', 'white', 'important')
+                ref.style.setProperty('color', 'var(--bgColor2)', 'important')
+                ref.style.setProperty('font-size', '0.8rem', 'important')
+              }
+            }}
+            className="btn me-4 font-8 px-1 py-1"
+            onClick={() => {
+              setIsDeleteModalVisible(-1)
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn font-8 px-1 py-1"
+            onClick={() => {
+              if (isDeleteModalVisible === 0) {
+                deleteQuickLinks(selectedItem.id)
+                setIsDeleteModalVisible(-1)
+              } else if (isDeleteModalVisible === 1) {
+                deleteFavLinks(selectedItem.id)
+                setIsDeleteModalVisible(-1)
+              }
+            }}
+          >
+            Confirm
+          </button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
