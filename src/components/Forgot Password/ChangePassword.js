@@ -94,19 +94,36 @@ const ChnagePassword = () => {
               onClick={() => setConfirmVisible(!confirmVisible)}
             />
           </div>
-          <button
-            onClick={e => {
-              if (uid && token) {
-                _resetPasswordUsingUidandToken(e)
-              } else {
-                _resetPassword(e)
-              }
-            }}
-            type="button"
-            className="submit-btn px-4"
-          >
-            Save
-          </button>
+          <div>
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={e => {
+                navigate('/')
+              }}
+              type="button"
+              className="submit-btn px-4 me-2"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={e => {
+                if (uid && token) {
+                  _resetPasswordUsingUidandToken(e)
+                } else {
+                  _resetPassword(e)
+                }
+              }}
+              type="button"
+              className="submit-btn px-4"
+            >
+              Save
+            </button>
+          </div>
         </form>
       </div>
     </>

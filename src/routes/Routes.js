@@ -35,6 +35,7 @@ import RYG from '../screens/RYG/RYG'
 import RYGDetail from '../screens/RYG/RYGDetail'
 import Search from '../screens/Search/Search'
 import Home from '../screens/Home/Home'
+import EventDetail from '../screens/Event Screen/EventDetail'
 
 const Routing = () => {
   return (
@@ -304,8 +305,15 @@ const Routing = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path="event/details"
+          element={
+            <PrivateRoute>
+              <EventDetail />
+            </PrivateRoute>
+          }
+        />
       </Routes>
-
       <Footer />
     </React.Fragment>
   )

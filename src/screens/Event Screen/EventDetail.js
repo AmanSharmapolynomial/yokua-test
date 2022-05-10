@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 import RYGFlowComponent from '../../components/RYGFlowComponent/RYGFlowComponent'
-const RYGDetail = () => {
+const EventDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
     getUserRoles() == 'PMK Administrator' ||
@@ -58,9 +58,7 @@ const RYGDetail = () => {
 
   const getProductDetails = () => {
     setLoading(true)
-    API.post('/ryg_info/details/', {
-      parent_id: state.id,
-    })
+    API.get('ryg_info/training/details/')
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           setProductDetail(res.data)
@@ -1077,7 +1075,7 @@ const RYGDetail = () => {
       />
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
-          <div className="row">
+          {/* <div className="row">
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span role="button" className="col-6 light-grey">
@@ -1089,12 +1087,19 @@ const RYGDetail = () => {
                     wordBreak: 'break-all',
                   }}
                 >
-                  <Link to={'/ryg-information'}>RYG Information</Link>
-                  {'>'} {state.page_title}
+                  <u
+                    role="button"
+                    onClick={e => {
+                      navigate(-1)
+                    }}
+                  >
+                    RYG Information
+                  </u>
+                  {'>'} {'Event Detail'}
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
           <>
             <div className="row">{renderComponents()}</div>
             {(getUserRoles() == 'PMK Administrator' ||
@@ -1430,4 +1435,4 @@ const RYGDetail = () => {
   )
 }
 
-export default RYGDetail
+export default EventDetail

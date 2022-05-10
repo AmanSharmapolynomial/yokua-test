@@ -23,7 +23,7 @@ const Search = props => {
   const { state } = useLocation()
   const { setLoading } = useLoading()
   const [searchResults, setSearchResults] = useState([])
-  const [expanded, setExpanded] = useState(-1)
+  const [expanded, setExpanded] = useState([])
   const [isHistory, setIsHistory] = useState(false)
 
   const getSearchResults = () => {
@@ -147,8 +147,15 @@ const Search = props => {
               className="btn-group border rounded-right w-auto p-0 collapsed"
               role={'button'}
               onClick={() => {
-                if (index === expanded) setExpanded(-1)
-                else setExpanded(index)
+                if (expanded.includes(index))
+                  setExpanded(prev => {
+                    prev.splice(prev.indexOf(index), 1)
+                    return prev
+                  })
+                else
+                  setExpanded(prev => {
+                    return [...prev, index]
+                  })
               }}
             >
               <span className="text-bold px-4">{item.category}</span>
@@ -164,7 +171,7 @@ const Search = props => {
               >
                 <i
                   className={`fa-solid ${
-                    index !== expanded ? 'fa-angle-down' : 'fa-angle-up'
+                    expanded.includes(index) ? 'fa-angle-down' : 'fa-angle-up'
                   } mx-2`}
                   style={{ fontSize: '1rem' }}
                 />
@@ -173,7 +180,7 @@ const Search = props => {
           </div>
           <div
             id={`collapse${index}`}
-            className="row collapse"
+            className="row collapse show"
             aria-labelledby="headingTwo"
             // data-parent={`#accordion`}
           >

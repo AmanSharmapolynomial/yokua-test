@@ -194,7 +194,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             <a
               className="nav-link"
               onClick={() => {
-                navigate('/event/all')
+                navigate('/event/details')
               }}
             >
               Training Material

@@ -1032,6 +1032,7 @@ const AddEventScreen = () => {
                             setCompanyName(userProfile['basic_profile'].company_name)
                           } else {
                             setFirstName('')
+                            setLastName('')
                             setCompanyEmail('')
                             setCompanyName('')
                           }
