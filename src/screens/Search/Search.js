@@ -210,7 +210,7 @@ const Search = props => {
       />
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-md-3">
-          <PrimaryHeading title={'Search Results'} />
+          <PrimaryHeading title={'Search Results'} backgroundImage={'search-banner'} />
           <div className="col">
             <div className="row">
               <div className="col-12 col-md-auto border rounded px-3 py-2 mt-3 search-header-container">

@@ -2,12 +2,14 @@ import React from 'react'
 import { getToken, getUserRoles } from '../../utils/token'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Header from '../../components/Header'
 import PrimaryHeading from '../../components/Primary Headings'
 import API from '../../utils/api'
 import HomeCard from '../../components/ProductCard/HomeCard'
 import editIcon from '../../assets/Icon awesome-edit.png'
+import RYGBottom from '../../assets/home-bottom.png'
+import GoTo from '../../assets/goto.png'
 import saveIcon from '../../assets/ic_save.png'
 import { Modal } from 'react-bootstrap'
 const Home = () => {
@@ -235,10 +237,19 @@ const Home = () => {
                   Download the FlowConfigurator, get Service information, Lead-time table register
                   for Trainings, Application Notes and many more
                 </div>
+                <div className="mt-2 text-center" role={'button'}>
+                  <Link to={'/ryg-information'}>
+                    <img
+                      src={GoTo}
+                      style={{ width: '2rem', height: '2rem', objectFit: 'contain' }}
+                      className="mt-2 mx-auto"
+                    />
+                  </Link>
+                </div>
               </div>
             </div>
             <div className="col-4">
-              <img src="https://source.unsplash.com/random" className="home-ryg-img shadow" />
+              <img src={RYGBottom} className="home-ryg-img shadow" />
             </div>
           </div>
         </div>
