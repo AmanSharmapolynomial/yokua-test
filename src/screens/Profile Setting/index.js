@@ -227,6 +227,16 @@ const ProfileSettingScreen = () => {
       })
   }
 
+  const cancelEvent = e => {
+    e.preventDefault()
+    API.post('/training/delete_event_registeration', {
+      event_id: selectedEvent.event_id,
+      participant_email: selectedEvent.email,
+    })
+      .then(res => setShowCancelModal(false))
+      .catch(err => setShowCancelModal(false))
+  }
+
   return (
     <>
       <Header isLogedIn={getToken()} />
@@ -246,7 +256,7 @@ const ProfileSettingScreen = () => {
         )}
         <div className="col profile-setting-container pb-5 py-md-3">
           <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
-          <div className="profile-setting">
+          <div className="profile-setting col col-md-10 p-0">
             <div className="profile-setting__info">
               <div>
                 <input
@@ -646,97 +656,101 @@ const ProfileSettingScreen = () => {
               </button>
             </div>
 
-            <div className="events_trainings">
-              <div className="profile-setting__basic-profile profile-setting__box registered_events">
-                <h1 className="profile-setting__heading py-3 event_training_heading">
-                  You are registered for the following events & trainings
-                </h1>
-                {isLoading ? (
-                  <span>Loading...</span>
-                ) : (
-                  <div className="profile-setting__basic-profile-edit">
-                    {profileData.future_trainings?.map((training, index) => (
-                      <>
-                        <div className="edit_training" key={index}>
-                          <i
-                            className="fa-solid fa-calendar-check"
-                            style={{ color: '#004f9b', fontSize: '20px' }}
-                          />
-                          <div className="training_text">
-                            <span>{training.training_name}</span>
-                            <span>{training.training_topic}</span>
-                            <span>{training.date}</span>
-                            <span>Latest cancellation date {training.cancellation_date}</span>
+            <div className="events_trainings row mt-4">
+              <div className="col-12 col-md-6">
+                <div className="profile-setting__basic-profile profile-setting__box h-100">
+                  <h1 className="profile-setting__heading py-3 event_training_heading">
+                    You are registered for the following events & trainings
+                  </h1>
+                  {isLoading ? (
+                    <span>Loading...</span>
+                  ) : (
+                    <div className="profile-setting__basic-profile-edit">
+                      {profileData.future_trainings?.map((training, index) => (
+                        <>
+                          <div className="edit_training" key={index}>
+                            <i
+                              className="fa-solid fa-calendar-check"
+                              style={{ color: '#004f9b', fontSize: '20px' }}
+                            />
+                            <div className="training_text">
+                              <span>{training.training_name}</span>
+                              <span>{training.training_topic}</span>
+                              <span>{training.date}</span>
+                              <span>Latest cancellation date {training.cancellation_date}</span>
+                            </div>
+                            <i
+                              onClick={() => {
+                                setIsModalOpen(true)
+                                fetchEventData(
+                                  training.event_id,
+                                  training.participant_email,
+                                  training.type
+                                )
+                              }}
+                              style={{
+                                cursor: 'pointer',
+                                color: '#004f9b',
+                                fontSize: '20px',
+                                marginLeft: 'auto',
+                              }}
+                              className="fa-solid fa-pen-to-square"
+                            />
                           </div>
-                          <i
-                            onClick={() => {
-                              setIsModalOpen(true)
-                              fetchEventData(
-                                training.event_id,
-                                training.participant_email,
-                                training.type
-                              )
-                            }}
-                            style={{
-                              cursor: 'pointer',
-                              color: '#004f9b',
-                              fontSize: '20px',
-                              marginLeft: 'auto',
-                            }}
-                            className="fa-solid fa-pen-to-square"
-                          />
-                        </div>
-                        <div className="edit_training" key={index} style={{ margin: 0 }}>
-                          <i
-                            className="fa-solid fa-location-dot"
-                            style={{ color: '#004f9b', fontSize: '20px' }}
-                          />
-                          <div className="training_text">
-                            <span>{training.address}</span>
+                          <div className="edit_training" key={index} style={{ margin: 0 }}>
+                            <i
+                              className="fa-solid fa-location-dot"
+                              style={{ color: '#004f9b', fontSize: '20px' }}
+                            />
+                            <div className="training_text">
+                              <span>{training.address}</span>
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="profile-setting__basic-profile profile-setting__box last_events">
-                <h1 className="profile-setting__heading py-3 event_training_heading">
-                  Last participated event
-                </h1>
-                {isLoading ? (
-                  <span>Loading...</span>
-                ) : (
-                  <div className="profile-setting__basic-profile-edit">
-                    {profileData.participated_trainings
-                      ?.slice(0, viewMore ? 6 : 2)
-                      .map((training, index) => (
-                        <div className="edit_training" key={index}>
-                          <i
-                            className="fa-solid fa-calendar-check"
-                            style={{ color: '#004f9b', fontSize: '20px' }}
-                          />
-                          <div className="training_text">
-                            <span>{training.training_name}</span>
-                            <span>{training.date}</span>
-                          </div>
-                        </div>
+                        </>
                       ))}
-                    <p
-                      style={{
-                        color: 'rgb(0, 79, 155)',
-                        paddingRight: '25px',
-                        cursor: 'pointer',
-                        textAlign: 'right',
-                      }}
-                      onClick={() => {
-                        setViewMore(prev => !prev)
-                      }}
-                    >
-                      {viewMore ? 'view less...' : 'view more...'}
-                    </p>
-                  </div>
-                )}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-12 col-md-6 mt-3 mt-md-0">
+                <div className="profile-setting__basic-profile profile-setting__box h-100">
+                  <h1 className="profile-setting__heading py-3 event_training_heading">
+                    Last participated event
+                  </h1>
+                  {isLoading ? (
+                    <span>Loading...</span>
+                  ) : (
+                    <div className="profile-setting__basic-profile-edit">
+                      {profileData.participated_trainings
+                        ?.slice(0, viewMore ? 6 : 2)
+                        .map((training, index) => (
+                          <div className="edit_training" key={index}>
+                            <i
+                              className="fa-solid fa-calendar-check"
+                              style={{ color: '#004f9b', fontSize: '20px' }}
+                            />
+                            <div className="training_text">
+                              <span>{training.training_name}</span>
+                              <span>{training.date}</span>
+                            </div>
+                          </div>
+                        ))}
+                      <p
+                        style={{
+                          color: 'rgb(0, 79, 155)',
+                          paddingRight: '25px',
+                          cursor: 'pointer',
+                          textAlign: 'right',
+                        }}
+                        onClick={() => {
+                          setViewMore(prev => !prev)
+                        }}
+                      >
+                        {viewMore ? 'view less...' : 'view more...'}
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1023,7 +1037,10 @@ const ProfileSettingScreen = () => {
                     fontSize: '13px',
                     cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
                   }}
-                  onClick={() => setShowCancelModal(true)}
+                  onClick={() => {
+                    setShowCancelModal(true)
+                    setIsModalOpen(false)
+                  }}
                   disabled={isModalSubmitting}
                 >
                   Cancel Event
@@ -1052,7 +1069,7 @@ const ProfileSettingScreen = () => {
                 fontSize: '13px',
                 cursor: isModalSubmitting ? 'not-allowed' : 'pointer',
               }}
-              onClick={e => handleEventUpdate(e, true)}
+              onClick={e => cancelEvent(e)}
             >
               Yes
             </button>

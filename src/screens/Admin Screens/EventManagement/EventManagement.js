@@ -548,12 +548,6 @@ const EventManagement = () => {
                         <input
                           type="text"
                           className="form-control"
-                          style={{
-                            position: 'absolute',
-                            left: '200px',
-                            top: '-25%',
-                            maxWidth: '150px',
-                          }}
                           value={modalData?.food_requirements}
                           disabled
                         />

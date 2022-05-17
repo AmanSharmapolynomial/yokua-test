@@ -226,7 +226,13 @@ const Home = () => {
           <div className="row mt-4">
             <div className="ryg-header-title">Product Related Information</div>
             {home?.product_related_info.map((item, index) => (
-              <HomeCard item={item} index={index} onClick={() => {}} />
+              <HomeCard
+                item={item}
+                index={index}
+                onClick={() => {
+                  navigate('/product-lines/sub-product', { state: item })
+                }}
+              />
             ))}
           </div>
           <div className="row mt-4 mb-4">

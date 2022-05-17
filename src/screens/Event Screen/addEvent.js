@@ -76,7 +76,7 @@ const AddEventScreen = () => {
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
       ? {
           value: 'internal',
-          label: 'My self',
+          label: 'Self registration',
         }
       : { value: 'external', label: 'Others' }
   )
@@ -89,7 +89,7 @@ const AddEventScreen = () => {
     { value: 'webinar', label: 'Webinar' },
   ]
   const registerationTypeOption = [
-    { value: 'internal', label: 'My self' },
+    { value: 'internal', label: 'Self registration' },
     { value: 'external', label: 'Others' },
   ]
 
@@ -265,6 +265,30 @@ const AddEventScreen = () => {
   }
 
   const handleRegisterButton = async () => {
+    if (
+      hotelReservation?.name === undefined
+      // shuttleTransport?.name === undefined ||
+      // foodRequirement?.name === undefined
+    ) {
+      toast.error('Hotel reservation is manadatory')
+      return
+    }
+    if (
+      // hotelReservation?.name === undefined ||
+      shuttleTransport?.name === undefined
+      // foodRequirement?.name === undefined
+    ) {
+      toast.error('Shuttle transport is manadatory')
+      return
+    }
+    if (
+      // hotelReservation?.name === undefined ||
+      // shuttleTransport?.name === undefined ||
+      foodRequirement?.name === undefined
+    ) {
+      toast.error('Food requirement is manadatory')
+      return
+    }
     //add record in food requirement classes list
     foodRequirementList.push('No Requirement')
     foodRequirementList.push('No Pork')
@@ -666,7 +690,7 @@ const AddEventScreen = () => {
                         if (event.value === 'external') {
                           setRegistrationType({
                             value: 'internal',
-                            label: 'My self',
+                            label: 'Self registration',
                           })
                         }
                       }}
