@@ -104,6 +104,7 @@ const Home = () => {
     set,
     setAdd,
     setDelete,
+    isAdmin,
   }) => {
     if (!isImage)
       return (
@@ -154,14 +155,16 @@ const Home = () => {
                     )}
                   </div>
                 ))}
-              <button
-                className="btn card-header-items px-1 py-1"
-                onClick={() => {
-                  setAdd()
-                }}
-              >
-                Add Link
-              </button>
+              {isAdmin && (
+                <button
+                  className="btn card-header-items px-1 py-1"
+                  onClick={() => {
+                    setAdd()
+                  }}
+                >
+                  Add Link
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -206,6 +209,7 @@ const Home = () => {
                 setIsDeleteModalVisible(0)
                 setSelectedItem(item)
               }}
+              isAdmin={isAdmin}
             />
             <HomeCardComponent
               title={'My Favourites'}
@@ -221,6 +225,7 @@ const Home = () => {
                 setIsDeleteModalVisible(1)
                 setSelectedItem(item)
               }}
+              isAdmin={true}
             />
           </div>
           <div className="row mt-4">

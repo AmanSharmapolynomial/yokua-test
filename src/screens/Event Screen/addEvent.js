@@ -320,6 +320,7 @@ const AddEventScreen = () => {
         }
       })
       .catch(() => {
+        window.scrollTo(0, 0)
         navigate('/event/update/' + eventId)
       })
   }
@@ -466,7 +467,7 @@ const AddEventScreen = () => {
                 <div className="row" style={{ width: '100%', marginTop: '10px' }}>
                   <div className="col-md-8" style={{ display: 'flex' }}>
                     <label style={{ fontWeight: 'bold' }} className="col-md-4">
-                      Cancel Date
+                      Cancellation Date
                     </label>
                     <DatePicker
                       calendarStartDay={1}
@@ -477,7 +478,7 @@ const AddEventScreen = () => {
                         if (moment(date).isBefore(startDate)) {
                           setCancelledDate(date)
                         } else {
-                          toast.error('Cancel date should be before start date')
+                          toast.error('Cancellation date should be before start date')
                         }
                       }}
                       placeholderText="DDMMYYYY"

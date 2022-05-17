@@ -20,8 +20,8 @@ const Z_TO_A = 'descending'
 
 const nto = 'New to Old'
 const otn = 'Old to New'
-const atz = 'A to Z'
-const zta = 'Z to A'
+const atz = 'A to Z Company'
+const zta = 'Z to A Company'
 
 const UserListView = () => {
   const { setLoading } = useLoading()
