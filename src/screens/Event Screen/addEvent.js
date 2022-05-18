@@ -265,29 +265,31 @@ const AddEventScreen = () => {
   }
 
   const handleRegisterButton = async () => {
-    if (
-      hotelReservation?.name === undefined
-      // shuttleTransport?.name === undefined ||
-      // foodRequirement?.name === undefined
-    ) {
-      toast.error('Hotel reservation is manadatory')
-      return
-    }
-    if (
-      // hotelReservation?.name === undefined ||
-      shuttleTransport?.name === undefined
-      // foodRequirement?.name === undefined
-    ) {
-      toast.error('Shuttle transport is manadatory')
-      return
-    }
-    if (
-      // hotelReservation?.name === undefined ||
-      // shuttleTransport?.name === undefined ||
-      foodRequirement?.name === undefined
-    ) {
-      toast.error('Food requirement is manadatory')
-      return
+    if (eventOption.value !== 'webinar') {
+      if (
+        hotelReservation?.name === undefined
+        // shuttleTransport?.name === undefined ||
+        // foodRequirement?.name === undefined
+      ) {
+        toast.error('Hotel reservation is manadatory')
+        return
+      }
+      if (
+        // hotelReservation?.name === undefined ||
+        shuttleTransport?.name === undefined
+        // foodRequirement?.name === undefined
+      ) {
+        toast.error('Shuttle transport is manadatory')
+        return
+      }
+      if (
+        // hotelReservation?.name === undefined ||
+        // shuttleTransport?.name === undefined ||
+        foodRequirement?.name === undefined
+      ) {
+        toast.error('Food requirement is manadatory')
+        return
+      }
     }
     //add record in food requirement classes list
     foodRequirementList.push('No Requirement')
