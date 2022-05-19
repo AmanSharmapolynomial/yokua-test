@@ -93,7 +93,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 ) : (
                   <div
                     className="col-12 d-flex align-items-center mt-2"
-                    style={{ fontSize: '0.8rem', fontWeight: 500 }}
+                    style={{ fontSize: '0.8rem', fontWeight: 500, wordBreak: 'break-word' }}
                   >
                     {item.description}
                   </div>

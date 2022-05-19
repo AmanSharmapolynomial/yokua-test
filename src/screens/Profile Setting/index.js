@@ -130,7 +130,6 @@ const ProfileSettingScreen = () => {
     }
     // /admin/delete_user
     const afterDeleteMsg = await API.post('/admin/delete_user', payloadDeleteAccount)
-    console.log(afterDeleteMsg)
     removeToken()
     removeUserRole()
     window.location.reload()
@@ -233,7 +232,11 @@ const ProfileSettingScreen = () => {
       event_id: selectedEvent.event_id,
       participant_email: selectedEvent.email,
     })
-      .then(res => setShowCancelModal(false))
+      .then(res => {
+        setShowCancelModal(false)
+        toast.success(res.message)
+        setReloadData(!reloadData)
+      })
       .catch(err => setShowCancelModal(false))
   }
 

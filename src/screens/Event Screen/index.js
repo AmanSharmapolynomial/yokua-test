@@ -144,7 +144,8 @@ const EventScreen = () => {
                 return (
                   // startDate === calenderDate ||
                   // endDate === calenderDate ||
-                  startDate <= calenderDate && endDate > calenderDate
+                  (startDate <= calenderDate && endDate > calenderDate) ||
+                  (startDate === calenderDate && endDate === calenderDate)
                 )
               })
               return dataList.length > 0 ? (
@@ -272,6 +273,7 @@ const EventScreen = () => {
                                 cursor: 'pointer',
                               }}
                               onClick={() => {
+                                window.scrollTo(0, 0)
                                 navigate('/event/update/' + e.id)
                               }}
                             >

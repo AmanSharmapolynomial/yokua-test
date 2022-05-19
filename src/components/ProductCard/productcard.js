@@ -195,9 +195,11 @@ const ProductCard = ({
               <span
                 style={{
                   padding: '1rem',
+                  textAlign: 'center',
                 }}
               >
-                The {subProduct ? item.sub_product_name : item.name} product will be move to archive
+                Are you sure you want to move the {subProduct ? item.sub_product_name : item.name}{' '}
+                product folder to archive?
               </span>
 
               <div className="domain-modal-cta">

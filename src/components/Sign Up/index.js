@@ -69,7 +69,7 @@ const SignUp = () => {
     }
     if (tncRef.current.checked) {
       if (validator.isEmail(companyEmail)) {
-        if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+        if (!validator.isEmpty(firstName) && !validator.isEmpty(lastName)) {
           if (password.length < 8) {
             setActionLabel('Password must contain 8-16 characters, one special and numeric value')
             setTimeout(() => {
