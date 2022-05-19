@@ -177,14 +177,14 @@ const ProductCard = ({
       <Modal centered show={showArchiveModal}>
         <Modal.Body>
           <div className="modal-wrapper">
-            <h5
+            {/* <h5
               className="modal-heading"
               style={{
                 marginBottom: 0,
               }}
             >
               Are you sure you want to move archive
-            </h5>
+            </h5> */}
             <div
               className="modal-content domain-modal"
               style={{

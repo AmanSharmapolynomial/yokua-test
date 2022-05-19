@@ -417,7 +417,7 @@ export default () => {
                 selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
               }}
             >
-              Load result
+              Load Results
             </button>
           </div>
           <div className="mt-5">

@@ -58,9 +58,9 @@ export default () => {
                 fontWeight: 500,
               }}
             >
-              Verification e-mail has been sent
+              Verification E-mail has been sent
             </div>
-            <div className="container__heading  mb-3 h6">Please check your e-Mail</div>
+            <div className="container__heading  mb-3 h6">Please check your E-mail</div>
             <a
               onClick={() => _resendVerificationEmail()}
               className="terms-link"

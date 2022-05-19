@@ -18,7 +18,7 @@ const HomeCard = ({ index, item, onClick }) => {
         <div className="row">
           <div className="col">
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 p-3">
                 <div className="img-box thumb rounded d-flex">
                   <img
                     className="img-thumbnail"

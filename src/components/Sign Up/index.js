@@ -190,9 +190,14 @@ const SignUp = () => {
             setTopicName={setTopicName}
             key={'registration'}
           />
-          <div className="col-12 p-0">
-            <div className="form-group">
-              <input type="checkbox" id="checkTermandCondtions" ref={tncRef} className="w-auto" />
+          <div className="col-12 p-0 mt-2">
+            <div className="form-group d-flex">
+              <input
+                type="checkbox"
+                id="checkTermandCondtions"
+                ref={tncRef}
+                className="w-auto my-auto"
+              />
               <span className="checkbox-text me-auto ms-2">
                 Accept the Terms of Service and Privacy Policies
               </span>

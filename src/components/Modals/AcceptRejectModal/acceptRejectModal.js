@@ -37,7 +37,7 @@ const AcceptRejectModal = ({
                 <input
                   ref={inputRef}
                   type="text"
-                  className="domain-input w-100"
+                  className="domain-input w-100 my-3"
                   placeholder="maximun 255 character support"
                   onChange={e => setMsg(e.target.value)}
                 />
