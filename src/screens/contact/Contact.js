@@ -1,23 +1,68 @@
 import API from '../../utils/api'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './contact.css'
 import Header from '../../components/Header'
-import { getToken } from '../../utils/token'
+import { getToken, getUserRoles } from '../../utils/token'
 import PrimaryHeading from '../../components/Primary Headings'
+import placeholder from '../../assets/placeholder.png'
+import upload from '../../assets/upload.png'
+import { toast } from 'react-toastify'
 
 export default () => {
   const [contact, setContact] = useState({})
+  const [isEdit, setEdit] = useState(false)
+  const [preview, setPreview] = useState()
+  const imageInputRef = useRef(null)
+  const openingHrsRef = useRef(null)
+  const holidaysRef = useRef(null)
+  const addressRef = useRef(null)
+  const phoneRef = useRef(null)
 
   const _getContact = () => {
     API.get('contact').then(data => {
-      console.log(data.data)
       setContact(data.data)
     })
+  }
+
+  const updateGeneralInformation = () => {
+    const payload = {
+      id: 1,
+      address: addressRef.current.value,
+      phone_no: phoneRef.current.value,
+      opennig_hours: openingHrsRef.current.value,
+      bank_holiday: holidaysRef.current.value,
+    }
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    imageInputRef.current.files[0] && formData.append('file', imageInputRef.current.files[0])
+    API.post('contact/edit_information', formData)
+      .then(res => {
+        console.log(res)
+        _getContact()
+        toast.success('GFTFGHKL:"')
+      })
+      .catch(err => {
+        toast.error(err)
+      })
   }
 
   useEffect(() => {
     _getContact()
   }, [])
+
+  useEffect(() => {
+    if (isEdit) {
+      if (openingHrsRef.current !== null)
+        openingHrsRef.current.value = contact?.general_info?.opening_hours
+
+      if (holidaysRef.current !== null)
+        holidaysRef.current.value = contact?.general_info?.bank_holidays
+
+      if (addressRef.current !== null) addressRef.current.value = contact?.general_info?.address
+
+      if (phoneRef.current !== null) phoneRef.current.value = contact?.general_info?.phone_no
+    }
+  }, [isEdit])
 
   return (
     <>
@@ -28,40 +73,126 @@ export default () => {
           <div className="yk-admin-contact mt-5">
             <div className="container-fluid`">
               <div className="row mb-3">
-                <div className="col-md-3 col-lg-3 col-xl-3">
+                <div className="col">
                   <div className="img-box border border-dark h-100 rounded">
-                    <i className="fa fa-picture-o" aria-hidden="true" />
+                    {isEdit ? (
+                      <>
+                        <input
+                          ref={imageInputRef}
+                          type="file"
+                          accept="image/png, image/gif, image/jpeg"
+                          className="d-none"
+                          onChange={e => {
+                            if (!e.target.files[0]) {
+                              setPreview(undefined)
+                              return
+                            }
+
+                            const objectUrl = URL.createObjectURL(e.target.files[0])
+                            setPreview(objectUrl)
+                          }}
+                        />
+                        <img
+                          className="img-thumbnail border-black"
+                          src={
+                            preview
+                              ? preview
+                              : contact?.general_info?.image_link
+                              ? contact?.general_info?.image_link
+                              : upload
+                          }
+                          onClick={e => {
+                            e.stopPropagation()
+                            imageInputRef.current.click()
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <img
+                        className="img-thumbnail border-black"
+                        src={
+                          contact?.general_info?.image_link
+                            ? contact?.general_info?.image_link
+                            : placeholder
+                        }
+                      />
+                    )}
                   </div>
                 </div>
-
-                <div className="col-md-4 col-lg-4 col-xl-4">
+                <div className="col">
                   <div className="cont-detail mt-2">
                     <i className="fa fa-home mb-4 d-flex" aria-hidden="true">
-                      {'  '}
-                      <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                      {!isEdit ? (
+                        <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                      ) : (
+                        <input ref={addressRef} className="sm-txt" />
+                      )}
                     </i>
                     <i className="fa fa-address-book mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                      {!isEdit ? (
+                        <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                      ) : (
+                        <input ref={addressRef} className="sm-txt" />
+                      )}
                     </i>
                     <i className="fa fa-phone mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 ps-3">{contact?.general_info?.phone_no}</p>
+                      {!isEdit ? (
+                        <p className="sm-h1 ps-3">{contact?.general_info?.phone_no}</p>
+                      ) : (
+                        <input ref={phoneRef} className="sm-txt" />
+                      )}
                     </i>
                     <i className="fa fa-video-camera mb-4 d-flex" aria-hidden="true">
-                      <p className="sm-h1 ps-3">Video conferencing</p>
+                      {!isEdit ? (
+                        <p className="sm-h1 ps-3">Video conferencing</p>
+                      ) : (
+                        <input ref={phoneRef} className="sm-txt" />
+                      )}
                     </i>
                   </div>
                 </div>
-
-                <div className="col-md-5 col-lg-5 col-xl-5">
-                  <div className="boxes d-flex">
-                    <div className="box-one border border-dark rounded p-4 me-4">
+                <div className="col-6">
+                  <div className="row">
+                    {(getUserRoles() == 'PMK Administrator' ||
+                      getUserRoles() == 'PMK Content Manager' ||
+                      getUserRoles() == 'Technical Administrator') &&
+                    isEdit ? (
+                      <i
+                        role={'button'}
+                        className="fa-solid fa-floppy-disk theme ms-auto col-auto p-0"
+                        onClick={() => {
+                          setEdit(false)
+                          updateGeneralInformation()
+                        }}
+                      />
+                    ) : (
+                      <i
+                        role={'button'}
+                        className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
+                        aria-hidden="true"
+                        onClick={() => {
+                          setEdit(true)
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="row mt-5">
+                    <div className="col card shadow rounded p-4 me-4">
                       <p className="sm-h">Opening Hours</p>
-                      <p className="sm-txt">{contact?.general_info?.opening_hours}</p>
+                      {!isEdit ? (
+                        <p className="sm-txt">{contact?.general_info?.opening_hours}</p>
+                      ) : (
+                        <input ref={openingHrsRef} className="sm-txt" />
+                      )}
                     </div>
 
-                    <div className="box-one border border-dark rounded p-4">
+                    <div className="col card shadow rounded p-4">
                       <p className="sm-h">Bank Holidays</p>
-                      <p className="sm-txt">{contact?.general_info?.bank_holidays}</p>
+                      {!isEdit ? (
+                        <p className="sm-txt">{contact?.general_info?.bank_holidays}</p>
+                      ) : (
+                        <input ref={holidaysRef} className="sm-txt" />
+                      )}
                     </div>
                   </div>
                 </div>
