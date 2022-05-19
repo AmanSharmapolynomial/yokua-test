@@ -225,7 +225,6 @@ const ProfileSettingScreen = () => {
         setIsModalSubmitting(false)
       })
   }
-
   const cancelEvent = e => {
     e.preventDefault()
     API.post('/training/delete_event_registeration', {
