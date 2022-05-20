@@ -37,9 +37,8 @@ export default () => {
     imageInputRef.current.files[0] && formData.append('file', imageInputRef.current.files[0])
     API.post('contact/edit_information', formData)
       .then(res => {
-        console.log(res)
+        toast.success(res.message)
         _getContact()
-        toast.success('GFTFGHKL:"')
       })
       .catch(err => {
         toast.error(err)
@@ -57,6 +56,10 @@ export default () => {
 
       if (holidaysRef.current !== null)
         holidaysRef.current.value = contact?.general_info?.bank_holidays
+
+      if (addressRef.current !== null) addressRef.current.value = contact?.general_info?.address
+
+      if (phoneRef.current !== null) phoneRef.current.value = contact?.general_info?.phone_no
 
       if (addressRef.current !== null) addressRef.current.value = contact?.general_info?.address
 

@@ -272,7 +272,7 @@ const Home = () => {
           setIsAddModalVisible(-1)
         }}
       >
-        <Modal.Header
+        {/* <Modal.Header
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -281,7 +281,7 @@ const Home = () => {
           }}
         >
           <Modal.Title>{isAddModalVisible === 0 ? 'Quick Links' : 'My Favourites'}</Modal.Title>
-        </Modal.Header>
+        </Modal.Header> */}
         <Modal.Body
           style={{
             display: 'flex',
@@ -292,66 +292,75 @@ const Home = () => {
             fontWeight: '600',
           }}
         >
-          {/* <div className="row" style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}> */}
-          <form
-            onSubmit={e => {
-              if (inputTitle.current.value.trim() !== '' && inputLink.current.value.trim() !== '') {
-                if (isAddModalVisible === 0) {
-                  addQuickLinks({
-                    name: inputTitle.current.value.trim(),
-                    link: inputLink.current.value.trim(),
-                  })
-                } else if (isAddModalVisible === 1) {
-                  addFavLinks({
-                    name: inputTitle.current.value.trim(),
-                    link: inputLink.current.value.trim(),
-                  })
-                }
-              }
-            }}
-          >
-            <div
-              class="form-group w-100 border rounded"
-              // style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
-            >
-              <input
-                required
-                className="form-control w-100 border-0 py-2 text-bold font-8"
-                type="text"
-                placeholder="Title"
-                ref={inputTitle}
-              />
-              <hr className="m-0"></hr>
-              <input
-                required
-                className="form-control w-100 border-0 py-2 text-bold font-8"
-                type="url"
-                placeholder="Link"
-                ref={inputLink}
-              />
-              <hr className="m-0"></hr>
-              <div className="py-2">
-                <button
-                  ref={ref => {
-                    if (ref) {
-                      ref.style.setProperty('background-color', 'white', 'important')
-                      ref.style.setProperty('color', 'var(--bgColor2)', 'important')
-                      ref.style.setProperty('font-size', '0.8rem', 'important')
-                    }
-                  }}
-                  className="btn me-4 font-8 px-1 py-1"
-                  onClick={() => {
-                    setIsAddModalVisible(-1)
-                  }}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn font-8 px-1 py-1">
-                  Save
-                </button>
-              </div>
+          <div className="col">
+            <div className="h4" style={{}}>
+              {isAddModalVisible === 0 ? 'Quick Links' : 'My Favourites'}
             </div>
-          </form>
+            <div className="row">
+              <form
+                onSubmit={e => {
+                  if (
+                    inputTitle.current.value.trim() !== '' &&
+                    inputLink.current.value.trim() !== ''
+                  ) {
+                    if (isAddModalVisible === 0) {
+                      addQuickLinks({
+                        name: inputTitle.current.value.trim(),
+                        link: inputLink.current.value.trim(),
+                      })
+                    } else if (isAddModalVisible === 1) {
+                      addFavLinks({
+                        name: inputTitle.current.value.trim(),
+                        link: inputLink.current.value.trim(),
+                      })
+                    }
+                  }
+                }}
+              >
+                <div
+                  class="form-group w-100 border-grey rounded"
+                  // style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
+                >
+                  <input
+                    required
+                    className="form-control w-100 border-0 py-2 text-bold font-8"
+                    type="text"
+                    placeholder="Title"
+                    ref={inputTitle}
+                  />
+                  <hr className="m-0"></hr>
+                  <input
+                    required
+                    className="form-control w-100 border-0 py-2 text-bold font-8"
+                    type="url"
+                    placeholder="Link"
+                    ref={inputLink}
+                  />
+                  <hr className="m-0"></hr>
+                  <div className="py-2">
+                    <button
+                      ref={ref => {
+                        if (ref) {
+                          ref.style.setProperty('background-color', 'white', 'important')
+                          ref.style.setProperty('color', 'var(--bgColor2)', 'important')
+                          ref.style.setProperty('font-size', '0.8rem', 'important')
+                        }
+                      }}
+                      className="btn me-4 font-8 px-1 py-1"
+                      onClick={() => {
+                        setIsAddModalVisible(-1)
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="btn font-8 px-1 py-1">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </Modal.Body>
       </Modal>
 
@@ -362,7 +371,7 @@ const Home = () => {
           setIsDeleteModalVisible(-1)
         }}
       >
-        <Modal.Header
+        {/* <Modal.Header
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -371,7 +380,7 @@ const Home = () => {
           }}
         >
           <Modal.Title>Are you sure you want to delete</Modal.Title>
-        </Modal.Header>
+        </Modal.Header> */}
         <Modal.Body
           style={{
             display: 'flex',
@@ -382,46 +391,58 @@ const Home = () => {
             fontWeight: '600',
           }}
         >
-          The {isDeleteModalVisible === 0 ? ' quick links' : ' my favourites'} of{' '}
-          {selectedItem?.name} will be deleted
+          <div className="col">
+            <div className="row">
+              <div className="h4">Are you sure you want to delete</div>
+            </div>
+            <div className="row">
+              <div className="py-3">
+                The {isDeleteModalVisible === 0 ? ' quick links' : ' my favourites'} of{' '}
+                {selectedItem?.name} will be deleted
+              </div>
+            </div>
+            <div className="row">
+              <div>
+                <button
+                  ref={ref => {
+                    if (ref) {
+                      ref.style.setProperty('background-color', 'white', 'important')
+                      ref.style.setProperty('color', 'var(--bgColor2)', 'important')
+                      ref.style.setProperty('font-size', '0.8rem', 'important')
+                    }
+                  }}
+                  className="btn me-4 font-8 px-1 py-1"
+                  onClick={() => {
+                    setIsDeleteModalVisible(-1)
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn font-8 px-1 py-1"
+                  onClick={() => {
+                    if (isDeleteModalVisible === 0) {
+                      deleteQuickLinks(selectedItem.id)
+                      setIsDeleteModalVisible(-1)
+                    } else if (isDeleteModalVisible === 1) {
+                      deleteFavLinks(selectedItem.id)
+                      setIsDeleteModalVisible(-1)
+                    }
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
         </Modal.Body>
-        <Modal.Footer
+        {/* <Modal.Footer
           style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
-        >
-          <button
-            ref={ref => {
-              if (ref) {
-                ref.style.setProperty('background-color', 'white', 'important')
-                ref.style.setProperty('color', 'var(--bgColor2)', 'important')
-                ref.style.setProperty('font-size', '0.8rem', 'important')
-              }
-            }}
-            className="btn me-4 font-8 px-1 py-1"
-            onClick={() => {
-              setIsDeleteModalVisible(-1)
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn font-8 px-1 py-1"
-            onClick={() => {
-              if (isDeleteModalVisible === 0) {
-                deleteQuickLinks(selectedItem.id)
-                setIsDeleteModalVisible(-1)
-              } else if (isDeleteModalVisible === 1) {
-                deleteFavLinks(selectedItem.id)
-                setIsDeleteModalVisible(-1)
-              }
-            }}
-          >
-            Confirm
-          </button>
-        </Modal.Footer>
+        ></Modal.Footer> */}
       </Modal>
     </>
   )

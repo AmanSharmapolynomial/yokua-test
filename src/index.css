@@ -215,6 +215,18 @@ body {
   /* width: 12rem; */
   border: 1px solid lightgrey;
 }
+.border-grey {
+  font-size: 2vh;
+  font-weight: 500;
+  /* width: 12rem; */
+  border: 1px solid grey;
+}
+.border-black {
+  font-size: 2vh;
+  font-weight: 500;
+  /* width: 12rem; */
+  border: 1px solid grey;
+}
 .thumb {
   border: 1px solid lightgrey;
   aspect-ratio: 1;
