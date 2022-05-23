@@ -431,8 +431,12 @@ const RYGDetail = () => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-6 p-0 mt-2${index % 2 === 0 ? ' ps-2' : ' pe-2'}`}>
-                <Image src={element.image_link} className="border rounded img-product-line" />
+              <div
+                className={`col-2 mt-2${
+                  index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''
+                }`}
+              >
+                <img className="border rounded img-product-line" src={element.image_link} />
               </div>
             )
           } else {
@@ -1261,8 +1265,8 @@ const RYGDetail = () => {
         >
           <Modal.Title>Add New Section</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="p-4 text-center">
-          <div className="mb-5">
+        <Modal.Body className="p-4 text-center pt-0">
+          <div className="mb-3">
             <input
               ref={sectionTitleRef}
               placeholder="Enter new title"

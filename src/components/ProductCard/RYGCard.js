@@ -29,7 +29,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
       role={!isEditable && 'button'}
       className={`product-card col-12 col-md-4`}
     >
-      <div className="card shadow px-3 py-3 h-100">
+      <div className="card shadow p-4 h-100">
         <div className="row">
           <div className="col">
             <div className="row">
@@ -70,12 +70,12 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border-black text-center rounded mt-2">
+                    <div className="border-black text-center rounded mt-3">
                       <input ref={inputRef} />
                     </div>
                   ) : (
                     <div
-                      className="border-black text-center rounded mt-2"
+                      className="border-black text-center rounded mt-3"
                       style={{
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',

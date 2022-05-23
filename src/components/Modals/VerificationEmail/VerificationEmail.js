@@ -14,7 +14,7 @@ export default () => {
   const _resendVerificationEmail = () => {
     API.post('auth/resend_email_verification/', { email: email })
       .then(data => {
-        toast.success('Mail Sent Successfully')
+        toast.success('E-mail Sent Successfully')
       })
       .catch(error => {
         toast.error("Can't send email please contact Admin")

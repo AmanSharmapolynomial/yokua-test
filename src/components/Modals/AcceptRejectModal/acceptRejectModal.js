@@ -23,7 +23,11 @@ const AcceptRejectModal = ({
               marginBottom: 0,
             }}
           >
-            {change == 'Rejected' ? 'Request Denied' : 'Confirm E-mail change request'}
+            {change == 'Rejected'
+              ? 'Request Denied'
+              : title === 'New User Registration'
+              ? 'Confirm user registration request'
+              : 'Confirm E-mail change request'}
           </h3>
           <div
             className="modal-content domain-modal"
@@ -48,7 +52,9 @@ const AcceptRejectModal = ({
                   padding: '1rem',
                 }}
               >
-                {'On confirmation E-mail of the user will be changed'}
+                {title === 'New User Registration'
+                  ? 'On confirmation new user will be registered'
+                  : 'On confirmation E-mail of the user will be changed'}
               </span>
             )}
             {change == 'Rejected' ? (

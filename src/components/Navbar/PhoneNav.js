@@ -52,7 +52,7 @@ const PhoneNav = () => {
           <a>Training</a>
         </li>
         <li className="phone-nav-item">
-          <a>Data History</a>
+          <a>Archive</a>
         </li>
         <li className="phone-nav-item">
           <Link to="/profile">Profile Settings</Link>

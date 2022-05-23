@@ -80,7 +80,10 @@ export default () => {
               />
               <i className="fa fa-caret-right w-auto" data-display="static" aria-hidden="true" />
               {/* </div> */}
-              <div className="yk-drop-m dropdown-menu">
+              <div
+                className="yk-drop-m dropdown-menu"
+                style={{ maxHeight: '12rem', overflow: 'auto' }}
+              >
                 {data.company_divisions.map((item, index) => (
                   <>
                     <a

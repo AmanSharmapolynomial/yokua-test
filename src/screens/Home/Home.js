@@ -299,6 +299,7 @@ const Home = () => {
             <div className="row">
               <form
                 onSubmit={e => {
+                  e.preventDefault()
                   if (
                     inputTitle.current.value.trim() !== '' &&
                     inputLink.current.value.trim() !== ''

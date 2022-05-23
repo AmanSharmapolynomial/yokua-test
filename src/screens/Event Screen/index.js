@@ -243,7 +243,11 @@ const EventScreen = () => {
                             <p>{moment(startDate).format('ddd DD MMM')}</p>
                             <p>{moment(endDate).format('ddd DD MMM')}</p>
                             <br />
-                            <p>{endDate.diff(startDate, 'days')} days</p>
+                            <p>
+                              {endDate.diff(startDate, 'days') !== 0
+                                ? endDate.diff(startDate, 'days') + ' days'
+                                : 1 + ' day'}
+                            </p>
                           </div>
                         </td>
                         <td className="col-2">
