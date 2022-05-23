@@ -655,6 +655,9 @@ select {
   background: url('/src/assets/SearchResults\ banner.png') no-repeat center;
   background-size: cover;
 }
+.yk-dd.row.yk-data-row.d-flex.justify-content-between.align-items-center.p-3.dropright.btn-group.show {
+  background: #e9ecef;
+}
 
 @media (min-width: 768px) {
   .bg-landing {

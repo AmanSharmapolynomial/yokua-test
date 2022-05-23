@@ -219,6 +219,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
           <Modal.Title>Add Company Name</Modal.Title>
         </Modal.Header>
         <Modal.Body
+          className="pt-0"
           style={{
             display: 'flex',
             justifyContent: 'center',
