@@ -157,7 +157,7 @@ const Home = () => {
                 ))}
               {isAdmin && (
                 <button
-                  className="btn card-header-items px-1 py-1"
+                  className="btn card-header-items px-1 py-1 d-md-flex d-none"
                   onClick={() => {
                     setAdd()
                   }}
@@ -241,7 +241,7 @@ const Home = () => {
             ))}
           </div>
           <div className="row mt-4 mb-4">
-            <div className="col-8">
+            <div className="col-12 col-md-8">
               <div className="ryg-header-title">RYG Information</div>
               <div className="align-self-center">
                 <div className="ryg-text mt-5">
@@ -259,7 +259,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-8 col-md-4 mx-auto mt-3 mt-md-0">
               <img src={RYGBottom} className="home-ryg-img shadow" />
             </div>
           </div>

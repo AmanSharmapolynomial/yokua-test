@@ -12,7 +12,7 @@ const HomeCard = ({ index, item, onClick }) => {
       }}
       key={item.id}
       role={'button'}
-      className={`product-card col-12 col-md-2 mt-3`}
+      className={`product-card col-6 col-md-2 mt-3`}
     >
       <div className="card shadow px-3 py-3 h-100">
         <div className="row">
@@ -25,18 +25,7 @@ const HomeCard = ({ index, item, onClick }) => {
                     src={item.image_link ? item.image_link : placeholder}
                   />
                 </div>
-                <div
-                  className="border text-center rounded mt-2"
-                  style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    wordBreak: 'break-word',
-                    fontWeight: 600,
-                    fontSize: '1.2rem',
-                  }}
-                >
-                  {item.name}
-                </div>
+                <div className="border text-center rounded mt-2">{item.name}</div>
               </div>
             </div>
           </div>

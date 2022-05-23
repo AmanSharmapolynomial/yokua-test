@@ -189,15 +189,14 @@ body {
   margin-bottom: 1rem !important;
 }
 .ryg-header-title {
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: 600;
   padding: 1rem 0rem;
 }
 .ryg-text {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: center;
   font-weight: 500;
-  padding: 0rem 6rem;
 }
 .home-ryg-img {
   width: 100%;
@@ -658,10 +657,29 @@ select {
 .yk-dd.row.yk-data-row.d-flex.justify-content-between.align-items-center.p-3.dropright.btn-group.show {
   background: #e9ecef;
 }
-
+.border.text-center.rounded {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-weight: 600;
+  font-size: 1rem;
+}
 @media (min-width: 768px) {
   .bg-landing {
     background: url('/src/assets/FCP landing page.jpg') no-repeat center;
     background-size: cover;
+  }
+  .border.text-center.rounded {
+    font-size: 1.2rem;
+  }
+  .ryg-header-title {
+    font-size: 1.6rem;
+    padding: 1rem 0rem;
+  }
+  .ryg-text {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0rem 6rem;
   }
 }
