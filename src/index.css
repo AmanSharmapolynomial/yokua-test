@@ -664,6 +664,48 @@ select {
   font-weight: 600;
   font-size: 1rem;
 }
+.yk-admin-contact .sm-h {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.yk-admin-contact .product-item-name i {
+  font-size: 0.8rem;
+  color: #004f9b;
+}
+
+.yk-admin-contact .product-item-name span {
+  color: #000000;
+  font-family: 'Poppins' !important;
+  font-size: 0.8rem;
+}
+.profile-circle {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 20vw;
+  display: grid;
+  place-items: center;
+}
+.profile-circle i {
+  font-size: 2rem;
+  color: #004f9b;
+}
+.profile-con i {
+  font-size: 0.8rem;
+}
+.profile-con i {
+  line-height: 26px;
+  color: #004f9b;
+}
+.profile-con span {
+  font-size: 0.8rem;
+  color: #000000;
+  letter-spacing: 1px;
+  font-family: 'Poppins';
+}
+.h {
+  font-size: 1rem;
+  font-weight: 500;
+}
 @media (min-width: 768px) {
   .bg-landing {
     background: url('/src/assets/FCP landing page.jpg') no-repeat center;
@@ -681,5 +723,33 @@ select {
     text-align: center;
     font-weight: 500;
     padding: 0rem 6rem;
+  }
+  .yk-admin-contact .sm-h {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .yk-admin-contact .product-item-name i {
+    font-size: 1rem;
+    color: #004f9b;
+  }
+  .yk-admin-contact .product-item-name span {
+    color: #000000;
+    font-size: 1rem;
+  }
+  .profile-circle {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 20vw;
+    display: grid;
+    place-items: center;
+  }
+  .profile-con i {
+    font-size: 1rem;
+  }
+  .profile-con span {
+    font-size: 1rem;
+  }
+  .h {
+    font-size: 2rem;
   }
 }

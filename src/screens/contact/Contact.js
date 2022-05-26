@@ -203,61 +203,78 @@ export default () => {
 
               {/* <!--------------General Product Question start---------------> */}
 
-              <div className="gen-product mt-5 p-5">
+              <div className="gen-product mt-5 p-2 p-md-5">
                 <div className="row">
                   <div className="col-md-12 col-lg-12 col-xl-12">
                     <p className="h">General Product Question</p>
                   </div>
                 </div>
-
-                {contact?.product_questions?.map((item, index) => {
-                  return (
-                    <div className="row mb-4 mt-5">
+                <div className="row mb-4 mt-5">
+                  {contact?.product_questions?.map((item, index) => {
+                    return (
                       <div className="col-md-4 col-lg-4 col-xl-4">
                         <div className="gen-product-item d-flex ms-2 mb-4">
-                          <div className="sm-img-box border border-dark rounded">
-                            <img src={item.image_link} />
+                          <div className="sm-img-box border border-dark rounded col-3">
+                            <img
+                              src={item?.image_link ? item.image_link : placeholder}
+                              style={{
+                                objectFit: 'cover',
+                                width: '100%',
+                                height: '100%',
+                              }}
+                            />
                           </div>
-                          <div>
-                            <div className="Product-item-deatail ms-3 ">
-                              <div className="product-item-name">
-                                <div className="sm-h-box border border-dark rounded px-2 py-2">
-                                  <p className="sm-h m-0">{item.name}</p>
-                                </div>
-                                <i className="fa fa-envelope d-flex mt-4" aria-hidden="true">
-                                  <p className="sm-txt ms-2">{item.email}</p>
-                                </i>
+                          <div className="Product-item-deatail ms-md-3 col-9">
+                            <div className="product-item-name">
+                              <div className="sm-h-box border border-dark rounded px-2 py-2">
+                                <p className="sm-h m-0">{item.name}</p>
+                              </div>
+                              <div className="mt-4 row">
+                                <i
+                                  className="fa fa-envelope col-auto align-self-center h-auto"
+                                  aria-hidden="true"
+                                />
+                                <span className="sm-txt text-break col">{item.email}</span>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
               </div>
 
               {/* <!--------------Profile-brief-------------------> */}
 
               <div className="profile-brief my-5">
                 <div className="row py-5">
-                  <div className="col-md-2 col-lg-2 col-xl-2">
+                  <div className="col-auto d-flex align-items-center">
                     <div className="profile-circle border border-dark">
                       <i className="fa fa-user" aria-hidden="true"></i>
                     </div>
                   </div>
 
-                  <div className="col-md-10 col-lg-10 col-xl-10">
-                    <div className="profile-con d-block">
-                      <i className="fa fa-user d-flex" aria-hidden="true">
-                        <p>Emmunnal de montalinesvhbhm hvhbhb</p>
-                      </i>
-                      <i className="fa fa-envelope d-flex" aria-hidden="true">
-                        <p>Abcd.yokogawa.com</p>
-                      </i>
-                      <i className="fa fa-phone d-flex" aria-hidden="true">
-                        <p>+01 0099283847</p>
-                      </i>
+                  <div className="col d-flex align-items-center">
+                    <div className="profile-con">
+                      <div className="row">
+                        <i className="fa fa-user col-auto align-self-center" aria-hidden="true"></i>
+                        <span className="col">Emmunnal de montalinesvhbhm hvhbhb</span>
+                      </div>
+                      <div className="row">
+                        <i
+                          className="fa fa-envelope col-auto align-self-center"
+                          aria-hidden="true"
+                        ></i>
+                        <span className="col">Abcd.yokogawa.com</span>
+                      </div>
+                      <div className="row">
+                        <i
+                          className="fa fa-phone col-auto align-self-center"
+                          aria-hidden="true"
+                        ></i>
+                        <span className="col">+01 0099283847</span>
+                      </div>
                     </div>
                   </div>
                 </div>
