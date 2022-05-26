@@ -76,7 +76,7 @@ export default () => {
           <div className="yk-admin-contact mt-5">
             <div className="container-fluid`">
               <div className="row mb-3">
-                <div className="col">
+                <div className="col-3 col-md">
                   <div className="img-box border border-dark h-100 rounded">
                     {isEdit ? (
                       <>
@@ -122,7 +122,7 @@ export default () => {
                     )}
                   </div>
                 </div>
-                <div className="col">
+                <div className="col-9 col-md">
                   <div className="cont-detail mt-2">
                     <i className="fa fa-home mb-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
@@ -154,7 +154,7 @@ export default () => {
                     </i>
                   </div>
                 </div>
-                <div className="col-6">
+                <div className="col-6 d-none d-md-block">
                   <div className="row">
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
