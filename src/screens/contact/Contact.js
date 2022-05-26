@@ -229,7 +229,7 @@ export default () => {
                               <div className="sm-h-box border border-dark rounded px-2 py-2">
                                 <p className="sm-h m-0">{item.name}</p>
                               </div>
-                              <div className="mt-4 row">
+                              <div className="mt-2 mt-md-4 row">
                                 <i
                                   className="fa fa-envelope col-auto align-self-center h-auto"
                                   aria-hidden="true"

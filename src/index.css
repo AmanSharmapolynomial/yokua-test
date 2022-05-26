@@ -706,6 +706,28 @@ select {
   font-size: 1rem;
   font-weight: 500;
 }
+.yk-admin-contact .pmk-product {
+  box-shadow: 0px 0px 8px #c4c4c4;
+}
+
+.yk-admin-contact .pmk-product .sm-img-box i {
+  font-size: 3vw;
+  color: #004f9b;
+}
+.yk-admin-contact .pmk-product .pmk-product-detail {
+  font-size: 0.8rem;
+  color: #000000;
+  line-height: 36px;
+}
+.yk-admin-contact .pmk-product .pmk-product-detail i {
+  font-size: 1.4vw;
+  color: #004f9b;
+}
+
+.yk-admin-contact .pmk-product .sm-img-box-two {
+  width: 10rem;
+  height: 10rem;
+}
 @media (min-width: 768px) {
   .bg-landing {
     background: url('/src/assets/FCP landing page.jpg') no-repeat center;
@@ -751,5 +773,15 @@ select {
   }
   .h {
     font-size: 2rem;
+  }
+  .yk-admin-contact .pmk-product .sm-img-box i {
+    font-size: 3vw;
+    color: #004f9b;
+  }
+  .yk-admin-contact .pmk-product .pmk-product-detail {
+    font-size: 1rem;
+  }
+  .yk-admin-contact .pmk-product .pmk-product-detail i {
+    font-size: 1.4vw;
   }
 }

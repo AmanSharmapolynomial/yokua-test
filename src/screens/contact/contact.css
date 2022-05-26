@@ -47,29 +47,6 @@
 
 /*-----------pmk-product-----------*/
 
-.yk-admin-contact .pmk-product {
-  box-shadow: 0px 0px 8px #c4c4c4;
-}
-
-.yk-admin-contact .pmk-product .sm-img-box i {
-  font-size: 3vw;
-  color: #004f9b;
-}
-.yk-admin-contact .pmk-product .pmk-product-detail {
-  font-size: 1vw;
-  color: #000000;
-  line-height: 36px;
-}
-.yk-admin-contact .pmk-product .pmk-product-detail i {
-  font-size: 1.4vw;
-  color: #004f9b;
-}
-
-.yk-admin-contact .pmk-product .sm-img-box-two {
-  width: 140px;
-  height: auto;
-}
-
 /*------------product-handiling-------------*/
 
 .yk-admin-contact .product-handiling {
