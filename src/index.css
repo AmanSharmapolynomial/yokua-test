@@ -676,7 +676,7 @@ select {
 .yk-admin-contact .product-item-name span {
   color: #000000;
   font-family: 'Poppins' !important;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
 }
 .profile-circle {
   width: 4rem;
@@ -711,23 +711,19 @@ select {
 }
 
 .yk-admin-contact .pmk-product .sm-img-box i {
-  font-size: 3vw;
+  font-size: 1rem;
   color: #004f9b;
 }
 .yk-admin-contact .pmk-product .pmk-product-detail {
-  font-size: 0.8rem;
+  font-size: 0.8rem !important;
   color: #000000;
   line-height: 36px;
 }
 .yk-admin-contact .pmk-product .pmk-product-detail i {
-  font-size: 1.4vw;
+  font-size: 0.8rem !important;
   color: #004f9b;
 }
 
-.yk-admin-contact .pmk-product .sm-img-box-two {
-  width: 10rem;
-  height: 10rem;
-}
 @media (min-width: 768px) {
   .bg-landing {
     background: url('/src/assets/FCP landing page.jpg') no-repeat center;
@@ -756,7 +752,7 @@ select {
   }
   .yk-admin-contact .product-item-name span {
     color: #000000;
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
   .profile-circle {
     width: 8rem;
@@ -779,9 +775,9 @@ select {
     color: #004f9b;
   }
   .yk-admin-contact .pmk-product .pmk-product-detail {
-    font-size: 1rem;
+    font-size: 1rem !important;
   }
   .yk-admin-contact .pmk-product .pmk-product-detail i {
-    font-size: 1.4vw;
+    font-size: 1rem !important;
   }
 }

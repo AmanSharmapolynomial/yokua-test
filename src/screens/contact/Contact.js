@@ -212,9 +212,9 @@ export default () => {
                 <div className="row mb-4 mt-5">
                   {contact?.product_questions?.map((item, index) => {
                     return (
-                      <div className="col-md-4 col-lg-4 col-xl-4">
+                      <div className="col-md-4">
                         <div className="gen-product-item d-flex ms-2 mb-4">
-                          <div className="sm-img-box border border-dark rounded col-3">
+                          <div className="sm-img-box border border-dark rounded col-3 p-0">
                             <img
                               src={item?.image_link ? item.image_link : placeholder}
                               style={{
@@ -229,12 +229,12 @@ export default () => {
                               <div className="sm-h-box border border-dark rounded px-2 py-2">
                                 <p className="sm-h m-0">{item.name}</p>
                               </div>
-                              <div className="mt-2 mt-md-4 row">
+                              <div className="mt-2 row">
                                 <i
                                   className="fa fa-envelope col-auto align-self-center h-auto"
                                   aria-hidden="true"
                                 />
-                                <span className="sm-txt text-break col">{item.email}</span>
+                                <span className="sm-txt text-break col ps-0">{item.email}</span>
                               </div>
                             </div>
                           </div>
@@ -247,7 +247,7 @@ export default () => {
 
               {/* <!--------------Profile-brief-------------------> */}
 
-              <div className="profile-brief my-5">
+              <div className="profile-brief mt-5">
                 <div className="row py-5">
                   <div className="col-auto d-flex align-items-center">
                     <div className="profile-circle border border-dark">
@@ -284,7 +284,7 @@ export default () => {
 
               {contact?.contact_people?.map((item, index) => {
                 return (
-                  <div className="pmk-product p-5">
+                  <div className="pmk-product p-5 mt-5">
                     <div className="row mb-3">
                       <div className="col-md-12 col-lg-12 col-xl-12">
                         <p className="h">{item.category}</p>
@@ -292,13 +292,22 @@ export default () => {
                     </div>
 
                     <div className="row">
-                      <div className="col-md-6 col-lg-6 col-xl-6">
-                        <div className="d-flex ">
-                          <div className="sm-img-box-two border border-dark rounded me-4">
-                            <img src={item.detail?.image_link} />
+                      <div className="col-md-6">
+                        <div className="d-flex">
+                          <div className="col-3 p-0">
+                            <img
+                              className="border border-dark rounded"
+                              src={
+                                item?.detail?.image_link ? item?.detail?.image_link : placeholder
+                              }
+                              style={{
+                                objectFit: 'cover',
+                                width: '100%',
+                              }}
+                            />
                           </div>
 
-                          <div className="pmk-product-detail">
+                          <div className="pmk-product-detail ms-md-3 col-9">
                             {item.detail?.first_name && (
                               <div className="mb-2">
                                 <i className="fa fa-user" aria-hidden="true"></i>{' '}
@@ -308,10 +317,7 @@ export default () => {
                             {item.detail?.phone_no && (
                               <div className="d-flex mb-2  align-items-center">
                                 <i className="fa fa-phone" aria-hidden="true"></i>
-                                <p
-                                  className="ms-2 ps-2 mb-0 border border-dark"
-                                  style={{ width: '180px' }}
-                                >
+                                <p className="ms-2 ps-2 mb-0 border border-dark w-100">
                                   {item.detail?.phone_no}
                                 </p>
                               </div>
