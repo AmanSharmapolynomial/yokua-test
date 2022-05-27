@@ -717,6 +717,7 @@ select {
 .yk-admin-contact .pmk-product .pmk-product-detail {
   font-size: 0.8rem !important;
   color: #000000;
+  word-break: break-all;
 }
 .yk-admin-contact .pmk-product .pmk-product-detail i {
   font-size: 0.8rem !important;
