@@ -209,19 +209,19 @@ body {
   border: 1px solid #000 !important;
 }
 .border {
-  font-size: 2vh;
+  /* font-size: 2vh; */
   font-weight: 500;
   /* width: 12rem; */
   border: 1px solid lightgrey;
 }
 .border-grey {
-  font-size: 2vh;
+  /* font-size: 2vh; */
   font-weight: 500;
   /* width: 12rem; */
   border: 1px solid grey;
 }
 .border-black {
-  font-size: 2vh;
+  /* font-size: 2vh; */
   font-weight: 500;
   /* width: 12rem; */
   border: 1px solid grey;
@@ -717,7 +717,6 @@ select {
 .yk-admin-contact .pmk-product .pmk-product-detail {
   font-size: 0.8rem !important;
   color: #000000;
-  line-height: 36px;
 }
 .yk-admin-contact .pmk-product .pmk-product-detail i {
   font-size: 0.8rem !important;

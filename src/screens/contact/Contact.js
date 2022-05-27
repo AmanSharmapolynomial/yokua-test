@@ -310,14 +310,14 @@ export default () => {
                           <div className="pmk-product-detail ms-md-3 col-9">
                             {item.detail?.first_name && (
                               <div className="mb-2">
-                                <i className="fa fa-user" aria-hidden="true"></i>{' '}
+                                <i className="fa fa-user" aria-hidden="true"></i>
                                 {item.detail?.first_name + ' '} {item.detail?.last_name}
                               </div>
                             )}
                             {item.detail?.phone_no && (
                               <div className="d-flex mb-2  align-items-center">
                                 <i className="fa fa-phone" aria-hidden="true"></i>
-                                <p className="ms-2 ps-2 mb-0 border border-dark w-100">
+                                <p className="ms-2 px-2 mb-0 border border-dark w-auto">
                                   {item.detail?.phone_no}
                                 </p>
                               </div>
