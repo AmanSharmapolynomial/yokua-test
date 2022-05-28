@@ -162,11 +162,9 @@ const EventScreen = () => {
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Table
-              responsive="sm"
+              responsive="md"
               style={{
                 border: '1px solid',
-                maxHeight: '450px',
-                width: '100%',
               }}
             >
               <thead>
@@ -179,11 +177,11 @@ const EventScreen = () => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         padding: '5px 0',
-                        width: '15%',
                       }}
                     >
                       {isAdmin && (
                         <input
+                          className="d-none d-md-block me-3"
                           id="mainCheckbox"
                           type="checkbox"
                           style={{ marginLeft: '10px' }}
@@ -196,7 +194,6 @@ const EventScreen = () => {
                           fontSize: '20px',
                           width: '100%',
                           marginBottom: 0,
-                          marginLeft: '25px',
                         }}
                       >
                         {isAdmin ? 'All Trainings' : 'Upcoming Trainings'}
@@ -212,7 +209,7 @@ const EventScreen = () => {
                     let endDate = moment(e.end_date, 'yyyy-MM-DD')
                     return (
                       <tr>
-                        <td className="col-auto">
+                        <td className="col-auto d-none d-md-table-cell">
                           <div>
                             {isAdmin && (
                               <input
@@ -233,7 +230,7 @@ const EventScreen = () => {
                             )}
                           </div>
                         </td>
-                        <td className="col-2">
+                        <td className="col-6 col-md-2">
                           <div
                             style={{
                               borderRight: '1px solid',
@@ -297,7 +294,7 @@ const EventScreen = () => {
                             {e.description}
                           </p>
                         </td>
-                        <td className="col-auto">
+                        <td className="col-auto d-none d-md-table-cell">
                           <div
                             style={{
                               padding: '25px',

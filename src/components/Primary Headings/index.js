@@ -3,7 +3,7 @@ import './style.css'
 
 const PrimaryHeading = ({ heading, title, backgroundImage }) => {
   return (
-    <div className={`heading-container ${backgroundImage ? backgroundImage : ''} d-none d-md-flex`}>
+    <div className={`heading-container ${backgroundImage ? backgroundImage : ''}`}>
       <h1
         style={{
           color: 'var(--textColor5)',

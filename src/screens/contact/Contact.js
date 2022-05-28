@@ -71,13 +71,13 @@ export default () => {
     <>
       <Header isLogedIn={getToken()} />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col center py-md-3">
+        <div className="col center py-3">
           <PrimaryHeading title={'Contact'} backgroundImage={'yk-back-image-profile'} />
           <div className="yk-admin-contact mt-5">
             <div className="container-fluid`">
               <div className="row mb-3">
                 <div className="col-3 col-md">
-                  <div className="img-box border border-dark h-100 rounded">
+                  <div className="img-box border border-dark rounded">
                     {isEdit ? (
                       <>
                         <input
@@ -96,7 +96,7 @@ export default () => {
                           }}
                         />
                         <img
-                          className="img-thumbnail border-black"
+                          className="border-black"
                           src={
                             preview
                               ? preview
@@ -112,7 +112,7 @@ export default () => {
                       </>
                     ) : (
                       <img
-                        className="img-thumbnail border-black"
+                        className="border-black"
                         src={
                           contact?.general_info?.image_link
                             ? contact?.general_info?.image_link
@@ -123,29 +123,29 @@ export default () => {
                   </div>
                 </div>
                 <div className="col-9 col-md">
-                  <div className="cont-detail mt-2">
-                    <i className="fa fa-home mb-4 d-flex" aria-hidden="true">
+                  <div className="cont-detail">
+                    <i className="fa fa-home mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.address}</p>
                       ) : (
                         <input ref={addressRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-address-book mb-4 d-flex" aria-hidden="true">
+                    <i className="fa fa-address-book mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3">{contact?.general_info?.address}</p>
+                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.address}</p>
                       ) : (
                         <input ref={addressRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-phone mb-4 d-flex" aria-hidden="true">
+                    <i className="fa fa-phone mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3">{contact?.general_info?.phone_no}</p>
+                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.phone_no}</p>
                       ) : (
                         <input ref={phoneRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-video-camera mb-4 d-flex" aria-hidden="true">
+                    <i className="fa fa-video-camera mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
                         <p className="sm-h1 ps-3">Video conferencing</p>
                       ) : (
@@ -154,8 +154,8 @@ export default () => {
                     </i>
                   </div>
                 </div>
-                <div className="col-6 d-none d-md-block">
-                  <div className="row">
+                <div className="col col-md-6">
+                  <div className="row d-none d-md-flex">
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
                       getUserRoles() == 'Technical Administrator') &&

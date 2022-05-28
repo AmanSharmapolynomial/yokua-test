@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('./index.768px.css');
 #root,
 body,
 html {
@@ -244,7 +245,7 @@ body {
 
 .text-bold {
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1rem;
 }
 
 .thumb > img {
@@ -724,60 +725,67 @@ select {
   color: #004f9b;
 }
 
-@media (min-width: 768px) {
-  .bg-landing {
-    background: url('/src/assets/FCP landing page.jpg') no-repeat center;
-    background-size: cover;
-  }
-  .border.text-center.rounded {
-    font-size: 1.2rem;
-  }
-  .ryg-header-title {
-    font-size: 1.6rem;
-    padding: 1rem 0rem;
-  }
-  .ryg-text {
-    font-size: 1.2rem;
-    text-align: center;
-    font-weight: 500;
-    padding: 0rem 6rem;
-  }
-  .yk-admin-contact .sm-h {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .yk-admin-contact .product-item-name i {
-    font-size: 1rem;
-    color: #004f9b;
-  }
-  .yk-admin-contact .product-item-name span {
-    color: #000000;
-    font-size: 0.8rem;
-  }
-  .profile-circle {
-    width: 8rem;
-    height: 8rem;
-    border-radius: 20vw;
-    display: grid;
-    place-items: center;
-  }
-  .profile-con i {
-    font-size: 1rem;
-  }
-  .profile-con span {
-    font-size: 1rem;
-  }
-  .h {
-    font-size: 2rem;
-  }
-  .yk-admin-contact .pmk-product .sm-img-box i {
-    font-size: 3vw;
-    color: #004f9b;
-  }
-  .yk-admin-contact .pmk-product .pmk-product-detail {
-    font-size: 1rem !important;
-  }
-  .yk-admin-contact .pmk-product .pmk-product-detail i {
-    font-size: 1rem !important;
-  }
+.yk-admin-contact .img-box {
+  display: grid;
+  place-items: center;
+  height: 4rem;
+  overflow: hidden;
+}
+.yk-admin-contact .img-box img {
+  width: 100%;
+  height: inherit;
+  object-fit: cover;
+}
+.react-calendar__month-view__weekdays__weekday,
+.react-calendar__month-view__days__day {
+  height: 40px;
+  width: 80px;
+}
+.react-calendar__navigation {
+  height: auto !important;
+}
+.react-calendar__month-view__days__day,
+.react-calendar__month-view__weekdays__weekday {
+  font-size: 0.6rem !important;
+}
+.event-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  top: 0;
+  left: 1rem;
+  right: 0;
+  padding: 0.125rem;
+}
+.event-title {
+  background-color: rgb(0, 79, 155);
+  color: #fff;
+  padding: 0.1rem 0.25rem;
+  border-radius: 5px;
+  font-size: 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+.heading-container {
+  height: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: lightgray;
+}
+.product-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  font-weight: 600;
+  font-size: 0.6rem;
+}
+.product-desc {
+  font-size: 0.6rem;
+  word-break: break-word;
 }

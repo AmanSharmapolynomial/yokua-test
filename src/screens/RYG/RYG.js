@@ -66,16 +66,16 @@ const RYG = () => {
           }}
         />
       )
-      if ((index + 1) % 3 === 0 && index + 1 <= productList.length) {
-        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
-        col = []
-      } else if ((index + 1) % 3 !== 0 && index + 1 === productList.length) {
-        col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
-        col = []
-      }
+      // if ((index + 1) % 3 === 0 && index + 1 <= productList.length) {
+      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   col = []
+      // } else if ((index + 1) % 3 !== 0 && index + 1 === productList.length) {
+      //   col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
+      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   col = []
+      // }
     })
-    return rows
+    return col
   }
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const RYG = () => {
         }
       />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col center py-md-3">
+        <div className="col center py-3">
           <PrimaryHeading title={'RYG Information'} backgroundImage={'RYG-Information'} />
           {isLoading ? (
             <div className="col text-center mt-3">
@@ -100,7 +100,7 @@ const RYG = () => {
               </div>
             </div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="row">{renderRow()}</div>
           )}
         </div>
       </div>

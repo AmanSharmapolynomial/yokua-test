@@ -27,9 +27,9 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`product-card col-12 col-md-4`}
+      className={`product-card col-6 col-md-4 mt-2 mt-md-3`}
     >
-      <div className="card shadow p-4 h-100">
+      <div className="card-md shadow-md p-md-4 h-100">
         <div className="row">
           <div className="col">
             <div className="row">
@@ -70,31 +70,22 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border-black text-center rounded mt-3">
+                    <div className="border-black text-center rounded mt-3 product-title">
                       <input ref={inputRef} />
                     </div>
                   ) : (
-                    <div
-                      className="border-black text-center rounded mt-3"
-                      style={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        wordBreak: 'break-word',
-                        fontWeight: 600,
-                        fontSize: '1.2rem',
-                      }}
-                    >
+                    <div className="border-black text-center rounded mt-3 product-title">
                       {item.page_title}
                     </div>
                   )
                 }
                 {isEditable ? (
-                  <textarea ref={textareaRef} className="col-12 d-flex align-items-center mt-2" />
+                  <textarea
+                    ref={textareaRef}
+                    className="col-12 d-flex align-items-center mt-2 product-desc"
+                  />
                 ) : (
-                  <div
-                    className="col-12 d-flex align-items-center mt-2"
-                    style={{ fontSize: '0.8rem', fontWeight: 500, wordBreak: 'break-word' }}
-                  >
+                  <div className="col-12 d-flex align-items-center mt-2 product-desc p-0">
                     {item.description}
                   </div>
                 )}

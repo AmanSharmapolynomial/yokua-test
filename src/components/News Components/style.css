@@ -281,8 +281,4 @@ form input {
     width: 1.3rem;
     height: 1.3rem;
   }
-  .p-md-auto {
-    padding-right: 15px !important;
-    padding-left: 15px !important;
-  }
 }

@@ -2,11 +2,6 @@
   letter-spacing: 1px;
 }
 
-.yk-admin-contact .img-box {
-  display: grid;
-  place-items: center;
-}
-
 .yk-admin-contact .img-box i {
   font-size: 7rem;
   color: #5a5a5a;

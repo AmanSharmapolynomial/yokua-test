@@ -114,7 +114,7 @@ const NewsScreen = () => {
         }
       />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="profile-setting-container col center py-md-3">
+        <div className="profile-setting-container col center py-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
           <div className="row py-3">
             <div className="filter-actions col-6">

@@ -263,7 +263,7 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -348,7 +348,7 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -392,7 +392,7 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -449,7 +449,7 @@ const RYGDetail = () => {
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
-                <div className="ms-auto w-auto my-2 p-0">
+                <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
                   <Image
                     className="me-2"
                     style={{ width: '1.4rem' }}
@@ -502,7 +502,7 @@ const RYGDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -539,7 +539,7 @@ const RYGDetail = () => {
 
   const renderComponents = () =>
     productDetail.map((item, index) => (
-      <div className="col-12 mt-5">
+      <div className="col-12 mt-md-5">
         <div className="row">
           <span className="text-bold p-0">{item.sectionName}</span>
         </div>
@@ -549,7 +549,7 @@ const RYGDetail = () => {
         {(getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') && (
-          <div className="row mt-3">
+          <div className="row mt-3 d-none d-md-block">
             <button
               className="btn create-domain-btn w-auto"
               onClick={() => {
@@ -1081,7 +1081,7 @@ const RYGDetail = () => {
       />
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
-          <div className="row">
+          <div className="row d-none d-md-block">
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span role="button" className="col-6 light-grey">
@@ -1104,7 +1104,7 @@ const RYGDetail = () => {
             {(getUserRoles() == 'PMK Administrator' ||
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
-              <div className="mt-2 d-flex justify-content-center">
+              <div className="mt-2 justify-content-center d-none d-md-flex">
                 <button
                   className="btn create-domain-btn mx-auto"
                   onClick={() => {

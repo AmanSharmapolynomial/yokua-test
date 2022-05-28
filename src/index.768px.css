@@ -1,0 +1,112 @@
+@media (min-width: 768px) {
+  .heading-container {
+    height: 20rem;
+  }
+  .bg-landing {
+    background: url('/src/assets/FCP landing page.jpg') no-repeat center;
+    background-size: cover;
+  }
+  .border.text-center.rounded {
+    font-size: 1.2rem;
+  }
+  .ryg-header-title {
+    font-size: 1.6rem;
+    padding: 1rem 0rem;
+  }
+  .ryg-text {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0rem 6rem;
+  }
+  .yk-admin-contact .sm-h {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .yk-admin-contact .product-item-name i {
+    font-size: 1rem;
+    color: #004f9b;
+  }
+  .yk-admin-contact .product-item-name span {
+    color: #000000;
+    font-size: 0.8rem;
+  }
+  .profile-circle {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 20vw;
+    display: grid;
+    place-items: center;
+  }
+  .profile-con i {
+    font-size: 1rem;
+  }
+  .profile-con span {
+    font-size: 1rem;
+  }
+  .h {
+    font-size: 2rem;
+  }
+  .yk-admin-contact .pmk-product .sm-img-box i {
+    font-size: 3vw;
+    color: #004f9b;
+  }
+  .yk-admin-contact .pmk-product .pmk-product-detail {
+    font-size: 1rem !important;
+  }
+  .yk-admin-contact .pmk-product .pmk-product-detail i {
+    font-size: 1rem !important;
+  }
+  .yk-admin-contact .img-box {
+    height: 12rem;
+  }
+  .react-calendar__month-view__weekdays__weekday,
+  .react-calendar__month-view__days__day {
+    height: 80px;
+    width: 80px;
+  }
+  .react-calendar__navigation {
+    height: 44px !important;
+  }
+  .react-calendar__month-view__days__day,
+  .react-calendar__month-view__weekdays__weekday {
+    font-size: 1rem !important;
+  }
+  .event-container {
+    left: 2rem;
+  }
+  .event-title {
+    font-size: 0.8rem;
+    padding: 0.125rem 0.5rem;
+  }
+  .product-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+  .product-desc {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .p-md-auto {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+  .card-md {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+  }
+  .shadow-md {
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+  }
+  .text-bold {
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+}

@@ -271,7 +271,7 @@ export default () => {
         saveCompany={_addNewItem}
       />
       <div className="row mx-2 mx-md-5" style={{ minHeight: '120vh' }}>
-        <div className="col center py-md-3">
+        <div className="col center py-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
           <div className="toku-dropdn mt-4">
             <div className="dropdown p-0">

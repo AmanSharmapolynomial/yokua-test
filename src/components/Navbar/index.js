@@ -67,24 +67,11 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
 
   return (
     <nav className="navbar navbar-expand-md justify-content-center px-0">
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
-        aria-controls="#navbar"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon">
-          <i className="fas fa-bars" style={{ color: '#fff' }} />
-        </span>
-      </button>
       <div
         className="collapse navbar-collapse justify-content-between align-items-center"
         id="navbar"
       >
-        <ul className="navbar-nav mx-auto text-md-center text-left">
+        <ul className="navbar-nav mx-auto text-md-center text-left p-3 p-md-0">
           <li className="nav-item px-xl-3">
             <Link className="nav-link" to={'/home'}>
               Home
@@ -242,9 +229,24 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               </Link>
             </li>
           )}
+          {isLogedIn && (
+            <li className="nav-item px-xl-3 d-block d-md-none">
+              <span
+                className="nav-link"
+                onClick={() => {
+                  toast.success('Log out successfully')
+                  removeToken()
+                  removeUserRole()
+                  navigate('/auth/login')
+                }}
+              >
+                Log out
+              </span>
+            </li>
+          )}
         </ul>
         {isLogedIn && (
-          <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+          <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap d-none d-md-block">
             <button
               className="logout-btn"
               onClick={() => {

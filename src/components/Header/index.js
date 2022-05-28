@@ -10,8 +10,8 @@ const Header = ({ isLogedIn, isAdmin }) => {
     <header className="header sticky-top mb-auto">
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col">
-          <div className="row header-container py-2">
-            <div className="header__logo col-12 col-md-4">
+          <div className="row header-container py-md-2">
+            <div className="header__logo col-6 col-md-4">
               <img
                 src={Yokogawa}
                 alt="logo"
@@ -21,6 +21,19 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 }}
               />
             </div>
+            <button
+              className="navbar-toggler w-auto d-block d-md-none"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-controls="#navbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon">
+                <i className="fas fa-bars" style={{ color: '#fff' }} />
+              </span>
+            </button>
             <div className="header__title col-12 col-md-4 me-md-auto text-center my-2 my-md-0">
               FLOW CENTER PAGES
             </div>

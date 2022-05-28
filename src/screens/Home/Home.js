@@ -192,7 +192,7 @@ const Home = () => {
         }
       />
       <div className="row mx-2 mx-md-5 h-100">
-        <div className="col center py-md-3">
+        <div className="col center py-3">
           <PrimaryHeading title={'Home'} />
           <div className="row mt-4">
             <HomeCardComponent
