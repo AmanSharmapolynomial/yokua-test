@@ -151,19 +151,22 @@ const EventScreen = () => {
               return dataList.length > 0 ? (
                 <div className="event-container">
                   {dataList.slice(0, 3).map(data => (
-                    <div key={data.id} className="event-title">
+                    <div key={data.id} className="event-title d-none d-md-block">
                       {data.training_name} - {data.duration}
                     </div>
                   ))}
+                  <i class="bi bi-dot event-dot d-block d-md-none"></i>
                 </div>
               ) : null
             }}
           />
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="mt-2 w-100" style={{ display: 'flex', justifyContent: 'center' }}>
             <Table
               responsive="md"
               style={{
+                display: 'block',
+                overflowX: 'auto',
                 border: '1px solid',
               }}
             >
@@ -191,7 +194,7 @@ const EventScreen = () => {
                       <p
                         style={{
                           color: 'white',
-                          fontSize: '20px',
+                          fontSize: '1rem',
                           width: '100%',
                           marginBottom: 0,
                         }}
@@ -230,8 +233,9 @@ const EventScreen = () => {
                             )}
                           </div>
                         </td>
-                        <td className="col-6 col-md-2">
+                        <td className="col-md-2">
                           <div
+                            className="date-container"
                             style={{
                               borderRight: '1px solid',
                               fontWeight: 'bold',
@@ -247,14 +251,16 @@ const EventScreen = () => {
                             </p>
                           </div>
                         </td>
-                        <td className="col-2">
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <td className="col-md-2">
+                          <div
+                            className="location-container"
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
                             <i
                               className="fas fa-location-dot"
                               aria-hidden="true"
                               style={{
                                 color: '#004F9B',
-                                fontSize: '1.5rem',
                                 margin: '0 25px 0 10px',
                               }}
                             ></i>
@@ -265,8 +271,8 @@ const EventScreen = () => {
                             </span>
                           </div>
                         </td>
-                        <td className="col-2">
-                          <div>
+                        <td className="col-md-2">
+                          <div className="register-container">
                             <label
                               style={{
                                 color: '#004F9B',
@@ -282,9 +288,11 @@ const EventScreen = () => {
                             </label>
                           </div>
                         </td>
-                        <td className="col-6">
+                        <td className="col-md-6">
                           <p
+                            className="desc-container"
                             style={{
+                              wordBreak: 'break-all',
                               wordWrap: 'break-word',
                               overflowWrap: 'break-word',
                               maxHeight: '6rem',
@@ -325,7 +333,7 @@ const EventScreen = () => {
           </div>
 
           {isAdmin && (
-            <div className="row mb-5">
+            <div className="row mb-5 d-none d-md-flex">
               <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
                 <button
                   onClick={() => {

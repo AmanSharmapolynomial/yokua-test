@@ -24,7 +24,7 @@ const LoaderContainer = styled.div`
 function App() {
   const { loading } = useLoading()
   return (
-    <div className="container-fluid d-flex flex-column p-0 m-0 flex-fill">
+    <div id="main" className="container-fluid d-flex flex-column p-0 m-0 flex-fill">
       <Routing />
       {loading && (
         <LoaderContainer>

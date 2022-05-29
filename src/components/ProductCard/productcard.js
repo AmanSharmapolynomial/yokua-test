@@ -42,7 +42,7 @@ const ProductCard = ({
       role={!isEditable && 'button'}
       className={`product-card col-12 col-md-6 mt-3`}
     >
-      <div className="card shadow px-3 py-3 h-100">
+      <div className="card-md shadow-md px-3 py-3 h-100">
         <div className="row">
           <div className="col">
             <div className="row">

@@ -98,8 +98,8 @@ a {
     right: 0;
     flex-direction: column;
     height: auto;
-    width: 45%;
-    transition: right 0.35s ease;
+    width: 16rem;
+    /* transition: right 0.35s ease; */
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   }
 }

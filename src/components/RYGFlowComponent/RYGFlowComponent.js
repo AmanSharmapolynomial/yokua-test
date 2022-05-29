@@ -19,7 +19,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
   return (
     <div className="col-12 mt-4">
       <div className="row">
-        <div className="card shadow">
+        <div className="card-md shadow-md">
           <div className="row px-3 py-3">
             <div className="col">
               {isEditable ? (

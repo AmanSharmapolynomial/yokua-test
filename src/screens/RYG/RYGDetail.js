@@ -432,7 +432,7 @@ const RYGDetail = () => {
           if (element.type === 'image') {
             IMAGES.push(
               <div
-                className={`col-2 mt-2${
+                className={`col-md-2 mt-2${
                   index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''
                 }`}
               >
@@ -490,7 +490,7 @@ const RYGDetail = () => {
         const element = ele.images[index]
         IMAGES.push(
           <div
-            className={`col-3 mt-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
+            className={`col-3 mt-md-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
           >
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
@@ -539,7 +539,7 @@ const RYGDetail = () => {
 
   const renderComponents = () =>
     productDetail.map((item, index) => (
-      <div className="col-12 mt-md-5">
+      <div className="col-12 mt-3 mt-md-5">
         <div className="row">
           <span className="text-bold p-0">{item.sectionName}</span>
         </div>

@@ -137,7 +137,7 @@ const Home = () => {
                       href={item.link}
                       target="_blank"
                       role={'button'}
-                      className="col text-decoration-none"
+                      className="col text-decoration-none text-break"
                     >
                       {item.name}
                     </a>

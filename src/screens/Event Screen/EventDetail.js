@@ -533,7 +533,7 @@ const EventDetail = () => {
 
   const renderComponents = () =>
     productDetail.map((item, index) => (
-      <div className="col-12 mt-md-5">
+      <div className="col-12 mt-3 mt-md-5">
         <div className="row">
           <span className="text-bold p-0">{item.sectionName}</span>
         </div>

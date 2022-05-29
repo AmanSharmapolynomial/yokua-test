@@ -22,6 +22,15 @@ const Header = ({ isLogedIn, isAdmin }) => {
               />
             </div>
             <button
+              onClick={() => {
+                if (document.getElementById('navbar').classList.contains('show')) {
+                  document.getElementById('main').style.position = 'relative'
+                  document.getElementById('main').style.left = '0rem'
+                } else {
+                  document.getElementById('main').style.position = 'relative'
+                  document.getElementById('main').style.left = '-16rem'
+                }
+              }}
               className="navbar-toggler w-auto d-block d-md-none"
               type="button"
               data-toggle="collapse"
