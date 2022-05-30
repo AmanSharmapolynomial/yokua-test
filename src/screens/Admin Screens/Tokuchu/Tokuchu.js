@@ -273,7 +273,7 @@ export default () => {
       <div className="row mx-2 mx-md-5" style={{ minHeight: '120vh' }}>
         <div className="col center py-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
-          <div className="toku-dropdn mt-4">
+          <div className="toku-dropdn mt-4 d-none d-md-block">
             <div className="dropdown p-0">
               <div className="btn-group">
                 <button
@@ -407,12 +407,20 @@ export default () => {
               </div>
             </div>
           </div>
-          <div className="mt-3">
+
+          <div className="d-block d-md-none border mx-5 mt-5 rounded px-1 py-1">
+            <div className="icon-container">
+              <i className="fa-solid fa-angle-left" />
+            </div>
+            <div>{selectedProduct?.name ? selectedProduct.name : 'Choose your Product line'}</div>
+          </div>
+
+          <div className="mt-3 d-flex">
             <button
               disabled={selectedProduct?.id === undefined}
               className={`btn create-domain-btn${
                 selectedProduct?.id === undefined ? ' greyed' : ''
-              }`}
+              } mx-auto mx-md-0`}
               onClick={() => {
                 selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
               }}

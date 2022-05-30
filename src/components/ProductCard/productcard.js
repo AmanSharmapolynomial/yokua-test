@@ -46,7 +46,7 @@ const ProductCard = ({
         <div className="row">
           <div className="col">
             <div className="row">
-              <div className="col-6" style={{ padding: '0 20px' }}>
+              <div className="col-6">
                 <div className="img-box thumb rounded d-flex">
                   {isEditable ? (
                     <>
@@ -83,12 +83,12 @@ const ProductCard = ({
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border-black text-center rounded mt-2">
+                    <div className="border-black text-center rounded mt-2 product-title">
                       <input ref={inputRef} />
                     </div>
                   ) : (
                     <div
-                      className="border-black text-center rounded mt-2"
+                      className="border-black text-center rounded mt-2 product-title"
                       style={{
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -102,9 +102,12 @@ const ProductCard = ({
               </div>
 
               {isEditable ? (
-                <textarea ref={textareaRef} className="col-6 d-flex align-items-center" />
+                <textarea
+                  ref={textareaRef}
+                  className="col-6 d-flex align-items-center product-desc"
+                />
               ) : (
-                <div className="col-6 d-flex align-items-center" style={{ wordBreak: 'break-all' }}>
+                <div className="col-6 d-flex align-items-center product-desc">
                   {item.description}
                 </div>
               )}

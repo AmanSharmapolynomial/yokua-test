@@ -72,16 +72,16 @@ const SubProduct = () => {
           }}
         />
       )
-      if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-        rows.push(<div className="row mt-5">{col}</div>)
-        col = []
-      } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-        col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-        rows.push(<div className="row mt-5">{col}</div>)
-        col = []
-      }
+      // if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
+      //   rows.push(<div className="row mt-5">{col}</div>)
+      //   col = []
+      // } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
+      //   col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
+      //   rows.push(<div className="row mt-5">{col}</div>)
+      //   col = []
+      // }
     })
-    return rows
+    return col
   }
 
   useEffect(() => {
@@ -99,41 +99,45 @@ const SubProduct = () => {
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
           <div className="row">
-            <div className="col-12 col-md-6 border rounded py-2">
-              <div className="row">
-                <span
-                  role="button"
-                  className="col-6 light-grey"
-                  onClick={() => {
-                    navigate(-1)
-                  }}
-                >
-                  Previous page
-                </span>
-                <span
-                  className="col-6"
-                  style={{
-                    wordBreak: 'break-all',
-                  }}
-                >
-                  <u
+            <div className="col">
+              <div className="col-12 col-md-6 border-md rounded py-2">
+                <div className="row">
+                  <span
                     role="button"
+                    className="col-6 light-grey d-none d-md-block"
                     onClick={() => {
-                      navigate('/product-lines')
+                      navigate(-1)
                     }}
                   >
-                    Product Lines
-                  </u>
-                  {'>'} {state.name}
-                </span>
+                    Previous page
+                  </span>
+                  <span
+                    className="col-12 col-md-6 px-0 px-md-3"
+                    style={{
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    <u
+                      role="button"
+                      onClick={() => {
+                        navigate('/product-lines')
+                      }}
+                    >
+                      Product Lines
+                    </u>
+                    {'>'} {state.name}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="row mt-5 text-bold">{state.name}</div>
+          <div className="row mt-5 text-bold d-none d-md-block">
+            <div className="col">{state.name}</div>
+          </div>
           {isLoading ? (
             <div className="col text-center">Loading....</div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="row">{renderRow()}</div>
           )}
           {/* <div className="archived-filter mt-5">
             {archivedFilter ? (

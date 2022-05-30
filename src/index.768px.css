@@ -1,4 +1,10 @@
 @media (min-width: 768px) {
+  .border-md {
+    /* font-size: 2vh; */
+    font-weight: 500;
+    /* width: 12rem; */
+    border: 1px solid lightgrey;
+  }
   .heading-container {
     height: 20rem;
   }

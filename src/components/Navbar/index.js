@@ -202,7 +202,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </li>
           {getUserRoles() === 'Technical Administrator' ||
           getUserRoles() === 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-xl-3">
+            <li className="nav-item dropdown px-xl-3 d-none d-md-block">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"

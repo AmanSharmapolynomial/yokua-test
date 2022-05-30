@@ -108,9 +108,9 @@ const Home = () => {
   }) => {
     if (!isImage)
       return (
-        <div className="col">
+        <div className="col col-md-4">
           <div className="card h-100">
-            <div className="card-body">
+            <div className="card-body d-flex flex-column">
               <div className="row card-header-title">
                 <span className="col">{title}</span>
                 {(getUserRoles() == 'PMK Administrator' ||
@@ -156,14 +156,18 @@ const Home = () => {
                   </div>
                 ))}
               {isAdmin && (
-                <button
-                  className="btn card-header-items px-1 py-1 d-md-flex d-none"
-                  onClick={() => {
-                    setAdd()
-                  }}
-                >
-                  Add Link
-                </button>
+                <div className="row mt-auto">
+                  <div className="col">
+                    <button
+                      className="btn px-1 py-1 d-md-flex d-none w-auto"
+                      onClick={() => {
+                        setAdd()
+                      }}
+                    >
+                      Add Link
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -171,10 +175,16 @@ const Home = () => {
       )
     else
       return (
-        <div className="col">
-          <div className="card">
-            <div className="card-body"></div>
-          </div>
+        <div className="col col-md-4 d-none d-md-block">
+          <img
+            className="rounded-2"
+            style={{
+              height: '18rem',
+              objectFit: 'cover',
+              width: '100%',
+            }}
+            src={'https://source.unsplash.com/random'}
+          />
         </div>
       )
   }
@@ -225,8 +235,9 @@ const Home = () => {
                 setIsDeleteModalVisible(1)
                 setSelectedItem(item)
               }}
-              isAdmin={true}
+              isAdmin={isAdmin}
             />
+            <HomeCardComponent isImage={true} />
           </div>
           <div className="row mt-4">
             <div className="ryg-header-title">Product Related Information</div>

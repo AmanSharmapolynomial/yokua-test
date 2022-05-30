@@ -78,23 +78,24 @@ const ProductLine = () => {
             archiveProducts(item.id)
           }}
           onClick={() => {
-            navigate('/product-lines/sub-product', { state: item })
+            if (item?.tokuchu) navigate('/admin/approved-tokuchus')
+            else navigate('/product-lines/sub-product', { state: item })
           }}
           onUpdate={payload => {
             updateProduct(payload)
           }}
         />
       )
-      if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
-        col = []
-      } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-        col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-        rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
-        col = []
-      }
+      // if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
+      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   col = []
+      // } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
+      //   col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
+      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   col = []
+      // }
     })
-    return rows
+    return col
   }
 
   useEffect(() => {
@@ -119,7 +120,7 @@ const ProductLine = () => {
               </div>
             </div>
           ) : (
-            <div className="col p-0">{renderRow()}</div>
+            <div className="row">{renderRow()}</div>
           )}
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||
