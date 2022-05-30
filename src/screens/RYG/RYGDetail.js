@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import API from '../../utils/api'
 import { getToken, getUserRoles } from '../../utils/token'
-import './style.css'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import { Link, useLocation } from 'react-router-dom'
@@ -33,8 +32,14 @@ const RYGDetail = () => {
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
+  const [isMd, setIsMd] = useState(false)
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
+
+  function updateWindowDimensions() {
+    if (window.innerWidth >= 768) setIsMd(true)
+    else setIsMd(false)
+  }
 
   const components = [
     {
@@ -432,8 +437,16 @@ const RYGDetail = () => {
           if (element.type === 'image') {
             IMAGES.push(
               <div
-                className={`col-md-2 mt-2${
-                  index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''
+                className={`col-6 col-md-2 mt-2${
+                  !isMd
+                    ? IMAGES.length % 2 === 0
+                      ? ' ps-0'
+                      : ' pe-0'
+                    : IMAGES.length % 6 === 0
+                    ? ' ps-0'
+                    : IMAGES.length % 6 === 5
+                    ? ' pe-0'
+                    : ''
                 }`}
               >
                 <img className="border rounded img-product-line" src={element.image_link} />
@@ -490,7 +503,17 @@ const RYGDetail = () => {
         const element = ele.images[index]
         IMAGES.push(
           <div
-            className={`col-3 mt-md-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
+            className={`col-6 col-md-2 mt-2${
+              !isMd
+                ? IMAGES.length % 2 === 0
+                  ? ' ps-0'
+                  : ' pe-0'
+                : IMAGES.length % 6 === 0
+                ? ' ps-0'
+                : IMAGES.length % 6 === 5
+                ? ' pe-0'
+                : ''
+            }`}
           >
             <Image src={element.image_link} className="border rounded img-product-line" />
           </div>
@@ -1062,6 +1085,12 @@ const RYGDetail = () => {
       return renderAddImage(item)
     }
   }
+
+  React.useLayoutEffect(() => {
+    updateWindowDimensions()
+    window.addEventListener('resize', updateWindowDimensions)
+    return () => window.removeEventListener('resize', updateWindowDimensions)
+  }, [])
 
   useEffect(() => {
     getProductDetails()

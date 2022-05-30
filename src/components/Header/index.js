@@ -1,11 +1,18 @@
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
 import Navbar from '../Navbar'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
 
 const Header = ({ isLogedIn, isAdmin }) => {
   const navigate = useNavigate()
+  const loc = useLocation()
+
+  React.useEffect(() => {
+    document.getElementById('main').style.position = 'relative'
+    document.getElementById('main').style.left = '0rem'
+  }, [loc.pathname])
+
   return (
     <header className="header sticky-top mb-auto">
       <div className="row mx-2 mx-md-5 h-100">

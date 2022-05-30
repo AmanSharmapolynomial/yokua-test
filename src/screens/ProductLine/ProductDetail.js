@@ -34,6 +34,12 @@ const ProductDetail = () => {
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
+  const [isMd, setIsMd] = useState(false)
+
+  function updateWindowDimensions() {
+    if (window.innerWidth >= 768) setIsMd(true)
+    else setIsMd(false)
+  }
 
   const components = [
     {
@@ -401,7 +407,19 @@ const ProductDetail = () => {
           const element = arr[index]
           if (element.type === 'image') {
             IMAGES.push(
-              <div className={`col-6${index === idx ? ' ps-0' : ''}`}>
+              <div
+                className={`col-6 col-md-2 mt-2${
+                  !isMd
+                    ? IMAGES.length % 2 === 0
+                      ? ' ps-0'
+                      : ' pe-0'
+                    : IMAGES.length % 6 === 0
+                    ? ' ps-0'
+                    : IMAGES.length % 6 === 5
+                    ? ' pe-0'
+                    : ''
+                }`}
+              >
                 <Image src={ele.image_link} className="border rounded img-product-line" />
               </div>
             )
@@ -457,7 +475,17 @@ const ProductDetail = () => {
         const element = ele.images[index]
         IMAGES.push(
           <div
-            className={`col-2 mt-2${index % 4 === 0 ? ' ps-0' : index % 4 === 3 ? ' pe-0' : ''}`}
+            className={`col-6 col-md-2 mt-2${
+              !isMd
+                ? IMAGES.length % 2 === 0
+                  ? ' ps-0'
+                  : ' pe-0'
+                : IMAGES.length % 6 === 0
+                ? ' ps-0'
+                : IMAGES.length % 6 === 5
+                ? ' pe-0'
+                : ''
+            }`}
           >
             <img className="border rounded img-product-line" src={element.image_link} />
           </div>
@@ -1031,6 +1059,12 @@ const ProductDetail = () => {
     }
   }
 
+  React.useLayoutEffect(() => {
+    updateWindowDimensions()
+    window.addEventListener('resize', updateWindowDimensions)
+    return () => window.removeEventListener('resize', updateWindowDimensions)
+  }, [])
+
   useEffect(() => {
     getProductDetails()
     ;(getUserRoles() == 'PMK Administrator' ||
@@ -1049,7 +1083,7 @@ const ProductDetail = () => {
       />
       <div className="row mx-2 mx-md-5 h-100">
         <div className="col center py-3">
-          <div className="row">
+          <div className="row d-none d-md-block">
             <div className="col-12 col-md-6 border rounded py-2">
               <div className="row">
                 <span

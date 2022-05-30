@@ -119,7 +119,7 @@ const ProductLine = () => {
               </div>
             </div>
           ) : (
-            <div className="col">{renderRow()}</div>
+            <div className="col p-0">{renderRow()}</div>
           )}
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||
