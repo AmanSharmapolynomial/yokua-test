@@ -27,6 +27,7 @@ export default () => {
   const [subProductLoading, setSubProductLoading] = useState(false)
   const [productItemLoading, setProductItemLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState()
+  const [dataToShow, setDataToShow] = useState()
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -409,10 +410,98 @@ export default () => {
           </div>
 
           <div className="d-block d-md-none border mx-5 mt-5 rounded px-1 py-1">
-            <div className="icon-container">
-              <i className="fa-solid fa-angle-left" />
+            <div className="dropdown row d-flex align-items-center">
+              {dataToShow?.level !== undefined || dataToShow?.level >= 1 ? (
+                <div
+                  className="icon-container col-auto pe-0"
+                  onClick={() => {
+                    if (dataToShow?.level === 1) {
+                      setSelectedProduct(undefined)
+                      setDataToShow({ ...dataToShow, level: undefined, name: undefined })
+                    } else {
+                      setSelectedProduct(undefined)
+                      setDataToShow({
+                        ...dataToShow,
+                        level: 1,
+                        name: products[dataToShow?.idx].name,
+                      })
+                    }
+                  }}
+                >
+                  <i className="fa-solid fa-angle-left" />
+                </div>
+              ) : null}
+              <div
+                className="col"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div>{dataToShow?.name ? dataToShow.name : 'Choose your Product line'}</div>
+              </div>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                {dataToShow?.level === undefined || dataToShow?.level < 1 ? (
+                  products.map((item, index) => (
+                    <div
+                      className="dropdown-item flex-fill"
+                      href="#"
+                      onClick={() => {
+                        setDataToShow({ ...item, level: 1, idx: index })
+                        _getSubProducts(item.id)
+                      }}
+                    >
+                      {item.name}
+                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                    </div>
+                  ))
+                ) : dataToShow?.level === 1 ? (
+                  /*products[dataToShow?.idx]?.subProducts?.length > 0 ? (*/
+                  products[dataToShow?.idx]?.subProducts.map((sub, i) => (
+                    <div
+                      className="dropdown-item"
+                      key={sub.name}
+                      onClick={e => {
+                        // e.stopPropagation()
+                        setDataToShow({ ...dataToShow, level: 2, subIdx: i, name: sub.name })
+                        _getProductItems(sub.id, dataToShow.id)
+                      }}
+                    >
+                      {sub.name}
+                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                    </div>
+                    /*)*/
+                  ))
+                ) : dataToShow?.level === 2 ? (
+                  products[dataToShow?.idx]?.subProducts[dataToShow?.subIdx]?.productItems.map(
+                    prod => (
+                      <li
+                        className="dropdown-item"
+                        key={prod.name}
+                        onClick={e => {
+                          // e.stopPropagation()
+                          setDataToShow({ ...dataToShow, name: prod.name })
+                          setSelectedProduct(prod)
+                        }}
+                      >
+                        <a
+                          style={{
+                            fontWeight: '600',
+                          }}
+                        >
+                          {prod.name}
+                        </a>
+                      </li>
+                    )
+                  )
+                ) : (
+                  <li className="dropdown-item" key={'Sub Fetching'}>
+                    <a>No Data Found ..</a>
+                  </li>
+                )}
+              </div>
             </div>
-            <div>{selectedProduct?.name ? selectedProduct.name : 'Choose your Product line'}</div>
           </div>
 
           <div className="mt-3 d-flex">
