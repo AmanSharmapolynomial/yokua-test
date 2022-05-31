@@ -81,25 +81,28 @@ a {
   } */
 }
 @media screen and (max-width: 768px) {
-  .navbar-collapse.collapsing .navbar-nav {
-    display: block;
+  .navbar-collapse {
     position: fixed;
     top: 0;
-    bottom: 0;
+    right: 0;
+    /* padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px; */
+    width: 16rem;
+    height: 100%;
+  }
+  .navbar-collapse.collapsing {
     right: -45%;
-    transition: all 0.2s ease;
+    transition: right 0s ease;
   }
 
-  .navbar-collapse.show .navbar-nav {
-    background-color: white;
-    position: fixed;
-    top: 0;
-    bottom: 0;
+  .navbar-collapse.show {
     right: 0;
-    flex-direction: column;
-    height: auto;
     width: 16rem;
-    /* transition: right 0.35s ease; */
+    transition: right 0.35s ease;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  .navbar-toggler.collapsed ~ .navbar-collapse {
+    transition: right 500ms ease-in-out;
   }
 }
