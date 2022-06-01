@@ -1105,11 +1105,11 @@ const AddEventScreen = () => {
                         type="email"
                         placeholder="Company E-Mail ID"
                         className="col-md-3 form-control"
-                        style={{ width: '400px' }}
+                        style={{ width: '400px', textTransform: 'lowercase' }}
                         value={companyEmail}
                         disabled={eventId && registerationType.value == 'internal'}
                         onChange={event => {
-                          setCompanyEmail(event.target.value)
+                          setCompanyEmail(event.target.value.toLowerCase())
                         }}
                         required
                       />
