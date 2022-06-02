@@ -335,7 +335,7 @@ const Home = () => {
                 >
                   <input
                     required
-                    className="form-control w-100 border-0 py-2 text-bold font-8"
+                    className="form-control focus-none w-100 border-0 py-2 text-bold font-8"
                     type="text"
                     placeholder="Title"
                     ref={inputTitle}
@@ -343,7 +343,7 @@ const Home = () => {
                   <hr className="m-0"></hr>
                   <input
                     required
-                    className="form-control w-100 border-0 py-2 text-bold font-8"
+                    className="form-control focus-none w-100 border-0 py-2 text-bold font-8"
                     type="url"
                     placeholder="Link"
                     ref={inputLink}
@@ -356,8 +356,10 @@ const Home = () => {
                           ref.style.setProperty('background-color', 'white', 'important')
                           ref.style.setProperty('color', 'var(--bgColor2)', 'important')
                           ref.style.setProperty('font-size', '0.8rem', 'important')
+                          ref.style.setProperty('text-align', 'center', 'important')
                         }
                       }}
+                      style={{ minWidth: '4rem' }}
                       className="btn me-4 font-8 px-1 py-1"
                       onClick={() => {
                         setIsAddModalVisible(-1)
@@ -365,7 +367,16 @@ const Home = () => {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className="btn font-8 px-1 py-1">
+                    <button
+                      ref={ref => {
+                        if (ref) {
+                          ref.style.setProperty('text-align', 'center', 'important')
+                        }
+                      }}
+                      type="submit"
+                      className="btn font-8 px-1 py-1"
+                      style={{ minWidth: '4rem' }}
+                    >
                       Save
                     </button>
                   </div>
@@ -421,16 +432,23 @@ const Home = () => {
                       ref.style.setProperty('background-color', 'white', 'important')
                       ref.style.setProperty('color', 'var(--bgColor2)', 'important')
                       ref.style.setProperty('font-size', '0.8rem', 'important')
+                      ref.style.setProperty('text-align', 'center', 'important')
                     }
                   }}
                   className="btn me-4 font-8 px-1 py-1"
                   onClick={() => {
                     setIsDeleteModalVisible(-1)
                   }}
+                  style={{ minWidth: '4rem' }}
                 >
                   Cancel
                 </button>
                 <button
+                  ref={ref => {
+                    if (ref) {
+                      ref.style.setProperty('text-align', 'center', 'important')
+                    }
+                  }}
                   className="btn font-8 px-1 py-1"
                   onClick={() => {
                     if (isDeleteModalVisible === 0) {
@@ -441,6 +459,7 @@ const Home = () => {
                       setIsDeleteModalVisible(-1)
                     }
                   }}
+                  style={{ minWidth: '4rem' }}
                 >
                   Confirm
                 </button>

@@ -58,7 +58,7 @@ const SignIn = () => {
               <input
                 type={passwordVisible ? 'text' : 'password'}
                 name="Password"
-                className="input-field__password"
+                className="input-field__password w-100"
                 onChange={e => setPassword(e.target.value)}
                 required={true}
                 placeholder="Password"

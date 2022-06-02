@@ -247,8 +247,13 @@ export default () => {
 
               {/* <!--------------Profile-brief-------------------> */}
 
-              <div className="profile-brief mt-5">
-                <div className="row py-5">
+              <div className="profile-brief card shadow-sm mt-5 p-5">
+                <div className="row mb-3">
+                  <div className="col-md-12 col-lg-12 col-xl-12">
+                    <p className="h">Sales and Marketing Manager</p>
+                  </div>
+                </div>
+                <div className="row">
                   <div className="col-auto d-flex align-items-center">
                     <div className="profile-circle border border-dark">
                       <i className="fa fa-user" aria-hidden="true"></i>
@@ -259,21 +264,23 @@ export default () => {
                     <div className="profile-con">
                       <div className="row">
                         <i className="fa fa-user col-auto align-self-center" aria-hidden="true"></i>
-                        <span className="col">Emmunnal de montalinesvhbhm hvhbhb</span>
+                        <span className="col">
+                          Emmanuel de Montillet - Sales and Marketing Manager
+                        </span>
                       </div>
                       <div className="row">
                         <i
                           className="fa fa-envelope col-auto align-self-center"
                           aria-hidden="true"
                         ></i>
-                        <span className="col">Abcd.yokogawa.com</span>
+                        <span className="col">emmanuel.de.montillet@de.yokogawa.com</span>
                       </div>
                       <div className="row">
                         <i
                           className="fa fa-phone col-auto align-self-center"
                           aria-hidden="true"
                         ></i>
-                        <span className="col">+01 0099283847</span>
+                        <span className="col">+49 7761 567 - 130</span>
                       </div>
                     </div>
                   </div>

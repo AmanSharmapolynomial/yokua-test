@@ -65,7 +65,7 @@ const ChnagePassword = () => {
             <span className="flex-fill">
               <input
                 type={passwordVisible ? 'text' : 'password'}
-                className="input-field__password"
+                className="input-field__password w-100"
                 name="password"
                 value={password}
                 placeholder="Password"
@@ -82,7 +82,7 @@ const ChnagePassword = () => {
             <span className="flex-fill">
               <input
                 type={confirmVisible ? 'text' : 'password'}
-                className="input-field__password"
+                className="input-field__password w-100"
                 name="confirm-password"
                 placeholder="Confirm Password"
                 value={confirmPassword}

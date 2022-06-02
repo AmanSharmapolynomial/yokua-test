@@ -33,7 +33,7 @@ const Forgot = () => {
   return (
     <>
       <div className="signIn-container mx-auto col-10 col-md-4">
-        <div className="container-head">
+        <div className="container-head px-2">
           <span className="position-absolute float-left">
             <i
               className="fa-solid fa-arrow-left back-arrow-btn me-2"
