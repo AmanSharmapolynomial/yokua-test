@@ -9,7 +9,7 @@
     height: 20rem;
   }
   .bg-landing {
-    background: url('/src/assets/FCP landing page.jpg') no-repeat center;
+    background: url('/src/assets/FCP landing page.png') no-repeat center;
     background-size: cover;
   }
   .border.text-center.rounded {
