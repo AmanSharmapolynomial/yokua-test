@@ -9,7 +9,7 @@ import './style.css'
 import API from '../../utils/api'
 import OffCanvasDropDownItems from './OffCanvasDropDownItems'
 
-const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
+const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props }, ref) => {
   const navigate = useNavigate()
   const [unreadNewsCount, setUnreadNewsCount] = useState(0)
   const [productList, setProductList] = useState([])
@@ -60,6 +60,18 @@ const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
         console.log(error)
       })
   }
+
+  React.useImperativeHandle(ref, () => ({
+    hideOffCanvas: () => {
+      if (document.getElementById('productLineDropdown').classList.contains('show')) {
+        document.getElementById('productLineDropdown').classList.remove('show')
+      }
+
+      if (document.getElementById('rygDropdown').classList.contains('show')) {
+        document.getElementById('rygDropdown').classList.remove('show')
+      }
+    },
+  }))
 
   useEffect(() => {
     getUnreadNewsCount()
@@ -246,6 +258,6 @@ const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
       />
     </>
   )
-}
+})
 
 export default PhoneNav

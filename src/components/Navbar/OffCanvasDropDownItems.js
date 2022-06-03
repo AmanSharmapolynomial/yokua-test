@@ -15,6 +15,7 @@ const OffCanvasDropDownItems = props => {
     <div
       className="collapse navbar-collapse justify-content-between align-items-center"
       id={props.id}
+      style={{ backgroundColor: 'white' }}
     >
       {props.isLogedIn && (
         <form
@@ -68,7 +69,14 @@ const OffCanvasDropDownItems = props => {
               {element.page_title}
             </div>
           ) : (
-            <Link to={element.url} key={index} className="dropdown-item font-6 px-2">
+            <Link
+              to={element.url}
+              key={index}
+              className="dropdown-item font-6 px-2"
+              onClick={() => {
+                document.getElementById(props.id).classList.remove('show')
+              }}
+            >
               {element.name}
             </Link>
           )

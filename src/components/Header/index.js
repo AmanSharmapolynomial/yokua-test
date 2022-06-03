@@ -8,6 +8,7 @@ import PhoneNav from '../Navbar/PhoneNav'
 const Header = ({ isLogedIn, isAdmin }) => {
   const navigate = useNavigate()
   const loc = useLocation()
+  const phoneRef = React.useRef(null)
   const [isMd, setIsMd] = React.useState(false)
 
   function updateWindowDimensions() {
@@ -18,7 +19,13 @@ const Header = ({ isLogedIn, isAdmin }) => {
   React.useEffect(() => {
     document.getElementById('main').style.position = 'relative'
     document.getElementById('main').style.left = '0rem'
-  }, [loc.pathname])
+    if (document.getElementById('navbar-sm')?.classList.contains('show')) {
+      document.getElementById('navbar-sm')?.classList.remove('show')
+    }
+    if (phoneRef !== null) {
+      phoneRef?.current?.hideOffCanvas()
+    }
+  }, [loc.pathname, loc.state])
 
   React.useLayoutEffect(() => {
     updateWindowDimensions()
@@ -42,7 +49,11 @@ const Header = ({ isLogedIn, isAdmin }) => {
               />
             </div>
             <button
-              onClick={() => {
+              onClick={e => {
+                if (phoneRef !== null) {
+                  phoneRef.current.hideOffCanvas()
+                }
+
                 if (document.getElementById('navbar-sm').classList.contains('show')) {
                   document.getElementById('main').style.position = 'relative'
                   document.getElementById('main').style.left = '0rem'
@@ -96,12 +107,13 @@ const Header = ({ isLogedIn, isAdmin }) => {
               <div className="col">
                 {!isMd ? (
                   <PhoneNav
+                    ref={phoneRef}
                     isAdmin={isAdmin}
                     isLogedIn={isLogedIn}
                     hideNavbar={() => {
                       // document.getElementById('main').style.position = 'relative'
                       // document.getElementById('main').style.left = '0rem'
-                      document.getElementById('navbar-sm').classList.remove('show')
+                      // document.getElementById('navbar-sm').classList.remove('show')
                     }}
                   />
                 ) : (
