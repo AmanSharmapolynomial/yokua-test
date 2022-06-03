@@ -255,7 +255,7 @@ const Home = () => {
             <div className="col-12 col-md-8">
               <div className="ryg-header-title">RYG Information</div>
               <div className="align-self-center">
-                <div className="ryg-text mt-5">
+                <div className="ryg-text mt-xl-5">
                   Download the FlowConfigurator, get Service information, Lead-time table register
                   for Trainings, Application Notes and many more
                 </div>

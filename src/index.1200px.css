@@ -1,0 +1,8 @@
+@media (min-width: 1200px) {
+  .ryg-text {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+    padding: 0rem 6rem;
+  }
+}
