@@ -660,12 +660,15 @@ const NewsItem = ({
                     </>
                   )}
                   {isCheckListActivated && data?.news_read && (
-                    <div className="read-dot" style={{ backgroundColor: 'white' }}></div>
+                    <div
+                      className="read-dot mb-auto mt-2"
+                      style={{ backgroundColor: 'white' }}
+                    ></div>
                   )}
 
                   {!isCheckListActivated && (
                     <div
-                      className="read-dot"
+                      className="read-dot mb-auto mt-2"
                       onClick={() =>
                         _getNewsReadColor() && !isCheckListActivated && setCheckListActivated(true)
                       }
@@ -674,7 +677,22 @@ const NewsItem = ({
                   )}
                 </div>
               )}
-              <div className="col-3 p-sm-0 p-md-auto">
+
+              <div className="ps-0 col d-md-none d-block">
+                <div className="row">
+                  <div onClick={setCategoryFilter} className="news-category-sm col">
+                    {data ? data.category_name : ''}
+                  </div>
+                  <div className="date-sm col-auto ps-0">
+                    {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="news-sub-category-sm">{renderSubCategory()}</div>
+                </div>
+              </div>
+
+              <div className="col-12 col-md-3 p-sm-0 p-md-auto mt-2 mt-md-0">
                 <div className="news-img rounded mx-md-3">
                   <img
                     src={catImg}
@@ -685,7 +703,7 @@ const NewsItem = ({
                 </div>
               </div>
               <div className="col col-md-2">
-                <div className="news-info">
+                <div className="news-info d-none d-md-flex">
                   <span className="date">
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
                   </span>

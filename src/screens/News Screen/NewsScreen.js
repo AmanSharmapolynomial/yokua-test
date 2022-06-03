@@ -322,7 +322,7 @@ const NewsScreen = () => {
                   !archivedFilter &&
                   !isAnyNewsUnderEdit && (
                     <div
-                      className="add_row"
+                      className="add_row d-none d-md-flex"
                       onClick={() => {
                         if (!isAnyNewsUnderEdit) {
                           setNewsUnderEdit(true)

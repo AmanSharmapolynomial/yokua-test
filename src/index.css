@@ -879,3 +879,14 @@ select {
 .focus-none :focus {
   box-shadow: none;
 }
+.date-sm {
+  font-size: 0.8rem;
+  color: grey;
+}
+.news-category-sm {
+  font-size: 1rem;
+  text-decoration: underline;
+}
+.news-sub-category-sm {
+  height: 2.8rem;
+}
