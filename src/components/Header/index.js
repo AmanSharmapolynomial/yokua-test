@@ -3,15 +3,28 @@ import { useNavigate, useLocation } from 'react-router'
 import Navbar from '../Navbar'
 import './style.css'
 import Yokogawa from '../../assets/Yokogawa png.png'
+import PhoneNav from '../Navbar/PhoneNav'
 
 const Header = ({ isLogedIn, isAdmin }) => {
   const navigate = useNavigate()
   const loc = useLocation()
+  const [isMd, setIsMd] = React.useState(false)
+
+  function updateWindowDimensions() {
+    if (window.innerWidth >= 768) setIsMd(true)
+    else setIsMd(false)
+  }
 
   React.useEffect(() => {
     document.getElementById('main').style.position = 'relative'
     document.getElementById('main').style.left = '0rem'
   }, [loc.pathname])
+
+  React.useLayoutEffect(() => {
+    updateWindowDimensions()
+    window.addEventListener('resize', updateWindowDimensions)
+    return () => window.removeEventListener('resize', updateWindowDimensions)
+  }, [])
 
   return (
     <header className="header sticky-top mb-auto">
@@ -30,7 +43,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
             </div>
             <button
               onClick={() => {
-                if (document.getElementById('navbar').classList.contains('show')) {
+                if (document.getElementById('navbar-sm').classList.contains('show')) {
                   document.getElementById('main').style.position = 'relative'
                   document.getElementById('main').style.left = '0rem'
                 } else {
@@ -41,9 +54,9 @@ const Header = ({ isLogedIn, isAdmin }) => {
               className="navbar-toggler w-auto d-block d-md-none"
               type="button"
               data-toggle="collapse"
-              data-target="#navbar"
-              aria-controls="#navbar"
               aria-expanded="false"
+              data-target="#navbar-sm"
+              aria-controls="#navbar-sm"
               aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon">
@@ -81,7 +94,19 @@ const Header = ({ isLogedIn, isAdmin }) => {
           {isLogedIn && (
             <div className="row">
               <div className="col">
-                <Navbar isAdmin={isAdmin} isLogedIn={isLogedIn} />
+                {!isMd ? (
+                  <PhoneNav
+                    isAdmin={isAdmin}
+                    isLogedIn={isLogedIn}
+                    hideNavbar={() => {
+                      // document.getElementById('main').style.position = 'relative'
+                      // document.getElementById('main').style.left = '0rem'
+                      document.getElementById('navbar-sm').classList.remove('show')
+                    }}
+                  />
+                ) : (
+                  <Navbar isAdmin={isAdmin} isLogedIn={isLogedIn} />
+                )}
               </div>
             </div>
           )}
