@@ -15,8 +15,10 @@ export default () => {
   const imageInputRef = useRef(null)
   const openingHrsRef = useRef(null)
   const holidaysRef = useRef(null)
+  const nameRef = useRef(null)
   const addressRef = useRef(null)
   const phoneRef = useRef(null)
+  const videoRef = useRef(null)
 
   const _getContact = () => {
     API.get('contact').then(data => {
@@ -27,8 +29,10 @@ export default () => {
   const updateGeneralInformation = () => {
     const payload = {
       id: 1,
+      name: nameRef.current.value,
       address: addressRef.current.value,
       phone_no: phoneRef.current.value,
+      video_conferencing: videoRef.current.value,
       opennig_hours: openingHrsRef.current.value,
       bank_holiday: holidaysRef.current.value,
     }
@@ -37,7 +41,7 @@ export default () => {
     imageInputRef.current.files[0] && formData.append('file', imageInputRef.current.files[0])
     API.post('contact/edit_information', formData)
       .then(res => {
-        toast.success(res.message)
+        toast.success(res.data.message)
         _getContact()
       })
       .catch(err => {
@@ -57,13 +61,14 @@ export default () => {
       if (holidaysRef.current !== null)
         holidaysRef.current.value = contact?.general_info?.bank_holidays
 
-      if (addressRef.current !== null) addressRef.current.value = contact?.general_info?.address
-
-      if (phoneRef.current !== null) phoneRef.current.value = contact?.general_info?.phone_no
+      if (nameRef.current !== null) nameRef.current.value = contact?.general_info?.name
 
       if (addressRef.current !== null) addressRef.current.value = contact?.general_info?.address
 
       if (phoneRef.current !== null) phoneRef.current.value = contact?.general_info?.phone_no
+
+      if (videoRef.current !== null)
+        videoRef.current.value = contact?.general_info?.video_conferencing
     }
   }, [isEdit])
 
@@ -126,9 +131,9 @@ export default () => {
                   <div className="cont-detail">
                     <i className="fa fa-home mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.address}</p>
+                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.name}</p>
                       ) : (
-                        <input ref={addressRef} className="sm-txt" />
+                        <input ref={nameRef} className="sm-txt" />
                       )}
                     </i>
                     <i className="fa fa-address-book mb-md-4 d-flex" aria-hidden="true">
@@ -147,9 +152,9 @@ export default () => {
                     </i>
                     <i className="fa fa-video-camera mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3">Video conferencing</p>
+                        <p className="sm-h1 ps-3">{contact?.general_info?.video_conferencing}</p>
                       ) : (
-                        <input ref={phoneRef} className="sm-txt" />
+                        <input ref={videoRef} className="sm-txt" />
                       )}
                     </i>
                   </div>
