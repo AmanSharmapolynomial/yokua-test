@@ -242,15 +242,6 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           ) : (
             ''
           )}
-          {!(
-            getUserRoles() === 'Technical Administrator' || getUserRoles() === 'PMK Administrator'
-          ) && (
-            <li>
-              <Link className="nav-link" to="/contact">
-                Contact
-              </Link>
-            </li>
-          )}
           {isLogedIn && (
             <li className="nav-item px-xl-3 d-block d-md-none">
               <span

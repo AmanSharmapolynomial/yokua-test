@@ -10,7 +10,7 @@ import API from '../../utils/api'
 
 const OffCanvasDropDownItems = props => {
   const navigate = useNavigate()
-
+  const isRyg = props.isRyg
   return (
     <div
       className="collapse navbar-collapse justify-content-between align-items-center"
@@ -54,11 +54,25 @@ const OffCanvasDropDownItems = props => {
       </div>
       <div className="px-2">
         <div className="theme">{props?.header}</div>
-        {props.items.map((element, index) => (
-          <Link to={element.url} key={index} className="dropdown-item font-6 px-2">
-            {element.name}
-          </Link>
-        ))}
+        {props.items.map((element, index) =>
+          isRyg ? (
+            <div
+              role={'button'}
+              onClick={() => {
+                if (element?.event) navigate('/event/all')
+                else navigate('/ryg-information/details', { state: element })
+              }}
+              key={index}
+              className="dropdown-item font-6"
+            >
+              {element.page_title}
+            </div>
+          ) : (
+            <Link to={element.url} key={index} className="dropdown-item font-6 px-2">
+              {element.name}
+            </Link>
+          )
+        )}
       </div>
     </div>
   )

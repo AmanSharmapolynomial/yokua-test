@@ -134,66 +134,38 @@ const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
           </li>
           <li className="nav-item dropdown px-xl-3">
             <a
-              className="nav-link"
+              className="nav-link d-flex justify-content-between align-items-center"
               href="#"
               role="button"
               data-toggle="collapse"
-              data-target="#offcanvasdropdown"
-              aria-controls="#offcanvasdropdown"
+              data-target="#productLineDropdown"
+              aria-controls="#productLineDropdown"
               aria-expanded="false"
               onClick={() => {
                 hideNavbar()
               }}
             >
               Product Lines
+              <i className="fa-solid fa-angle-right" />
             </a>
           </li>
 
-          <li className="nav-item dropdown px-xl-3 btn-group">
-            <Link
-              className="nav-link pe-1"
-              // id="navbarDropdown"
-              // role="button"
-              // data-toggle="dropdown"
-              // aria-haspopup="true"
-              // aria-expanded="false"
-              to={'/ryg-information'}
-            >
-              RYG Information
-            </Link>
-            <div
-              role={'button'}
-              type="button"
-              // className="dropdown-toggle dropdown-toggle-split ps-1"
-              // data-toggle="dropdown"
-              // aria-expanded="false"
-              // aria-haspopup="true"
-              style={{
-                display: 'flex',
-                color: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
+          <li className="nav-item dropdown px-xl-3">
+            <a
+              className="nav-link d-flex justify-content-between align-items-center"
+              href="#"
+              role="button"
+              data-toggle="collapse"
+              data-target="#rygDropdown"
+              aria-controls="#rygDropdown"
+              aria-expanded="false"
+              onClick={() => {
+                hideNavbar()
               }}
             >
-              <span className="sr-only">Toggle Dropdown</span>
-            </div>
-            {/* {productList.length > 0 && (
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              {productList.map((element, index) => (
-                <div
-                  role={'button'}
-                  onClick={() => {
-                    if (element?.event) navigate('/event/all')
-                    else navigate('/ryg-information/details', { state: element })
-                  }}
-                  key={index}
-                  className="dropdown-item font-6"
-                >
-                  {element.page_title}
-                </div>
-              ))}
-            </div>
-          )} */}
+              RYG Information
+              <i className="fa-solid fa-angle-right float-right" />
+            </a>
           </li>
 
           <li className="nav-item px-xl-3">
@@ -219,35 +191,6 @@ const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
               Contact
             </Link>
           </li>
-          {getUserRoles() === 'Technical Administrator' ||
-          getUserRoles() === 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-xl-3 d-none d-md-block">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                data-display="static"
-              >
-                Admin Management
-              </a>
-              <NavDropdown data={navDropdownAdminData} icon={true} />
-            </li>
-          ) : (
-            ''
-          )}
-          {!(
-            getUserRoles() === 'Technical Administrator' || getUserRoles() === 'PMK Administrator'
-          ) && (
-            <li>
-              <Link className="nav-link" to="/contact">
-                Contact
-              </Link>
-            </li>
-          )}
           {isLogedIn && (
             <li className="nav-item px-xl-3 d-block d-md-none">
               <span
@@ -282,10 +225,21 @@ const PhoneNav = ({ isAdmin, isLogedIn, hideNavbar }) => {
       </div>
       <OffCanvasDropDownItems
         items={productLineDropdown}
-        id={'offcanvasdropdown'}
+        id={'productLineDropdown'}
         isLogedIn={isLogedIn}
         onBack={() => {
-          document.getElementById('offcanvasdropdown').classList.remove('show')
+          document.getElementById('productLineDropdown').classList.remove('show')
+          document.getElementById('navbar-sm').classList.add('show')
+        }}
+        header={'Product Line'}
+      />
+      <OffCanvasDropDownItems
+        isRyg={true}
+        items={productList}
+        id={'rygDropdown'}
+        isLogedIn={isLogedIn}
+        onBack={() => {
+          document.getElementById('rygDropdown').classList.remove('show')
           document.getElementById('navbar-sm').classList.add('show')
         }}
         header={'Product Line'}
