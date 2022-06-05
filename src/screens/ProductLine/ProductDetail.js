@@ -1395,7 +1395,7 @@ const ProductDetail = () => {
                                 return arr
                               })
                             }}
-                            className="form-check-input"
+                            className="form-check-input my-0"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
