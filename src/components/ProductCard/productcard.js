@@ -83,12 +83,12 @@ const ProductCard = ({
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border-black text-center rounded mt-2 product-title">
+                    <div className="border-black text-center rounded mt-2 product-title clamp-2v">
                       <input ref={inputRef} />
                     </div>
                   ) : (
                     <div
-                      className="border-black text-center rounded mt-2 product-title"
+                      className="border-black text-center rounded mt-2 product-title clamp-2v"
                       style={{
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -104,10 +104,10 @@ const ProductCard = ({
               {isEditable ? (
                 <textarea
                   ref={textareaRef}
-                  className="col-6 d-flex align-items-center product-desc"
+                  className="col-6 d-flex align-items-center product-desc clamp-1v"
                 />
               ) : (
-                <div className="col-6 d-flex align-items-center product-desc">
+                <div className="col-6 d-flex align-items-center product-desc clamp-1v">
                   {item.description}
                 </div>
               )}

@@ -220,21 +220,6 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           ) : (
             ''
           )}
-          {isLogedIn && (
-            <li className="nav-item px-xl-3 d-block d-md-none">
-              <span
-                className="nav-link"
-                onClick={() => {
-                  toast.success('Log out successfully')
-                  removeToken()
-                  removeUserRole()
-                  navigate('/auth/login')
-                }}
-              >
-                Log out
-              </span>
-            </li>
-          )}
         </ul>
         {isLogedIn && (
           <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap d-none d-md-block">

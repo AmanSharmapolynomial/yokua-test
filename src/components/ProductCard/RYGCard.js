@@ -70,11 +70,11 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 </div>
                 {
                   /*isEditable*/ false ? (
-                    <div className="border-black text-center rounded mt-3 product-title">
+                    <div className="border-black text-center rounded mt-3 product-title clamp-2v">
                       <input ref={inputRef} />
                     </div>
                   ) : (
-                    <div className="border-black text-center rounded mt-3 product-title">
+                    <div className="border-black text-center rounded mt-3 product-title clamp-2v">
                       {item.page_title}
                     </div>
                   )
@@ -82,10 +82,10 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 {isEditable ? (
                   <textarea
                     ref={textareaRef}
-                    className="col-12 d-flex align-items-center mt-2 product-desc"
+                    className="col-12 d-flex align-items-center mt-2 product-desc clamp-1v"
                   />
                 ) : (
-                  <div className="col-12 d-flex align-items-center mt-2 product-desc p-0">
+                  <div className="col-12 d-flex align-items-center mt-2 product-desc p-0 clamp-1v">
                     {item.description}
                   </div>
                 )}
@@ -97,6 +97,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
             getUserRoles() == 'Technical Administrator') && (
             <span className="col-auto d-none d-md-block">
               <img
+                className="image-sq-2v"
                 src={isEditable ? saveIcon : editIcon}
                 onClick={e => {
                   e.stopPropagation()

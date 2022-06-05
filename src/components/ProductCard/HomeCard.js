@@ -25,7 +25,7 @@ const HomeCard = ({ index, item, onClick }) => {
                     src={item.image_link ? item.image_link : placeholder}
                   />
                 </div>
-                <div className="border text-center rounded mt-2">{item.name}</div>
+                <div className="border text-center rounded mt-2 clamp-2v">{item.name}</div>
               </div>
             </div>
           </div>

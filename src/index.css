@@ -897,6 +897,14 @@ select {
 .clamp-1v {
   font-size: clamp(0.6rem, 1vmax, 1.4rem) !important;
 }
+.image-sq-1v {
+  width: clamp(0.6rem, 1vmax, 1.4rem) !important;
+  height: clamp(0.6rem, 1vmax, 1.4rem) !important;
+}
+.image-sq-2v {
+  width: clamp(0.8rem, 1.4vmax, 1.4rem) !important;
+  height: clamp(0.8rem, 1.4vmax, 1.4rem) !important;
+}
 .clamp-2v {
   font-size: clamp(0.8rem, 1.4vmax, 1.4rem) !important;
 }
