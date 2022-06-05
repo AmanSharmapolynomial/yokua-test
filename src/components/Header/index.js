@@ -9,7 +9,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
   const navigate = useNavigate()
   const loc = useLocation()
   const phoneRef = React.useRef(null)
-  const [isMd, setIsMd] = React.useState(false)
+  const [isMd, setIsMd] = React.useState(true)
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)

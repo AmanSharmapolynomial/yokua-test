@@ -25,19 +25,14 @@ const ResetPasswordModal = () => {
         }}
       >
         <>
-          <div
-            className="container__heading privacy-heading mb-3 h5"
-            style={{
-              fontWeight: 500,
-            }}
-          >
+          <div className="container__heading privacy-heading mb-3 clamp-2v">
             Reset password link has been sent
           </div>
-          <div className="container__heading  mb-3 h6">Please check your e-mail</div>
+          <div className="container__heading mb-3 h6 clamp-1v">Please check your e-mail</div>
           <a
             onClick={() => _resendPasswordLink()}
-            className="terms-link"
-            style={{ fontSize: '18px', textDecorationLine: 'none' }}
+            className="terms-link clamp-1v"
+            style={{ textDecorationLine: 'none' }}
           >
             Resend Link
           </a>
@@ -47,6 +42,7 @@ const ResetPasswordModal = () => {
               position: 'absolute',
               top: 20,
               right: 10,
+              color: '#CD2727',
             }}
             onClick={() => {
               navigate('/auth/login')

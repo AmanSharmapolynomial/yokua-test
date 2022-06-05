@@ -110,6 +110,10 @@
   .shadow-md {
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
   }
+  .shadow-sm-md {
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%) !important;
+  }
+
   .text-bold {
     font-weight: 500;
     font-size: 1.2rem;

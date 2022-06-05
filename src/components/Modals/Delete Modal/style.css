@@ -1,17 +1,18 @@
 @keyframes forceYellow {
-    from {
-      background-color: white;
-    }
-    to {
-      background-color: white;
-    }
+  from {
+    background-color: white;
   }
-
-
-  .btn-background {
-      animation: 1s linear infinite forceYellow;
+  to {
+    background-color: white;
   }
+}
 
-.modal-footer .btn{
+.btn-background {
+  animation: 1s linear infinite forceYellow;
+}
+.modal-footer .btn {
+  background-color: transparent !important;
+}
+.modal-custom-footer .btn {
   background-color: transparent !important;
 }

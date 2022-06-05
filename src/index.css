@@ -44,7 +44,7 @@ body {
 .alert-under-input {
   display: none;
   color: red;
-  font-size: 0.5rem;
+  font-size: clamp(0.6rem, 1vmax, 1.4rem);
   text-align: left;
   width: 100%;
 }
@@ -360,8 +360,12 @@ body {
   border: 1px solid #000000 !important;
   color: var(--textColor5) !important;
 }
-
 .modal-footer .btn-background {
+  background-color: transparent !important;
+  color: #004f9b !important;
+  border: 1px solid #004f9b !important;
+}
+.modal-custom-footer .btn-background {
   background-color: transparent !important;
   color: #004f9b !important;
   border: 1px solid #004f9b !important;
@@ -889,4 +893,10 @@ select {
 }
 .news-sub-category-sm {
   height: 2.8rem;
+}
+.clamp-1v {
+  font-size: clamp(0.6rem, 1vmax, 1.4rem) !important;
+}
+.clamp-2v {
+  font-size: clamp(0.8rem, 1.4vmax, 1.4rem) !important;
 }

@@ -81,7 +81,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
   return (
     <>
       <div
-        className="collapse navbar-collapse justify-content-between align-items-center"
+        className="collapse navbar-collapse-sm justify-content-between align-items-center"
         id="navbar-sm"
       >
         {isLogedIn && (

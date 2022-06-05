@@ -155,7 +155,7 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
 
   return (
     <Modal show={show} centered onHide={handleClose}>
-      <Modal.Header
+      {/* <Modal.Header
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -164,7 +164,7 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
         }}
       >
         <Modal.Title>Enter Company Name</Modal.Title>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body
         style={{
           display: 'flex',
@@ -175,48 +175,53 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
           fontWeight: 'normal',
         }}
       >
-        <FormControl
-          className="yg-font-size mt-4 mb-3"
-          placeholder="Enter Company Name"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
-          value={companyName}
-          onChange={e => setCompanyname(e.target.value)}
-        />
+        <div className="row">
+          <div className="h4 m-0">Enter Company Name</div>
+          <FormControl
+            className="yg-font-size my-3 form-control col mx-4"
+            placeholder="Enter Company Name"
+            aria-label="Recipient's username"
+            aria-describedby="basic-addon2"
+            value={companyName}
+            onChange={e => setCompanyname(e.target.value)}
+          />
+          <div className="modal-custom-footer">
+            <button
+              id="mybtn"
+              className="btn btn-background me-4"
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn"
+              onClick={() => {
+                if (companyName.length < 2) {
+                  toast.error('Please enter valid Company Name')
+                  return
+                }
+                saveCompany(currentEdit, companyName)
+                setCompanyname('')
+                handleClose()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
       </Modal.Body>
-      <Modal.Footer
+      {/* <Modal.Footer
         style={{
-          display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           borderTop: '0',
         }}
         centered
       >
-        <button
-          id="mybtn"
-          className="btn btn-background me-4"
-          onClick={() => {
-            handleClose()
-          }}
-        >
-          Cancel
-        </button>
-        <button
-          className="btn"
-          onClick={() => {
-            if (companyName.length < 2) {
-              toast.error('Please enter valid Company Name')
-              return
-            }
-            saveCompany(currentEdit, companyName)
-            setCompanyname('')
-            handleClose()
-          }}
-        >
-          Confirm
-        </button>
-      </Modal.Footer>
+        
+      </Modal.Footer> */}
     </Modal>
   )
 }

@@ -554,17 +554,19 @@ const NewsItem = ({
           >
             <div className="card-header px-2 py-2" id="headingTwo" style={{ borderBottom: 'none' }}>
               <div
-                className="collapsed"
+                className="collapsed d-flex align-items-center justify-content-between"
                 type="button"
                 data-toggle="collapse"
                 data-target={`#collapse${index}`}
                 aria-expanded="false"
                 aria-controls={`collapse${index}`}
               >
-                {data?.sub_category[0] !== undefined
-                  ? data?.sub_category[0]['sub_category_name']
-                  : ''}
-                <i className="fa-solid fa-angle-down ms-3 theme" />
+                <div>
+                  {data?.sub_category[0] !== undefined
+                    ? data?.sub_category[0]['sub_category_name']
+                    : ''}
+                </div>
+                <i className="fa-solid fa-angle-down theme ms-3" />
               </div>
             </div>
             <div

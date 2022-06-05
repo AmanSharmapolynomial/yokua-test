@@ -7,7 +7,6 @@ import { useLocation, useParams } from 'react-router'
 export default () => {
   const { state } = useLocation()
   const { uid, token } = useParams()
-  console.log(uid, token)
   const [email, setEmail] = useState(state)
   const navigate = useNavigate()
 
@@ -52,19 +51,14 @@ export default () => {
       >
         {!uid ? (
           <>
-            <div
-              className="container__heading privacy-heading mb-3 h5"
-              style={{
-                fontWeight: 500,
-              }}
-            >
+            <div className="container__heading privacy-heading mb-3 clamp-2v">
               Verification E-mail has been sent
             </div>
-            <div className="container__heading  mb-3 h6">Please check your E-mail</div>
+            <div className="container__heading  mb-3 h6 clamp-1v">Please check your E-mail</div>
             <a
               onClick={() => _resendVerificationEmail()}
-              className="terms-link"
-              style={{ fontSize: '18px', textDecorationLine: 'none' }}
+              className="terms-link clamp-1v"
+              style={{ textDecorationLine: 'none' }}
             >
               Resend Link
             </a>
@@ -82,7 +76,7 @@ export default () => {
           </>
         ) : (
           <>
-            <h3 className="container__heading privacy-heading mb-4">
+            <h3 className="container__heading privacy-heading mb-4 clamp-2v">
               Verification E-Mail has been sent
             </h3>
             <a

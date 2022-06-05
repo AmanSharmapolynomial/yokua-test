@@ -71,28 +71,6 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         className="collapse navbar-collapse justify-content-between align-items-center"
         id="navbar"
       >
-        {isLogedIn && (
-          <form
-            className="w-100 pt-3 d-block d-md-none"
-            onSubmit={e => {
-              e.preventDefault()
-              navigate(`/search/${e.target.search.value}`)
-            }}
-          >
-            <div className="input-group search px-3">
-              <span className="input-group-addon">
-                <i className="fa-solid fa-magnifying-glass" style={{ color: 'black' }} />
-              </span>
-              <input
-                name="search"
-                type="text"
-                placeholder="What are you looking for?"
-                className="search_input ms-3"
-                autoComplete="false"
-              />
-            </div>
-          </form>
-        )}
         <ul className="navbar-nav mx-auto text-md-center text-left p-3 p-md-0">
           <li className="nav-item px-xl-3">
             <Link className="nav-link" to={'/home'}>

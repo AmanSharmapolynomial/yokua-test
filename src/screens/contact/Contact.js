@@ -131,7 +131,7 @@ export default () => {
                   <div className="cont-detail">
                     <i className="fa fa-home mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.name}</p>
+                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v">{contact?.general_info?.name}</p>
                       ) : (
                         <input ref={nameRef} className="sm-txt" />
                       )}
@@ -152,7 +152,9 @@ export default () => {
                     </i>
                     <i className="fa fa-video-camera mb-md-4 d-flex" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3">{contact?.general_info?.video_conferencing}</p>
+                        <p className="sm-h1 ps-3 text-break">
+                          {contact?.general_info?.video_conferencing}
+                        </p>
                       ) : (
                         <input ref={videoRef} className="sm-txt" />
                       )}
@@ -252,8 +254,8 @@ export default () => {
 
               {/* <!--------------Profile-brief-------------------> */}
 
-              <div className="profile-brief card shadow-sm mt-5 p-5">
-                <div className="row mb-3">
+              <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-md-5">
+                <div className="row mb-3 d-none d-md-block">
                   <div className="col-md-12 col-lg-12 col-xl-12">
                     <p className="h">Sales and Marketing Manager</p>
                   </div>
@@ -269,7 +271,7 @@ export default () => {
                     <div className="profile-con">
                       <div className="row">
                         <i className="fa fa-user col-auto align-self-center" aria-hidden="true"></i>
-                        <span className="col">
+                        <span className="col text-break">
                           Emmanuel de Montillet - Sales and Marketing Manager
                         </span>
                       </div>
@@ -278,14 +280,16 @@ export default () => {
                           className="fa fa-envelope col-auto align-self-center"
                           aria-hidden="true"
                         ></i>
-                        <span className="col">emmanuel.de.montillet@de.yokogawa.com</span>
+                        <span className="col text-break">
+                          emmanuel.de.montillet@de.yokogawa.com
+                        </span>
                       </div>
                       <div className="row">
                         <i
                           className="fa fa-phone col-auto align-self-center"
                           aria-hidden="true"
                         ></i>
-                        <span className="col">+49 7761 567 - 130</span>
+                        <span className="col text-break">+49 7761 567 - 130</span>
                       </div>
                     </div>
                   </div>
@@ -296,53 +300,57 @@ export default () => {
 
               {contact?.contact_people?.map((item, index) => {
                 return (
-                  <div className="pmk-product p-5 mt-5">
+                  <div className="pmk-product p-2 p-md-5 mt-5">
                     <div className="row mb-3">
                       <div className="col-md-12 col-lg-12 col-xl-12">
                         <p className="h">{item.category}</p>
                       </div>
                     </div>
-
                     <div className="row">
-                      <div className="col-md-6">
-                        <div className="d-flex">
-                          <div className="col-3 p-0">
-                            <img
-                              className="border border-dark rounded"
-                              src={
-                                item?.detail?.image_link ? item?.detail?.image_link : placeholder
-                              }
-                              style={{
-                                objectFit: 'cover',
-                                width: '100%',
-                              }}
-                            />
-                          </div>
+                      {item.detail.map((card, idx) => (
+                        <div className="col-md-6">
+                          <div className="d-flex">
+                            <div className="col-3 p-0">
+                              <img
+                                className="border border-dark rounded"
+                                src={card?.image_link ? card?.image_link : placeholder}
+                                style={{
+                                  objectFit: 'cover',
+                                  width: '100%',
+                                }}
+                              />
+                            </div>
 
-                          <div className="pmk-product-detail ms-md-3 col-9">
-                            {item.detail?.first_name && (
-                              <div className="mb-2">
-                                <i className="fa fa-user" aria-hidden="true"></i>
-                                {item.detail?.first_name + ' '} {item.detail?.last_name}
-                              </div>
-                            )}
-                            {item.detail?.phone_no && (
-                              <div className="d-flex mb-2  align-items-center">
-                                <i className="fa fa-phone" aria-hidden="true"></i>
-                                <p className="ms-2 px-2 mb-0 border border-dark w-auto">
-                                  {item.detail?.phone_no}
-                                </p>
-                              </div>
-                            )}
-                            {item.detail?.email && (
-                              <div className="d-flex mb-2 align-items-center">
-                                <i className="fa fa-envelope mb-3" aria-hidden="true" />
-                                <p className="ps-2">{item.detail?.email}</p>
-                              </div>
-                            )}
+                            <div className="pmk-product-detail ms-md-3 col-9">
+                              {card?.first_name && (
+                                <div className="mb-2 row">
+                                  <i
+                                    className="fa fa-user col-auto align-self-center"
+                                    aria-hidden="true"
+                                  ></i>
+                                  <p className="mb-0 col p-0">
+                                    {card?.first_name + ' '} {card?.last_name}
+                                  </p>
+                                </div>
+                              )}
+                              {card?.phone_no && (
+                                <div className="d-flex mb-2  align-items-center">
+                                  <i className="fa fa-phone" aria-hidden="true"></i>
+                                  <p className="ms-2 px-2 mb-0 border border-dark w-auto">
+                                    {card?.phone_no}
+                                  </p>
+                                </div>
+                              )}
+                              {card?.email && (
+                                <div className="d-flex mb-2 align-items-center">
+                                  <i className="fa fa-envelope mb-3" aria-hidden="true" />
+                                  <p className="ps-2">{card?.email}</p>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 )

@@ -1380,7 +1380,7 @@ const ProductDetail = () => {
                   >
                     <div className="card-body">
                       {subProductList[idx].sections.map(section => (
-                        <div className="py-1 px-3 d-flex">
+                        <div className="py-1 px-3 d-flex align-items-center">
                           <input
                             checked={selectedSubProducts.indexOf(section.section_id) !== -1}
                             onChange={e => {
@@ -1400,7 +1400,7 @@ const ProductDetail = () => {
                             value=""
                             id="flexCheckDefault"
                           />
-                          <label className="form-check-label" for="flexCheckDefault">
+                          <label className="form-check-label clamp-1v ps-1" for="flexCheckDefault">
                             {section.name}
                           </label>
                         </div>
