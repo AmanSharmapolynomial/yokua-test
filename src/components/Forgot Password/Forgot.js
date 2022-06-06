@@ -52,17 +52,23 @@ const Forgot = () => {
             forgotApi(emailRef.current?.value)
           }}
         >
-          <input
-            type="text"
-            className="input-field input-field__email"
-            name="email"
-            ref={emailRef}
-            placeholder="E-Mail"
-          />
+          <div className="row d-flex justify-content-center">
+            <input
+              type="text"
+              className="input-field input-field__email"
+              name="email"
+              ref={emailRef}
+              placeholder="E-Mail"
+            />
 
-          <button type="submit" className="submit-btn px-4" disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Send Link'}
-          </button>
+            <div className="col">
+              <div className="col-12 justify-content-center d-flex">
+                <button type="submit" className="submit-btn px-4" disabled={isLoading}>
+                  {isLoading ? 'Loading...' : 'Send Link'}
+                </button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </>

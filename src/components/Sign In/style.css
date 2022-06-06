@@ -34,13 +34,13 @@ h3 {
   position: absolute;
 }
 
-form {
+/* form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 77%;
-}
+} */
 
 .forum {
   position: relative;

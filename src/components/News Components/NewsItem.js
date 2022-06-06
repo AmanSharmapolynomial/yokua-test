@@ -610,8 +610,6 @@ const NewsItem = ({
 
   return (
     <React.Fragment key={data?.id}>
-      <div style={{ width: '400px' }}></div>
-
       <DeleteModal
         show={deleteModal}
         setShow={setDeleteModal}

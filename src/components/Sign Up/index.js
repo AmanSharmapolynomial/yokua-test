@@ -119,7 +119,7 @@ const SignUp = () => {
         <div className="container__heading text-center">Create a new account</div>
       </div>
       <form className="forum mt-2" type="submit" onSubmit={register}>
-        <div className="row">
+        <div className="col">
           <input
             type="text"
             required={true}
@@ -204,9 +204,13 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button type="submit" className="submit-btn px-4 mx-auto">
-            {isLoading ? 'Loading...' : 'Register'}
-          </button>
+          <div className="col">
+            <div className="col-12 justify-content-center d-flex">
+              <button type="submit" className="submit-btn px-4" disabled={isLoading}>
+                {isLoading ? 'Loading...' : 'Register'}{' '}
+              </button>
+            </div>
+          </div>
         </div>
       </form>
       <div className="terms">

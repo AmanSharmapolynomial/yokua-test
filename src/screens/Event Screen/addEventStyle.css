@@ -1,9 +1,3 @@
-.react-datepicker-wrapper,
-.form-control,
-.select-box > div {
-  width: 200px !important;
-}
-
 .react-datepicker-popper {
   z-index: 2;
 }
@@ -17,20 +11,17 @@ input.hide-spinners::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input.hide-spinners[type=number] {
+input.hide-spinners[type='number'] {
   -moz-appearance: textfield;
 }
 
 select {
-  width: 200px;
-  height: 40px;
   border: 1px solid lightgrey;
   border-radius: 5px;
 }
 
 .requirements-list {
   max-width: fit-content;
-  min-width: 400px;
   font-size: 16px;
   list-style: none;
   line-height: 1;
@@ -45,7 +36,8 @@ select {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.161);
 }
 
-.requirements-list li > label, .requirements-list li > input {
+.requirements-list li > label,
+.requirements-list li > input {
   flex: 1;
 }
 
@@ -79,13 +71,11 @@ select {
 
 .requirement-more-input {
   margin-left: 32px;
-  margin-top: 10px;
 }
 
 .requirement-more-input input {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.161);
   border: none;
-  height: 26px;
 }
 
 .requirement-more-input input:focus {

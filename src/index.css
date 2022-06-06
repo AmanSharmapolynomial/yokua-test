@@ -908,3 +908,13 @@ select {
 .clamp-2v {
   font-size: clamp(0.8rem, 1.4vmax, 1.4rem) !important;
 }
+.clamp-08v {
+  font-size: clamp(0.6rem, 0.8vmax, 1rem) !important;
+}
+.calendar-icon {
+  margin-left: 90%;
+  position: absolute;
+  height: 100%;
+  align-items: center;
+  display: flex;
+}
