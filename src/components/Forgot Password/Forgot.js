@@ -45,14 +45,14 @@ const Forgot = () => {
           <div className="container__heading text-center">Forgot Your Password?</div>
         </div>
         <form
-          className="mt-2"
+          className="col mt-2"
           type="submit"
           onSubmit={e => {
             e.preventDefault()
             forgotApi(emailRef.current?.value)
           }}
         >
-          <div className="row d-flex justify-content-center">
+          <div className="row d-flex justify-content-center px-3 px-md-5">
             <input
               type="text"
               className="input-field input-field__email"

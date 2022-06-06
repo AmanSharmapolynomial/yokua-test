@@ -59,6 +59,8 @@ const UserListView = () => {
 
   const filter1Ref = useRef()
   const filter2Ref = useRef()
+  const filter3Ref = useRef()
+  const filter4Ref = useRef()
   const filterFromCheckbox1Ref = useRef()
   const filterFromCheckbox2Ref = useRef()
   const filterFromCheckbox3Ref = useRef()
@@ -462,6 +464,8 @@ const UserListView = () => {
                         filterTable('active')
                         filter1Ref.current.style.fontWeight = 'bold'
                         filter2Ref.current.style.fontWeight = '300'
+                        filter3Ref.current.style.fontWeight = '300'
+                        filter4Ref.current.style.fontWeight = '300'
                       }
                     }}
                   >
@@ -480,10 +484,52 @@ const UserListView = () => {
                         filterTable('inactive')
                         filter2Ref.current.style.fontWeight = 'bold'
                         filter1Ref.current.style.fontWeight = '300'
+                        filter3Ref.current.style.fontWeight = '300'
+                        filter4Ref.current.style.fontWeight = '300'
                       }
                     }}
                   >
                     Inactive
+                  </span>
+                  <span
+                    className="dropdown-item"
+                    ref={filter3Ref}
+                    onClick={() => {
+                      if (filterActive == 'internal') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter3Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('internal')
+                        filter3Ref.current.style.fontWeight = 'bold'
+                        filter1Ref.current.style.fontWeight = '300'
+                        filter2Ref.current.style.fontWeight = '300'
+                        filter4Ref.current.style.fontWeight = '300'
+                      }
+                    }}
+                  >
+                    Internal User
+                  </span>
+                  <span
+                    className="dropdown-item"
+                    ref={filter4Ref}
+                    onClick={() => {
+                      if (filterActive == 'external') {
+                        setPageNoCall(1)
+                        filterTable('')
+                        filter4Ref.current.style.fontWeight = '300'
+                      } else {
+                        setPageNoCall(1)
+                        filterTable('external')
+                        filter4Ref.current.style.fontWeight = 'bold'
+                        filter1Ref.current.style.fontWeight = '300'
+                        filter2Ref.current.style.fontWeight = '300'
+                        filter3Ref.current.style.fontWeight = '300'
+                      }
+                    }}
+                  >
+                    External User
                   </span>
                 </div>
               </div>

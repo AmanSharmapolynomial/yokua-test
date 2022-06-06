@@ -918,3 +918,12 @@ select {
   align-items: center;
   display: flex;
 }
+.img-ryg {
+  border: #000;
+  width: inherit;
+  height: auto;
+  aspect-ratio: 3/2;
+}
+.form-check label {
+  flex: 1;
+}

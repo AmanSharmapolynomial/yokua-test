@@ -337,7 +337,7 @@ const AddEventScreen = () => {
               <div className="col shadow rounded-3">
                 <h4 className="mt-4 clamp-2v">Rotomass TI Service Training</h4>
                 <div className="row">
-                  <form className="col-6">
+                  <form className="col-md-6 pe-4 pe-md-0">
                     <div className="row d-flex align-items-center mt-4">
                       <label style={{ fontWeight: 'bold' }} className="col my-auto clamp-1v">
                         Training Name
@@ -654,67 +654,73 @@ const AddEventScreen = () => {
                         />
                       </div>
                     </div>
-                    <div className="mt-4">
-                      <button
-                        className="px-2 py-1 rounded-3 clamp-08v"
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                        }}
-                        onClick={event => {
-                          if (isAdmin) {
-                            setDependOnButton('agenda')
-                            setLinkModal(true)
-                            openModal(event)
-                          } else {
-                            event.preventDefault()
-                            window.open(agendaMessage, '_blank')
-                          }
-                        }}
-                      >
-                        Agenda
-                      </button>
-                      <button
-                        className="px-2 py-1 rounded-3 ms-2 clamp-08v"
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                        }}
-                        onClick={event => {
-                          if (isAdmin) {
-                            setDependOnButton('alink')
-                            setLinkModal(true)
-                            openModal(event)
-                          } else {
-                            event.preventDefault()
-                            window.open(alinkMessage, '_blank')
-                          }
-                        }}
-                      >
-                        Other Possible link A
-                      </button>
-                      <button
-                        className="px-2 py-1 rounded-3 ms-2 clamp-08v"
-                        style={{
-                          background: 'rgb(0, 79, 155)',
-                          color: 'white',
-                          border: '1px solid black',
-                        }}
-                        onClick={event => {
-                          if (isAdmin) {
-                            setDependOnButton('blink')
-                            setLinkModal(true)
-                            openModal(event)
-                          } else {
-                            event.preventDefault()
-                            window.open(blinkMessage, '_blank')
-                          }
-                        }}
-                      >
-                        Other Possible Link B
-                      </button>
+                    <div className="row mt-4">
+                      <div className="col-12 col-md-auto">
+                        <button
+                          className="px-2 py-1 rounded-3 clamp-08v"
+                          style={{
+                            background: 'rgb(0, 79, 155)',
+                            color: 'white',
+                            border: '1px solid black',
+                          }}
+                          onClick={event => {
+                            if (isAdmin) {
+                              setDependOnButton('agenda')
+                              setLinkModal(true)
+                              openModal(event)
+                            } else {
+                              event.preventDefault()
+                              window.open(agendaMessage, '_blank')
+                            }
+                          }}
+                        >
+                          Agenda
+                        </button>
+                      </div>
+                      <div className="col-12 col-md-auto">
+                        <button
+                          className="px-2 py-1 rounded-3 clamp-08v"
+                          style={{
+                            background: 'rgb(0, 79, 155)',
+                            color: 'white',
+                            border: '1px solid black',
+                          }}
+                          onClick={event => {
+                            if (isAdmin) {
+                              setDependOnButton('alink')
+                              setLinkModal(true)
+                              openModal(event)
+                            } else {
+                              event.preventDefault()
+                              window.open(alinkMessage, '_blank')
+                            }
+                          }}
+                        >
+                          Other Possible link A
+                        </button>
+                      </div>
+                      <div className="col-12 col-md-auto">
+                        <button
+                          className="px-2 py-1 rounded-3 clamp-08v"
+                          style={{
+                            background: 'rgb(0, 79, 155)',
+                            color: 'white',
+                            border: '1px solid black',
+                          }}
+                          onClick={event => {
+                            if (isAdmin) {
+                              setDependOnButton('blink')
+                              setLinkModal(true)
+                              openModal(event)
+                            } else {
+                              event.preventDefault()
+                              window.open(blinkMessage, '_blank')
+                            }
+                          }}
+                        >
+                          Other Possible Link B
+                        </button>
+                      </div>
                     </div>
 
                     <div className="mt-4">
@@ -895,13 +901,13 @@ const AddEventScreen = () => {
                     </div>
                   </form>
 
-                  <div className="col-6">
+                  <div className="mt-4 mb-4 mt-md-0 mb-md-0 col-md-6">
                     <textarea
                       style={{ maxHeight: '32rem' }}
                       rows="8"
                       // cols="30"
                       placeholder="Enter description..."
-                      className="form-control description-box w-75 float-right mt-4 clamp-1v"
+                      className="form-control w-md-75 float-md-right mt-4 clamp-1v"
                       onChange={event => {
                         setDescription(event.target.value)
                       }}
@@ -915,15 +921,13 @@ const AddEventScreen = () => {
               {eventId && (
                 <div className="mt-4 shadow rounded">
                   <div className="mt-4">
-                    <div>
-                      {eventId ? (
-                        <h4>Register for {trainingName}</h4>
-                      ) : (
-                        <h4>Register for Trainings</h4>
-                      )}
-                    </div>
+                    {eventId ? (
+                      <h4 className="mt-4 clamp-2v">Register for {trainingName}</h4>
+                    ) : (
+                      <h4 className="mt-4 clamp-2v">Register for Trainings</h4>
+                    )}
                     <div className="row">
-                      <form className="col-4">
+                      <form className="col-12 col-md-4">
                         <div className="row d-flex align-items-center mt-4">
                           <div className="col">
                             <Select
@@ -1020,7 +1024,9 @@ const AddEventScreen = () => {
                         </div>
                         <div className="row d-flex align-items-center mt-4">
                           <div className="col">
-                            <label style={{ fontWeight: 'bold' }}>Hotel reservation required</label>
+                            <label style={{ fontWeight: 'bold' }} className="clamp-1v">
+                              Hotel reservation required
+                            </label>
                           </div>
                         </div>
 
@@ -1037,7 +1043,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="yes">
+                              <label className="form-check-label m-0 clamp-1v" for="yes">
                                 Yes
                               </label>
                             </div>
@@ -1056,7 +1062,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="no">
+                              <label className="form-check-label m-0 clamp-1v" for="no">
                                 No
                               </label>
                             </div>
@@ -1065,7 +1071,7 @@ const AddEventScreen = () => {
 
                         <div className="row d-flex align-items-center mt-4">
                           <div className="col">
-                            <label style={{ fontWeight: 'bold' }}>
+                            <label style={{ fontWeight: 'bold' }} className="clamp-1v">
                               Assist with organization of shuttle transport
                             </label>
                           </div>
@@ -1083,7 +1089,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="yes">
+                              <label className="form-check-label m-0 clamp-1v" for="yes">
                                 Yes
                               </label>
                             </div>
@@ -1102,7 +1108,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="no">
+                              <label className="form-check-label m-0 clamp-1v" for="no">
                                 No
                               </label>
                             </div>
@@ -1111,7 +1117,9 @@ const AddEventScreen = () => {
 
                         <div className="row d-flex align-items-center mt-4">
                           <div className="col">
-                            <label style={{ fontWeight: 'bold' }}>Special food requirement</label>
+                            <label style={{ fontWeight: 'bold' }} className="clamp-1v">
+                              Special food requirement
+                            </label>
                           </div>
                         </div>
                         <div className="row d-flex align-items-center">
@@ -1127,7 +1135,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="yes">
+                              <label className="form-check-label m-0 clamp-1v" for="yes">
                                 No Special requirements
                               </label>
                             </div>
@@ -1146,7 +1154,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="no">
+                              <label className="form-check-label m-0 clamp-1v" for="no">
                                 No Pork
                               </label>
                             </div>
@@ -1165,7 +1173,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="no">
+                              <label className="form-check-label m-0 clamp-1v" for="no">
                                 Vegetarian
                               </label>
                             </div>
@@ -1186,7 +1194,7 @@ const AddEventScreen = () => {
                                 }}
                                 disabled={eventOption.value === 'webinar'}
                               />
-                              <label className="form-check-label m-0" for="no">
+                              <label className="form-check-label m-0 clamp-1v" for="no">
                                 Other, please specify
                               </label>
                               {foodRequirement.name == 'Other, please specify' && (
@@ -1207,7 +1215,7 @@ const AddEventScreen = () => {
                     <div className="row">
                       <div>
                         <div className="row d-flex align-items-center">
-                          <div className="col">
+                          <div className="col-12 col-md">
                             <div className="form-check form-check-inline d-flex align-items-center">
                               <input
                                 type="checkbox"
@@ -1217,7 +1225,7 @@ const AddEventScreen = () => {
                                   setTermPolicy(!termsPolicy)
                                 }}
                               />
-                              <label className="m-0">
+                              <label className="m-0 clamp-1v">
                                 By signing up, you agree with{' '}
                                 <span
                                   style={{
@@ -1234,7 +1242,7 @@ const AddEventScreen = () => {
                               </label>
                             </div>
                           </div>
-                          <div className="col">
+                          <div className="col-12 col-md mt-4 mt-md-0">
                             <div className="row d-flex align-items-center">
                               <label
                                 style={{ fontWeight: 'bold' }}
@@ -1247,7 +1255,7 @@ const AddEventScreen = () => {
                                   <DatePicker
                                     disabled
                                     minDate={new Date()}
-                                    className="form-control"
+                                    className="form-control clamp-1v"
                                     onChange={date => setCancelledDate(date)}
                                     placeholderText="DDMMYYYY"
                                     dateFormat="dd/M/Y"

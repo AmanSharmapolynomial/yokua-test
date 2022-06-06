@@ -44,8 +44,8 @@ const SignIn = () => {
   return (
     <div className="signIn-container mx-auto my-5 col-10 col-md-6 order-1 order-md-12">
       <h3 className="container__heading mt-4">Sign in with E-mail</h3>
-      <form className="forum" type="submit" onSubmit={SignIn}>
-        <div className="row d-flex justify-content-center">
+      <form className="col" type="submit" onSubmit={SignIn}>
+        <div className="row d-flex justify-content-center px-3 px-md-5">
           <input
             type="email"
             required={true}

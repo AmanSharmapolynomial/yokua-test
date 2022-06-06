@@ -169,4 +169,7 @@
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
   }
+  .w-md-75 {
+    width: 75% !important;
+  }
 }

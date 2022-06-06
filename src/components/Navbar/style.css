@@ -79,6 +79,7 @@ a {
     padding-bottom: 15px; */
     width: 16rem;
     height: 100%;
+    overflow-y: auto;
   }
   .navbar-collapse-sm.collapsing {
     right: -45%;

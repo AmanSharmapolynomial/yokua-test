@@ -40,7 +40,8 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                     }}
                   />
                   <img
-                    className="img-thumbnail img-ryg"
+                    role={'button'}
+                    className="img-thumbnail img-ryg border-dark"
                     src={preview ? preview : data?.image_link ? data.image_link : upload}
                     onClick={e => {
                       e.stopPropagation()
@@ -50,7 +51,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                 </>
               ) : (
                 <img
-                  className="img-thumbnail img-ryg"
+                  className="img-thumbnail img-ryg border-dark"
                   src={data.image_link ? data.image_link : placeholder}
                 />
               )}
