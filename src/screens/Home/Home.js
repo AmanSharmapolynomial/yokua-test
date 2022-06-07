@@ -55,6 +55,9 @@ const Home = () => {
         console.log(error)
         setLoading(false)
       })
+      .finally(() => {
+        setIsAddModalVisible(-1)
+      })
   }
 
   const addFavLinks = payload => {
@@ -67,6 +70,9 @@ const Home = () => {
       .catch(error => {
         console.log(error)
         setLoading(false)
+      })
+      .finally(() => {
+        setIsAddModalVisible(-1)
       })
   }
   const deleteQuickLinks = id => {
@@ -246,7 +252,8 @@ const Home = () => {
                 item={item}
                 index={index}
                 onClick={() => {
-                  navigate('/product-lines/sub-product', { state: item })
+                  if (item?.tokuchu) navigate('/admin/approved-tokuchus')
+                  else navigate('/product-lines/sub-product', { state: item })
                 }}
               />
             ))}

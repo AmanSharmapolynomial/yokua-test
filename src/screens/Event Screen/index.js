@@ -151,7 +151,14 @@ const EventScreen = () => {
               return dataList.length > 0 ? (
                 <div className="event-container">
                   {dataList.slice(0, 3).map(data => (
-                    <div key={data.id} className="event-title d-none d-md-block">
+                    <div
+                      key={data.id}
+                      className="event-title d-none d-md-block"
+                      onClick={() => {
+                        window.scrollTo(0, 0)
+                        navigate('/event/update/' + data.id)
+                      }}
+                    >
                       {data.training_name} - {data.duration}
                     </div>
                   ))}

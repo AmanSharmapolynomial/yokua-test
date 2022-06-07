@@ -91,6 +91,8 @@
   .product-desc {
     font-size: 0.8rem;
     font-weight: 500;
+    overflow-y: auto;
+    max-height: 12rem;
   }
   .p-md-auto {
     padding-right: 15px !important;

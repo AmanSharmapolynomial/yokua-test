@@ -724,7 +724,7 @@ const ProfileSettingScreen = () => {
                   ) : (
                     <div className="profile-setting__basic-profile-edit">
                       {profileData.participated_trainings
-                        ?.slice(0, viewMore ? 6 : 2)
+                        ?.slice(0, viewMore ? profileData?.participated_trainings?.length || 50 : 2)
                         .map((training, index) => (
                           <div className="edit_training" key={index}>
                             <i
@@ -737,19 +737,21 @@ const ProfileSettingScreen = () => {
                             </div>
                           </div>
                         ))}
-                      <p
-                        style={{
-                          color: 'rgb(0, 79, 155)',
-                          paddingRight: '25px',
-                          cursor: 'pointer',
-                          textAlign: 'right',
-                        }}
-                        onClick={() => {
-                          setViewMore(prev => !prev)
-                        }}
-                      >
-                        {viewMore ? 'view less...' : 'view more...'}
-                      </p>
+                      {profileData?.participated_trainings?.length > 2 && (
+                        <p
+                          style={{
+                            color: 'rgb(0, 79, 155)',
+                            paddingRight: '25px',
+                            cursor: 'pointer',
+                            textAlign: 'right',
+                          }}
+                          onClick={() => {
+                            setViewMore(prev => !prev)
+                          }}
+                        >
+                          {viewMore ? 'view less...' : 'view more...'}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

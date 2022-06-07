@@ -363,12 +363,12 @@ body {
 .modal-footer .btn-background {
   background-color: transparent !important;
   color: #004f9b !important;
-  border: 1px solid #004f9b !important;
+  border: 1px solid #000 !important;
 }
 .modal-custom-footer .btn-background {
   background-color: transparent !important;
   color: #004f9b !important;
-  border: 1px solid #004f9b !important;
+  border: 1px solid #000 !important;
 }
 
 .create-domain-btn {
@@ -797,6 +797,8 @@ select {
 .product-desc {
   font-size: 0.6rem;
   word-break: break-word;
+  overflow-y: auto;
+  max-height: 12rem;
 }
 .table-header {
   text-transform: 'capitalize';

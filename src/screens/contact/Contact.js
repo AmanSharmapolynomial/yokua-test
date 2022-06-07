@@ -129,32 +129,40 @@ export default () => {
                 </div>
                 <div className="col-9 col-md">
                   <div className="cont-detail">
-                    <i className="fa fa-home mb-md-4 d-flex" aria-hidden="true">
+                    <i className="fa fa-home mb-md-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v">{contact?.general_info?.name}</p>
+                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v m-0">
+                          {contact?.general_info?.name}
+                        </p>
                       ) : (
                         <input ref={nameRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-address-book mb-md-4 d-flex" aria-hidden="true">
+                    <i
+                      className="fa fa-address-book mb-md-4 d-flex align-items-center"
+                      aria-hidden="true"
+                    >
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v">
+                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v m-0">
                           {contact?.general_info?.address}
                         </p>
                       ) : (
                         <input ref={addressRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-phone mb-md-4 d-flex" aria-hidden="true">
+                    <i className="fa fa-phone mb-md-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3">{contact?.general_info?.phone_no}</p>
+                        <p className="sm-h1 ps-2 ps-md-3 m-0">{contact?.general_info?.phone_no}</p>
                       ) : (
                         <input ref={phoneRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-video-camera mb-md-4 d-flex" aria-hidden="true">
+                    <i
+                      className="fa fa-video-camera mb-md-4 d-flex align-items-center"
+                      aria-hidden="true"
+                    >
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3 text-break">
+                        <p className="sm-h1 ps-3 text-break m-0">
                           {contact?.general_info?.video_conferencing}
                         </p>
                       ) : (
