@@ -12,6 +12,7 @@ import RYGBottom from '../../assets/home-bottom.png'
 import GoTo from '../../assets/goto.png'
 import saveIcon from '../../assets/ic_save.png'
 import { Modal } from 'react-bootstrap'
+import RYGImage from '../../assets/RYG-Information banner.png'
 const Home = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -189,7 +190,7 @@ const Home = () => {
               objectFit: 'cover',
               width: '100%',
             }}
-            src={'https://source.unsplash.com/random'}
+            src={RYGImage}
           />
         </div>
       )
