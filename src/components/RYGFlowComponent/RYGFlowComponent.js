@@ -20,7 +20,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
     <div className="col-12 mt-4">
       <div className="row">
         <div className="card-md shadow-md">
-          <div className="row px-md-3 py-md-3">
+          <div className="row px-lg-3 py-lg-3">
             <div className="col-12 col-md">
               {isEditable ? (
                 <>
@@ -112,7 +112,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
               )}
             </div>
             {isAdmin && (
-              <div className="col-auto my-2 p-0 d-none d-md-block">
+              <div className="col-auto my-2 p-0 d-none d-lg-block">
                 <i
                   role={'button'}
                   className={

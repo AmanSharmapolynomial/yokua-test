@@ -75,7 +75,7 @@ export default () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Contact'} backgroundImage={'yk-back-image-profile'} />
           <div className="yk-admin-contact mt-5">
@@ -129,9 +129,9 @@ export default () => {
                 </div>
                 <div className="col-9 col-md">
                   <div className="cont-detail">
-                    <i className="fa fa-home mb-md-4 d-flex align-items-center" aria-hidden="true">
+                    <i className="fa fa-home mb-lg-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v m-0">
+                        <p className="sm-h1 ps-2 ps-lg-3 clamp-1v m-0">
                           {contact?.general_info?.name}
                         </p>
                       ) : (
@@ -139,26 +139,26 @@ export default () => {
                       )}
                     </i>
                     <i
-                      className="fa fa-address-book mb-md-4 d-flex align-items-center"
+                      className="fa fa-address-book mb-lg-4 d-flex align-items-center"
                       aria-hidden="true"
                     >
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3 clamp-1v m-0">
+                        <p className="sm-h1 ps-2 ps-lg-3 clamp-1v m-0">
                           {contact?.general_info?.address}
                         </p>
                       ) : (
                         <input ref={addressRef} className="sm-txt" />
                       )}
                     </i>
-                    <i className="fa fa-phone mb-md-4 d-flex align-items-center" aria-hidden="true">
+                    <i className="fa fa-phone mb-lg-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-md-3 m-0">{contact?.general_info?.phone_no}</p>
+                        <p className="sm-h1 ps-2 ps-lg-3 m-0">{contact?.general_info?.phone_no}</p>
                       ) : (
                         <input ref={phoneRef} className="sm-txt" />
                       )}
                     </i>
                     <i
-                      className="fa fa-video-camera mb-md-4 d-flex align-items-center"
+                      className="fa fa-video-camera mb-lg-4 d-flex align-items-center"
                       aria-hidden="true"
                     >
                       {!isEdit ? (
@@ -171,8 +171,8 @@ export default () => {
                     </i>
                   </div>
                 </div>
-                <div className="col col-md-6">
-                  <div className="row d-none d-md-flex">
+                <div className="col col-lg-6">
+                  <div className="row d-none d-lg-flex">
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
                       getUserRoles() == 'Technical Administrator') &&
@@ -220,16 +220,16 @@ export default () => {
 
               {/* <!--------------General Product Question start---------------> */}
 
-              <div className="gen-product mt-5 p-2 p-md-5">
+              <div className="gen-product mt-5 p-2 p-lg-5">
                 <div className="row">
-                  <div className="col-md-12 col-lg-12 col-xl-12">
+                  <div className="col-lg-12 col-lg-12 col-xl-12">
                     <p className="h">General Product Question</p>
                   </div>
                 </div>
                 <div className="row mb-4 mt-5">
                   {contact?.product_questions?.map((item, index) => {
                     return (
-                      <div className="col-md-4">
+                      <div className="col-lg-4">
                         <div className="gen-product-item d-flex ms-2 mb-4">
                           <div className="sm-img-box border border-dark rounded col-3 p-0">
                             <img
@@ -241,7 +241,7 @@ export default () => {
                               }}
                             />
                           </div>
-                          <div className="Product-item-deatail ms-md-3 col-9">
+                          <div className="Product-item-deatail ms-lg-3 col-9">
                             <div className="product-item-name">
                               <div className="sm-h-box border border-dark rounded px-2 py-2">
                                 <p className="sm-h m-0">{item.name}</p>
@@ -264,9 +264,9 @@ export default () => {
 
               {/* <!--------------Profile-brief-------------------> */}
 
-              <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-md-5">
-                <div className="row mb-3 d-none d-md-block">
-                  <div className="col-md-12 col-lg-12 col-xl-12">
+              <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-lg-5">
+                <div className="row mb-3 d-none d-lg-block">
+                  <div className="col-lg-12 col-lg-12 col-xl-12">
                     <p className="h">Sales and Marketing Manager</p>
                   </div>
                 </div>
@@ -310,15 +310,15 @@ export default () => {
 
               {contact?.contact_people?.map((item, index) => {
                 return (
-                  <div className="pmk-product p-2 p-md-5 mt-5">
+                  <div className="pmk-product p-2 p-lg-5 mt-5">
                     <div className="row mb-3">
-                      <div className="col-md-12 col-lg-12 col-xl-12">
+                      <div className="col-lg-12 col-lg-12 col-xl-12">
                         <p className="h">{item.category}</p>
                       </div>
                     </div>
                     <div className="row">
                       {item.detail.map((card, idx) => (
-                        <div className="col-md-6">
+                        <div className="col-lg-6">
                           <div className="d-flex">
                             <div className="col-3 p-0">
                               <img
@@ -331,7 +331,7 @@ export default () => {
                               />
                             </div>
 
-                            <div className="pmk-product-detail ms-md-3 col-9">
+                            <div className="pmk-product-detail ms-lg-3 col-9">
                               {card?.first_name && (
                                 <div className="mb-2 row">
                                   <i

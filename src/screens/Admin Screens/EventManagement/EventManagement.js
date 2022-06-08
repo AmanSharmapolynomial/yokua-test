@@ -244,7 +244,7 @@ const EventManagement = () => {
 
   return (
     <>
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col user-approval-screen">
           <div className="secondary-heading h4 mt-4">
             <SecondaryHeading title={'Event Management'} />
@@ -494,7 +494,7 @@ const EventManagement = () => {
                     >
                       <input
                         type="checkbox"
-                        className="col-md-4 form-check-input"
+                        className="col-lg-4 form-check-input"
                         checked={modalData?.food_requirements === 'No Pork'}
                         disabled
                       />
@@ -510,7 +510,7 @@ const EventManagement = () => {
                     >
                       <input
                         type="checkbox"
-                        className="col-md-4 form-check-input"
+                        className="col-lg-4 form-check-input"
                         checked={modalData?.food_requirements === 'Vegetarian'}
                         disabled
                       />

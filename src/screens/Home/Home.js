@@ -114,7 +114,7 @@ const Home = () => {
   }) => {
     if (!isImage)
       return (
-        <div className="col col-md-4">
+        <div className="col col-lg-4">
           <div className="card h-100">
             <div className="card-body d-flex flex-column">
               <div className="row card-header-title">
@@ -122,7 +122,7 @@ const Home = () => {
                 {(getUserRoles() == 'PMK Administrator' ||
                   getUserRoles() == 'PMK Content Manager' ||
                   getUserRoles() == 'Technical Administrator') && (
-                  <span className="col-auto d-none d-md-block">
+                  <span className="col-auto d-none d-lg-block">
                     <img
                       style={{ width: '1.4rem', height: '1.4rem' }}
                       src={state ? saveIcon : editIcon}
@@ -165,7 +165,7 @@ const Home = () => {
                 <div className="row mt-auto">
                   <div className="col">
                     <button
-                      className="btn px-1 py-1 d-md-flex d-none w-auto"
+                      className="btn px-1 py-1 d-lg-flex d-none w-auto"
                       onClick={() => {
                         setAdd()
                       }}
@@ -181,7 +181,7 @@ const Home = () => {
       )
     else
       return (
-        <div className="col col-md-4 d-none d-md-block">
+        <div className="col col-lg-4 d-none d-lg-block">
           <img
             className="rounded-2"
             style={{
@@ -207,7 +207,7 @@ const Home = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Home'} />
           <div className="row mt-4">
@@ -259,7 +259,7 @@ const Home = () => {
             ))}
           </div>
           <div className="row mt-4 mb-4">
-            <div className="col-12 col-md-8">
+            <div className="col-12 col-lg-8">
               <div className="ryg-header-title">RYG Information</div>
               <div className="align-self-center">
                 <div className="ryg-text mt-xl-5">
@@ -277,7 +277,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-8 col-md-4 mx-auto mt-3 mt-md-0">
+            <div className="col-8 col-lg-4 mx-auto mt-3 mt-lg-0">
               <img src={RYGBottom} className="home-ryg-img shadow" />
             </div>
           </div>

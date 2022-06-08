@@ -13,13 +13,13 @@ const OffCanvasDropDownItems = props => {
   const isRyg = props.isRyg
   return (
     <div
-      className="collapse navbar-collapse justify-content-between align-items-center"
+      className="collapse navbar-collapse-sm justify-content-between align-items-center"
       id={props.id}
       style={{ backgroundColor: 'white' }}
     >
       {props.isLogedIn && (
         <form
-          className="w-100 pt-3 d-block d-md-none"
+          className="w-100 pt-3 d-block d-lg-none"
           onSubmit={e => {
             e.preventDefault()
             navigate(`/search/${e.target.search.value}`)

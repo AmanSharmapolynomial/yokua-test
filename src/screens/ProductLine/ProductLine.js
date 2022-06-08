@@ -87,11 +87,11 @@ const ProductLine = () => {
         />
       )
       // if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   rows.push(<div className="row mt-0 mt-lg-5">{col}</div>)
       //   col = []
       // } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-      //   col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
-      //   rows.push(<div className="row mt-0 mt-md-5">{col}</div>)
+      //   col.push(<div key={item.id} className={`col-12 col-md ms-lg-5 px-2 py-3`}></div>)
+      //   rows.push(<div className="row mt-0 mt-lg-5">{col}</div>)
       //   col = []
       // }
     })
@@ -110,7 +110,7 @@ const ProductLine = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Product Lines'} backgroundImage={'Product-line'} />
           {isLoading ? (

@@ -635,11 +635,11 @@ const NewsItem = ({
       />
       <div className="single-news-item col-12 mb-3" key={data ? data.id : Math.random()}>
         <div className="row">
-          <div className="col-12 col-md-10">
+          <div className="col-12 col-lg-10">
             <div className="row">
               {!archivedFilter && (
                 <div
-                  className="dot-adjust col-auto mx-md-1"
+                  className="dot-adjust col-auto mx-lg-1"
                   onClick={() => {
                     // call here the mark as read api
                     // const payloadRead = {
@@ -678,7 +678,7 @@ const NewsItem = ({
                 </div>
               )}
 
-              <div className="ps-0 col d-md-none d-block">
+              <div className="ps-0 col d-lg-none d-block">
                 <div className="row">
                   <div onClick={setCategoryFilter} className="news-category-sm col">
                     {data ? data.category_name : ''}
@@ -692,8 +692,8 @@ const NewsItem = ({
                 </div>
               </div>
 
-              <div className="col-12 col-md-3 p-sm-0 p-md-auto mt-2 mt-md-0">
-                <div className="news-img rounded mx-md-3">
+              <div className="col-12 col-lg-3 p-sm-0 p-lg-auto mt-2 mt-lg-0">
+                <div className="news-img rounded mx-lg-3">
                   <img
                     src={catImg}
                     onError={_onErrorImage}
@@ -702,8 +702,8 @@ const NewsItem = ({
                   />
                 </div>
               </div>
-              <div className="col col-md-2">
-                <div className="news-info d-none d-md-flex">
+              <div className="col col-lg-2">
+                <div className="news-info d-none d-lg-flex">
                   <span className="date">
                     {moment(data ? data.date_uploaded : '').format('MMM Do YYYY')}
                   </span>
@@ -1060,7 +1060,7 @@ const NewsItem = ({
             </div>
           </div>
 
-          <div className="col-2 align-items-end flex-column d-none d-md-flex">
+          <div className="col-2 align-items-end flex-column d-none d-lg-flex">
             <div className="yk-news-edit-icons mb-5">
               {editView
                 ? hasPermission && (

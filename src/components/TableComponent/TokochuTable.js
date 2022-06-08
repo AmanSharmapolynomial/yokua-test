@@ -293,7 +293,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
         (getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') && (
-          <div className="row text-primary d-none d-md-flex">
+          <div className="row text-primary d-none d-lg-flex">
             <div className="ms-auto w-auto my-2">
               {isEdit ? (
                 <i
@@ -338,7 +338,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       </div>
       {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') && (
         <div
-          className="add_row d-none d-md-flex"
+          className="add_row d-none d-lg-flex"
           style={{ fontSize: '1rem', background: 'none' }}
           onClick={() => {
             if (!emptyNewRow) {

@@ -2,9 +2,9 @@ import React from 'react'
 
 const Impressum = () => {
   return (
-    <div className="row mx-2 mx-md-5 h-100">
+    <div className="row mx-2 mx-lg-5 h-100">
       <div className="col">
-        <div className="row py-md-3 text-center h2 weight-bold">
+        <div className="row py-lg-3 text-center h2 weight-bold">
           <div className="col">Impressum</div>
         </div>
         <div className="h6 weight-bold my-5">ROTA YOKOGAWA GmbH & Co. KG</div>

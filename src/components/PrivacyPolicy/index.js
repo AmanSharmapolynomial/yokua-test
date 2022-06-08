@@ -2,9 +2,9 @@ import React from 'react'
 
 const PrivacyPolicy = () => {
   return (
-    <div className="row mx-2 mx-md-5 h-100 pb-3">
+    <div className="row mx-2 mx-lg-5 h-100 pb-3">
       <div className="col">
-        <div className="row py-md-3 text-center h2 weight-bold">
+        <div className="row py-lg-3 text-center h2 weight-bold">
           <div className="col">Privacy Policy</div>
         </div>
         <div className="h6 weight-bold">Terms of Use</div>
@@ -168,7 +168,7 @@ const PrivacyPolicy = () => {
         </div>
         <br />
         <br />
-        <div className="row py-md-3 text-center h2 weight-bold">
+        <div className="row py-lg-3 text-center h2 weight-bold">
           <div className="col">Data protection statement</div>
         </div>
         <br />

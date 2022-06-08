@@ -12,7 +12,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
   const [isMd, setIsMd] = React.useState(true)
 
   function updateWindowDimensions() {
-    if (window.innerWidth >= 768) setIsMd(true)
+    if (window.innerWidth >= 992) setIsMd(true)
     else setIsMd(false)
   }
 
@@ -35,10 +35,10 @@ const Header = ({ isLogedIn, isAdmin }) => {
 
   return (
     <header className="header sticky-top mb-auto">
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col">
-          <div className="row header-container py-md-2">
-            <div className="header__logo col-6 col-md-4">
+          <div className="row header-container py-lg-2">
+            <div className="header__logo col-6 col-lg-4">
               <img
                 src={Yokogawa}
                 alt="logo"
@@ -62,7 +62,7 @@ const Header = ({ isLogedIn, isAdmin }) => {
                   document.getElementById('main').style.left = '-16rem'
                 }
               }}
-              className="navbar-toggler w-auto d-block d-md-none"
+              className="navbar-toggler w-auto d-block d-lg-none"
               type="button"
               data-toggle="collapse"
               aria-expanded="false"
@@ -74,10 +74,10 @@ const Header = ({ isLogedIn, isAdmin }) => {
                 <i className="fas fa-bars" style={{ color: '#fff' }} />
               </span>
             </button>
-            <div className="header__title col-12 col-md-4 me-md-auto text-center my-2 my-md-0">
+            <div className="header__title col-12 col-lg-4 me-lg-auto text-center my-2 my-lg-0 clamp-2v">
               FLOW CENTER PAGES
             </div>
-            <div className="col-4 d-none d-md-block">
+            <div className="col-4 d-none d-lg-block">
               {isLogedIn && (
                 <form
                   className="w-auto float-right"

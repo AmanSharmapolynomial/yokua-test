@@ -54,7 +54,7 @@ const ChnagePassword = () => {
 
   return (
     <>
-      <div className="signIn-container mx-auto col-10 col-md-4 my-5">
+      <div className="signIn-container mx-auto col-10 col-lg-4 my-5">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
           style={{

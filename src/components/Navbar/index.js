@@ -71,7 +71,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         className="collapse navbar-collapse justify-content-between align-items-center"
         id="navbar"
       >
-        <ul className="navbar-nav mx-auto text-md-center text-left p-3 p-md-0">
+        <ul className="navbar-nav mx-auto text-lg-center text-left p-3 p-lg-0">
           <li className="nav-item px-xl-3">
             <Link className="nav-link" to={'/home'}>
               Home
@@ -202,7 +202,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           </li>
           {getUserRoles() === 'Technical Administrator' ||
           getUserRoles() === 'PMK Administrator' ? (
-            <li className="nav-item dropdown px-xl-3 d-none d-md-block">
+            <li className="nav-item dropdown px-xl-3 d-none d-lg-block">
               <a
                 className="nav-link dropdown-toggle"
                 href="#"
@@ -222,7 +222,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
           )}
         </ul>
         {isLogedIn && (
-          <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap d-none d-md-block">
+          <ul className="nav navbar-nav flex-row justify-content-lg-center justify-content-start flex-nowrap d-none d-lg-block">
             <button
               className="logout-btn"
               onClick={() => {

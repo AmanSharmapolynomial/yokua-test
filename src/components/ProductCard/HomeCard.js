@@ -12,7 +12,7 @@ const HomeCard = ({ index, item, onClick }) => {
       }}
       key={item.id}
       role={'button'}
-      className={`product-card col-6 col-md-2 mt-3`}
+      className={`product-card col-6 col-lg-2 mt-3`}
     >
       <div className="card shadow px-3 py-3 h-100">
         <div className="row">

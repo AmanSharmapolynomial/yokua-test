@@ -76,7 +76,7 @@ const SubProduct = () => {
       //   rows.push(<div className="row mt-5">{col}</div>)
       //   col = []
       // } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-      //   col.push(<div key={item.id} className={`col-12 col-md ms-md-5 px-2 py-3`}></div>)
+      //   col.push(<div key={item.id} className={`col-12 col-md ms-lg-5 px-2 py-3`}></div>)
       //   rows.push(<div className="row mt-5">{col}</div>)
       //   col = []
       // }
@@ -96,15 +96,15 @@ const SubProduct = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <div className="row">
             <div className="col">
-              <div className="col-12 col-md-6 border-md rounded py-2">
+              <div className="col-12 col-lg-6 border-md rounded py-2">
                 <div className="row">
                   <span
                     role="button"
-                    className="col-6 light-grey d-none d-md-block"
+                    className="col-6 light-grey d-none d-lg-block"
                     onClick={() => {
                       navigate(-1)
                     }}
@@ -112,7 +112,7 @@ const SubProduct = () => {
                     Previous page
                   </span>
                   <span
-                    className="col-12 col-md-6 px-0 px-md-3"
+                    className="col-12 col-lg-6 px-0 px-lg-3"
                     style={{
                       wordBreak: 'break-all',
                     }}
@@ -131,7 +131,7 @@ const SubProduct = () => {
               </div>
             </div>
           </div>
-          <div className="row mt-5 text-bold d-none d-md-block">
+          <div className="row mt-5 text-bold d-none d-lg-block">
             <div className="col">{state.name}</div>
           </div>
           {isLoading ? (

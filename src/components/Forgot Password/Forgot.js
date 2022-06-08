@@ -32,7 +32,7 @@ const Forgot = () => {
 
   return (
     <>
-      <div className="signIn-container mx-auto col-10 col-md-4">
+      <div className="signIn-container mx-auto col-10 col-lg-4">
         <div className="container-head px-2">
           <span className="position-absolute float-left">
             <i
@@ -52,7 +52,7 @@ const Forgot = () => {
             forgotApi(emailRef.current?.value)
           }}
         >
-          <div className="row d-flex justify-content-center px-3 px-md-5">
+          <div className="row d-flex justify-content-center px-3 px-lg-5">
             <input
               type="text"
               className="input-field input-field__email"

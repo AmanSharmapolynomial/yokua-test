@@ -261,7 +261,7 @@ const EventDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -346,7 +346,7 @@ const EventDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -390,7 +390,7 @@ const EventDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -443,7 +443,7 @@ const EventDetail = () => {
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
-                <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
+                <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
                   <Image
                     className="me-2"
                     style={{ width: '1.4rem' }}
@@ -496,7 +496,7 @@ const EventDetail = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
-              <div className="ms-auto w-auto my-2 p-0 d-none d-md-block">
+              <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
                 <Image
                   className="me-2"
                   style={{ width: '1.4rem' }}
@@ -533,7 +533,7 @@ const EventDetail = () => {
 
   const renderComponents = () =>
     productDetail.map((item, index) => (
-      <div className="col-12 mt-3 mt-md-5">
+      <div className="col-12 mt-3 mt-lg-5">
         <div className="row">
           <span className="text-bold p-0">{item.sectionName}</span>
         </div>
@@ -543,7 +543,7 @@ const EventDetail = () => {
         {(getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
           getUserRoles() == 'Technical Administrator') && (
-          <div className="row mt-3 d-none d-md-block">
+          <div className="row mt-3 d-none d-lg-block">
             <button
               className="btn create-domain-btn w-auto"
               onClick={() => {
@@ -1073,10 +1073,10 @@ const EventDetail = () => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           {/* <div className="row">
-            <div className="col-12 col-md-6 border rounded py-2">
+            <div className="col-12 col-lg-6 border rounded py-2">
               <div className="row">
                 <span role="button" className="col-6 light-grey">
                   <Link to={'/ryg-information'}>Previous page</Link>
@@ -1105,9 +1105,9 @@ const EventDetail = () => {
             {(getUserRoles() == 'PMK Administrator' ||
               getUserRoles() == 'PMK Content Manager' ||
               getUserRoles() == 'Technical Administrator') && (
-              <div className="mt-2 justify-content-center d-none d-md-flex">
+              <div className="mt-2 justify-content-center d-none d-lg-flex">
                 <button
-                  className="btn create-domain-btn mx-auto d-none d-md-block"
+                  className="btn create-domain-btn mx-auto d-none d-lg-block"
                   onClick={() => {
                     setIsAddSectionModalVisible(true)
                   }}

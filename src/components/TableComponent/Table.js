@@ -315,7 +315,7 @@ export default ({
 
   const renderDummyRow = () => {
     return (
-      <div className="add-row d-none d-md-flex overflow-auto">
+      <div className="add-row d-none d-lg-flex overflow-auto">
         {tableObject.map((ele, idx) => {
           return (
             <div className="dummy-col" style={{ minWidth: '100px' }}>
@@ -379,7 +379,7 @@ export default ({
       <div className="row">
         <div className="col p-0 table-header">{table_name}</div>
         {isAdmin && !archivedFilter && (
-          <div className="col-auto my-2 p-0 d-none d-md-block">
+          <div className="col-auto my-2 p-0 d-none d-lg-block">
             <Image
               className="me-2"
               style={{ width: '1.4rem' }}
@@ -432,7 +432,7 @@ export default ({
           ) : isAdmin && !isTableEditable && !archivedFilter ? (
             <div
               role={'button'}
-              className="add-row d-none d-md-flex"
+              className="add-row d-none d-lg-flex"
               onClick={() => {
                 setIsEditable(true)
               }}

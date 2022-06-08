@@ -329,7 +329,7 @@ const AddEventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="profile-setting-container col center py-3">
           <PrimaryHeading title="RYG Event Calendar" backgroundImage={'yk-back-image-event'} />
           <div className="col">
@@ -337,7 +337,7 @@ const AddEventScreen = () => {
               <div className="col shadow rounded-3">
                 <h4 className="mt-4 clamp-2v">Rotomass TI Service Training</h4>
                 <div className="row">
-                  <form className="col-md-6 pe-4 pe-md-0">
+                  <form className="col-lg-6 pe-4 pe-lg-0">
                     <div className="row d-flex align-items-center mt-4">
                       <label style={{ fontWeight: 'bold' }} className="col my-auto clamp-1v">
                         Training Name
@@ -553,15 +553,15 @@ const AddEventScreen = () => {
                       <div className="col">
                         <div
                           className="row d-flex align-items-center"
-                          style={
-                            eventOption.value == 'webinar'
-                              ? {
-                                  pointerEvents: 'none',
-                                  opacity: '0.4',
-                                  userSelect: 'none',
-                                }
-                              : {}
-                          }
+                          // style={
+                          //   eventOption.value == 'webinar'
+                          //     ? {
+                          //         pointerEvents: 'none',
+                          //         opacity: '0.4',
+                          //         userSelect: 'none',
+                          //       }
+                          //     : {}
+                          // }
                         >
                           {isAdmin && (
                             <>
@@ -655,7 +655,7 @@ const AddEventScreen = () => {
                       </div>
                     </div>
                     <div className="row mt-4">
-                      <div className="col-12 col-md-auto">
+                      <div className="col-12 col-lg-auto">
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
@@ -677,7 +677,7 @@ const AddEventScreen = () => {
                           Agenda
                         </button>
                       </div>
-                      <div className="col-12 col-md-auto">
+                      <div className="col-12 col-lg-auto">
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
@@ -699,7 +699,7 @@ const AddEventScreen = () => {
                           Other Possible link A
                         </button>
                       </div>
-                      <div className="col-12 col-md-auto">
+                      <div className="col-12 col-lg-auto">
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
@@ -901,13 +901,13 @@ const AddEventScreen = () => {
                     </div>
                   </form>
 
-                  <div className="mt-4 mb-4 mt-md-0 mb-md-0 col-md-6">
+                  <div className="mt-4 mb-4 mt-lg-0 mb-lg-0 col-lg-6">
                     <textarea
                       style={{ maxHeight: '32rem' }}
                       rows="8"
                       // cols="30"
                       placeholder="Enter description..."
-                      className="form-control w-md-75 float-md-right mt-4 clamp-1v"
+                      className="form-control w-lg-75 float-lg-right mt-4 clamp-1v"
                       onChange={event => {
                         setDescription(event.target.value)
                       }}
@@ -927,7 +927,7 @@ const AddEventScreen = () => {
                       <h4 className="mt-4 clamp-2v">Register for Trainings</h4>
                     )}
                     <div className="row">
-                      <form className="col-12 col-md-4">
+                      <form className="col-12 col-lg-4">
                         <div className="row d-flex align-items-center mt-4">
                           <div className="col">
                             <Select
@@ -1242,7 +1242,7 @@ const AddEventScreen = () => {
                               </label>
                             </div>
                           </div>
-                          <div className="col-12 col-md mt-4 mt-md-0">
+                          <div className="col-12 col-md mt-4 mt-lg-0">
                             <div className="row d-flex align-items-center">
                               <label
                                 style={{ fontWeight: 'bold' }}

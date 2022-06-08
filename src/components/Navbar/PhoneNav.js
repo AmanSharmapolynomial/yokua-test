@@ -86,7 +86,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
       >
         {isLogedIn && (
           <form
-            className="w-100 pt-3 d-block d-md-none"
+            className="w-100 pt-3 d-block d-lg-none"
             onSubmit={e => {
               e.preventDefault()
               navigate(`/search/${e.target.search.value}`)
@@ -106,7 +106,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
             </div>
           </form>
         )}
-        <ul className="navbar-nav mx-auto text-md-center text-left p-3 p-md-0">
+        <ul className="navbar-nav mx-auto text-lg-center text-left p-3 p-lg-0">
           <li className="nav-item px-xl-3">
             <Link className="nav-link" to={'/home'}>
               Home
@@ -204,7 +204,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
             </Link>
           </li>
           {isLogedIn && (
-            <li className="nav-item px-xl-3 d-block d-md-none">
+            <li className="nav-item px-xl-3 d-block d-lg-none">
               <span
                 className="nav-link"
                 onClick={() => {
@@ -220,7 +220,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
           )}
         </ul>
         {isLogedIn && (
-          <ul className="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap d-none d-md-block">
+          <ul className="nav navbar-nav flex-row justify-content-lg-center justify-content-start flex-nowrap d-none d-lg-block">
             <button
               className="logout-btn"
               onClick={() => {

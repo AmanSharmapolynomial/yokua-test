@@ -123,8 +123,8 @@ const EventScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 my-4 h-100">
-        <div className="col-12 center py-md-3">
+      <div className="row mx-2 mx-lg-5 my-4 h-100">
+        <div className="col-12 center py-lg-3">
           <PrimaryHeading title="RYG Event Calendar" backgroundImage={'yk-back-image-event'} />
         </div>
         <div className="col-12">
@@ -153,7 +153,7 @@ const EventScreen = () => {
                   {dataList.slice(0, 3).map(data => (
                     <div
                       key={data.id}
-                      className="event-title d-none d-md-block"
+                      className="event-title d-none d-lg-block"
                       onClick={() => {
                         window.scrollTo(0, 0)
                         navigate('/event/update/' + data.id)
@@ -162,7 +162,7 @@ const EventScreen = () => {
                       {data.training_name} - {data.duration}
                     </div>
                   ))}
-                  <i class="bi bi-dot event-dot d-block d-md-none"></i>
+                  <i class="bi bi-dot event-dot d-block d-lg-none"></i>
                 </div>
               ) : null
             }}
@@ -191,7 +191,7 @@ const EventScreen = () => {
                     >
                       {isAdmin && (
                         <input
-                          className="d-none d-md-block me-3"
+                          className="d-none d-lg-block me-3"
                           id="mainCheckbox"
                           type="checkbox"
                           style={{ marginLeft: '10px' }}
@@ -219,7 +219,7 @@ const EventScreen = () => {
                     let endDate = moment(e.end_date, 'yyyy-MM-DD')
                     return (
                       <tr>
-                        <td className="col-auto d-none d-md-table-cell">
+                        <td className="col-auto d-none d-lg-table-cell">
                           <div>
                             {isAdmin && (
                               <input
@@ -240,7 +240,7 @@ const EventScreen = () => {
                             )}
                           </div>
                         </td>
-                        <td className="col-md-2">
+                        <td className="col-lg-2">
                           <div
                             className="date-container"
                             style={{
@@ -258,7 +258,7 @@ const EventScreen = () => {
                             </p>
                           </div>
                         </td>
-                        <td className="col-md-2">
+                        <td className="col-lg-2">
                           <div
                             className="location-container"
                             style={{ display: 'flex', alignItems: 'center' }}
@@ -278,7 +278,7 @@ const EventScreen = () => {
                             </span>
                           </div>
                         </td>
-                        <td className="col-md-2">
+                        <td className="col-lg-2">
                           <div className="register-container">
                             <label
                               style={{
@@ -295,7 +295,7 @@ const EventScreen = () => {
                             </label>
                           </div>
                         </td>
-                        <td className="col-md-6">
+                        <td className="col-lg-6">
                           <p
                             className="desc-container"
                             style={{
@@ -309,7 +309,7 @@ const EventScreen = () => {
                             {e.description}
                           </p>
                         </td>
-                        <td className="col-auto d-none d-md-table-cell">
+                        <td className="col-auto d-none d-lg-table-cell">
                           <div
                             style={{
                               padding: '25px',
@@ -340,7 +340,7 @@ const EventScreen = () => {
           </div>
 
           {isAdmin && (
-            <div className="row mb-5 d-none d-md-flex">
+            <div className="row mb-5 d-none d-lg-flex">
               <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
                 <button
                   onClick={() => {

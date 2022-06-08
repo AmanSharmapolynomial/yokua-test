@@ -27,9 +27,9 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
       }}
       key={item.id}
       role={!isEditable && 'button'}
-      className={`product-card col-6 col-md-4 mt-2 mt-md-3`}
+      className={`product-card col-6 col-lg-4 mt-2 mt-lg-3`}
     >
-      <div className="card-md shadow-md p-md-4 h-100">
+      <div className="card-md shadow-md p-lg-4 h-100">
         <div className="row">
           <div className="col">
             <div className="row">
@@ -95,7 +95,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
           {(getUserRoles() == 'PMK Administrator' ||
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
-            <span className="col-auto d-none d-md-block">
+            <span className="col-auto d-none d-lg-block">
               <img
                 className="image-sq-2v"
                 src={isEditable ? saveIcon : editIcon}

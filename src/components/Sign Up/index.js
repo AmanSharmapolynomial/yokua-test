@@ -106,7 +106,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className="signIn-container mx-auto col-10 col-md-4 my-5">
+    <div className="signIn-container mx-auto col-10 col-lg-6 my-5">
       <div className="container-head px-2">
         <span className="position-absolute float-left">
           <i

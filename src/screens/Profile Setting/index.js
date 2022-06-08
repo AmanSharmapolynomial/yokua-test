@@ -242,7 +242,7 @@ const ProfileSettingScreen = () => {
   return (
     <>
       <Header isLogedIn={getToken()} />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         {openSimpleDeleteModal && (
           <DeleteModal
             show={openSimpleDeleteModal}
@@ -256,9 +256,9 @@ const ProfileSettingScreen = () => {
             data={profileData.basic_profile?.email}
           />
         )}
-        <div className="col profile-setting-container pb-5 py-md-3">
+        <div className="col profile-setting-container pb-5 py-lg-3">
           <PrimaryHeading title={'Profile settings'} backgroundImage={'yk-back-image-profile'} />
-          <div className="profile-setting col col-md-10 p-0">
+          <div className="profile-setting col col-lg-10 p-0">
             <div className="profile-setting__info">
               <div>
                 <input
@@ -659,7 +659,7 @@ const ProfileSettingScreen = () => {
             </div>
 
             <div className="events_trainings row mt-4">
-              <div className="col-12 col-md-6">
+              <div className="col-12 col-lg-6">
                 <div className="profile-setting__basic-profile profile-setting__box h-100">
                   <h1 className="profile-setting__heading py-3 event_training_heading">
                     You are registered for the following events & trainings
@@ -714,7 +714,7 @@ const ProfileSettingScreen = () => {
                   )}
                 </div>
               </div>
-              <div className="col-12 col-md-6 mt-3 mt-md-0">
+              <div className="col-12 col-lg-6 mt-3 mt-lg-0">
                 <div className="profile-setting__basic-profile profile-setting__box h-100">
                   <h1 className="profile-setting__heading py-3 event_training_heading">
                     Last participated event
@@ -933,7 +933,7 @@ const ProfileSettingScreen = () => {
                     <input
                       disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
-                      className="col-md-4 form-check-input"
+                      className="col-lg-4 form-check-input"
                       checked={selectedEvent?.food_requirements === 'No Pork'}
                       name="No Pork"
                       onChange={() => {
@@ -957,7 +957,7 @@ const ProfileSettingScreen = () => {
                     <input
                       disabled={selectedEvent.type === 'internal'}
                       type="checkbox"
-                      className="col-md-4 form-check-input"
+                      className="col-lg-4 form-check-input"
                       checked={selectedEvent?.food_requirements === 'Vegetarian'}
                       name="Vegetarian"
                       onChange={() => {

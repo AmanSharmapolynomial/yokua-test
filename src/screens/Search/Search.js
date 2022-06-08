@@ -207,12 +207,12 @@ const Search = props => {
           getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Search Results'} backgroundImage={'search-banner'} />
           <div className="col">
             <div className="row">
-              <div className="col-12 col-md-auto border rounded px-3 py-2 mt-3 search-header-container">
+              <div className="col-12 col-lg-auto border rounded px-3 py-2 mt-3 search-header-container">
                 Search results for "{query}"
               </div>
             </div>

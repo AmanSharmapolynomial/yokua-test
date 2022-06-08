@@ -24,9 +24,9 @@ const TermsPolicy = () => {
           }}
         />
       </div>
-      <div className="row mx-2 mx-md-5 pb-3">
+      <div className="row mx-2 mx-lg-5 pb-3">
         <div className="col">
-          <div className="row py-md-3 text-center h2 weight-bold">
+          <div className="row py-lg-3 text-center h2 weight-bold">
             <div className="col">Terms of Use</div>
           </div>
           <div className="font-8">
@@ -178,7 +178,7 @@ const TermsPolicy = () => {
           </div>
           <br></br>
           <br></br>
-          <div className="row py-md-3 text-center h2 weight-bold">
+          <div className="row py-lg-3 text-center h2 weight-bold">
             <div className="col">Data protection statement</div>
           </div>
           <div className="font-8">

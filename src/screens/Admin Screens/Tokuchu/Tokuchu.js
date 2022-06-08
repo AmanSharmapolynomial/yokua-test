@@ -271,10 +271,10 @@ export default () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
-      <div className="row mx-2 mx-md-5" style={{ minHeight: '120vh' }}>
+      <div className="row mx-2 mx-lg-5" style={{ minHeight: '120vh' }}>
         <div className="col center py-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
-          <div className="toku-dropdn mt-4 d-none d-md-block">
+          <div className="toku-dropdn mt-4 d-none d-lg-block">
             <div className="dropdown p-0">
               <div className="btn-group">
                 <button
@@ -409,7 +409,7 @@ export default () => {
             </div>
           </div>
 
-          <div className="d-block d-md-none border mx-5 mt-5 rounded px-1 py-1">
+          <div className="d-block d-lg-none border mx-5 mt-5 rounded px-1 py-1">
             <div className="dropdown row d-flex align-items-center">
               {dataToShow?.level !== undefined || dataToShow?.level >= 1 ? (
                 <div
@@ -509,7 +509,7 @@ export default () => {
               disabled={selectedProduct?.id === undefined}
               className={`btn create-domain-btn${
                 selectedProduct?.id === undefined ? ' greyed' : ''
-              } mx-auto mx-md-0`}
+              } mx-auto mx-lg-0`}
               onClick={() => {
                 selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
               }}

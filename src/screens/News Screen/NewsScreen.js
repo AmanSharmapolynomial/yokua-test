@@ -113,7 +113,7 @@ const NewsScreen = () => {
           getUserRoles() === 'Technical Administrator' || getUserRoles() === 'PMK Administrator'
         }
       />
-      <div className="row mx-2 mx-md-5 h-100">
+      <div className="row mx-2 mx-lg-5 h-100">
         <div className="profile-setting-container col center py-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
           <div className="row py-3">
@@ -322,7 +322,7 @@ const NewsScreen = () => {
                   !archivedFilter &&
                   !isAnyNewsUnderEdit && (
                     <div
-                      className="add_row d-none d-md-flex"
+                      className="add_row d-none d-lg-flex"
                       onClick={() => {
                         if (!isAnyNewsUnderEdit) {
                           setNewsUnderEdit(true)
