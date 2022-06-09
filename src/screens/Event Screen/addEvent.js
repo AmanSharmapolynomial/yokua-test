@@ -553,15 +553,15 @@ const AddEventScreen = () => {
                       <div className="col">
                         <div
                           className="row d-flex align-items-center"
-                          // style={
-                          //   eventOption.value == 'webinar'
-                          //     ? {
-                          //         pointerEvents: 'none',
-                          //         opacity: '0.4',
-                          //         userSelect: 'none',
-                          //       }
-                          //     : {}
-                          // }
+                          style={
+                            eventOption.value == 'webinar'
+                              ? {
+                                  pointerEvents: 'none',
+                                  opacity: '0.4',
+                                  userSelect: 'none',
+                                }
+                              : {}
+                          }
                         >
                           {isAdmin && (
                             <>
@@ -594,11 +594,25 @@ const AddEventScreen = () => {
                                 }
                               }}
                               value={maxAttendacees}
-                              disabled={eventId}
+                              disabled={eventId || eventOption.value == 'webinar'}
                             />
                           </div>
 
-                          <label style={{ fontWeight: 'bold' }} className="col my-auto clamp-1v">
+                          <label
+                            style={
+                              eventOption.value == 'webinar'
+                                ? {
+                                    pointerEvents: 'none',
+                                    opacity: '0.4',
+                                    userSelect: 'none',
+                                    fontWeight: 'bold',
+                                  }
+                                : {
+                                    fontWeight: 'bold',
+                                  }
+                            }
+                            className="col my-auto clamp-1v"
+                          >
                             Remaining Seats
                           </label>
                           <div className="col-3 row">
