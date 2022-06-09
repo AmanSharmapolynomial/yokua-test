@@ -298,7 +298,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               {isEdit ? (
                 <i
                   role={'button'}
-                  className="fa-solid fa-floppy-disk"
+                  className="fa-solid fa-floppy-disk theme"
                   onClick={() => {
                     setEditModeData([...tableRows])
                     setEdit(false)
@@ -307,7 +307,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
               ) : (
                 <i
                   role={'button'}
-                  className="fa-solid fa-pen-to-square ms-2"
+                  className="fa-solid fa-pen-to-square ms-2 theme"
                   aria-hidden="true"
                   onClick={() => {
                     setEditModeData([...tableRows])

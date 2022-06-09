@@ -8,14 +8,14 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
     <Modal centered show={show} className="modal-background">
       <Modal.Body>
         <div className="modal-wrapper">
-          <h3
-            className="modal-heading"
+          <p
+            className="modal-heading text-bold h5"
             style={{
               marginBottom: 0,
             }}
           >
             Add new whitelist domain
-          </h3>
+          </p>
           <div
             className="modal-content domain-modal"
             style={{
@@ -26,9 +26,8 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
             <div className="info-text w-100 mt-3">
               <input
                 type="text"
-                className="domain-input w-100 py-2"
+                className="domain-input w-100 py-2 font-8"
                 placeholder="Name"
-                style={{ fontSize: '0.8rem' }}
                 onChange={e => {
                   setDomain(e.target.value)
                 }}
@@ -36,7 +35,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
             </div>
             <div className="domain-modal-cta mt-3">
               <button
-                className="btn cancel-domain"
+                className="btn cancel-domain font-8"
                 onClick={() => {
                   saveAndExit()
                 }}
@@ -44,7 +43,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
                 Cancel
               </button>
               <button
-                className="btn"
+                className="btn font-8"
                 onClick={() => {
                   if (domain) {
                     if (domain.includes('.')) {

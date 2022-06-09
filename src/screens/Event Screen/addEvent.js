@@ -365,10 +365,18 @@ const AddEventScreen = () => {
                             className="form-control clamp-1v"
                             onChange={date => {
                               if (endDate != null && endDate != undefined && endDate >= date) {
-                                setDuration(moment(endDate).diff(date, 'days'))
+                                setDuration(
+                                  moment(endDate).diff(date, 'days') === 0
+                                    ? 1
+                                    : moment(endDate).diff(date, 'days')
+                                )
                                 setStartDate(date)
                               } else {
-                                setDuration(moment(date).diff(date, 'days'))
+                                setDuration(
+                                  moment(date).diff(date, 'days') === 0
+                                    ? 1
+                                    : moment(date).diff(date, 'days')
+                                )
                                 setStartDate(date)
                                 setEndDate(date)
                                 // toast.error('End date should be greater than start date')
@@ -411,7 +419,11 @@ const AddEventScreen = () => {
                             onChange={date => {
                               setEndDate(date)
                               if (startDate != null || startDate != undefined) {
-                                setDuration(moment(date).diff(startDate, 'days') + 1)
+                                setDuration(
+                                  moment(date).diff(startDate, 'days') === 0
+                                    ? 1
+                                    : moment(date).diff(startDate, 'days')
+                                )
                               }
                             }}
                             placeholderText="DDMMYYYY"

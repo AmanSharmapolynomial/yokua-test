@@ -19,13 +19,15 @@ const HomeCard = ({ index, item, onClick }) => {
           <div className="col">
             <div className="row">
               <div className="col-12 p-3">
-                <div className="img-box thumb rounded d-flex">
+                <div className="img-box thumb rounded d-flex border-dark">
                   <img
                     className="img-thumbnail"
                     src={item.image_link ? item.image_link : placeholder}
                   />
                 </div>
-                <div className="border text-center rounded mt-2 clamp-2v">{item.name}</div>
+                <div className="border text-center rounded mt-3 clamp-2v border-dark">
+                  {item.name}
+                </div>
               </div>
             </div>
           </div>

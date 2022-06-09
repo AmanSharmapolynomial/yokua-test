@@ -1000,6 +1000,13 @@ const ProductDetail = () => {
             <input
               onChange={e => {
                 setInputBinary(e.target.files[0])
+                if (addComponentData.title === undefined || addComponentData.title === null)
+                  setAddComponentData(prevState => {
+                    return {
+                      ...prevState,
+                      title: 'image',
+                    }
+                  })
               }}
               type="file"
               className="custom-file-input"

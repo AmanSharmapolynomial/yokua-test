@@ -314,11 +314,17 @@ export default () => {
                     <div className="row mb-3">
                       <div className="col-lg-12 col-lg-12 col-xl-12">
                         <p className="h">{item.category}</p>
+                        {item?.detail[0]?.email && (
+                          <div className="d-flex mb-2 align-items-center">
+                            <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
+                            <p className="ps-2">{item?.detail[0]?.email}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="row">
                       {item.detail.map((card, idx) => (
-                        <div className="col-lg-6">
+                        <div className="col-lg-6 mt-3">
                           <div className="d-flex">
                             <div className="col-3 p-0">
                               <img
@@ -351,12 +357,12 @@ export default () => {
                                   </p>
                                 </div>
                               )}
-                              {card?.email && (
+                              {/* {card?.email && (
                                 <div className="d-flex mb-2 align-items-center">
                                   <i className="fa fa-envelope mb-3" aria-hidden="true" />
                                   <p className="ps-2">{card?.email}</p>
                                 </div>
-                              )}
+                              )} */}
                             </div>
                           </div>
                         </div>

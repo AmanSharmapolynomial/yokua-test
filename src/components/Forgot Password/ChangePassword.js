@@ -11,6 +11,8 @@ const ChnagePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [confirmVisible, setConfirmVisible] = useState(false)
+  const [actionLabel, setActionLabel] = useState('')
+  const alertRef = React.useRef()
 
   const _resetPassword = () => {
     if (password && password.length > 8 && password.includes())
@@ -28,7 +30,11 @@ const ChnagePassword = () => {
 
   const _resetPasswordUsingUidandToken = () => {
     if (password != confirmPassword) {
-      toast.error('Password and Confirm Password should be matched')
+      setActionLabel('Password and Confirm Password should be matched')
+      setTimeout(() => {
+        alertRef.current.style.display = 'none'
+      }, 3000)
+      alertRef.current.style.display = 'block'
       return
     }
     if (password && password.length > 8) {
@@ -48,7 +54,11 @@ const ChnagePassword = () => {
           })
       }
     } else {
-      toast.error('Password must be 8 characters')
+      setActionLabel('Password must be 8 characters')
+      setTimeout(() => {
+        alertRef.current.style.display = 'none'
+      }, 3000)
+      alertRef.current.style.display = 'block'
     }
   }
 
@@ -57,6 +67,7 @@ const ChnagePassword = () => {
       <div className="signIn-container mx-auto col-10 col-lg-4 my-5">
         <h3 className="container__heading mt-4">Change Your Password?</h3>
         <form
+          className="col"
           style={{
             position: 'relative',
           }}
@@ -94,7 +105,10 @@ const ChnagePassword = () => {
               onClick={() => setConfirmVisible(!confirmVisible)}
             />
           </div>
-          <div>
+          <span className="alert-under-input" ref={alertRef} style={{ display: 'none' }}>
+            {actionLabel}
+          </span>
+          <div className="col d-flex justify-content-center">
             <button
               ref={element => {
                 if (element) {

@@ -145,7 +145,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             <div
               role={'button'}
               type="button"
-              className="dropdown-toggle dropdown-toggle-split ps-1"
+              className="dropdown-toggle dropdown-toggle-split p-0 nav-link"
               data-toggle="dropdown"
               aria-expanded="false"
               aria-haspopup="true"

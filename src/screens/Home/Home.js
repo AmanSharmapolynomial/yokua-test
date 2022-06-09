@@ -120,17 +120,13 @@ const Home = () => {
             <div className="card-body d-flex flex-column">
               <div className="row card-header-title">
                 <span className="col">{title}</span>
-                {(getUserRoles() == 'PMK Administrator' ||
-                  getUserRoles() == 'PMK Content Manager' ||
-                  getUserRoles() == 'Technical Administrator') && (
+                {isAdmin && (
                   <span className="col-auto d-none d-lg-block">
                     <img
                       style={{ width: '1.4rem', height: '1.4rem' }}
                       src={state ? saveIcon : editIcon}
                       onClick={e => {
                         e.stopPropagation()
-                        if (state) {
-                        }
                         set(!state)
                       }}
                     />
@@ -242,7 +238,7 @@ const Home = () => {
                 setIsDeleteModalVisible(1)
                 setSelectedItem(item)
               }}
-              isAdmin={isAdmin}
+              isAdmin={true}
             />
             <HomeCardComponent isImage={true} />
           </div>

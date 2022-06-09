@@ -179,7 +179,7 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
           <div className="h4 m-0">Enter Company Name</div>
           <FormControl
             className="yg-font-size my-3 form-control col mx-4"
-            placeholder="Enter Company Name"
+            placeholder="Name"
             aria-label="Recipient's username"
             aria-describedby="basic-addon2"
             value={companyName}

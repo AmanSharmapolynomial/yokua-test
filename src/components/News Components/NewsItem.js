@@ -735,7 +735,10 @@ const NewsItem = ({
                           >
                             {selectedTopic}
                           </a>
-                          <i className="fa fa-caret-down ms-2" aria-hidden="true"></i>
+                          <i
+                            className="fa fa-caret-down ms-2 align-self-center"
+                            aria-hidden="true"
+                          ></i>
                         </div>
                       </div>
 
@@ -753,7 +756,7 @@ const NewsItem = ({
                                 {cat.category_name}
                               </span>
                               <i
-                                className="fa-solid fa-pen-to-square"
+                                className="fa-solid fa-pen-to-square ms-2"
                                 style={{
                                   alignSelf: 'flex-end',
                                   color: 'var(--bgColor2)',
@@ -850,7 +853,10 @@ const NewsItem = ({
                           >
                             {_getSelectedItems()}
                           </a>
-                          <i className="fa fa-caret-down ms-2" aria-hidden="true"></i>
+                          <i
+                            className="fa fa-caret-down ms-2 align-self-center"
+                            aria-hidden="true"
+                          ></i>
                         </div>
                       </div>
 
@@ -951,7 +957,7 @@ const NewsItem = ({
                                   {cat.sub_category_name}
                                 </label>
                                 <i
-                                  className="fa-solid fa-pen-to-square"
+                                  className="fa-solid fa-pen-to-square ms-2"
                                   style={{
                                     paddingTop: '2px',
                                     color: 'var(--bgColor2)',
