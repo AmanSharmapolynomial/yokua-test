@@ -797,6 +797,8 @@ select {
 .product-desc {
   font-size: 0.6rem;
   word-break: break-word;
+}
+.product-desc p {
   overflow-y: auto;
   max-height: 12rem;
 }

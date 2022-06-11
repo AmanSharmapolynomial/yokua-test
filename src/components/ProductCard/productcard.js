@@ -102,13 +102,10 @@ const ProductCard = ({
               </div>
 
               {isEditable ? (
-                <textarea
-                  ref={textareaRef}
-                  className="col-6 d-flex align-items-center product-desc clamp-1v"
-                />
+                <textarea ref={textareaRef} className="col-6 d-flex product-desc clamp-1v" />
               ) : (
-                <div className="col-6 d-flex align-items-center product-desc clamp-1v">
-                  {item.description}
+                <div className="col-6 d-flex product-desc clamp-1v">
+                  <p>{item.description}</p>
                 </div>
               )}
             </div>

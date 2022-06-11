@@ -79,8 +79,8 @@ export default () => {
         <div className="col center py-3">
           <PrimaryHeading title={'Contact'} backgroundImage={'yk-back-image-profile'} />
           <div className="yk-admin-contact mt-5">
-            <div className="container-fluid`">
-              <div className="row mb-3">
+            <div className="card-md shadow-sm-md mb-3 p-4">
+              <div className="row">
                 <div className="col-3 col-md">
                   <div className="img-box border border-dark rounded">
                     {isEdit ? (
@@ -197,7 +197,7 @@ export default () => {
                     )}
                   </div>
                   <div className="row mt-5">
-                    <div className="col card shadow rounded p-4 me-4">
+                    <div className="col card shadow-sm rounded p-4 me-4">
                       <p className="sm-h">Opening Hours</p>
                       {!isEdit ? (
                         <p className="sm-txt">{contact?.general_info?.opening_hours}</p>
@@ -206,7 +206,7 @@ export default () => {
                       )}
                     </div>
 
-                    <div className="col card shadow rounded p-4">
+                    <div className="col card shadow-sm rounded p-4">
                       <p className="sm-h">Bank Holidays</p>
                       {!isEdit ? (
                         <p className="sm-txt">{contact?.general_info?.bank_holidays}</p>
@@ -217,161 +217,156 @@ export default () => {
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* <!--------------General Product Question start---------------> */}
+            {/* <!--------------General Product Question start---------------> */}
 
-              <div className="gen-product mt-5 p-2 p-lg-5">
-                <div className="row">
-                  <div className="col-lg-12 col-lg-12 col-xl-12">
-                    <p className="h">General Product Question</p>
-                  </div>
+            <div className="gen-product mt-5 p-2 p-lg-5">
+              <div className="row">
+                <div className="col-lg-12 col-lg-12 col-xl-12">
+                  <p className="h">General Product Question</p>
                 </div>
-                <div className="row mb-4 mt-5">
-                  {contact?.product_questions?.map((item, index) => {
-                    return (
-                      <div className="col-lg-4">
-                        <div className="gen-product-item d-flex ms-2 mb-4">
-                          <div className="sm-img-box border border-dark rounded col-3 p-0">
-                            <img
-                              src={item?.image_link ? item.image_link : placeholder}
-                              style={{
-                                objectFit: 'cover',
-                                width: '100%',
-                                height: '100%',
-                              }}
-                            />
-                          </div>
-                          <div className="Product-item-deatail ms-lg-3 col-9">
-                            <div className="product-item-name">
-                              <div className="sm-h-box border border-dark rounded px-2 py-2">
-                                <p className="sm-h m-0">{item.name}</p>
-                              </div>
-                              <div className="mt-2 row">
-                                <i
-                                  className="fa fa-envelope col-auto align-self-center h-auto"
-                                  aria-hidden="true"
-                                />
-                                <span className="sm-txt text-break col ps-0">{item.email}</span>
-                              </div>
+              </div>
+              <div className="row mb-4 mt-5">
+                {contact?.product_questions?.map((item, index) => {
+                  return (
+                    <div className="col-lg-4">
+                      <div className="gen-product-item d-flex ms-2 mb-4">
+                        <div className="sm-img-box border border-dark rounded col-3 p-0">
+                          <img
+                            src={item?.image_link ? item.image_link : placeholder}
+                            style={{
+                              objectFit: 'cover',
+                              width: '100%',
+                              height: '100%',
+                            }}
+                          />
+                        </div>
+                        <div className="Product-item-deatail ms-lg-3 col-9">
+                          <div className="product-item-name">
+                            <div className="sm-h-box border border-dark rounded px-2 py-2">
+                              <p className="sm-h m-0">{item.name}</p>
+                            </div>
+                            <div className="mt-2 row">
+                              <i
+                                className="fa fa-envelope col-auto align-self-center h-auto"
+                                aria-hidden="true"
+                              />
+                              <span className="sm-txt text-break col ps-0">{item.email}</span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    )
-                  })}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* <!--------------Profile-brief-------------------> */}
+
+            <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-lg-5">
+              <div className="row mb-3 d-none d-lg-block">
+                <div className="col-lg-12 col-lg-12 col-xl-12">
+                  <p className="h">Sales and Marketing Manager</p>
                 </div>
               </div>
-
-              {/* <!--------------Profile-brief-------------------> */}
-
-              <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-lg-5">
-                <div className="row mb-3 d-none d-lg-block">
-                  <div className="col-lg-12 col-lg-12 col-xl-12">
-                    <p className="h">Sales and Marketing Manager</p>
+              <div className="row">
+                <div className="col-auto d-flex align-items-center">
+                  <div className="profile-circle border border-dark">
+                    <i className="fa fa-user" aria-hidden="true"></i>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-auto d-flex align-items-center">
-                    <div className="profile-circle border border-dark">
-                      <i className="fa fa-user" aria-hidden="true"></i>
-                    </div>
-                  </div>
 
-                  <div className="col d-flex align-items-center">
-                    <div className="profile-con">
-                      <div className="row">
-                        <i className="fa fa-user col-auto align-self-center" aria-hidden="true"></i>
-                        <span className="col text-break">
-                          Emmanuel de Montillet - Sales and Marketing Manager
-                        </span>
-                      </div>
-                      <div className="row">
-                        <i
-                          className="fa fa-envelope col-auto align-self-center"
-                          aria-hidden="true"
-                        ></i>
-                        <span className="col text-break">
-                          emmanuel.de.montillet@de.yokogawa.com
-                        </span>
-                      </div>
-                      <div className="row">
-                        <i
-                          className="fa fa-phone col-auto align-self-center"
-                          aria-hidden="true"
-                        ></i>
-                        <span className="col text-break">+49 7761 567 - 130</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* <!--------------PMK product sales-------------------> */}
-
-              {contact?.contact_people?.map((item, index) => {
-                return (
-                  <div className="pmk-product p-2 p-lg-5 mt-5">
-                    <div className="row mb-3">
-                      <div className="col-lg-12 col-lg-12 col-xl-12">
-                        <p className="h">{item.category}</p>
-                        {item?.detail[0]?.email && (
-                          <div className="d-flex mb-2 align-items-center">
-                            <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
-                            <p className="ps-2">{item?.detail[0]?.email}</p>
-                          </div>
-                        )}
-                      </div>
+                <div className="col d-flex align-items-center">
+                  <div className="profile-con">
+                    <div className="row">
+                      <i className="fa fa-user col-auto align-self-center" aria-hidden="true"></i>
+                      <span className="col text-break">
+                        Emmanuel de Montillet - Sales and Marketing Manager
+                      </span>
                     </div>
                     <div className="row">
-                      {item.detail.map((card, idx) => (
-                        <div className="col-lg-6 mt-3">
-                          <div className="d-flex">
-                            <div className="col-3 p-0">
-                              <img
-                                className="border border-dark rounded"
-                                src={card?.image_link ? card?.image_link : placeholder}
-                                style={{
-                                  objectFit: 'cover',
-                                  width: '100%',
-                                }}
-                              />
-                            </div>
+                      <i
+                        className="fa fa-envelope col-auto align-self-center"
+                        aria-hidden="true"
+                      ></i>
+                      <span className="col text-break">emmanuel.de.montillet@de.yokogawa.com</span>
+                    </div>
+                    <div className="row">
+                      <i className="fa fa-phone col-auto align-self-center" aria-hidden="true"></i>
+                      <span className="col text-break">+49 7761 567 - 130</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                            <div className="pmk-product-detail ms-lg-3 col-9">
-                              {card?.first_name && (
-                                <div className="mb-2 row">
-                                  <i
-                                    className="fa fa-user col-auto align-self-center"
-                                    aria-hidden="true"
-                                  ></i>
-                                  <p className="mb-0 col p-0">
-                                    {card?.first_name + ' '} {card?.last_name}
-                                  </p>
-                                </div>
-                              )}
-                              {card?.phone_no && (
-                                <div className="d-flex mb-2  align-items-center">
-                                  <i className="fa fa-phone" aria-hidden="true"></i>
-                                  <p className="ms-2 px-2 mb-0 border border-dark w-auto">
-                                    {card?.phone_no}
-                                  </p>
-                                </div>
-                              )}
-                              {/* {card?.email && (
+            {/* <!--------------PMK product sales-------------------> */}
+
+            {contact?.contact_people?.map((item, index) => {
+              return (
+                <div className="pmk-product p-2 p-lg-5 mt-5">
+                  <div className="row mb-3">
+                    <div className="col-lg-12 col-lg-12 col-xl-12">
+                      <p className="h">{item.category}</p>
+                      {item?.detail[0]?.email && (
+                        <div className="d-flex mb-2 align-items-center">
+                          <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
+                          <p className="ps-2">{item?.detail[0]?.email}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row">
+                    {item.detail.map((card, idx) => (
+                      <div className="col-lg-6 mt-3">
+                        <div className="d-flex">
+                          <div className="col-3 p-0">
+                            <img
+                              className="border border-dark rounded"
+                              src={card?.image_link ? card?.image_link : placeholder}
+                              style={{
+                                objectFit: 'cover',
+                                width: '100%',
+                              }}
+                            />
+                          </div>
+
+                          <div className="pmk-product-detail ms-lg-3 col-9">
+                            {card?.first_name && (
+                              <div className="mb-2 row">
+                                <i
+                                  className="fa fa-user col-auto align-self-center"
+                                  aria-hidden="true"
+                                ></i>
+                                <p className="mb-0 col p-0">
+                                  {card?.first_name + ' '} {card?.last_name}
+                                </p>
+                              </div>
+                            )}
+                            {card?.phone_no && (
+                              <div className="d-flex mb-2  align-items-center">
+                                <i className="fa fa-phone" aria-hidden="true"></i>
+                                <p className="ms-2 px-2 mb-0 border border-dark w-auto">
+                                  {card?.phone_no}
+                                </p>
+                              </div>
+                            )}
+                            {/* {card?.email && (
                                 <div className="d-flex mb-2 align-items-center">
                                   <i className="fa fa-envelope mb-3" aria-hidden="true" />
                                   <p className="ps-2">{card?.email}</p>
                                 </div>
                               )} */}
-                            </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                )
-              })}
-            </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

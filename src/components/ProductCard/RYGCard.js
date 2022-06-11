@@ -82,11 +82,11 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                 {isEditable ? (
                   <textarea
                     ref={textareaRef}
-                    className="col-12 d-flex align-items-center mt-2 product-desc clamp-1v"
+                    className="col-12 d-flex mt-2 product-desc clamp-1v"
                   />
                 ) : (
-                  <div className="col-12 d-flex align-items-center mt-2 product-desc p-0 clamp-1v">
-                    {item.description}
+                  <div className="col-12 d-flex mt-2 product-desc p-0 clamp-1v">
+                    <p>{item.description}</p>
                   </div>
                 )}
               </div>
