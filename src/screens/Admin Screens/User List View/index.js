@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SecondaryHeading from '../../../components/Secondary Heading'
 import DataTable from 'react-data-table-component'
-import './style.css'
 import { Pagination } from 'antd'
 import Dropdown from '../../../components/Dropdown'
 import UserDetailsModal from '../../../components/Modals/User Detail Modal'
