@@ -135,7 +135,7 @@ export default () => {
                           {contact?.general_info?.name}
                         </p>
                       ) : (
-                        <input ref={nameRef} className="sm-txt" />
+                        <input ref={nameRef} className="sm-txt ms-2 ms-lg-3" />
                       )}
                     </i>
                     <i
@@ -147,14 +147,14 @@ export default () => {
                           {contact?.general_info?.address}
                         </p>
                       ) : (
-                        <input ref={addressRef} className="sm-txt" />
+                        <input ref={addressRef} className="sm-txt ms-2 ms-lg-3" />
                       )}
                     </i>
                     <i className="fa fa-phone mb-lg-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
                         <p className="sm-h1 ps-2 ps-lg-3 m-0">{contact?.general_info?.phone_no}</p>
                       ) : (
-                        <input ref={phoneRef} className="sm-txt" />
+                        <input ref={phoneRef} className="sm-txt ms-2 ms-lg-3" />
                       )}
                     </i>
                     <i
@@ -166,7 +166,7 @@ export default () => {
                           {contact?.general_info?.video_conferencing}
                         </p>
                       ) : (
-                        <input ref={videoRef} className="sm-txt" />
+                        <input ref={videoRef} className="sm-txt ms-2 ms-lg-3" />
                       )}
                     </i>
                   </div>

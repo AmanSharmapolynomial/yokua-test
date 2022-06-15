@@ -253,7 +253,7 @@ const EventScreen = () => {
                             <br />
                             <p>
                               {endDate.diff(startDate, 'days') !== 0
-                                ? endDate.diff(startDate, 'days') + ' days'
+                                ? endDate.diff(startDate, 'days') + 1 + ' days'
                                 : 1 + ' day'}
                             </p>
                           </div>

@@ -623,7 +623,7 @@ const AddEventScreen = () => {
                                     fontWeight: 'bold',
                                   }
                             }
-                            className="col my-auto clamp-1v"
+                            className="col-auto ms-auto my-auto clamp-1v"
                           >
                             Remaining Seats
                           </label>
@@ -1223,17 +1223,17 @@ const AddEventScreen = () => {
                               <label className="form-check-label m-0 clamp-1v" for="no">
                                 Other, please specify
                               </label>
-                              {foodRequirement.name == 'Other, please specify' && (
-                                <input
-                                  type="text"
-                                  className="form-control clamp-1v"
-                                  value={otherFoodRequirement}
-                                  onChange={event => {
-                                    setOtherFoodRequirement(event.target.value)
-                                  }}
-                                />
-                              )}
                             </div>
+                            {foodRequirement.name == 'Other, please specify' && (
+                              <input
+                                type="text"
+                                className="form-control clamp-1v"
+                                value={otherFoodRequirement}
+                                onChange={event => {
+                                  setOtherFoodRequirement(event.target.value)
+                                }}
+                              />
+                            )}
                           </div>
                         </div>
                       </form>

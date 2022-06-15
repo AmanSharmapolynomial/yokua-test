@@ -54,7 +54,7 @@ const ChnagePassword = () => {
           })
       }
     } else {
-      setActionLabel('Password must be 8 characters')
+      setActionLabel('Password must contain 8-16 characters, one special and numeric value')
       setTimeout(() => {
         alertRef.current.style.display = 'none'
       }, 3000)
