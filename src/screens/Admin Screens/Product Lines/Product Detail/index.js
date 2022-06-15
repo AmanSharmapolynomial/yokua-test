@@ -95,7 +95,7 @@ const ProductDetail = () => {
       order_index: orderIndex,
     })
       .then(res => {
-        toast('Section created Successfully', { type: 'success' })
+        toast('Section created successfully', { type: 'success' })
       })
       .catch(error => {
         toast('Something went wrong', { type: 'error' })

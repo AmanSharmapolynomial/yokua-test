@@ -183,7 +183,7 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
 
   const _handleSave = () => {
     if (name.length < 2) {
-      toast.error('Please provide company name')
+      toast.error('Please provide a company name')
       return
     }
     setLoading(true)

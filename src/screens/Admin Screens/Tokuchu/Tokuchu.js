@@ -102,12 +102,12 @@ export default () => {
         component_id: componentId,
       })
         .then(data => {
-          toast.success('Component Deleted Successfully')
+          toast.success('Component deleted successfully')
           selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
         })
         .catch(err => {})
     } else {
-      toast.error('Can not delete empty table')
+      toast.error('Can not delete an empty table')
     }
   }
 
@@ -118,7 +118,7 @@ export default () => {
       order_index: orderIndex,
     })
       .then(data => {
-        toast.success('Section created Successfully')
+        toast.success('Section created successfully')
       })
       .catch(err => {})
   }
@@ -135,7 +135,7 @@ export default () => {
       id: id,
     })
       .then(data => {
-        toast.success('Archieved Successfully')
+        toast.success('Successfully archived')
       })
       .catch(err => {})
   }
@@ -158,7 +158,7 @@ export default () => {
     })
       .then(data => {
         setNeedToReload(!needToReload)
-        toast.success('Product added Successfully')
+        toast.success('Product added successfully')
       })
       .catch(err => {})
   }
@@ -170,7 +170,7 @@ export default () => {
     })
       .then(data => {
         setNeedToReload(!needToReload)
-        toast.success('Sub Product added Successfully')
+        toast.success('Sub-product added successfully')
       })
       .catch(err => {})
   }
@@ -182,7 +182,7 @@ export default () => {
     })
       .then(data => {
         setNeedToReload(!needToReload)
-        toast.success('Sub Product Item added Successfully')
+        toast.success('Sub-product item added successfully')
       })
       .catch(err => {})
   }
@@ -201,7 +201,7 @@ export default () => {
     formData.append('data', JSON.stringify(payload))
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
-        toast.success('New row added Successfully')
+        toast.success('New row added successfully')
       })
       .catch(err => {})
   }
@@ -591,7 +591,7 @@ const AddModal = ({ show, setShow, currentEdit, parentId, saveCompany }) => {
           className="btn"
           onClick={() => {
             if (name.length < 2) {
-              toast.error('Please enter valid Name')
+              toast.error('Please enter a valid name')
               return
             }
             saveCompany(currentEdit, parentId, name)

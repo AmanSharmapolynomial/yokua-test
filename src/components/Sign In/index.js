@@ -32,7 +32,7 @@ const SignIn = () => {
       const logindata = await login(loginDetails)
       if (logindata) {
         setUser(logindata)
-        toast.success('Login Successful')
+        toast.success('Login successful')
         navigate('/home')
       }
     }

@@ -271,7 +271,7 @@ const AddEventScreen = () => {
         // shuttleTransport?.name === undefined ||
         // foodRequirement?.name === undefined
       ) {
-        toast.error('Hotel reservation is manadatory')
+        toast.error('Hotel reservation preference is mandatory')
         return
       }
       if (
@@ -279,7 +279,7 @@ const AddEventScreen = () => {
         shuttleTransport?.name === undefined
         // foodRequirement?.name === undefined
       ) {
-        toast.error('Shuttle transport is manadatory')
+        toast.error('Shuttle transport preference is mandatory')
         return
       }
       if (
@@ -287,7 +287,7 @@ const AddEventScreen = () => {
         // shuttleTransport?.name === undefined ||
         foodRequirement?.name === undefined
       ) {
-        toast.error('Food requirement is manadatory')
+        toast.error('Food preference is mandatory')
         return
       }
     }
@@ -466,7 +466,9 @@ const AddEventScreen = () => {
                               if (moment(date).isBefore(startDate)) {
                                 setCancelledDate(date)
                               } else {
-                                toast.error('Cancellation date should be before start date')
+                                toast.error(
+                                  'Start date should be earlier than registration deadline'
+                                )
                               }
                             }}
                             placeholderText="DDMMYYYY"
@@ -602,7 +604,9 @@ const AddEventScreen = () => {
                               }}
                               onBlur={event => {
                                 if (remainSeat && remainSeat > maxAttendacees) {
-                                  toast.error("Remaining seat can't greater that max attendees")
+                                  toast.error(
+                                    'Remaining seats can not be greater than max. attendees'
+                                  )
                                 }
                               }}
                               value={maxAttendacees}
@@ -640,7 +644,7 @@ const AddEventScreen = () => {
                               onBlur={event => {
                                 if (maxAttendacees != remainSeat) {
                                   toast.error(
-                                    'Max attendees and remaining attendees should be equal'
+                                    'Max attendees and remaining attendees should be the same'
                                   )
                                   setRemainSeats(0)
                                 }

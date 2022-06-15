@@ -30,7 +30,7 @@ const ChnagePassword = () => {
 
   const _resetPasswordUsingUidandToken = () => {
     if (password != confirmPassword) {
-      setActionLabel('Password and Confirm Password should be matched')
+      setActionLabel('"Password" and "Confirm Password" must be the same')
       setTimeout(() => {
         alertRef.current.style.display = 'none'
       }, 3000)

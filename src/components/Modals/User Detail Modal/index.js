@@ -260,15 +260,15 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
                     if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
                       if (validator.isEmail(saveData.email)) {
                         saveAndExit(change, saveData)
-                      } else toast.warning('Improper Email Format')
+                      } else toast.warning('Please enter a valid e-mail address, e.g. abc@xyz.com')
                     } else {
                       toast.error('First & Last Name should only contain letters')
                     }
                   } else {
-                    toast.error('First & Last Name should be 5-50 chars')
+                    toast.error('First & Last Name should be 5 to 50 letters')
                   }
                 } else {
-                  toast.error('Fill all Mandatory Fields')
+                  toast.error('Please fill in all mandatory fields')
 
                   if (!lastNameRef.current.value) {
                     lastNameRef.current.style.borderColor = 'red'

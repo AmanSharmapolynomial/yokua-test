@@ -78,7 +78,7 @@ const SignUp = () => {
             alertRef.current.style.display = 'block'
           } else {
             if (password != confirmPassword) {
-              toast.error('Password and Confirm Password should be same')
+              toast.error('"Password" and "Confirm Password" must be the same')
             } else {
               registerUser(registerDetails).then(a => {
                 if (a.status == 200) {
@@ -94,7 +94,7 @@ const SignUp = () => {
           )
         }
       } else {
-        toast.error('Please enter a valid E-Mail e.g. abc@xyz.com')
+        toast.error('Please enter a valid e-mail address, e.g. abc@xyz.com')
       }
     } else {
       toast.error('Please accept terms and conditions to proceed')

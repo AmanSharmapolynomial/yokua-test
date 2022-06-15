@@ -177,7 +177,7 @@ const UserListView = () => {
         a.first_name.toLowerCase() < b.first_name.toLowerCase() ? 1 : -1
       )
     } else {
-      toast.error('No Filtes found')
+      toast.error('No filters found')
       return
     }
     if (sortedArray.length > 0) {

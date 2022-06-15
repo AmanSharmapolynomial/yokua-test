@@ -20,7 +20,7 @@ const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedC
 
   const _saveCompany = (currentEdit, name) => {
     if (name.length < 2) {
-      toast.error('Please enter valid company name')
+      toast.error('Please enter a valid company name')
       setTopicName('')
       return
     }
@@ -199,7 +199,7 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
               className="btn"
               onClick={() => {
                 if (companyName.length < 2) {
-                  toast.error('Please enter valid Company Name')
+                  toast.error('Please enter a valid company name')
                   return
                 }
                 saveCompany(currentEdit, companyName)

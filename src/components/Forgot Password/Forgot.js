@@ -26,7 +26,7 @@ const Forgot = () => {
       }
     } else {
       setIsLoading(prevState => false)
-      toast.error('Email is not in proper format - abc@xyz.com')
+      toast.error('Please enter a valid e-mail address, e.g. abc@xyz.com')
     }
   }
 

@@ -628,7 +628,7 @@ const ProfileSettingScreen = () => {
                     alertRef.current.style.display = 'block'
                   } else {
                     if (password != passwordRetype) {
-                      toast.error('Password and Confirm Password should be same')
+                      toast.error('"Password" and "Confirm Password" must be the same')
                     } else {
                       const payloadPassword = {
                         new_password1: password,

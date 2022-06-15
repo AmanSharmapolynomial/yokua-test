@@ -50,7 +50,7 @@ const CreateNewDomain = ({ saveAndExit, addDomain, show }) => {
                       addDomain(domain)
                       saveAndExit()
                     } else {
-                      toast.error('Enter Domain in format - yourdomain.xyz')
+                      toast.error('Please enter a valid domain, e.g. yourdomain.xyz')
                     }
                   }
                 }}

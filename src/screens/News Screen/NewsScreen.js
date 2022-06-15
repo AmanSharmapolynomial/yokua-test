@@ -160,7 +160,7 @@ const NewsScreen = () => {
                               setCategoryFilter(null)
                               setSubCategoryFilter(null)
                             } else {
-                              toast.success('Category filter Applied')
+                              toast.success('Category filter applied')
                               setPageNoCall(1)
                               setCategoryFilter(category.id)
                             }
@@ -191,7 +191,7 @@ const NewsScreen = () => {
                         if (!categoryFilter) {
                           // setShowFilterDropdown2(!showFilterDropdown2)
                           // } else {
-                          toast.success('Please select the Category filter first.')
+                          toast.success('Please select the category filter first')
                         }
                       }}
                     />
@@ -216,10 +216,10 @@ const NewsScreen = () => {
                             }}
                             onClick={() => {
                               if (subCategoryFilter === category.id) {
-                                toast.success('Sub Category filter removed')
+                                toast.success('Sub-category filter removed')
                                 setSubCategoryFilter(null)
                               } else {
-                                toast.success('Sub Category filter applied')
+                                toast.success('Sub-category filter applied')
                                 setPageNoCall(1)
                                 setSubCategoryFilter(category.id)
                               }
@@ -328,7 +328,7 @@ const NewsScreen = () => {
                           setNewsUnderEdit(true)
                           setNewsData([...newsData, { id: Math.random() }])
                         } else {
-                          toast.error('Please finish current news edit.')
+                          toast.error('Please complete the current news entry')
                         }
                       }}
                     >

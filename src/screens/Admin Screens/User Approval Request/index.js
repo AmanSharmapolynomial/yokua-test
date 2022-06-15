@@ -257,7 +257,7 @@ const UserApprovalScreen = () => {
 
   const deleteAllDUL = async () => {
     if (selectedDULRowsState.length < 1) {
-      toast.error('Please select the Users to Delete')
+      toast.error('Please select the users to delete')
       return
     }
     const dataArray = []
@@ -429,7 +429,7 @@ const UserApprovalScreen = () => {
                     if (selectedRowsState.length > 0) {
                       acceptAllRequest()
                     } else {
-                      toast.error('Please select the requests to Accept')
+                      toast.error('Please select the user requests to accept')
                     }
                   }}
                 >
@@ -601,7 +601,7 @@ const UserApprovalScreen = () => {
                           if (selectedDULRowsState.length > 0) {
                             setShow(true)
                           } else {
-                            toast.error('Please select users to Delete.')
+                            toast.error('Please select the users to delete')
                           }
                         }}
                       >

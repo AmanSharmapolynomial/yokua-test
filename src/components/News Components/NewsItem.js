@@ -118,7 +118,7 @@ const NewsItem = ({
       setCategoryID(data.category_id)
       setSubCategoryID(data.sub_category_id)
     } else {
-      toast.error('Please finish current news edit.')
+      toast.error('Please complete the current news entry')
     }
   }
 
@@ -274,11 +274,11 @@ const NewsItem = ({
     // }
 
     if (!catId || catId == 0) {
-      toast.error('Please select Topic')
+      toast.error('Please select a topic')
       setLoading(false)
       return
     } else if (subCategoryIds.length < 1) {
-      toast.error('Please select Sub Topic')
+      toast.error('Please select a sub-topic')
       setLoading(false)
       return
     } else {
@@ -492,7 +492,7 @@ const NewsItem = ({
 
   const _editSubCategory = (cat = null) => {
     if (isSubTopicAdd) {
-      toast.error('Please save the current edit first')
+      toast.error('Please save the current entry first')
       return
     }
     const updatedSubCategories = subCategory
@@ -925,7 +925,7 @@ const NewsItem = ({
                                         )
                                         _handleChecked(false)
                                       } else {
-                                        toast.error('Please provide Sub Category title')
+                                        toast.error('Please provide a sub-category title')
                                       }
                                     }}
                                     variant="outline-secondary"
@@ -982,7 +982,7 @@ const NewsItem = ({
                               onClick={e => {
                                 e.stopPropagation()
                                 if (_checkIsEditSubTopicOpen()) {
-                                  toast.error('Please close the current Sub category edit')
+                                  toast.error('Please close the edit of the current sub-category')
                                 } else {
                                   SetNewSubTopicName('')
                                   setSubTopicAdd(true)
@@ -1032,7 +1032,7 @@ const NewsItem = ({
                                   )
                                   // AddNewSubCategoryCall()
                                 } else {
-                                  toast.error('Please provide Sub Category title')
+                                  toast.error('Please provide a sub-category title')
                                 }
                               }}
                               variant="outline-secondary"
@@ -1312,11 +1312,11 @@ function AddCategoryModal({
 
   const AddNewCategoryCall = async (image, categoryName) => {
     if (!image) {
-      toast.error('Image Required')
+      toast.error('An image is required')
       return
     }
     if (!categoryName) {
-      toast.error('Category Name Required')
+      toast.error('Category name is required')
       return
     }
 
@@ -1330,11 +1330,11 @@ function AddCategoryModal({
 
   const EditCategory = async () => {
     if (!imageFile) {
-      toast.error('Image Required')
+      toast.error('An image is required')
       return
     }
     if (!categoryName) {
-      toast.error('Category Name Required')
+      toast.error('Category name is required')
       return
     }
 

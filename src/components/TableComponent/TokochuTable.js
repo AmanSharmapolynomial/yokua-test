@@ -153,7 +153,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     formData.append('data', payload)
     API.post('tokuchu/page/update_table_data', formData)
       .then(data => {
-        toast.success('New row added Successfully')
+        toast.success('New row added successfully')
         setRowName({})
         setEmptyNewRow(null)
         onRefresh()
@@ -167,7 +167,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
       row_index: item.row_index,
     })
       .then(data => {
-        toast.success('Row deleted Successfully')
+        toast.success('Row deleted successfully')
         setRowName({})
         setEmptyNewRow(null)
         onRefresh()
@@ -263,7 +263,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
     })
 
     if (isBlankValue) {
-      toast.error('Please fill all the Fields')
+      toast.error('Please fill in all the fields')
       return
     }
 
@@ -344,7 +344,7 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
             if (!emptyNewRow) {
               addRow()
             } else {
-              toast.error('Please finish current edit.')
+              toast.error('Please finish the current edit')
             }
           }}
         >
