@@ -118,7 +118,7 @@ const SignUp = () => {
         </span>
         <div className="container__heading text-center">Create a new account</div>
       </div>
-      <form className="forum mt-2" type="submit" onSubmit={register}>
+      <form className="col mt-2" type="submit" onSubmit={register}>
         <div className="col">
           <input
             type="text"

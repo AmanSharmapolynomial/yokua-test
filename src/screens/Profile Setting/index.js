@@ -1000,7 +1000,6 @@ const ProfileSettingScreen = () => {
                       <input
                         type="text"
                         className="form-control "
-                        style={{ position: 'absolute', left: '200px', top: '-25%' }}
                         value={selectedEvent.food_requirements}
                         onChange={event => {
                           setSelectedEvent(prev => ({
