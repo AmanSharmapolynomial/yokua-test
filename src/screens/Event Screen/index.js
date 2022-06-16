@@ -144,7 +144,7 @@ const EventScreen = () => {
                 return (
                   // startDate === calenderDate ||
                   // endDate === calenderDate ||
-                  (startDate <= calenderDate && endDate > calenderDate) ||
+                  (startDate <= calenderDate && endDate >= calenderDate) ||
                   (startDate === calenderDate && endDate === calenderDate)
                 )
               })
