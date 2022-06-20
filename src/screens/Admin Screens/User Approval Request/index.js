@@ -167,13 +167,13 @@ const UserApprovalScreen = () => {
       minWidth: '10rem',
     },
     {
-      name: 'E-Mail id',
+      name: 'E-Mail ID',
       selector: row => row.email,
       grow: 2,
       minWidth: '12rem',
     },
     {
-      name: 'New E-mail id',
+      name: 'New E-Mail ID',
       selector: row => row.new_email,
       grow: 2,
       minWidth: '12rem',
@@ -209,12 +209,12 @@ const UserApprovalScreen = () => {
       sortable: true,
     },
     {
-      name: 'Company Email id',
+      name: 'Company Email ID',
       selector: row => row.companyEmail,
       minWidth: '15rem',
     },
     {
-      name: 'status',
+      name: 'Status',
       selector: row => row.status,
       maxWidth: '8rem',
     },

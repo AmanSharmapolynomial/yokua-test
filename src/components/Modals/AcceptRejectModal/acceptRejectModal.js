@@ -42,7 +42,7 @@ const AcceptRejectModal = ({
                   ref={inputRef}
                   type="text"
                   className="domain-input w-100 my-3"
-                  placeholder="maximun 255 character support"
+                  placeholder="Please enter a reason for the user with max. 255 characters"
                   onChange={e => setMsg(e.target.value)}
                 />
               </div>

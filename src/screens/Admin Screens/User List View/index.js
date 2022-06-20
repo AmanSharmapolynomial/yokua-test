@@ -93,7 +93,7 @@ const UserListView = () => {
       minWidth: '15rem',
     },
     {
-      name: 'E-mail',
+      name: 'E-Mail ID',
       selector: row => row.companyEmail,
       grow: 2,
       minWidth: '15rem',

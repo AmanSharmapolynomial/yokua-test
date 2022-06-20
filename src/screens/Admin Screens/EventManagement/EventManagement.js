@@ -74,7 +74,7 @@ const EventManagement = () => {
       selector: row => row.full_name,
     },
     {
-      name: 'E-Mail',
+      name: 'E-Mail ID',
       selector: row => row.email,
       grow: 2,
     },
