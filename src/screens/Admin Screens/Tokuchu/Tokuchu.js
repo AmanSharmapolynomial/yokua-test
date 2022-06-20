@@ -22,6 +22,7 @@ export default () => {
   const [isArchived, setIsArchived] = useState(false)
   const [products, setProducts] = useState([])
   const [tableDetails, setTableDetails] = useState(null)
+  const [tableData, setTableData] = useState([])
   const [pageDetails, setPageDetails] = useState([])
 
   const [subProductLoading, setSubProductLoading] = useState(false)
@@ -85,8 +86,13 @@ export default () => {
         if (data.data.length < 1) {
           setPageDetails({})
           setTableDetails({})
+          setTableData([])
         } else {
+          console.log(data.data)
+          console.log(data.data[0].components)
+          console.log(data.data[0].components[0])
           setPageDetails(data.data)
+          setTableData(data.data)
           setTableDetails(data.data[0].components[0])
         }
       })
@@ -518,7 +524,20 @@ export default () => {
             </button>
           </div>
           <div className="mt-5">
-            {tableDetails && (
+            {tableData &&
+              tableData.map(tData => {
+                return (
+                  <TokochuTable
+                    sectionName={tData.sectionName}
+                    tableObject={tData.components[0]}
+                    setShowDeleteModal={setShowDeleteModal}
+                    onRefresh={() => {
+                      selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
+                    }}
+                  />
+                )
+              })}
+            {/* {tableDetails && (
               <TokochuTable
                 tableObject={tableDetails}
                 setShowDeleteModal={setShowDeleteModal}
@@ -526,7 +545,7 @@ export default () => {
                   selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
                 }}
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 
-export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
+export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -288,6 +288,9 @@ export default ({ tableObject, setShowDeleteModal, onRefresh }) => {
 
   return (
     <>
+      <h5 style={{ marginTop: '60px', marginBottom: '-10px', fontFamily: 'Poppins' }}>
+        {sectionName}
+      </h5>
       {tableObject &&
         tableObject !== {} &&
         (getUserRoles() == 'PMK Administrator' ||
