@@ -209,7 +209,7 @@ const UserApprovalScreen = () => {
       sortable: true,
     },
     {
-      name: 'Company Email ID',
+      name: 'Company E-Mail ID',
       selector: row => row.companyEmail,
       minWidth: '15rem',
     },

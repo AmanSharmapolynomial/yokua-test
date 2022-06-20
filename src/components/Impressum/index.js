@@ -13,7 +13,7 @@ const Impressum = () => {
         <div className="font-8">79664 Wehr</div>
         <div className="font-8">Germany</div>
         <div className="h6 weight-bold mt-5">Contact us</div>
-        <div className="font-8">Email: fcp.info@de.yokogawa.com</div>
+        <div className="font-8">E-Mail ID: fcp.info@de.yokogawa.com</div>
         <div className="font-8">Website: https://rota-yokogawa.com/flowcenterpages</div>
         <div className="h6 weight-bold mt-5">Represented by Managing Partner:</div>
         <div className="font-8">
