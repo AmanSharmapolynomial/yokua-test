@@ -99,7 +99,7 @@ const EventManagement = () => {
       selector: row => row.name,
     },
     {
-      name: 'Email',
+      name: 'E-Mail ID',
       selector: row => row.email_id,
     },
     {
