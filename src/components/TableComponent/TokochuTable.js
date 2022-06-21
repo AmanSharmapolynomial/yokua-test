@@ -288,7 +288,7 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
 
   return (
     <>
-      <h5 style={{ marginTop: '60px', marginBottom: '-10px', fontFamily: 'Poppins' }}>
+      <h5 style={{ marginTop: '60px', marginBottom: '-5px', fontFamily: 'Poppins' }}>
         {sectionName}
       </h5>
       {tableObject &&
