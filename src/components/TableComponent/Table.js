@@ -102,7 +102,7 @@ export default ({
   }
 
   const _setTableHeaders = sort => {
-    const tableColumns = []
+    let tableColumns = []
     tableObject?.map((column, index) => {
       const tempColumnName = column.column_name
       if (!column.is_filterable) {
@@ -167,6 +167,8 @@ export default ({
         })
       }
     })
+    tableColumns = tableColumns.filter(column => column.name != 'File')
+    // console.log("OOOOOOO", tableColumns)
     setTableHeader([...tableColumns])
   }
   const handleSort = (column, type) => {
@@ -226,11 +228,21 @@ export default ({
         const tableRowObject = {
           id: item.id,
         }
-
+        // console.log("JJJJJJ", tableData)
+        const fileLinks = tableData.find(ele => ele.column_name == 'File')
+        console.log('FILE LINKS', fileLinks)
         tableData?.map((column_name, column_index) => {
           if (!isTableEditable) {
             const tempObject = new Object()
             let value = column_name.values[index]?.value
+            let link = fileLinks?.values[index].value || '#'
+            if (column_name.column_name === 'Name') {
+              value = (
+                <a href={link} target="_blank">
+                  {value}
+                </a>
+              )
+            }
             if (column_name.is_link) {
               value = (
                 <a href={value} target="_blank">
@@ -317,10 +329,15 @@ export default ({
     return (
       <div className="add-row d-none d-lg-flex overflow-auto">
         {tableObject.map((ele, idx) => {
+          let typeOrSizeColumn = ele.column_name === 'Type' || ele.column_name === 'Size'
           return (
             <div className="dummy-col" style={{ minWidth: '100px' }}>
               {!ele.is_file ? (
-                <input ref={el => (inputRef.current[idx] = el)} />
+                <input
+                  ref={el => (inputRef.current[idx] = el)}
+                  disabled={typeOrSizeColumn}
+                  placeholder={ele.column_name}
+                />
               ) : (
                 <input ref={el => (inputRef.current[idx] = el)} type="file" />
               )}
