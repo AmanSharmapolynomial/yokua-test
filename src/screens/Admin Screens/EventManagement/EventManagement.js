@@ -271,6 +271,7 @@ const EventManagement = () => {
               ) : (
                 <>
                   <DataTable
+                    sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
                     columns={columnsNotificationTable}
                     data={notificationTableData}
                     selectableRows
@@ -335,6 +336,7 @@ const EventManagement = () => {
                     ) : (
                       <>
                         <DataTable
+                          sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
                           columns={columnsEventDetails}
                           data={eventAttendees}
                           customStyles={customStyles}

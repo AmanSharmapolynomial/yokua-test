@@ -331,6 +331,7 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
       <div className="row">
         <div className="border w-100 p-0">
           <DataTable
+            sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
             fixedHeader
             persistTableHead
             columns={tableHeader}

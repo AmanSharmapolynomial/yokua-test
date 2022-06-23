@@ -712,6 +712,7 @@ const TableComponent = ({ item, deleteComponent }) => {
     <>
       <div className="mb-5 mt-3">
         <DataTable
+          sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
           pagination
           fixedHeader
           columns={columnsApprovalTable}

@@ -598,6 +598,7 @@ const UserListView = () => {
           </div>
           <div className="user-list-view-table mt-3">
             <DataTable
+              sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
               columns={columns}
               data={contentRow}
               selectableRows

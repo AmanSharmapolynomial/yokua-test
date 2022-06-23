@@ -1091,3 +1091,8 @@ select {
 .role-dropdown-sort {
   left: -22px;
 }
+.__rdt_custom_sort_icon__.asc i,
+.__rdt_custom_sort_icon__.asc svg {
+  transform: none !important;
+  -webkit-transform: none !important;
+}

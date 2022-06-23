@@ -416,6 +416,7 @@ export default ({
       <div className="row">
         <div className="border w-100 mt-4 p-0 product-detail-table">
           <DataTable
+            sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
             pagination={false}
             paginationPerPage={false}
             fixedHeader

@@ -470,6 +470,7 @@ const UserApprovalScreen = () => {
               ) : (
                 <>
                   <DataTable
+                    sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
                     columns={columnsApprovalTable}
                     data={contentRowApprovalTable}
                     selectableRows
@@ -571,6 +572,7 @@ const UserApprovalScreen = () => {
                     ) : (
                       <>
                         <DataTable
+                          sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
                           columns={columnsDomainUserListTable}
                           data={contentRowDomainUserListTable}
                           selectableRows
