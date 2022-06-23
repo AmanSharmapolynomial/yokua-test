@@ -67,7 +67,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                     className="bordered-btn rounded w-auto mx-auto"
                     for="binary"
                   >
-                    <input ref={binaryRef} id="binary" type="file" class="d-none" />
+                    <input ref={binaryRef} id="binary" type="file" className="d-none" />
                     Upload
                   </label>
                 ) : (

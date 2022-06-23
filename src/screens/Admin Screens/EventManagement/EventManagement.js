@@ -170,7 +170,22 @@ const EventManagement = () => {
       })
       .finally(setLoading(false))
   }
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
 
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
   const loadEventData = () => {
     if (selectedEvent) {
       if (cancelToken !== undefined) {
@@ -271,7 +286,7 @@ const EventManagement = () => {
               ) : (
                 <>
                   <DataTable
-                    sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
+                    sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
                     columns={columnsNotificationTable}
                     data={notificationTableData}
                     selectableRows
@@ -281,6 +296,7 @@ const EventManagement = () => {
                     fixedHeader
                     fixedHeaderScrollHeight="400px"
                     clearSelectedRows={toggledClearRows}
+                    sortFunction={customSort}
                   />
 
                   <Pagination
@@ -336,13 +352,14 @@ const EventManagement = () => {
                     ) : (
                       <>
                         <DataTable
-                          sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
+                          sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
                           columns={columnsEventDetails}
                           data={eventAttendees}
                           customStyles={customStyles}
                           fixedHeader
                           fixedHeaderScrollHeight="400px"
                           progressPending={isEventDataLoading}
+                          sortFunction={customSort}
                         />
                         <Pagination
                           current={eventAttendeesPage}

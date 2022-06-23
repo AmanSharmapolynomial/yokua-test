@@ -162,7 +162,7 @@ const EventScreen = () => {
                       {data.training_name} - {data.duration}
                     </div>
                   ))}
-                  <i class="bi bi-dot event-dot d-block d-lg-none"></i>
+                  <i className="bi bi-dot event-dot d-block d-lg-none"></i>
                 </div>
               ) : null
             }}

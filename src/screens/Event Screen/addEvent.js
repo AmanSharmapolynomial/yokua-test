@@ -335,7 +335,7 @@ const AddEventScreen = () => {
           <div className="col">
             <div className="row py-3">
               <div className="col shadow rounded-3">
-                <h4 className="mt-4 clamp-2v">Rotomass TI Service Training</h4>
+                <h4 className="mt-4 clamp-2v">Rota Yokogawa Training and Events</h4>
                 <div className="row">
                   <form className="col-lg-6 pe-4 pe-lg-0">
                     <div className="row d-flex align-items-center mt-4">

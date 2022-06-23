@@ -188,6 +188,23 @@ const UserListView = () => {
     setLoading(false)
   }
 
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
+
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
+
   useEffect(async () => {
     const payload = {
       pmk_admin: filterCheckboxPMK,
@@ -598,13 +615,14 @@ const UserListView = () => {
           </div>
           <div className="user-list-view-table mt-3">
             <DataTable
-              sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
+              sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
               columns={columns}
               data={contentRow}
               selectableRows
               customStyles={customStyles}
               conditionalRowStyles={conditionalRowStyles}
               onSelectedRowsChange={selectedRowsAction}
+              sortFunction={customSort}
             />
           </div>
           {(getUserRoles() === 'PMK Administrator' ||

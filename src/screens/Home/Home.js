@@ -206,7 +206,7 @@ const Home = () => {
       />
       <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
-          <PrimaryHeading title={'Home'} />
+          <PrimaryHeading title={'Home'} backgroundImage={'home-banner'} />
           <div className="row mt-4">
             <HomeCardComponent
               title={'Quick Links'}
@@ -334,7 +334,7 @@ const Home = () => {
                 }}
               >
                 <div
-                  class="form-group w-100 border-grey rounded"
+                  className="form-group w-100 border-grey rounded"
                   // style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
                 >
                   <input

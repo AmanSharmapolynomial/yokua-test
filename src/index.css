@@ -802,8 +802,8 @@ select {
   max-height: 12rem;
 }
 .table-header {
-  text-transform: 'capitalize';
-  font-weight: 600;
+  text-transform: capitalize;
+  font-weight: 600 !important;
 }
 .rdt_TableCol > div > div {
   font-size: 0.6rem;

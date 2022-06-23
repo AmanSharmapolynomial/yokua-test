@@ -707,18 +707,34 @@ const TableComponent = ({ item, deleteComponent }) => {
       style: {},
     },
   ]
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
 
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
   return (
     <>
       <div className="mb-5 mt-3">
         <DataTable
-          sortIcon={<i class="fa-solid fa-sort ms-1"></i>}
+          sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
           pagination
           fixedHeader
           columns={columnsApprovalTable}
           data={contentRowApprovalTable}
           customStyles={customStyles}
           conditionalRowStyles={conditionalRowStyles}
+          sortFunction={customSort}
           // selectableRows
           // onSelectedRowsChange={selectedRowsActionUA}
         />
