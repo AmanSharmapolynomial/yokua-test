@@ -802,8 +802,8 @@ select {
   max-height: 12rem;
 }
 .table-header {
-  text-transform: 'capitalize';
-  font-weight: 600;
+  text-transform: capitalize;
+  font-weight: 600 !important;
 }
 .rdt_TableCol > div > div {
   font-size: 0.6rem;
@@ -1090,4 +1090,9 @@ select {
 
 .role-dropdown-sort {
   left: -22px;
+}
+.__rdt_custom_sort_icon__.asc i,
+.__rdt_custom_sort_icon__.asc svg {
+  transform: none !important;
+  -webkit-transform: none !important;
 }

@@ -49,6 +49,23 @@ const UserApprovalScreen = () => {
     return arr
   }
 
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
+
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
+
   useEffect(async () => {
     const listUserApprovalData = await API.post('admin/user_approval', {
       page_index: pageCallUserApproval,
@@ -470,6 +487,7 @@ const UserApprovalScreen = () => {
               ) : (
                 <>
                   <DataTable
+                    sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
                     columns={columnsApprovalTable}
                     data={contentRowApprovalTable}
                     selectableRows
@@ -477,6 +495,7 @@ const UserApprovalScreen = () => {
                     conditionalRowStyles={conditionalRowStyles}
                     onSelectedRowsChange={selectedRowsActionUA}
                     selectableRowDisabled={rowDisabledCriteria}
+                    sortFunction={customSort}
                   />
                   <div className="pagination my-3">
                     <Pagination
@@ -571,12 +590,14 @@ const UserApprovalScreen = () => {
                     ) : (
                       <>
                         <DataTable
+                          sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
                           columns={columnsDomainUserListTable}
                           data={contentRowDomainUserListTable}
                           selectableRows
                           customStyles={customStyles}
                           conditionalRowStyles={conditionalRowStyles}
                           onSelectedRowsChange={selectedRowsActionDUL}
+                          sortFunction={customSort}
                         />
                         <div className="pagination my-3">
                           <Pagination

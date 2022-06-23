@@ -257,7 +257,10 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
                     saveData['password'] = password
                   }
                   if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                    if (validator.isAlpha(firstName) && validator.isAlpha(lastName)) {
+                    if (
+                      validator.isAlpha(firstName, 'en-US', { ignore: ' ' }) &&
+                      validator.isAlpha(lastName, 'en-US', { ignore: ' ' })
+                    ) {
                       if (validator.isEmail(saveData.email)) {
                         saveAndExit(change, saveData)
                       } else toast.warning('Please enter a valid e-mail address, e.g. abc@xyz.com')

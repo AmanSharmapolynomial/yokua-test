@@ -288,7 +288,22 @@ export default ({
       })
     setTableRows([...finalTableData])
   }
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
 
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
   const callAddRowAPI = async () => {
     let data = []
     let file = undefined
@@ -394,7 +409,9 @@ export default ({
   return (
     <div className="col-12 mt-4">
       <div className="row">
-        <div className="col p-0 table-header">{table_name}</div>
+        <div className="col p-0 table-header d-flex align-items-center">
+          <span>{table_name}</span>
+        </div>
         {isAdmin && !archivedFilter && (
           <div className="col-auto my-2 p-0 d-none d-lg-block">
             <Image
@@ -431,8 +448,9 @@ export default ({
         )}
       </div>
       <div className="row">
-        <div className="border w-100 mt-4 p-0 product-detail-table">
+        <div className="border w-100 p-0 product-detail-table">
           <DataTable
+            sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
             pagination={false}
             paginationPerPage={false}
             fixedHeader
@@ -440,6 +458,7 @@ export default ({
             data={tableRows}
             customStyles={customStyles}
             persistTableHead
+            sortFunction={customSort}
             // conditionalRowStyles={conditionalRowStyles}
             // selectableRows
             // onSelectedRowsChange={selectedRowsActionUA}

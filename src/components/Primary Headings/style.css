@@ -3,7 +3,7 @@
 }
 
 .yk-back-image-profile {
-  background-image: url('/public/assets/profileSettingsbanner.jpg');
+  background-image: url('../../assets/profileSettings\ banner.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -11,7 +11,7 @@
 .yk-back-image-news {
   background-size: cover;
   background-position: center;
-  background-image: url('/public/assets/news banner.png');
+  background-image: url('../../assets/news banner.png');
 }
 
 .yk-back-image-event {
@@ -22,5 +22,10 @@
 .yk-back-tokuchu-news {
   background-size: cover;
   background-position: center;
-  background-image: url('/public/assets/Tokuchu banner.png');
+  background-image: url('../../assets/Tokuchu banner.png');
+}
+.home-banner {
+  background-size: cover;
+  background-position: center;
+  background-image: url('../../assets/Home-banner.png');
 }

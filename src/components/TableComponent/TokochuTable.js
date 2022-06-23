@@ -139,7 +139,22 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
     }
     setTableRows([...finalTableData])
   }
+  const customSort = (rows, selector, direction) => {
+    return rows.sort((a, b) => {
+      // use the selector to resolve your field names by passing the sort comparitors
+      const aField = selector(a).toLowerCase()
+      const bField = selector(b).toLowerCase()
 
+      let comparison = 0
+
+      if (aField > bField) {
+        comparison = 1
+      } else if (aField < bField) {
+        comparison = -1
+      }
+      return direction === 'desc' ? comparison * -1 : comparison
+    })
+  }
   const _updateTableData = (image, payload, actionType = 'add_row') => {
     const formData = new FormData()
     if (!image) {
@@ -331,11 +346,13 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
       <div className="row">
         <div className="border w-100 p-0">
           <DataTable
+            sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
             fixedHeader
             persistTableHead
             columns={tableHeader}
             data={tableRows}
             customStyles={customStyles}
+            sortFunction={customSort}
           />
         </div>
       </div>
