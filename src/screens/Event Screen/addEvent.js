@@ -505,7 +505,7 @@ const AddEventScreen = () => {
                           setDuration(event.target.value)
                         }}
                         disabled
-                        value={duration}
+                        value={duration + 1}
                       />
                     </div>
                     <div className="row d-flex align-items-center mt-4">
