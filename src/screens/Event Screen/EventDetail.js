@@ -24,7 +24,7 @@ const EventDetail = () => {
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])
   const [subProductList, setSubProductList] = useState([])
-  const [addComponentData, setAddComponentData] = useState({})
+  // const [addComponentData, setAddComponentData] = useState({columnsNum: 6})
   const [inputBinary, setInputBinary] = useState()
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
@@ -36,9 +36,35 @@ const EventDetail = () => {
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
 
+  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Classification', 'File']
+
+  const returnTableData = () => {
+    let tableData = []
+    tableColumnNames.forEach((columnName, index) => {
+      tableData.push({
+        column_name: columnName,
+        is_date: false,
+        is_file: columnName == 'File' ? true : false,
+        is_filterable: false,
+        is_link: false,
+        is_sortable: false,
+        values: [],
+      })
+    })
+    return tableData
+  }
+  const initialTableState = {
+    columnsNum: 6,
+    table_data: returnTableData(),
+  }
+
+  const [addComponentData, setAddComponentData] = useState(initialTableState)
+
+  console.log(addComponentData.table_data)
+
   const components = [
     {
-      title: 'Add Table',
+      title: 'Table',
       type: 'table',
     },
     { title: 'Link', type: 'link' },
@@ -161,7 +187,7 @@ const EventDetail = () => {
           res.data?.message && toast.success(res.data?.message)
           getProductDetails()
           setIsAddComponentModalVisible(-1)
-          setAddComponentData({})
+          setAddComponentData({ initialTableState })
           if (type === 'binary' || type === 'image') setInputBinary()
         }
         setLoading(false)
@@ -178,7 +204,7 @@ const EventDetail = () => {
         el.classList.remove('show')
       )
     }
-    setAddComponentData({})
+    setAddComponentData({ initialTableState })
     setInputBinary()
   }
 
@@ -570,6 +596,49 @@ const EventDetail = () => {
     return bool
   }
 
+  const handleTableDataChange = (e, item, i) => {
+    setAddComponentData(prevState => {
+      let state = { ...prevState }
+      if (prevState.table_data === undefined) state.table_data = []
+      state.table_data[i] = {
+        ...state.table_data[i],
+        values: [],
+        [item.key]: e.target.value,
+      }
+      if (state.table_data[i]?.is_sortable === undefined) {
+        state.table_data[i] = {
+          ...state.table_data[i],
+          is_sortable: false,
+        }
+      }
+      if (state.table_data[i]?.is_date === undefined) {
+        state.table_data[i] = {
+          ...state.table_data[i],
+          is_date: false,
+        }
+      }
+      if (state.table_data[i]?.is_link === undefined) {
+        state.table_data[i] = {
+          ...state.table_data[i],
+          is_link: false,
+        }
+      }
+      if (state.table_data[i]?.is_filterable === undefined) {
+        state.table_data[i] = {
+          ...state.table_data[i],
+          is_filterable: false,
+        }
+      }
+      if (state.table_data[i]?.is_file === undefined) {
+        state.table_data[i] = {
+          ...state.table_data[i],
+          is_file: false,
+        }
+      }
+      return state
+    })
+  }
+
   const renderAddTable = () => {
     return (
       <div className="row">
@@ -599,12 +668,28 @@ const EventDetail = () => {
             <span className="input-group-text font-8 font-weight-bold">Add Number of Columns</span>
           </div>
           <input
+            value={addComponentData.columnsNum}
             onChange={e => {
-              // if (parseInt(e.target.value) <= 10)
-              setAddComponentData(prevState => {
-                return { ...prevState, columnsNum: parseInt(e.target.value) || -1 }
-              })
-              // else toast.error("Can't add more than 10 coulmns at once")
+              if (e.target.value >= 6) {
+                let newTable = []
+                for (let k = 0; k < parseInt(e.target.value); k++) {
+                  newTable.push(addComponentData.table_data[k])
+                }
+                setAddComponentData(prevState => {
+                  return {
+                    ...prevState,
+                    columnsNum: parseInt(e.target.value),
+                    table_data: newTable,
+                  }
+                })
+              } else {
+                setAddComponentData(prevState => {
+                  return {
+                    ...prevState,
+                    columnsNum: parseInt(e.target.value),
+                  }
+                })
+              }
             }}
             type="number"
             min={1}
@@ -627,111 +712,84 @@ const EventDetail = () => {
                 </div>
               ))}
             </div>
-            {[...Array(addComponentData?.columnsNum)].map((e, i) => (
-              <div className="row add-table-row d-flex align-items-center">
-                {columneNames.map((item, index) =>
-                  index === 0 ? (
-                    <input
-                      style={{ textTransform: 'capitalize' }}
-                      className={`${
-                        index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
-                      }`}
-                      placeholder="column name"
-                      onChange={e => {
-                        setAddComponentData(prevState => {
-                          let state = { ...prevState }
-                          if (prevState.table_data === undefined) state.table_data = []
-                          state.table_data[i] = {
-                            ...state.table_data[i],
-                            values: [],
-                            [item.key]: e.target.value,
+            {addComponentData?.columnsNum >= 6 ? (
+              [...Array(addComponentData?.columnsNum)].map((e, i) => {
+                return (
+                  <div className="row add-table-row d-flex align-items-center">
+                    {columneNames.map((item, index) =>
+                      index === 0 ? (
+                        <input
+                          disabled={tableColumnNames.includes(
+                            addComponentData?.table_data[i]?.column_name
+                          )}
+                          value={addComponentData?.table_data[i]?.column_name || ''}
+                          style={{ textTransform: 'capitalize' }}
+                          className={`${
+                            index === 0 ? 'col-4 add-table-col-input' : 'col add-table-col-input'
+                          }`}
+                          placeholder="column name"
+                          onChange={e => {
+                            handleTableDataChange(e, item, i)
+                          }}
+                        />
+                      ) : (
+                        <input
+                          disabled={
+                            item.title == 'File' ||
+                            ((index === 1 || index === 2 || index === 4 || index === 5) &&
+                              addComponentData?.table_data &&
+                              addComponentData?.table_data[i]?.is_link) ||
+                            (index !== 5 &&
+                              addComponentData?.table_data &&
+                              addComponentData?.table_data[i] &&
+                              addComponentData?.table_data[i]?.is_file) ||
+                            (index === 5 &&
+                              getFileDisabled(addComponentData?.table_data) &&
+                              addComponentData?.table_data &&
+                              addComponentData?.table_data[i] &&
+                              addComponentData?.table_data[i]?.is_file !== true)
                           }
-                          if (state.table_data[i]?.is_sortable === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_sortable: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_date === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_date: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_link === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_link: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_filterable === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_filterable: false,
-                            }
-                          }
-                          if (state.table_data[i]?.is_file === undefined) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              is_file: false,
-                            }
-                          }
-                          return state
-                        })
-                      }}
-                    />
-                  ) : (
-                    <input
-                      disabled={
-                        ((index === 1 || index === 2 || index === 4 || index === 5) &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i]?.is_link) ||
-                        (index !== 5 &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i] &&
-                          addComponentData?.table_data[i]?.is_file) ||
-                        (index === 5 &&
-                          getFileDisabled(addComponentData?.table_data) &&
-                          addComponentData?.table_data &&
-                          addComponentData?.table_data[i] &&
-                          addComponentData?.table_data[i]?.is_file !== true)
-                      }
-                      type="checkbox"
-                      className={`${index === 0 ? 'col-4' : 'col'}`}
-                      onChange={e => {
-                        setAddComponentData(prevState => {
-                          let state = { ...prevState }
-                          if (prevState.table_data === undefined) state.table_data = []
-                          state.table_data[i] = {
-                            ...state.table_data[i],
-                            [item.key]: e.target.checked,
-                          }
-                          if (item.key === 'is_link' && e.target.checked === true) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              [columneNames[1].key]: false,
-                              [columneNames[2].key]: false,
-                              [columneNames[4].key]: false,
-                              [columneNames[5].key]: false,
-                            }
-                          }
-                          if (item.key === 'is_file' && e.target.checked === true) {
-                            state.table_data[i] = {
-                              ...state.table_data[i],
-                              [columneNames[1].key]: false,
-                              [columneNames[2].key]: false,
-                              [columneNames[3].key]: false,
-                              [columneNames[4].key]: false,
-                            }
-                          }
-                          return state
-                        })
-                      }}
-                    />
-                  )
-                )}
-              </div>
-            ))}
+                          type="checkbox"
+                          checked={addComponentData?.table_data[i]?.[item.key]}
+                          className={`${index === 0 ? 'col-4' : 'col'}`}
+                          onChange={e => {
+                            setAddComponentData(prevState => {
+                              let state = { ...prevState }
+                              if (prevState.table_data === undefined) state.table_data = []
+                              state.table_data[i] = {
+                                ...state.table_data[i],
+                                [item.key]: e.target.checked,
+                              }
+                              if (item.key === 'is_link' && e.target.checked === true) {
+                                state.table_data[i] = {
+                                  ...state.table_data[i],
+                                  [columneNames[1].key]: false,
+                                  [columneNames[2].key]: false,
+                                  [columneNames[4].key]: false,
+                                  [columneNames[5].key]: false,
+                                }
+                              }
+                              if (item.key === 'is_file' && e.target.checked === true) {
+                                state.table_data[i] = {
+                                  ...state.table_data[i],
+                                  [columneNames[1].key]: false,
+                                  [columneNames[2].key]: false,
+                                  [columneNames[3].key]: false,
+                                  [columneNames[4].key]: false,
+                                }
+                              }
+                              return state
+                            })
+                          }}
+                        />
+                      )
+                    )}
+                  </div>
+                )
+              })
+            ) : (
+              <p>Minimum 6 Columns required</p>
+            )}
           </div>
         )}
         <div className="col-12 justify-content-center d-flex mt-3">
@@ -832,7 +890,8 @@ const EventDetail = () => {
             disabled={addComponentData?.title === undefined || addComponentData?.link === undefined}
             className="btn btn-primary ms-2"
             onClick={() => {
-              callAddComponentAPI('link')
+              if (addComponentData.columnsNum < 6) toast.error('Minimum 6 columns are required')
+              else callAddComponentAPI('table')
             }}
           >
             Create
