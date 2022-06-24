@@ -288,6 +288,7 @@ const UserApprovalScreen = () => {
       }
       // not working issue from the backend - tell them to make api accept an email Array
       const afterDeleteMsg = await API.post('admin/delete_user', payload)
+      toast.success(afterDeleteMsg.data.message)
       console.log(afterDeleteMsg)
       setReloadTable(!reloadTable)
     } else return
@@ -321,10 +322,9 @@ const UserApprovalScreen = () => {
       status: 'activate',
       msg: 'Accepted Your Request',
     }
-    console.log(payload)
     // server is giving internal error
     const afterAcceptMsg = await API.post('admin/user_approval/approve', payload)
-    console.log(afterAcceptMsg)
+    toast.success(afterAcceptMsg.data.message)
     setChangeModal('Accepted')
     setModalTitle(null)
     setOpenARModal(false)
@@ -339,7 +339,7 @@ const UserApprovalScreen = () => {
       delete_associated_users: false,
     }
     const afterDeleteMsg = await API.post('admin/delete_whitelisted_domain', payload)
-    // toast.success(afterDeleteMsg.data.message)
+    toast.success(afterDeleteMsg.data.message)
     setReloadTable(!reloadTable)
   }
 
@@ -348,7 +348,7 @@ const UserApprovalScreen = () => {
       domain_name: domain,
     }
     const afterCreateMsg = API.post('admin/add_domain', payload)
-    console.log(afterCreateMsg)
+    toast.success(afterCreateMsg.data.message)
     setReloadTable(!reloadTable)
   }
 
@@ -361,7 +361,7 @@ const UserApprovalScreen = () => {
       }
       // server is giving internal error
       const afterRejectMsg = await API.post('admin/user_approval/approve', payload)
-      console.log(afterRejectMsg.data)
+      toast.success(afterRejectMsg.data.message)
       setReloadTable(!reloadTable)
     } else {
       setReloadTable(!reloadTable)
