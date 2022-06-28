@@ -5,14 +5,20 @@ import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-b
 import API from '../../utils/api'
 import { toast } from 'react-toastify'
 
-const CustomDropdown = ({ categories, getCompanyList, setTopicName, getSelectedCompany }) => {
+const CustomDropdown = ({
+  categories,
+  getCompanyList,
+  setTopicName,
+  getSelectedCompany,
+  selectedAddr,
+}) => {
   const [show, setShow] = useState(false)
   const [currentEdit, setCurrentEdit] = useState(1)
   const [parentCompany, setParentCompany] = useState('')
   const [isTopicAdd, setIsTopicAdd] = useState(false)
   const [isSubTopicAdd, setIsSubTopicAdd] = useState(false)
 
-  const [selectedCompany, setSelectedCompany] = useState('Company')
+  const [selectedCompany, setSelectedCompany] = useState(selectedAddr || 'Company')
 
   useEffect(() => {
     getSelectedCompany(selectedCompany)
@@ -220,7 +226,6 @@ const CompanyModal = ({ show, setShow, currentEdit, saveCompany }) => {
         }}
         centered
       >
-        
       </Modal.Footer> */}
     </Modal>
   )

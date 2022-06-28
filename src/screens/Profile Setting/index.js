@@ -14,6 +14,7 @@ import placeholder from '../../components/News Components/placeholder.png'
 import { useLoading } from '../../utils/LoadingContext'
 import Modal from 'react-modal'
 import { Modal as BSModal } from 'react-bootstrap'
+import CustomDropdown from '../../components/Sign Up/CustomDropdown'
 const customStyles = {
   overlay: {
     zIndex: 10,
@@ -60,7 +61,7 @@ const ProfileSettingScreen = () => {
   const nameRef = useRef()
   const [email, setEmail] = useState()
   const emailRef = useRef()
-  const [address, setAddress] = useState()
+  const [address, setAddress] = useState('')
   const [password, setPassword] = useState()
   const [passwordRetype, setPasswordRetype] = useState()
   const [disabledInputName, setDisabledInputName] = useState(true)
@@ -87,12 +88,38 @@ const ProfileSettingScreen = () => {
   const [actionLabel, setActionLabel] = useState('')
   const alertRef = useRef()
   const navigate = useNavigate()
+  const [category, setCategory] = useState([])
+  const [topicName, setTopicName] = useState('')
+  const [selectedTopic, setSelectedTopic] = useState('Company')
+
+  const getCompanyList = () => {
+    API.get('auth/view_company').then(data => {
+      setCategory(data.data)
+    })
+  }
+  const handleSelectTopic = cat => {
+    setAddress(cat)
+    setSelectedTopic(cat)
+  }
+  const getSelectedCompany = name => {
+    handleSelectTopic(name)
+  }
+
+  // useEffect(() => {
+  //   console.log("ADDRESS-REF", addressRef)
+  // }, [disabledInputAddress])
+
+  useEffect(() => {
+    getCompanyList()
+  }, [])
+
   useEffect(async () => {
     // call profile data
     setIsLoading(true)
     setLoading(true)
     const backendData = await API.get('/auth/profile_settings/')
     setProfileData(backendData.data)
+    setAddress(backendData.data.basic_profile.company_name)
     _setProfilePicture(
       backendData.data.basic_profile?.avatar ? backendData.data.basic_profile?.avatar : placeholder
     )
@@ -306,6 +333,7 @@ const ProfileSettingScreen = () => {
                     required
                     type="text"
                     disabled={disabledInputName}
+                    autoFocus={disabledInputName}
                     ref={nameRef}
                     style={{
                       textTransform: 'capitalize',
@@ -325,6 +353,7 @@ const ProfileSettingScreen = () => {
                       }}
                       onClick={() => {
                         setDisabledInputName(!disabledInputName)
+                        nameRef.current.focus()
                       }}
                     />
                   )}
@@ -355,6 +384,7 @@ const ProfileSettingScreen = () => {
                       }}
                       onClick={() => {
                         setDisabledInputEmail(!disabledInputEmail)
+                        emailRef.current.focus()
                       }}
                     />
                   )}
@@ -364,16 +394,47 @@ const ProfileSettingScreen = () => {
                     style={{ width: '20px', height: '20px' }}
                     src={require('../../assets/Icon awesome-address-book.png')}
                   />
-
-                  <input
-                    required
-                    type="text"
-                    disabled={disabledInputAddress}
-                    ref={addressRef}
-                    onChange={e => {
-                      setAddress(e.target.value)
-                    }}
-                  />
+                  {disabledInputAddress ? (
+                    <input
+                      required
+                      type="text"
+                      disabled={disabledInputAddress}
+                      ref={addressRef}
+                      onChange={e => {
+                        setAddress(e.target.value)
+                      }}
+                      value={address}
+                    />
+                  ) : (
+                    <CustomDropdown
+                      selectedAddr={address}
+                      categories={category}
+                      getCompanyList={getCompanyList}
+                      getSelectedCompany={getSelectedCompany}
+                      setTopicName={setTopicName}
+                      // newSelected={address}
+                      key={'registration'}
+                    />
+                  )}
+                  {/* <input
+                      required
+                      type="text"
+                      disabled={disabledInputAddress}
+                      ref={addressRef}
+                      onChange={e => {
+                        setAddress(e.target.value)
+                      }}
+                      style={{display: disabledInputAddress ? 'block' : 'none'}}
+                    />
+                    <CustomDropdown
+                      customDisplay={disabledInputAddress ? 'hidden' : 'block'}
+                      categories={category}
+                      getCompanyList={getCompanyList}
+                      getSelectedCompany={getSelectedCompany}
+                      setTopicName={setTopicName}
+                      // newSelected={address}
+                      key={'registration'}
+                    /> */}
                   {getUserRoles() == 'Technical Administrator' ? (
                     <></>
                   ) : (
