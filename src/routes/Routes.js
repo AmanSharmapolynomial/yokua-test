@@ -182,7 +182,15 @@ const Routing = () => {
           path="/product-lines"
           element={
             <PrivateRoute>
-              <ProductLine />
+              <ProductLine archieve={false} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product-lines/archive"
+          element={
+            <PrivateRoute>
+              <ProductLine archieve={true} />
             </PrivateRoute>
           }
         />

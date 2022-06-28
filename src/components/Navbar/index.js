@@ -188,7 +188,9 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
             </a>
           </li>
           <li className="nav-item px-xl-3">
-            <a className="nav-link">Archive</a>
+            <Link className="nav-link" to="/product-lines/archive">
+              Archive
+            </Link>
           </li>
           <li className="nav-item px-xl-3">
             <Link className="nav-link" to="/profile">

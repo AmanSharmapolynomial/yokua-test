@@ -13,20 +13,20 @@ import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import ProductCard from '../../components/ProductCard/productcard'
 import { Link, Router } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
-const ProductLine = () => {
+const ProductLine = ({ archieve }) => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
-
   const navigate = useNavigate()
-  const [archivedFilter, setArchivedFilter] = useState(false)
+  // const [archivedFilter, setArchivedFilter] = useState(archieve)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
 
   const getProductList = () => {
     setIsLoading(true)
     API.post('products/list_view', {
-      is_archived: archivedFilter,
+      is_archived: archieve,
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
@@ -69,7 +69,7 @@ const ProductLine = () => {
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
-          archive={archivedFilter}
+          archive={archieve}
           key={item.id}
           index={index}
           item={item}
@@ -100,7 +100,7 @@ const ProductLine = () => {
 
   useEffect(() => {
     getProductList()
-  }, [archivedFilter])
+  }, [archieve])
 
   return (
     <>
@@ -126,26 +126,18 @@ const ProductLine = () => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <div className="archived-filter mt-5 mb-5">
-              {archivedFilter ? (
+              {archieve ? (
                 <button
                   className="btn"
                   style={{ display: 'grid', placeItems: 'center' }}
                   onClick={() => {
-                    setArchivedFilter(false)
+                    navigate('/product-lines')
                   }}
                 >
                   Live Product
                 </button>
               ) : (
-                <button
-                  className="btn"
-                  style={{ display: 'grid', placeItems: 'center' }}
-                  onClick={() => {
-                    setArchivedFilter(true)
-                  }}
-                >
-                  Product Archive
-                </button>
+                <></>
               )}
             </div>
           )}
