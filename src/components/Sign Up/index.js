@@ -26,6 +26,7 @@ const SignUp = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [company, setCompany] = useState(0)
+  const [checkNews, setCheckNews] = useState(false)
 
   const [actionLabel, setActionLabel] = useState('')
   const [isLoading, setLoading] = useState(false)
@@ -47,6 +48,7 @@ const SignUp = () => {
     password1: password,
     password2: confirmPassword,
     company_name: company,
+    check_news: checkNews,
   }
 
   const getCompanyList = () => {
@@ -200,6 +202,22 @@ const SignUp = () => {
               />
               <span className="checkbox-text me-auto ms-2">
                 Accept the Terms of Service and Privacy Policies
+              </span>
+            </div>
+          </div>
+          <div className="col-12 p-0 mt-2">
+            <div className="form-group d-flex">
+              <input
+                type="checkbox"
+                id="checkNews"
+                className="w-auto my-auto"
+                checked={checkNews}
+                onChange={() => {
+                  setCheckNews(!checkNews)
+                }}
+              />
+              <span className="checkbox-text me-auto ms-2">
+                Register also for the Flow Center News
               </span>
             </div>
           </div>
