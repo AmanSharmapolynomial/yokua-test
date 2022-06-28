@@ -81,7 +81,7 @@ body {
 }
 
 .user-list-view-table div:first-child {
-  overflow-y: visible !important;
+  overflow: visible !important;
   white-space: normal !important;
 }
 
