@@ -387,9 +387,12 @@ const UserListView = () => {
     }
     if (idx === undefined || idx === null) {
       index = dataToChange
+      console.log(dataToChange, 390)
     } else {
-      index = idx + pageNoCall * 10
+      if (pageNoCall > 1) index = idx + pageNoCall * 10
+      else index = idx
     }
+    console.log(type, data, idx, contentRow[index]?.companyEmail)
     if (type === 'Edit' && contentRow[index]?.companyEmail) {
       payload = {
         ...payload,
