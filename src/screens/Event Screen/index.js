@@ -291,7 +291,7 @@ const EventScreen = () => {
                                 navigate('/event/update/' + e.id)
                               }}
                             >
-                              Click here to Register Event
+                              Click here to Register
                             </label>
                           </div>
                         </td>
