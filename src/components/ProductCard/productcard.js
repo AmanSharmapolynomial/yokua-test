@@ -115,17 +115,15 @@ const ProductCard = ({
             getUserRoles() == 'Technical Administrator') &&
             !archive && (
               <span className="col-auto d-none d-lg-block">
-                {!subProduct && (
-                  <img
-                    className="me-3"
-                    src={archiveIcon}
-                    onClick={e => {
-                      e.stopPropagation()
-                      setShowArchiveModal(true)
-                      // onArchiveClick()
-                    }}
-                  />
-                )}
+                <img
+                  className="me-3"
+                  src={archiveIcon}
+                  onClick={e => {
+                    e.stopPropagation()
+                    setShowArchiveModal(true)
+                    // onArchiveClick()
+                  }}
+                />
                 <img
                   src={isEditable ? saveIcon : editIcon}
                   onClick={e => {

@@ -53,6 +53,21 @@ const SubProduct = () => {
     toast.success(response.data.message)
   }
 
+  const archiveProducts = id => {
+    setIsLoading(true)
+    API.post('products/page/set_archive', {
+      id: id,
+      archive_type: 'product',
+    })
+      .then(res => {
+        toast.success(res.message)
+        getProductList()
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   const renderRow = () => {
     let rows = []
     let col = []
@@ -64,6 +79,9 @@ const SubProduct = () => {
           index={index}
           item={item}
           subProduct={true}
+          onArchiveClick={() => {
+            archiveProducts(item.id)
+          }}
           onClick={() => {
             navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
           }}
