@@ -609,7 +609,7 @@ const AddEventScreen = () => {
                                   )
                                 }
                               }}
-                              value={maxAttendacees}
+                              value={eventOption.value == 'webinar' ? '' : maxAttendacees}
                               disabled={eventId || eventOption.value == 'webinar'}
                             />
                           </div>
@@ -649,7 +649,7 @@ const AddEventScreen = () => {
                                   setRemainSeats(0)
                                 }
                               }}
-                              value={remainSeat}
+                              value={eventOption.value == 'webinar' ? '' : remainSeat}
                               disabled={true}
                             />
                           </div>
