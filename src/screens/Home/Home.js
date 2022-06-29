@@ -260,8 +260,9 @@ const Home = () => {
               <div className="ryg-header-title">RYG Information</div>
               <div className="align-self-center">
                 <div className="ryg-text mt-xl-5">
-                  Download the FlowConfigurator, get Service information, Lead-time table register
-                  for Trainings, Application Notes and many more
+                  Register for Trainings, Download the FlowConfigurator, Get the latest Lead-time
+                  table, Download Service Information, Application Notes or Marketing Collaterals
+                  and much more...
                 </div>
                 <div className="mt-2 text-center" role={'button'}>
                   <Link to={'/ryg-information'}>
