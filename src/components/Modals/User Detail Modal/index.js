@@ -256,19 +256,15 @@ const UserDetailsModal = ({ change, data, saveAndExit, title, show }) => {
                   if (password && password.length > 1) {
                     saveData['password'] = password
                   }
-                  if (saveData.firstName.length >= 4 && saveData.lastName.length >= 4) {
-                    if (
-                      validator.isAlpha(firstName, 'en-US', { ignore: ' ' }) &&
-                      validator.isAlpha(lastName, 'en-US', { ignore: ' ' })
-                    ) {
-                      if (validator.isEmail(saveData.email)) {
-                        saveAndExit(change, saveData)
-                      } else toast.warning('Please enter a valid e-mail address, e.g. abc@xyz.com')
-                    } else {
-                      toast.error('First & Last Name should only contain letters')
-                    }
+                  if (
+                    validator.isAlpha(firstName, 'en-US', { ignore: ' ' }) &&
+                    validator.isAlpha(lastName, 'en-US', { ignore: ' ' })
+                  ) {
+                    if (validator.isEmail(saveData.email)) {
+                      saveAndExit(change, saveData)
+                    } else toast.warning('Please enter a valid e-mail address, e.g. abc@xyz.com')
                   } else {
-                    toast.error('First & Last Name should be 5 to 50 letters')
+                    toast.error('First & Last Name should only contain letters')
                   }
                 } else {
                   toast.error('Please fill in all mandatory fields')
