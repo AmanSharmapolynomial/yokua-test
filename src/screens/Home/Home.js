@@ -258,22 +258,25 @@ const Home = () => {
           <div className="row mt-4 mb-4">
             <div className="col-12 col-lg-8">
               <div className="ryg-header-title">RYG Information</div>
-              <div className="align-self-center">
-                <div className="ryg-text mt-xl-5">
-                  Register for Trainings, Download the FlowConfigurator, Get the latest Lead-time
-                  table, Download Service Information, Application Notes or Marketing Collaterals
-                  and much more...
-                </div>
-                <div className="mt-2 text-center" role={'button'}>
-                  <Link to={'/ryg-information'}>
-                    <img
-                      src={GoTo}
-                      style={{ width: '2rem', height: '2rem', objectFit: 'contain' }}
-                      className="mt-2 mx-auto"
-                    />
-                  </Link>
-                </div>
+              {/* <div className="align-self-center"> */}
+              {/* <div className="ryg-text mt-xl-5"> */}
+              <ul>
+                <li>Register for Trainings</li>
+                <li>Download the FlowConfigurator</li>
+                <li>Get the latest Lead-time table</li>
+                <li>Download Service Information</li>
+                <li>Application Notes or Marketing Collaterals and much more...</li>
+              </ul>
+              <div className="mt-2 text-center" role={'button'}>
+                <Link to={'/ryg-information'}>
+                  <img
+                    src={GoTo}
+                    style={{ width: '2rem', height: '2rem', objectFit: 'contain' }}
+                    className="mt-2 mx-auto"
+                  />
+                </Link>
               </div>
+              {/* </div> */}
             </div>
             <div className="col-8 col-lg-4 mx-auto mt-3 mt-lg-0">
               <img src={RYGBottom} className="home-ryg-img shadow" />
