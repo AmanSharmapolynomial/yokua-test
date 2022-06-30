@@ -128,7 +128,9 @@ const ProfileSettingScreen = () => {
   }, [reloadData])
 
   useEffect(() => {
-    nameRef.current.value = profileData.basic_profile?.full_name || 'chael'
+    const name = profileData.basic_profile?.full_name || 'chael'
+    const formattedName = capitalizeName(name)
+    nameRef.current.value = formattedName
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
     addressRef.current.value = profileData.basic_profile?.company_name
     const tempCheckedArr = []
@@ -266,6 +268,17 @@ const ProfileSettingScreen = () => {
       .catch(err => setShowCancelModal(false))
   }
 
+  const capitalizeName = name => {
+    let nameList = name.split(' ')
+    nameList[0] = nameList[0].charAt(0).toUpperCase() + nameList[0].slice(1)
+    if (nameList.length > 1) {
+      let len = nameList.length
+      nameList[len - 1] = nameList[len - 1].charAt(0).toUpperCase() + nameList[len - 1].slice(1)
+    }
+    const newName = nameList.join(' ')
+    return newName
+  }
+
   return (
     <>
       <Header isLogedIn={getToken()} />
@@ -329,18 +342,22 @@ const ProfileSettingScreen = () => {
                     src={require('../../assets/Icon ionic-ios-person.png')}
                   />
                   <input
-                    autoCapitalize="word"
+                    // autoCapitalize="word"
                     required
                     type="text"
                     disabled={disabledInputName}
                     autoFocus={disabledInputName}
                     ref={nameRef}
                     style={{
-                      textTransform: 'capitalize',
+                      backgroundColor: disabledInputName ? '#e3e3e3' : '#fff',
                     }}
+                    // style={{
+                    //   textTransform: 'capitalize',
+                    // }}
                     onChange={e => {
                       setEditMode1(true)
-                      setName(e.target.value)
+                      const name = e.target.value
+                      setName(capitalizeName(name))
                     }}
                   />
                   {getUserRoles() == 'Technical Administrator' ? (
@@ -352,8 +369,9 @@ const ProfileSettingScreen = () => {
                         color: disabledInputName ? 'var(--bgColor2)' : 'grey',
                       }}
                       onClick={() => {
+                        console.log('NAMEREF', nameRef)
                         setDisabledInputName(!disabledInputName)
-                        nameRef.current.focus()
+                        nameRef.focus()
                       }}
                     />
                   )}
