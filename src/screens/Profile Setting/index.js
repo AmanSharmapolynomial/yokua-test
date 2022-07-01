@@ -348,12 +348,6 @@ const ProfileSettingScreen = () => {
                     disabled={disabledInputName}
                     autoFocus={disabledInputName}
                     ref={nameRef}
-                    style={{
-                      backgroundColor: disabledInputName ? '#e3e3e3' : '#fff',
-                    }}
-                    // style={{
-                    //   textTransform: 'capitalize',
-                    // }}
                     onChange={e => {
                       setEditMode1(true)
                       const name = e.target.value
