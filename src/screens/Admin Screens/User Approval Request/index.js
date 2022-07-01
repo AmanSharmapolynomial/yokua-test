@@ -268,6 +268,7 @@ const UserApprovalScreen = () => {
   const saveAndExitModal = () => {
     setOpenARModal(false)
     setOpenDomainModal(false)
+    console.log('Modal Closed')
     setOpenDeleteDomainModal(false)
     // document.body.style.overflow = 'auto'
   }
@@ -343,11 +344,11 @@ const UserApprovalScreen = () => {
     setReloadTable(!reloadTable)
   }
 
-  const createDomain = domain => {
+  const createDomain = async domain => {
     const payload = {
       domain_name: domain,
     }
-    const afterCreateMsg = API.post('admin/add_domain', payload)
+    const afterCreateMsg = await API.post('admin/add_domain', payload)
     toast.success(afterCreateMsg.data.message)
     setReloadTable(!reloadTable)
   }
