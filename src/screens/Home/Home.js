@@ -250,6 +250,7 @@ const Home = () => {
                 index={index}
                 onClick={() => {
                   if (item?.tokuchu) navigate('/admin/approved-tokuchus')
+                  else if (item?.name === 'Archive') navigate('/product-lines/archive')
                   else navigate('/product-lines/sub-product', { state: item })
                 }}
               />
