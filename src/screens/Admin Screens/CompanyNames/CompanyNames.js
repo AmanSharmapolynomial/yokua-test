@@ -4,6 +4,7 @@ import API from '../../../utils/api'
 import Plusicon from '../../../assets/Group 331.png'
 import { toast } from 'react-toastify'
 import { Modal, FormControl } from 'react-bootstrap'
+import CommonModal from '../../../components/Modals/CommonModal/CommonModal'
 
 import './yokogawa-component.css'
 import { useLoading } from '../../../utils/LoadingContext'
@@ -208,68 +209,22 @@ const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
 
   const handleClose = () => setShow(false)
 
+  const handleCancel = () => {
+    setName('')
+    setShow(false)
+  }
+
   return (
-    <>
-      <Modal show={show} centered onHide={handleClose}>
-        <Modal.Header
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderBottom: '0',
-          }}
-        >
-          <Modal.Title>Add Company Name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body
-          className="pt-0"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderBottom: '0',
-            width: '100%',
-          }}
-        >
-          <FormControl
-            style={{ fontSize: 'small' }}
-            className="mt-2 mb-2 w-100"
-            placeholder="Name.."
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </Modal.Body>
-        <Modal.Footer
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderTop: '0',
-          }}
-          centered
-        >
-          <button
-            id="mybtn"
-            className="btn btn-background me-4"
-            onClick={() => {
-              setName('')
-              setShow(false)
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn"
-            onClick={() => {
-              _handleSave()
-            }}
-          >
-            Confirm
-          </button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <CommonModal
+      show={show}
+      handleClose={handleClose}
+      modalTitle={'Add Company Name'}
+      data={name}
+      handleDataChange={setName}
+      cancelAction={handleCancel}
+      saveAction={_handleSave}
+      placeholder={'Name...'}
+      ariaLabel={"Recipient's username"}
+    />
   )
 }
