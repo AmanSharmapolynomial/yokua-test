@@ -1483,6 +1483,7 @@ const RYGDetail = () => {
                             <label
                               className="form-check-label clamp-1v ps-1"
                               for="flexCheckDefault"
+                              style={{ fontSize: '1.5rem', color: '#004F9B', fontWeight: 'bolder' }}
                             >
                               {section.name}
                             </label>

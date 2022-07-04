@@ -410,7 +410,7 @@ export default ({
     <div className="col-12 mt-4">
       <div className="row">
         <div className="col p-0 table-header d-flex align-items-center">
-          <span>{table_name}</span>
+          <span style={{ fontSize: '1.25rem', textDecoration: 'underline' }}>{table_name}</span>
         </div>
         {isAdmin && !archivedFilter && (
           <div className="col-auto my-2 p-0 d-none d-lg-block">
