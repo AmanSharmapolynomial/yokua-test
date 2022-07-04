@@ -352,6 +352,7 @@ export default ({
                   ref={el => (inputRef.current[idx] = el)}
                   disabled={typeOrSizeColumn}
                   placeholder={ele.column_name}
+                  style={{ backgroundColor: typeOrSizeColumn ? '#f5f5f5' : '#fff' }}
                 />
               ) : (
                 <input ref={el => (inputRef.current[idx] = el)} type="file" />
