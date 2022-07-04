@@ -68,8 +68,6 @@ const ProfileSettingScreen = () => {
   const [disabledInputEmail, setDisabledInputEmail] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [disabledInputAddress, setDisabledInputAddress] = useState(true)
-  const [disabledInputPassword, setDisabledInputPassword] = useState(true)
-  const [disabledInputPasswordRetype, setDisabledInputPasswordRetype] = useState(true)
 
   const [editMode1, setEditMode1] = useState(false)
   const [editMode2, setEditMode2] = useState(false)
@@ -603,7 +601,6 @@ const ProfileSettingScreen = () => {
                   <input
                     required
                     type={passwordVisible ? 'text' : 'password'}
-                    disabled={disabledInputPassword}
                     onChange={e => {
                       setPassword(e.target.value)
                     }}
@@ -624,16 +621,6 @@ const ProfileSettingScreen = () => {
                       }}
                     />
                   )}
-
-                  <i
-                    className="fa-solid fa-pen-to-square edit"
-                    style={{
-                      color: disabledInputPassword ? 'var(--bgColor2)' : 'grey',
-                    }}
-                    onClick={() => {
-                      setDisabledInputPassword(!disabledInputPassword)
-                    }}
-                  />
                 </div>
                 <div className="edit_input">
                   <img
@@ -643,7 +630,6 @@ const ProfileSettingScreen = () => {
                   <input
                     required
                     type={passwordVisible2 ? 'text' : 'password'}
-                    disabled={disabledInputPasswordRetype}
                     onChange={e => {
                       setPasswordRetype(e.target.value)
                     }}
@@ -665,16 +651,6 @@ const ProfileSettingScreen = () => {
                       }}
                     />
                   )}
-
-                  <i
-                    className="fa-solid fa-pen-to-square edit"
-                    style={{
-                      color: disabledInputPasswordRetype ? 'var(--bgColor2)' : 'grey',
-                    }}
-                    onClick={() => {
-                      setDisabledInputPasswordRetype(!disabledInputPasswordRetype)
-                    }}
-                  />
                 </div>
                 <span
                   className="alert-under-input"
