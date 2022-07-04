@@ -140,7 +140,8 @@ const Home = () => {
                       href={item.link}
                       target="_blank"
                       role={'button'}
-                      className="col text-decoration-none text-break"
+                      className="col register-link"
+                      style={{ textAlign: 'left' }}
                     >
                       {item.name}
                     </a>
