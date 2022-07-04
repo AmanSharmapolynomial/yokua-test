@@ -1242,6 +1242,7 @@ const AddEventScreen = () => {
                         </div>
                       </form>
                     </div>
+                    <div style={{ height: '1rem' }} />
                     <div className="row">
                       <div>
                         <div className="row d-flex align-items-center">
