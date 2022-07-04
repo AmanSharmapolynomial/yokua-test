@@ -152,7 +152,9 @@ export default () => {
                     </i>
                     <i className="fa fa-phone mb-lg-4 d-flex align-items-center" aria-hidden="true">
                       {!isEdit ? (
-                        <p className="sm-h1 ps-2 ps-lg-3 m-0">{contact?.general_info?.phone_no}</p>
+                        <p className="sm-h1 ps-2 ps-lg-3 clamp-1v m-0">
+                          {contact?.general_info?.phone_no}
+                        </p>
                       ) : (
                         <input ref={phoneRef} className="sm-txt ms-2 ms-lg-3" />
                       )}
@@ -162,7 +164,7 @@ export default () => {
                       aria-hidden="true"
                     >
                       {!isEdit ? (
-                        <p className="sm-h1 ps-3 text-break m-0">
+                        <p className="sm-h1 ps-3 text-break clamp-1v m-0">
                           {contact?.general_info?.video_conferencing}
                         </p>
                       ) : (
