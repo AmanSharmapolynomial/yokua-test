@@ -574,8 +574,6 @@ const ProfileSettingScreen = () => {
                   setDisabledInputAddress(true)
                   setDisabledInputEmail(true)
                   setDisabledInputName(true)
-                  setDisabledInputPassword(true)
-                  setDisabledInputPasswordRetype(true)
                   setEditMode1(false)
                   setEditMode2(false)
                 }}
@@ -691,8 +689,6 @@ const ProfileSettingScreen = () => {
                       setDisabledInputAddress(true)
                       setDisabledInputEmail(true)
                       setDisabledInputName(true)
-                      setDisabledInputPassword(true)
-                      setDisabledInputPasswordRetype(true)
                       setReloadData(!reloadData)
                     }
                   }
