@@ -51,7 +51,7 @@ const SignIn = () => {
             required={true}
             onChange={e => setEmail(e.target.value)}
             className="input-field input-field__email"
-            placeholder="E-Mail"
+            placeholder="E-mail"
           />
           <div className="d-flex align-items-center input-field mx-auto">
             <span className="flex-fill">

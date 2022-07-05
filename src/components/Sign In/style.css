@@ -87,7 +87,7 @@ h3 {
 }
 
 .input-field__email::placeholder {
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 .first {
