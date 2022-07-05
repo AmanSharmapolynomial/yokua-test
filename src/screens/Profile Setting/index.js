@@ -279,6 +279,17 @@ const ProfileSettingScreen = () => {
     return newName
   }
 
+  const nameValidator = (name) => {
+    const nameSplitArray = name.split(' ');
+    let validated = true;
+    nameSplitArray.map(part => {
+      if(!validator.isAlpha(part)){
+        validated = false;
+      }
+    })
+    return validated;
+  }
+
   return (
     <>
       <Header isLogedIn={getToken()} />
@@ -430,25 +441,6 @@ const ProfileSettingScreen = () => {
                       key={'registration'}
                     />
                   )}
-                  {/* <input
-                      required
-                      type="text"
-                      disabled={disabledInputAddress}
-                      ref={addressRef}
-                      onChange={e => {
-                        setAddress(e.target.value)
-                      }}
-                      style={{display: disabledInputAddress ? 'block' : 'none'}}
-                    />
-                    <CustomDropdown
-                      customDisplay={disabledInputAddress ? 'hidden' : 'block'}
-                      categories={category}
-                      getCompanyList={getCompanyList}
-                      getSelectedCompany={getSelectedCompany}
-                      setTopicName={setTopicName}
-                      // newSelected={address}
-                      key={'registration'}
-                    /> */}
                   {getUserRoles() == 'Technical Administrator' ? (
                     <></>
                   ) : (
@@ -534,10 +526,8 @@ const ProfileSettingScreen = () => {
                     news_letter: tempNLArray,
                   }
                   if (
-                    name &&
-                    validator.isAlpha(name.split(' ')[0]) &&
-                    validator.isAlpha(name.split(' ')[1]) &&
-                    name.length >= 5
+                    name && nameValidator(name)
+                    // name.length >= 5
                   ) {
                     if (name && name != '') {
                       payload = {
