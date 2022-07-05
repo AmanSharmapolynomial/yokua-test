@@ -11,6 +11,8 @@ const CustomDropdown = ({
   setTopicName,
   getSelectedCompany,
   selectedAddr,
+  isProfileEdit = false,
+  setComp = null,
 }) => {
   const [show, setShow] = useState(false)
   const [currentEdit, setCurrentEdit] = useState(1)
@@ -58,6 +60,13 @@ const CustomDropdown = ({
       })
   }
 
+  const handleChange = cName => {
+    setSelectedCompany(cName)
+    if (isProfileEdit) {
+      setComp(cName)
+    }
+  }
+
   return (
     <div className="container">
       <CompanyModal
@@ -89,7 +98,7 @@ const CustomDropdown = ({
                     <a
                       className="dropdown-item"
                       tabIndex="-1"
-                      onClick={() => setSelectedCompany(item.company_name)}
+                      onClick={() => handleChange(item.company_name)}
                     >
                       {item.company_name}
                       <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
@@ -99,7 +108,7 @@ const CustomDropdown = ({
                         {item.company_divisions.map((subc, index) => (
                           <li
                             className="dropdown-item"
-                            onClick={() => setSelectedCompany(subc.sub_div_name)}
+                            onClick={() => handleChange(subc.sub_div_name)}
                           >
                             <a tabIndex="-1">{subc.sub_div_name}</a>
                           </li>

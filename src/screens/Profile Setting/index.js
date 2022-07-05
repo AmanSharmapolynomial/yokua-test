@@ -62,6 +62,7 @@ const ProfileSettingScreen = () => {
   const [email, setEmail] = useState()
   const emailRef = useRef()
   const [address, setAddress] = useState('')
+  const [comp, setComp] = useState('')
   const [password, setPassword] = useState()
   const [passwordRetype, setPasswordRetype] = useState()
   const [disabledInputName, setDisabledInputName] = useState(true)
@@ -76,7 +77,7 @@ const ProfileSettingScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [passwordVisible2, setPasswordVisible2] = useState(false)
 
-  const addressRef = useRef()
+  // const addressRef = useRef()
 
   const [checkedIds, setCheckedIds] = useState([])
   const [reloadData, setReloadData] = useState(false)
@@ -130,7 +131,8 @@ const ProfileSettingScreen = () => {
     const formattedName = capitalizeName(name)
     nameRef.current.value = formattedName
     emailRef.current.value = profileData.basic_profile?.email || 'tech@yokogawa.com'
-    addressRef.current.value = profileData.basic_profile?.company_name
+    //addressRef.current.value = profileData.basic_profile?.company_name
+    setAddress(profileData.basic_profile?.company_name)
     const tempCheckedArr = []
     profileData.news_letter?.map((nl, index) => {
       if (nl.subscribed) {
@@ -409,7 +411,7 @@ const ProfileSettingScreen = () => {
                       required
                       type="text"
                       disabled={disabledInputAddress}
-                      ref={addressRef}
+                      //ref={addressRef}
                       onChange={e => {
                         setAddress(e.target.value)
                       }}
@@ -423,6 +425,8 @@ const ProfileSettingScreen = () => {
                       getSelectedCompany={getSelectedCompany}
                       setTopicName={setTopicName}
                       // newSelected={address}
+                      isProfileEdit={true}
+                      setComp={setComp}
                       key={'registration'}
                     />
                   )}
@@ -559,13 +563,13 @@ const ProfileSettingScreen = () => {
                       return
                     }
                   }
-                  if (address && address != '') {
+                  if (comp && comp != '') {
                     payload = {
-                      company: address,
+                      company: comp,
                       ...payload,
                     }
                   } else {
-                    if (addressRef.current.value === '') {
+                    if (address === '') {
                       toast.error('Please enter valid company')
                       return
                     }
