@@ -13,31 +13,27 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   const [unreadNewsCount, setUnreadNewsCount] = useState(0)
   const [productList, setProductList] = useState([])
 
-  const navDropdownAdminData = [
-    { name: 'User Management', url: '/admin/user/list-view' },
-    { name: 'Event Management', url: '/admin/event' },
-  ]
-
-  const productLineDropdown = [
-    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
-    { name: 'Field Instruments', url: '/product-lines' },
-  ]
+  let navDropdownAdminData = []
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
     navDropdownAdminData.push({
       name: 'User Request',
       url: '/admin/user/approval-request',
     })
-    navDropdownAdminData.push({
-      name: 'Company Names',
-      url: '/admin/user/company-names',
-    })
-  } else {
-    navDropdownAdminData.push({
-      name: 'Company Names',
-      url: '/admin/user/company-names',
-    })
   }
+
+  const remainingData = [
+    { name: 'User Management', url: '/admin/user/list-view' },
+    { name: 'Event Management', url: '/admin/event' },
+    { name: 'Company Names', url: '/admin/user/company-names' },
+  ]
+
+  navDropdownAdminData = [...navDropdownAdminData, ...remainingData]
+
+  const productLineDropdown = [
+    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
+    { name: 'Field Instruments', url: '/product-lines' },
+  ]
 
   const getUnreadNewsCount = async () => {
     try {
