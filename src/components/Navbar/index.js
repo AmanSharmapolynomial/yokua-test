@@ -19,8 +19,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   ]
 
   const productLineDropdown = [
-    { name: 'Approved Tokuchus', url: '/admin/approved-tokuchus' },
-    { name: 'Product Lines', url: '/product-lines' },
+    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
+    { name: 'Field Instruments', url: '/product-lines' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
@@ -119,7 +119,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Product Lines
+              Products
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               {productLineDropdown.map((element, index) => (

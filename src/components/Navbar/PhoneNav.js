@@ -20,8 +20,8 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
   ]
 
   const productLineDropdown = [
-    { name: 'Approved Tokuchus', url: '/admin/approved-tokuchus' },
-    { name: 'Product Lines', url: '/product-lines' },
+    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
+    { name: 'Field Instruments', url: '/product-lines' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
@@ -157,7 +157,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
                 hideNavbar()
               }}
             >
-              Product Lines
+              Products
               <i className="fa-solid fa-angle-right" />
             </a>
           </li>
