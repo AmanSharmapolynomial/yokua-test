@@ -279,15 +279,15 @@ const ProfileSettingScreen = () => {
     return newName
   }
 
-  const nameValidator = (name) => {
-    const nameSplitArray = name.split(' ');
-    let validated = true;
+  const nameValidator = name => {
+    const nameSplitArray = name.split(' ')
+    let validated = true
     nameSplitArray.map(part => {
-      if(!validator.isAlpha(part)){
-        validated = false;
+      if (!validator.isAlpha(part)) {
+        validated = false
       }
     })
-    return validated;
+    return validated
   }
 
   return (
@@ -526,7 +526,8 @@ const ProfileSettingScreen = () => {
                     news_letter: tempNLArray,
                   }
                   if (
-                    name && nameValidator(name)
+                    name &&
+                    nameValidator(name)
                     // name.length >= 5
                   ) {
                     if (name && name != '') {
