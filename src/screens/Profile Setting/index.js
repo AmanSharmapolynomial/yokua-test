@@ -749,6 +749,7 @@ const ProfileSettingScreen = () => {
                               <span>{training.address}</span>
                             </div>
                           </div>
+                          <hr />
                         </>
                       ))}
                     </div>
