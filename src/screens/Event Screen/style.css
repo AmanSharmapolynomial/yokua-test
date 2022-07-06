@@ -6,6 +6,11 @@
 .react-calendar {
   width: 100% !important;
   border: 1px solid;
+  font-family: Poppins;
+}
+.react-calendar__navigation__label__labelText{
+  font-size: x-large;
+  font-weight: 500;
 }
 .react-calendar__viewContainer {
   margin: -1px;
