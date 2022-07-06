@@ -571,6 +571,7 @@ const ProfileSettingScreen = () => {
                   setName()
                   setEmail()
                   setAddress()
+                  setComp()
                   setDisabledInputAddress(true)
                   setDisabledInputEmail(true)
                   setDisabledInputName(true)
