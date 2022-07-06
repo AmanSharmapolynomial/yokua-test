@@ -326,6 +326,14 @@ const AddEventScreen = () => {
         navigate('/event/update/' + eventId)
       })
   }
+
+  useEffect(() => {
+    const msPerDay = 1000 * 60 * 60 * 24
+    let days = Math.round((endDate.getTime() - startDate.getTime()) / msPerDay) + 1
+    console.log('DURATION', days)
+    setDuration(days)
+  }, [startDate, endDate])
+
   return (
     <>
       <Header isLogedIn={getToken()} />
@@ -365,18 +373,18 @@ const AddEventScreen = () => {
                             className="form-control clamp-1v"
                             onChange={date => {
                               if (endDate != null && endDate != undefined && endDate >= date) {
-                                setDuration(
-                                  moment(endDate).diff(date, 'days') === 0
-                                    ? 1
-                                    : moment(endDate).diff(date, 'days')
-                                )
+                                // setDuration(
+                                //   moment(endDate).diff(date, 'days') === 0
+                                //     ? 1
+                                //     : moment(endDate).diff(date, 'days')
+                                // )
                                 setStartDate(date)
                               } else {
-                                setDuration(
-                                  moment(date).diff(date, 'days') === 0
-                                    ? 1
-                                    : moment(date).diff(date, 'days')
-                                )
+                                // setDuration(
+                                //   moment(date).diff(date, 'days') === 0
+                                //     ? 1
+                                //     : moment(date).diff(date, 'days')
+                                // )
                                 setStartDate(date)
                                 setEndDate(date)
                                 // toast.error('End date should be greater than start date')
@@ -505,7 +513,7 @@ const AddEventScreen = () => {
                           setDuration(event.target.value)
                         }}
                         disabled
-                        value={duration + 1}
+                        value={duration}
                       />
                     </div>
                     <div className="row d-flex align-items-center mt-4">
