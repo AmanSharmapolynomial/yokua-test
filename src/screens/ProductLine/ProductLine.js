@@ -31,7 +31,7 @@ const ProductLine = ({ archieve }) => {
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           const productList = res.data.slice()
-          productList.sort((a, b) => a.name.localeCompare(b.name))
+          //productList.sort((a, b) => a.name.localeCompare(b.name))
           setProductList(productList)
         }
         setIsLoading(false)
@@ -66,6 +66,7 @@ const ProductLine = ({ archieve }) => {
   const renderRow = () => {
     let rows = []
     let col = []
+    console.log('PRODUCT LIST', productList)
     productList.forEach((item, index) => {
       col.push(
         <ProductCard
@@ -86,14 +87,6 @@ const ProductLine = ({ archieve }) => {
           }}
         />
       )
-      // if ((index + 1) % 2 === 0 && index + 1 <= productList.length) {
-      //   rows.push(<div className="row mt-0 mt-lg-5">{col}</div>)
-      //   col = []
-      // } else if ((index + 1) % 2 !== 0 && index + 1 === productList.length) {
-      //   col.push(<div key={item.id} className={`col-12 col-md ms-lg-5 px-2 py-3`}></div>)
-      //   rows.push(<div className="row mt-0 mt-lg-5">{col}</div>)
-      //   col = []
-      // }
     })
     return col
   }
