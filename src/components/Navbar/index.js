@@ -31,8 +31,8 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
   navDropdownAdminData = [...navDropdownAdminData, ...remainingData]
 
   const productLineDropdown = [
-    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
     { name: 'Field Instruments', url: '/product-lines' },
+    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
   ]
 
   const getUnreadNewsCount = async () => {

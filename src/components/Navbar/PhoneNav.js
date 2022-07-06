@@ -20,8 +20,8 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
   ]
 
   const productLineDropdown = [
-    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
     { name: 'Field Instruments', url: '/product-lines' },
+    { name: 'Specials (Tokuchus)', url: '/admin/approved-tokuchus' },
   ]
 
   if (getUserRoles() == 'PMK Administrator' || getUserRoles() == 'Technical Administrator') {
