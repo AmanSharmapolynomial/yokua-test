@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 
-export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => {
+export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRequest }) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -303,14 +303,17 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
 
   return (
     <>
-      <h5 style={{ marginTop: '60px', marginBottom: '-5px', fontFamily: 'Poppins' }}>
-        {sectionName}
-      </h5>
+      {!allRequest && (
+        <h5 style={{ marginTop: '60px', marginBottom: '-5px', fontFamily: 'Poppins' }}>
+          {sectionName}
+        </h5>
+      )}
       {tableObject &&
         tableObject !== {} &&
         (getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
-          getUserRoles() == 'Technical Administrator') && (
+          getUserRoles() == 'Technical Administrator') &&
+        !allRequest && (
           <div className="row text-primary d-none d-lg-flex">
             <div className="ms-auto w-auto my-2">
               {isEdit ? (
@@ -356,30 +359,31 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh }) => 
           />
         </div>
       </div>
-      {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') && (
-        <div
-          className="add_row d-none d-lg-flex"
-          style={{ fontSize: '1rem', background: 'none' }}
-          onClick={() => {
-            if (!emptyNewRow) {
-              addRow()
-            } else {
-              toast.error('Please finish the current edit')
-            }
-          }}
-        >
-          <img
-            src={Plusicon}
-            style={{
-              width: '1rem',
-              marginRight: '0.2rem',
+      {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
+        !allRequest && (
+          <div
+            className="add_row d-none d-lg-flex"
+            style={{ fontSize: '1rem', background: 'none' }}
+            onClick={() => {
+              if (!emptyNewRow) {
+                addRow()
+              } else {
+                toast.error('Please finish the current edit')
+              }
             }}
-            className={'me-2'}
-            alt={'icon'}
-          />
-          {'Add'}
-        </div>
-      )}
+          >
+            <img
+              src={Plusicon}
+              style={{
+                width: '1rem',
+                marginRight: '0.2rem',
+              }}
+              className={'me-2'}
+              alt={'icon'}
+            />
+            {'Add'}
+          </div>
+        )}
       <Modal
         show={deleteSelected !== null && Object.keys(deleteSelected).length > 0}
         centered

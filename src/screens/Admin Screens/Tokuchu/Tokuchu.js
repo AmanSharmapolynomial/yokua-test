@@ -29,6 +29,8 @@ export default () => {
   const [productItemLoading, setProductItemLoading] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState()
   const [dataToShow, setDataToShow] = useState()
+  const [allRequest, setAllRequest] = useState(false)
+  const [allTableData, setAllTableData] = useState({})
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -79,6 +81,9 @@ export default () => {
   }
 
   const _getDetails = (productItemId = 1) => {
+    setAllRequest(false)
+    setAllTableData({})
+    setTableData([])
     API.post('tokuchu/details/', {
       page_id: productItemId,
     })
@@ -87,10 +92,29 @@ export default () => {
           setPageDetails({})
           setTableDetails({})
           setTableData([])
+        }
+        // FOR ALL PRODUCTS REQUEST
+        else if (selectedProduct.name.toLowerCase().includes('all')) {
+          setAllRequest(true)
+          const allData = data.data[0].components[0]
+          data.data.map(item => {
+            item.components[0].table_data.map(tableItem => {
+              let index = allData.table_data.findIndex(
+                allItem => allItem.column_name === tableItem.column_name
+              )
+              allData.table_data[index].values = allData.table_data[index].values.concat(
+                tableItem.values
+              )
+            })
+          })
+          for (let i = 0; i < allData.table_data.length; i++) {
+            allData.table_data[i].values.splice(0, 1)
+            console.log('TABLE ITEM', allData.table_data[i].values)
+          }
+          console.log('ORIGINAL', data.data)
+          console.log('ALL DATA', allData)
+          setAllTableData(allData)
         } else {
-          console.log(data.data)
-          console.log(data.data[0].components)
-          console.log(data.data[0].components[0])
           setPageDetails(data.data)
           setTableData(data.data)
           setTableDetails(data.data[0].components[0])
@@ -524,10 +548,23 @@ export default () => {
             </button>
           </div>
           <div className="mt-5">
-            {tableData &&
+            {allRequest ? (
+              <TokochuTable
+                allRequest={allRequest}
+                sectionName={'ALL'}
+                tableObject={allTableData}
+                setShowDeleteModal={setShowDeleteModal}
+                onRefresh={() => {
+                  selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
+                }}
+              />
+            ) : (
+              //{
+              tableData &&
               tableData.map(tData => {
                 return (
                   <TokochuTable
+                    allRequest={allRequest}
                     sectionName={tData.sectionName}
                     tableObject={tData.components[0]}
                     setShowDeleteModal={setShowDeleteModal}
@@ -536,16 +573,9 @@ export default () => {
                     }}
                   />
                 )
-              })}
-            {/* {tableDetails && (
-              <TokochuTable
-                tableObject={tableDetails}
-                setShowDeleteModal={setShowDeleteModal}
-                onRefresh={() => {
-                  selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
-                }}
-              />
-            )} */}
+              })
+              //}
+            )}
           </div>
         </div>
       </div>
