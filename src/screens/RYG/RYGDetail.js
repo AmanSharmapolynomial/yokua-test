@@ -588,7 +588,12 @@ const RYGDetail = () => {
     productDetail.map((item, index) => (
       <div className="col-12 mt-3 mt-lg-5">
         <div className="row">
-          <span className="text-bold p-0">{item.sectionName}</span>
+          <span
+            className="text-bold p-0"
+            style={{ fontSize: '1.5rem', color: '#004F9B', fontWeight: 'bolder' }}
+          >
+            {item.sectionName}
+          </span>
         </div>
         <div className="row">
           {/* {console.log(item.components)} */}
