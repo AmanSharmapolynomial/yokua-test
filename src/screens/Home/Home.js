@@ -266,8 +266,10 @@ const Home = () => {
                 <li>Register for Trainings</li>
                 <li>Download the FlowConfigurator</li>
                 <li>Get the latest Lead-time table</li>
-                <li>Download Service Information</li>
-                <li>Application Notes or Marketing Collaterals and much more...</li>
+                <li>
+                  Download Service Information, Application Notes or Marketing Collaterals and much
+                  more...
+                </li>
               </ul>
               <div className="mt-2 text-center" role={'button'}>
                 <Link to={'/ryg-information'}>
