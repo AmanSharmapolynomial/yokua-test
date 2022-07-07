@@ -521,7 +521,7 @@ const AddEventScreen = () => {
                         Costs
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         step=".01"
                         presicion={2}
                         className="form-control hide-spinners col clamp-1v"
