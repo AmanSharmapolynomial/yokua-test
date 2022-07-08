@@ -1156,11 +1156,11 @@ const ProductDetail = () => {
       <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <div className="row d-none d-lg-block">
-            <div className="col-12 col-lg-6 border rounded py-2">
+            <div className="col-12 col-lg-5 border rounded py-2">
               <div className="row">
                 <span
                   role="button"
-                  className="col-6 light-grey"
+                  className="col-4 light-grey"
                   onClick={() => {
                     navigate(-1)
                   }}
@@ -1168,10 +1168,10 @@ const ProductDetail = () => {
                   Previous page
                 </span>
                 <span
-                  className="col-6"
-                  style={{
-                    wordBreak: 'break-all',
-                  }}
+                  className="col-8"
+                  // style={{
+                  //   wordBreak: 'break-all',
+                  // }}
                 >
                   <u
                     role="button"
