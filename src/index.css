@@ -1096,3 +1096,7 @@ select {
   transform: none !important;
   -webkit-transform: none !important;
 }
+.rdt_TableHeadRow .rdt_TableCol{
+  background-color: #8D9799;
+  color: black;
+}
