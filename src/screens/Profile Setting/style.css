@@ -60,6 +60,13 @@
   align-items: center;
   margin: 1rem 1.5rem;
 }
+
+.onclick_edit {
+  border-bottom: none;
+  padding: 0.5rem;
+  background-color: #f0f0f0;
+}
+
 .profile-setting__basic-profile {
   /* margin-bottom: 3rem; */
 }

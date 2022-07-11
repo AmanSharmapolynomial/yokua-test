@@ -347,7 +347,7 @@ const ProfileSettingScreen = () => {
             <div className="profile-setting__basic-profile profile-setting__box">
               <h1 className="profile-setting__heading py-3">BASIC PROFILE</h1>
               <div className="profile-setting__basic-profile-edit">
-                <div className="edit_input">
+                <div className="edit_input onclick_edit">
                   <img
                     style={{ width: '20px', height: '20px' }}
                     src={require('../../assets/Icon ionic-ios-person.png')}
@@ -381,7 +381,7 @@ const ProfileSettingScreen = () => {
                     />
                   )}
                 </div>
-                <div className="edit_input">
+                <div className="edit_input onclick_edit">
                   <img
                     style={{ width: '20px', height: '15px' }}
                     src={require('../../assets/Icon zocial-email.png')}
@@ -412,7 +412,7 @@ const ProfileSettingScreen = () => {
                     />
                   )}
                 </div>
-                <div className="edit_input">
+                <div className="edit_input onclick_edit">
                   <img
                     style={{ width: '20px', height: '20px' }}
                     src={require('../../assets/Icon awesome-address-book.png')}
