@@ -113,13 +113,19 @@ const Home = () => {
     setDelete,
     isAdmin,
   }) => {
+    const capitalizeFirstLetter = string => {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+    }
+
     if (!isImage)
       return (
         <div className="col col-lg-4">
           <div className="card h-100">
             <div className="card-body d-flex flex-column">
               <div className="row card-header-title">
-                <span className="col">{title}</span>
+                <span className="col" style={{ fontSize: 'large' }}>
+                  {title}
+                </span>
                 {isAdmin && (
                   <span className="col-auto d-none d-lg-block">
                     <img
@@ -143,7 +149,7 @@ const Home = () => {
                       className="col register-link"
                       style={{ textAlign: 'left' }}
                     >
-                      {item.name}
+                      {capitalizeFirstLetter(item.name)}
                     </a>
                     {state && (
                       <i
