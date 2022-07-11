@@ -24,7 +24,7 @@ const EventScreen = () => {
   const [eventList, setEventList] = useState([])
   //to acheive delete feture
   const [eventIdList, setEventIdList] = useState([])
-  const [eventDeleteMsg, setEventDeleteMsg] = useState([])
+  const [eventDeleteMsg, setEventDeleteMsg] = useState('')
   const [modalIsOpen, setIsOpen] = useState(false)
 
   const isAdmin =
@@ -43,6 +43,7 @@ const EventScreen = () => {
     listOfEventList.data.map(e => {
       temp.push({
         id: e.id,
+        cancellation_date: e.cancelled_date,
         status: false,
       })
     })
@@ -93,8 +94,9 @@ const EventScreen = () => {
     //remove all the event
     const payloadName = {
       event_id: temp,
-      msg: eventDeleteMsg,
+      msg: eventDeleteMsg || 'Deleting Past Event',
     }
+    console.log('PAYLOAD', payloadName.msg)
     const afterUpdateMsg = await API.post('/training/trainging_deletion', payloadName)
     toast.success(afterUpdateMsg.data.message)
     closeModal()
@@ -120,6 +122,23 @@ const EventScreen = () => {
 
   //console.log(getUserRoles())
   //if (reloadData == true) {
+
+  const parseDate = date => {
+    let parts = date.split('-')
+    let mydate = new Date(parts[0], parts[1] - 1, parts[2])
+    return mydate
+  }
+
+  const handleSingleEventDelete = (id, handleDeleteEvent) => {
+    let temp = [...checkedBoxState]
+    checkedBoxState.forEach(e => {
+      if (e.id == id) {
+        e.status = !e.status
+      }
+    })
+    setCheckedBoxState([...temp])
+    handleDeleteEvent()
+  }
   return (
     <>
       <Header isLogedIn={getToken()} />
@@ -320,7 +339,13 @@ const EventScreen = () => {
                               <i
                                 className="fas fa-trash"
                                 onClick={() => {
-                                  openModal(e.id)
+                                  const currDate = new Date()
+                                  const eventCancelDate = parseDate(e.cancelled_date)
+                                  if (currDate > eventCancelDate) {
+                                    handleSingleEventDelete(e.id, handleDeleteEvent)
+                                  } else {
+                                    openModal(e.id)
+                                  }
                                 }}
                                 style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
                               />
@@ -357,7 +382,17 @@ const EventScreen = () => {
                 </button>
                 <button
                   onClick={() => {
-                    openModalForMultipleEvent()
+                    const currDate = new Date()
+                    let flag = true
+                    checkedBoxState.map(data => {
+                      if (data.status) {
+                        const eventCancelDate = parseDate(data.cancellation_date)
+                        if (currDate < eventCancelDate) {
+                          flag = false
+                        }
+                      }
+                    })
+                    flag ? handleDeleteEvent() : openModalForMultipleEvent()
                   }}
                   style={{
                     background: 'rgb(0, 79, 155)',
@@ -417,6 +452,11 @@ const EventScreen = () => {
                     }}
                     onClick={() => {
                       closeModal()
+                      let temp = checkedBoxState
+                      temp.map(e => {
+                        e.status = false
+                      })
+                      setCheckedBoxState(temp)
                     }}
                   >
                     Cancel
