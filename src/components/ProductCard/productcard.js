@@ -7,6 +7,7 @@ import archiveIcon from '../../assets/archive.png'
 import { getUserRoles } from '../../utils/token'
 import './productcard.css'
 import { Modal } from 'react-bootstrap'
+import htmlParser from 'html-react-parser'
 
 const ProductCard = ({
   index,
@@ -95,7 +96,7 @@ const ProductCard = ({
                         wordBreak: 'break-word',
                       }}
                     >
-                      {subProduct ? item.sub_product_name : item.name}
+                      {subProduct ? htmlParser(item.sub_product_name) : htmlParser(item.name)}
                     </div>
                   )
                 }
