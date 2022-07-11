@@ -233,7 +233,7 @@ const ProductDetail = () => {
 
   return (
     <>
-      <div className="container font-poppins">
+      <div className="container font-Noto Sans">
         {openDeleteModal && (
           <DeleteModal
             show={openDeleteModal}
@@ -244,7 +244,7 @@ const ProductDetail = () => {
           />
         )}
         <Breadcrumb previousPages={state.previousPage} currentPage={state.header} />
-        <h3 className={'mt-4 mb-2 font-poppins'}>{state.header}</h3>
+        <h3 className={'mt-4 mb-2 font-Noto Sans'}>{state.header}</h3>
 
         {
           /**

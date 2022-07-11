@@ -304,7 +304,7 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
   return (
     <>
       {!allRequest && (
-        <h5 style={{ marginTop: '60px', marginBottom: '-5px', fontFamily: 'Poppins' }}>
+        <h5 style={{ marginTop: '60px', marginBottom: '-5px', fontFamily: 'Noto Sans' }}>
           {sectionName}
         </h5>
       )}

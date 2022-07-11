@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 #root,
 body,
 html {
@@ -11,7 +11,7 @@ html {
   justify-content: space-between;
 }
 body {
-  font-family: 'Poppins' !important;
+  font-family: 'Noto Sans' !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
@@ -351,7 +351,7 @@ body {
   text-align: left !important;
   border-radius: 5px;
   background-color: var(--bgColor2) !important;
-  font-family: Poppins;
+  font-family: Noto Sans;
   font-weight: 500;
   font-size: 0.8rem !important;
   width: max-content;
@@ -386,7 +386,7 @@ body {
   text-align: left !important;
   border-radius: 5px;
   background-color: var(--bgColor2) !important;
-  font-family: Poppins;
+  font-family: Noto Sans;
   font-weight: normal;
   font-size: 0.8rem !important;
   width: max-content;
@@ -565,7 +565,7 @@ select {
   border-radius: 3px;
   padding: 14px 8px;
   font-size: 0.8rem;
-  font-family: Poppins;
+  font-family: Noto Sans;
 }
 select {
   height: 1.6rem;
@@ -583,7 +583,7 @@ select {
   border-radius: 3px;
   padding: 0.07rem 0.6rem;
   font-size: 0.8rem;
-  font-family: Poppins;
+  font-family: Noto Sans;
 }
 
 .state-and-code {
@@ -684,7 +684,7 @@ select {
 
 .yk-admin-contact .product-item-name span {
   color: #000000;
-  font-family: 'Poppins' !important;
+  font-family: 'Noto Sans' !important;
   font-size: 0.6rem;
 }
 .profile-circle {
@@ -709,7 +709,7 @@ select {
   font-size: 0.8rem;
   color: #000000;
   letter-spacing: 1px;
-  font-family: 'Poppins';
+  font-family: 'Noto Sans';
 }
 .h {
   font-size: 1rem;
@@ -858,7 +858,7 @@ select {
 }
 .search_input {
   font-size: 0.8rem;
-  font-family: Poppins;
+  font-family: Noto Sans;
   color: black;
   border: 0;
   width: 100%;

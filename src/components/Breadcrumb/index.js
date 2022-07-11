@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
  */
 const Breadcrumb = ({ currentPage, previousPages = [] }) => {
   return (
-    <div className="row font-poppins">
+    <div className="row font-Noto Sans">
       <div className="col-6">
         <div className="mt-4 border-div">
           <div className="d-flex justify-content-start">

@@ -52,7 +52,7 @@ h3 {
   min-width: 100%;
   padding: 0.07rem 0.6rem;
   font-size: 0.8rem;
-  font-family: Poppins;
+  font-family: Noto Sans;
   border: 0.5px solid rgb(56, 56, 56);
   border-radius: 3px;
 }
@@ -61,7 +61,7 @@ h3 {
   margin: 0.8rem 0;
   height: 1.8rem;
   font-size: 0.8rem;
-  font-family: Poppins;
+  font-family: Noto Sans;
   font-weight: 400;
   border: 1px solid rgb(56, 56, 56);
   border-radius: 3px;

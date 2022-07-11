@@ -6,7 +6,7 @@
 .react-calendar {
   width: 100% !important;
   border: 1px solid;
-  font-family: Poppins;
+  font-family: Noto Sans;
 }
 .react-calendar__navigation__label__labelText{
   font-size: x-large;
