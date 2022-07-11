@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { useLoading } from '../../../utils/LoadingContext'
 import Modal from 'react-modal'
 import axios from 'axios'
+import CommonModal from '../../../components/Modals/CommonModal/CommonModal'
 
 const customStyles = {
   headCells: {
@@ -63,6 +64,8 @@ const EventManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalData, setModalData] = useState({})
   const [toggledClearRows, setToggleClearRows] = useState(true)
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false)
+  const [rowToDelete, setRowToDelete] = useState(null)
 
   const columnsNotificationTable = [
     {
@@ -119,7 +122,40 @@ const EventManagement = () => {
         </button>
       ),
     },
+    {
+      name: 'Revoke',
+      cell: row => (
+        <button
+          className="btn create-domain-btn py-1 px-2"
+          onClick={() => {
+            setRowToDelete(row)
+            setConfirmModalOpen(true)
+          }}
+        >
+          Remove
+        </button>
+      ),
+    },
   ]
+
+  const handleCloseConfirmModal = () => {
+    setConfirmModalOpen(false)
+  }
+
+  const removeAttendee = async rowData => {
+    const result = await API.post('/training/revoke_seat', {
+      event_id: rowData.event_id,
+      participant_email: rowData.email_id,
+    })
+    if (result.status === 200) {
+      toast.success('User removed from the Event')
+      setConfirmModalOpen(false)
+      setRowToDelete(null)
+      loadEventData()
+    } else {
+      toast.error('Error while removing user from the Event')
+    }
+  }
 
   const onClickViewPreferences = (event_id, email) => {
     setIsModalOpen(true)
@@ -577,6 +613,18 @@ const EventManagement = () => {
             )}
           </div>
         </Modal>
+        <CommonModal
+          action={'confirm'}
+          show={confirmModalOpen}
+          handleClose={null}
+          modalTitle={'Remove User'}
+          data={rowToDelete}
+          handleDataChange={null}
+          cancelAction={handleCloseConfirmModal}
+          saveAction={removeAttendee}
+          placeholder={''}
+          ariaLabel={''}
+        />
       </div>
     </>
   )

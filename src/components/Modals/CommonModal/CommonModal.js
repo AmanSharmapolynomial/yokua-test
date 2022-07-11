@@ -5,6 +5,7 @@ const CommonModal = ({
   show,
   handleClose,
   modalTitle,
+  action,
   data,
   handleDataChange,
   cancelAction,
@@ -34,15 +35,21 @@ const CommonModal = ({
           width: '100%',
         }}
       >
-        <FormControl
-          style={{ fontSize: 'small' }}
-          className="mt-2 mb-2 w-100"
-          placeholder={placeholder}
-          aria-label={ariaLabel}
-          aria-describedby="basic-addon2"
-          value={data}
-          onChange={e => handleDataChange(e.target.value)}
-        />
+        {action === 'confirm' ? (
+          <p style={{ textAlign: 'center' }}>
+            Are you sure you want to remove the user from the selected event?
+          </p>
+        ) : (
+          <FormControl
+            style={{ fontSize: 'small' }}
+            className="mt-2 mb-2 w-100"
+            placeholder={placeholder}
+            aria-label={ariaLabel}
+            aria-describedby="basic-addon2"
+            value={data}
+            onChange={e => handleDataChange(e.target.value)}
+          />
+        )}
       </Modal.Body>
       <Modal.Footer
         style={{
@@ -65,7 +72,7 @@ const CommonModal = ({
         <button
           className="btn"
           onClick={() => {
-            saveAction()
+            action === 'confirm' ? saveAction(data) : saveAction()
           }}
         >
           Confirm
