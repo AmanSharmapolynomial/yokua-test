@@ -749,7 +749,7 @@ const ProfileSettingScreen = () => {
                               <span>{training.address}</span>
                             </div>
                           </div>
-                          <hr />
+                          {profileData.future_trainings?.length > 1 ? <hr /> : <br />}
                         </>
                       ))}
                     </div>
