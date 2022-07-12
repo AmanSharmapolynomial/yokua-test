@@ -407,7 +407,12 @@ const EventScreen = () => {
             </div>
           )}
           <div>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+            <Modal
+              ariaHideApp={false}
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              style={customStyles}
+            >
               <div>
                 <p
                   style={{
