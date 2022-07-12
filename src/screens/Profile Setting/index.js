@@ -749,7 +749,12 @@ const ProfileSettingScreen = () => {
                               <span>{training.address}</span>
                             </div>
                           </div>
-                          {profileData.future_trainings?.length > 1 ? <hr /> : <br />}
+                          {profileData.future_trainings?.length > 1 &&
+                          index !== profileData.future_trainings?.length - 1 ? (
+                            <hr />
+                          ) : (
+                            <br />
+                          )}
                         </>
                       ))}
                     </div>
