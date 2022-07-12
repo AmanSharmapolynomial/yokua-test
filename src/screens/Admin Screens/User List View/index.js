@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { getUserRoles } from '../../../utils/token'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import Plusicon from '../../../assets/Group 331.png'
-import Filtermg from '../../../assets/Icon awesome-filter.png'
+import Filtermg from '../../../assets/whiteFilter.png'
 import { useLoading } from '../../../utils/LoadingContext'
 
 const NEW_TO_OLD = 'latest'
@@ -457,11 +457,8 @@ const UserListView = () => {
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-          className={
-            filterActive === ''
-              ? 'dropdown-toggle greyed filter-icon'
-              : 'dropdown-toggle filter-icon'
-          }
+          style={{ opacity: filterActive === '' ? 0.2 : 1 }}
+          className={'dropdown-toggle filter-icon'}
           src={Filtermg}
         />
 
