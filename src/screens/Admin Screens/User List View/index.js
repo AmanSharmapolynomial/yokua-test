@@ -472,18 +472,19 @@ const UserListView = () => {
           <span
             className="dropdown-item"
             ref={filter1Ref}
+            style={{ fontWeight: filterActive === 'active' ? 'bold' : 'normal' }}
             onClick={() => {
               if (filterActive == 'active') {
                 setPageNoCall(1)
                 filterTable('')
-                filter1Ref.current.style.fontWeight = '300'
+                // filter1Ref.current.style.fontWeight = '300'
               } else {
                 setPageNoCall(1)
                 filterTable('active')
-                filter1Ref.current.style.fontWeight = 'bold'
-                filter2Ref.current.style.fontWeight = '300'
-                filter3Ref.current.style.fontWeight = '300'
-                filter4Ref.current.style.fontWeight = '300'
+                // filter1Ref.current.style.fontWeight = '700'
+                // filter2Ref.current.style.fontWeight = '300'
+                // filter3Ref.current.style.fontWeight = '300'
+                // filter4Ref.current.style.fontWeight = '300'
               }
             }}
           >
@@ -492,18 +493,19 @@ const UserListView = () => {
           <span
             className="dropdown-item"
             ref={filter2Ref}
+            style={{ fontWeight: filterActive === 'inactive' ? 'bold' : 'normal' }}
             onClick={() => {
               if (filterActive == 'inactive') {
                 setPageNoCall(1)
                 filterTable('')
-                filter2Ref.current.style.fontWeight = '300'
+                // filter2Ref.current.style.fontWeight = '300'
               } else {
                 setPageNoCall(1)
                 filterTable('inactive')
-                filter2Ref.current.style.fontWeight = 'bold'
-                filter1Ref.current.style.fontWeight = '300'
-                filter3Ref.current.style.fontWeight = '300'
-                filter4Ref.current.style.fontWeight = '300'
+                // filter2Ref.current.style.fontWeight = 'bold'
+                // filter1Ref.current.style.fontWeight = '300'
+                // filter3Ref.current.style.fontWeight = '300'
+                // filter4Ref.current.style.fontWeight = '300'
               }
             }}
           >
@@ -512,18 +514,19 @@ const UserListView = () => {
           <span
             className="dropdown-item"
             ref={filter3Ref}
+            style={{ fontWeight: filterActive === 'internal' ? 'bold' : 'normal' }}
             onClick={() => {
               if (filterActive == 'internal') {
                 setPageNoCall(1)
                 filterTable('')
-                filter3Ref.current.style.fontWeight = '300'
+                // filter3Ref.current.style.fontWeight = '300'
               } else {
                 setPageNoCall(1)
                 filterTable('internal')
-                filter3Ref.current.style.fontWeight = 'bold'
-                filter1Ref.current.style.fontWeight = '300'
-                filter2Ref.current.style.fontWeight = '300'
-                filter4Ref.current.style.fontWeight = '300'
+                // filter3Ref.current.style.fontWeight = 'bold'
+                // filter1Ref.current.style.fontWeight = '300'
+                // filter2Ref.current.style.fontWeight = '300'
+                // filter4Ref.current.style.fontWeight = '300'
               }
             }}
           >
@@ -532,18 +535,19 @@ const UserListView = () => {
           <span
             className="dropdown-item"
             ref={filter4Ref}
+            style={{ fontWeight: filterActive === 'external' ? 'bold' : 'normal' }}
             onClick={() => {
               if (filterActive == 'external') {
                 setPageNoCall(1)
                 filterTable('')
-                filter4Ref.current.style.fontWeight = '300'
+                // filter4Ref.current.style.fontWeight = '300'
               } else {
                 setPageNoCall(1)
                 filterTable('external')
-                filter4Ref.current.style.fontWeight = 'bold'
-                filter1Ref.current.style.fontWeight = '300'
-                filter2Ref.current.style.fontWeight = '300'
-                filter3Ref.current.style.fontWeight = '300'
+                // filter4Ref.current.style.fontWeight = 'bold'
+                // filter1Ref.current.style.fontWeight = '300'
+                // filter2Ref.current.style.fontWeight = '300'
+                // filter3Ref.current.style.fontWeight = '300'
               }
             }}
           >
