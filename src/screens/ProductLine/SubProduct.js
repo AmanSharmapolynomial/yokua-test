@@ -76,15 +76,16 @@ const SubProduct = () => {
       if (
         (index == 0 && state.name == 'Rotameter') ||
         (state.name == 'Rotameter' &&
-          productList[index - 1].sub_product_name.split(' ')[0] !==
-            productList[index].sub_product_name.split(' ')[0])
+          // productList[index - 1].sub_product_name.split(' ')[0] !==
+          //   productList[index].sub_product_name.split(' ')[0])
+          item.section !== productList[index - 1].section)
       ) {
         col.push(
           <div
             className="row mt-4 text-bold d-none d-lg-block"
             style={{ marginTop: index == 0 ? '-10px' : '' }}
           >
-            <div className="col">{state.name + ' ' + item.sub_product_name.split(' ')[0]}</div>
+            <div className="col">{item.section}</div>
           </div>
         )
       }
