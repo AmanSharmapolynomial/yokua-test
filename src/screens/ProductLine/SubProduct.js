@@ -80,7 +80,10 @@ const SubProduct = () => {
             productList[index].sub_product_name.split(' ')[0])
       ) {
         col.push(
-          <div className="row mt-5 text-bold d-none d-lg-block">
+          <div
+            className="row mt-4 text-bold d-none d-lg-block"
+            style={{ marginTop: index == 0 ? '-10px' : '' }}
+          >
             <div className="col">{state.name + ' ' + item.sub_product_name.split(' ')[0]}</div>
           </div>
         )
