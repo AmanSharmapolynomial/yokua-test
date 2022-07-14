@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import ProductCard from '../../components/ProductCard/productcard'
+import htmlParser from 'html-react-parser'
 
 const SubProduct = () => {
   const navigate = useNavigate()
@@ -141,9 +142,9 @@ const SubProduct = () => {
                         navigate('/product-lines')
                       }}
                     >
-                      Product Lines
+                      Field Instruments
                     </u>
-                    {'>'} {state.name}
+                    {'>'} {htmlParser(state.name)}
                   </span>
                 </div>
               </div>

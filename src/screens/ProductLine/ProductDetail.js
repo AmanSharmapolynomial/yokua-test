@@ -10,6 +10,8 @@ import { Modal, Image } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
+import htmlParser from 'html-react-parser'
+
 const ProductDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -1179,9 +1181,9 @@ const ProductDetail = () => {
                       navigate(-2)
                     }}
                   >
-                    Product Lines
+                    Field Instruments
                   </u>
-                  {'>'} {state.sub_product_name}
+                  {'>'} {htmlParser(state.sub_product_name)}
                 </span>
               </div>
             </div>
