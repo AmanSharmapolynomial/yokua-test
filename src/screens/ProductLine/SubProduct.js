@@ -73,6 +73,18 @@ const SubProduct = () => {
     let rows = []
     let col = []
     productList.forEach((item, index) => {
+      if (
+        (index == 0 && state.name == 'Rotameter') ||
+        (state.name == 'Rotameter' &&
+          productList[index - 1].sub_product_name.split(' ')[0] !==
+            productList[index].sub_product_name.split(' ')[0])
+      ) {
+        col.push(
+          <div className="row mt-5 text-bold d-none d-lg-block">
+            <div className="col">{state.name + ' ' + item.sub_product_name.split(' ')[0]}</div>
+          </div>
+        )
+      }
       col.push(
         <ProductCard
           archive={archivedFilter}
@@ -151,7 +163,9 @@ const SubProduct = () => {
             </div>
           </div>
           <div className="row mt-5 text-bold d-none d-lg-block">
-            <div className="col">{state.name}</div>
+            <div className="col" style={{ fontSize: '1.5rem', fontWeight: '600' }}>
+              {state.name}
+            </div>
           </div>
           {isLoading ? (
             <div className="col text-center">Loading....</div>
