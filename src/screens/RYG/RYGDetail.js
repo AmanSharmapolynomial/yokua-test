@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 import RYGFlowComponent from '../../components/RYGFlowComponent/RYGFlowComponent'
+import htmlParser from 'html-react-parser'
 const RYGDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -1449,7 +1450,7 @@ const RYGDetail = () => {
                         aria-expanded="false"
                         aria-controls={`collapse${idx}`}
                       >
-                        <span>{productList.name}</span>
+                        <span>{htmlParser(productList.name)}</span>
                         <i
                           className={`fa-solid ${
                             idx === expandedAccordian ? 'fa-angle-up' : 'fa-angle-down'

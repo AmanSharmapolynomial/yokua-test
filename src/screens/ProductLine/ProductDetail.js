@@ -1438,7 +1438,7 @@ const ProductDetail = () => {
                       aria-expanded="false"
                       aria-controls={`collapse${idx}`}
                     >
-                      <span>{productList.name}</span>
+                      <span>{htmlParser(productList.name)}</span>
                       <i
                         className={`fa-solid ${
                           idx === expandedAccordian ? 'fa-angle-up' : 'fa-angle-down'
