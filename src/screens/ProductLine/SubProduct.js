@@ -87,7 +87,9 @@ const SubProduct = () => {
             className="row mt-4 text-bold d-none d-lg-block"
             style={{ marginTop: index == 0 ? '-10px' : '' }}
           >
-            <div className="col">{item.section}</div>
+            <div className="col">
+              <b>{item.section}</b>
+            </div>
           </div>
         )
       }
