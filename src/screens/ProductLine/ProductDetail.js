@@ -1158,7 +1158,7 @@ const ProductDetail = () => {
       <div className="row mx-2 mx-lg-5 h-100 gray-table">
         <div className="col center py-3">
           <div className="row d-none d-lg-block">
-            <div className="col-12 col-lg-5 border rounded py-2">
+            <div className="col-12 col-lg-5 border-md rounded py-2">
               <div className="row">
                 <span
                   role="button"

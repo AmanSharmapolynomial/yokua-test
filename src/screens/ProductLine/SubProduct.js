@@ -141,7 +141,7 @@ const SubProduct = () => {
                 <div className="row">
                   <span
                     role="button"
-                    className="col-5 light-grey d-none d-lg-block"
+                    className="col-4 light-grey"
                     onClick={() => {
                       navigate(-1)
                     }}
@@ -149,7 +149,7 @@ const SubProduct = () => {
                     Previous page
                   </span>
                   <span
-                    className="col-12 col-lg-7 px-0 px-lg-3"
+                    className="col-8"
                     // style={{
                     //   wordBreak: 'break-all',
                     // }}
