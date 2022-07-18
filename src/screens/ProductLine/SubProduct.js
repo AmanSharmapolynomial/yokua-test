@@ -76,8 +76,8 @@ const SubProduct = () => {
     let col = []
     productList.forEach((item, index) => {
       if (
-        (index == 0 && state.name == 'Rotameter') ||
-        (state.name == 'Rotameter' &&
+        (index == 0 && state.name != item.section) ||
+        (state.name != item.section &&
           // productList[index - 1].sub_product_name.split(' ')[0] !==
           //   productList[index].sub_product_name.split(' ')[0])
           item.section !== productList[index - 1].section)
