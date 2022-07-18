@@ -37,7 +37,9 @@ const SubProduct = () => {
               state: { ...item, sub_product_name: state.name, parentId: state.id },
             })
           } else {
-            setProductList(res.data)
+            const temp = res.data
+            temp.reverse()
+            setProductList(temp)
           }
         }
         setIsLoading(false)
@@ -160,7 +162,7 @@ const SubProduct = () => {
                     >
                       Field Instruments
                     </u>
-                    {'>'} {htmlParser(state.name)}
+                    {' > '} {htmlParser(state.name)}
                   </span>
                 </div>
               </div>
