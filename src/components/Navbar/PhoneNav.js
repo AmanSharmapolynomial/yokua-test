@@ -245,7 +245,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
           document.getElementById('productLineDropdown').classList.remove('show')
           document.getElementById('navbar-sm').classList.add('show')
         }}
-        header={'Product Line'}
+        header={'Products'}
       />
       <OffCanvasDropDownItems
         isRyg={true}
@@ -256,7 +256,7 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
           document.getElementById('rygDropdown').classList.remove('show')
           document.getElementById('navbar-sm').classList.add('show')
         }}
-        header={'Product Line'}
+        header={'RYG Information'}
       />
     </>
   )
