@@ -740,6 +740,7 @@ const ProfileSettingScreen = () => {
                               className="fa-solid fa-pen-to-square"
                             />
                           </div>
+                          <div style={{ height: '1rem' }}></div>
                           <div className="edit_training" key={index} style={{ margin: 0 }}>
                             <i
                               className="fa-solid fa-location-dot"
@@ -747,6 +748,16 @@ const ProfileSettingScreen = () => {
                             />
                             <div className="training_text">
                               <span>{training.address}</span>
+                            </div>
+                          </div>
+                          <div style={{ height: '1rem' }}></div>
+                          <div className="edit_training" key={index} style={{ margin: 0 }}>
+                            <i
+                              className="fa-solid fa-image-portrait"
+                              style={{ color: '#004f9b', fontSize: '20px' }}
+                            />
+                            <div className="training_text">
+                              <span>{training.participant_email}</span>
                             </div>
                           </div>
                           {profileData.future_trainings?.length > 1 &&
