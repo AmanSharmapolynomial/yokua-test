@@ -7,6 +7,7 @@ const moment = require('moment')
 import DatePicker from 'react-datepicker'
 import Select from 'react-select'
 import 'react-datepicker/dist/react-datepicker.css'
+import { FormControl } from 'react-bootstrap'
 import API from '../../utils/api'
 import { getToken, getUserRoles, removeToken, removeUserRole } from '../../utils/token'
 import Header from '../../components/Header'
@@ -18,9 +19,12 @@ import PrimaryHeading from '../../components/Primary Headings'
 import CloseIcon from '../../assets/close_modal.png'
 import { max } from 'moment'
 import { validateUrl } from '../../utils/urlValidator'
+import CommonModal from '../../components/Modals/CommonModal/CommonModal'
+import { useLoading } from '../../utils/LoadingContext'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
+  const { setLoading } = useLoading()
   //create event state varible
   const [trainingName, setTrainingName] = useState('')
   const [location, setLocation] = useState('')
@@ -62,6 +66,11 @@ const AddEventScreen = () => {
   const [blinkMessage, setBlinkMessage] = useState('')
   const [dependOnButton, setDependOnButton] = useState('')
   const [linkModal, setLinkModal] = useState(false)
+  const [agendaFile, setAgendaFile] = useState(null)
+  const [linkAFile, setLinkAFile] = useState(null)
+  const [linkBFile, setLinkBFile] = useState(null)
+  const [linkAName, setLinkAName] = useState('')
+  const [linkBName, setLinkBName] = useState('')
 
   const requirementCountRef = useRef(0)
 
@@ -130,6 +139,16 @@ const AddEventScreen = () => {
       height: '60%',
     },
   }
+
+  const handleSaveFile = file => {
+    console.log(file)
+    dependOnButton === 'agenda'
+      ? setAgendaFile(file)
+      : dependOnButton === 'alink'
+      ? setLinkAFile(file)
+      : setLinkBFile(file)
+  }
+
   const getUserProfile = async () => {
     await API.get('auth/profile_settings/')
       .then(async data => {
@@ -223,10 +242,12 @@ const AddEventScreen = () => {
   //handle publish event
   const handlePublishButton = async event => {
     event.preventDefault()
+    setLoading(true)
+    let formData = new FormData()
     const preparedRequirementList = Object.values(requirement)
     preparedRequirementList.sort((a, b) => a.id - b.id)
 
-    const eventObject = {
+    const data = {
       event_details: {
         cost: cost,
         max_attendees: maxAttendacees,
@@ -241,15 +262,23 @@ const AddEventScreen = () => {
         training_name: trainingName,
       },
       links: {
-        agenda_link: agendaMessage,
-        link_a: alinkMessage,
-        link_b: blinkMessage,
+        agenda_link: 'agenda',
+        link_a: linkAName,
+        link_b: linkBName,
       },
       requirements: preparedRequirementList.map(item => item.value),
     }
+    formData.append('data', JSON.stringify(data))
 
-    //console.log('called api: ' + JSON.stringify(eventObject))
-    await API.post('training/training_addition', eventObject)
+    formData.append('agenda', agendaFile)
+    formData.append('link_a', linkAFile)
+    formData.append('link_b', linkBFile)
+
+    for (var [key, value] of formData.entries()) {
+      console.log(key, value)
+    }
+    // //console.log('called api: ' + JSON.stringify(eventObject))
+    await API.post('training/training_addition', formData)
       .then(data => {
         if (data.status == 200 || data.status == 201) {
           toast.success(data.data.message)
@@ -262,6 +291,7 @@ const AddEventScreen = () => {
       .catch(() => {
         navigate('/event/add')
       })
+    setLoading(false)
   }
 
   const handleRegisterButton = async () => {
@@ -345,7 +375,7 @@ const AddEventScreen = () => {
               <div className="col shadow rounded-3">
                 <h4 className="mt-4 clamp-2v">Rota Yokogawa Training and Events</h4>
                 <div className="row">
-                  <form className="col-lg-6 pe-4 pe-lg-0">
+                  <form className="col-lg-6 pe-4 pe-lg-0" id="trainingRegForm">
                     <div className="row d-flex align-items-center mt-4">
                       <label style={{ fontWeight: 'bold' }} className="col my-auto clamp-1v">
                         Training Name
@@ -357,6 +387,7 @@ const AddEventScreen = () => {
                         onChange={event => {
                           setTrainingName(event.target.value)
                         }}
+                        name="training_name"
                         value={trainingName}
                       />
                     </div>
@@ -708,7 +739,7 @@ const AddEventScreen = () => {
                               openModal(event)
                             } else {
                               event.preventDefault()
-                              window.open(agendaMessage, '_blank')
+                              window.open(agendaMessage.link, '_blank')
                             }
                           }}
                         >
@@ -730,11 +761,11 @@ const AddEventScreen = () => {
                               openModal(event)
                             } else {
                               event.preventDefault()
-                              window.open(alinkMessage, '_blank')
+                              window.open(alinkMessage.link, '_blank')
                             }
                           }}
                         >
-                          Other Possible link A
+                          {linkAName ? linkAName : 'Other Possible link A'}
                         </button>
                       </div>
                       <div className="col-12 col-lg-auto">
@@ -752,11 +783,11 @@ const AddEventScreen = () => {
                               openModal(event)
                             } else {
                               event.preventDefault()
-                              window.open(blinkMessage, '_blank')
+                              window.open(blinkMessage.link, '_blank')
                             }
                           }}
                         >
-                          Other Possible Link B
+                          {linkBName ? linkBName : 'Other Possible link B'}
                         </button>
                       </div>
                     </div>
@@ -1333,7 +1364,59 @@ const AddEventScreen = () => {
         </div>
       </div>
 
-      <Modal
+      <CommonModal
+        action="fileUpload"
+        show={modalIsOpen}
+        handleClose={closeModal}
+        modalTitle={
+          dependOnButton === 'agenda'
+            ? 'Upload Agenda'
+            : dependOnButton === 'alink'
+            ? 'Other possible link A'
+            : 'Other possible link B'
+        }
+        data={''}
+        handleDataChange={null}
+        cancelAction={closeModal}
+        saveAction={handleSaveFile}
+        propFile={
+          dependOnButton === 'agenda'
+            ? agendaFile
+            : dependOnButton === 'alink'
+            ? linkAFile
+            : linkBFile
+        }
+        editFile={
+          dependOnButton === 'agenda'
+            ? setAgendaFile
+            : dependOnButton === 'alink'
+            ? setLinkAFile
+            : setLinkBFile
+        }
+      >
+        {dependOnButton === 'agenda' ? (
+          <></>
+        ) : (
+          <>
+            <FormControl
+              style={{ fontSize: 'small', border: '1px solid gray' }}
+              className="w-100"
+              placeholder={'Name'}
+              aria-label={'Name'}
+              aria-describedby="basic-addon2"
+              value={dependOnButton === 'alink' ? linkAName : linkBName}
+              onChange={e => {
+                dependOnButton === 'alink'
+                  ? setLinkAName(e.target.value)
+                  : setLinkBName(e.target.value)
+              }}
+            />
+            <br />
+          </>
+        )}
+      </CommonModal>
+
+      {/* <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={customStyles}
@@ -1391,7 +1474,7 @@ const AddEventScreen = () => {
             handleSendButton={closeModal}
           />
         )}
-      </Modal>
+      </Modal> */}
     </>
   )
 }

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Modal, FormControl } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 
@@ -10,9 +11,28 @@ const CommonModal = ({
   handleDataChange,
   cancelAction,
   saveAction,
-  placeholder,
-  ariaLabel,
+  placeholder = '',
+  ariaLabel = '',
+  children,
+  propFile,
+  editFile,
 }) => {
+  const [file, setFile] = useState(propFile || null)
+
+  useEffect(() => {
+    if (show) setFile(propFile)
+  }, [show])
+
+  const handleFileSaveClick = () => {
+    //if (file) {
+    saveAction(file)
+    setFile(null)
+    handleClose()
+    // } else {
+    //   toast.error('Please select a file')
+    // }
+  }
+
   return (
     <Modal show={show} centered onHide={handleClose}>
       <Modal.Header
@@ -29,16 +49,45 @@ const CommonModal = ({
         className="pt-0"
         style={{
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           borderBottom: '0',
           width: '100%',
         }}
       >
+        {children}
         {action === 'confirm' ? (
           <p style={{ textAlign: 'center' }}>
             Are you sure you want to remove the user from the selected event?
           </p>
+        ) : action === 'fileUpload' ? (
+          <>
+            <FormControl
+              type="file"
+              style={{ border: '1px solid gray', fontSize: 'small' }}
+              onChange={e => setFile(e.target.files[0])}
+            />
+            {file ? (
+              <div
+                className=""
+                style={{
+                  border: '1px solid gray',
+                  fontSize: 'small',
+                  width: '100%',
+                  padding: '0.375rem 0.75rem',
+                  borderRadius: '0.25rem',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '0.7rem',
+                }}
+              >
+                {file != null ? file.name : propFile?.name}
+                <i className="fa-solid fa-xmark" onClick={() => setFile(null)}></i>
+              </div>
+            ) : null}
+          </>
         ) : (
           <FormControl
             style={{ fontSize: 'small' }}
@@ -64,6 +113,7 @@ const CommonModal = ({
           id="mybtn"
           className="btn btn-background me-4"
           onClick={() => {
+            setFile(null)
             cancelAction()
           }}
         >
@@ -71,11 +121,15 @@ const CommonModal = ({
         </button>
         <button
           className="btn"
-          onClick={() => {
-            action === 'confirm' ? saveAction(data) : saveAction()
+          onClick={e => {
+            action === 'confirm'
+              ? saveAction(data)
+              : action === 'fileUpload'
+              ? handleFileSaveClick()
+              : saveAction()
           }}
         >
-          Confirm
+          {action === 'fileUpload' ? 'Save' : 'Confirm'}
         </button>
       </Modal.Footer>
     </Modal>
