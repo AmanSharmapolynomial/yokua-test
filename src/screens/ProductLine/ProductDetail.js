@@ -37,6 +37,7 @@ const ProductDetail = () => {
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
   const [isMd, setIsMd] = useState(false)
+  const [imagesToUpload, setImagesToUpload] = useState([])
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -173,6 +174,35 @@ const ProductDetail = () => {
       .catch(error => {
         console.log(error)
       })
+  }
+
+  const bulkImageUpload = () => {
+    setLoading(true)
+    const formData = new FormData()
+    const data = {
+      type: 'image',
+      section_id: productDetail[isAddComponentModalVisible].section_id,
+    }
+    formData.append('data', JSON.stringify(data))
+    imagesToUpload.map((image, index) => {
+      formData.append(`image${index + 1}`, image)
+    })
+    console.log(...formData)
+    API.post('/products/page/add_bulk_image', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getProductDetails()
+          setIsAddComponentModalVisible(-1)
+          setAddComponentData(initialTableState)
+          setImagesToUpload([])
+          if (type === 'binary' || type === 'image') setInputBinary()
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    setLoading(false)
   }
 
   const callAddComponentAPI = type => {
@@ -1041,10 +1071,10 @@ const ProductDetail = () => {
   const renderAddImage = () => {
     return (
       <div className="row">
-        <div className="input-group mb-3">
+        {/* <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
-              {'Title'}
+              {'Title 1'}
             </span>
           </div>
           <input
@@ -1061,31 +1091,67 @@ const ProductDetail = () => {
             aria-label={'Title'}
             aria-describedby="basic-addon1"
           />
-        </div>
+        </div> */}
         <div className="input-group mb-3">
           <div className="custom-file">
             <input
               onChange={e => {
-                setInputBinary(e.target.files[0])
-                if (addComponentData.title === undefined || addComponentData.title === null)
-                  setAddComponentData(prevState => {
-                    return {
-                      ...prevState,
-                      title: 'image',
-                    }
-                  })
+                let images = []
+                for (let i = 0; i < e.target.files.length; i++) {
+                  images.push(e.target.files[i])
+                }
+                setImagesToUpload(prevState => {
+                  return [...prevState, ...images]
+                })
               }}
               type="file"
               className="custom-file-input"
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               accept="image/*"
+              multiple
             />
             <label className="custom-file-label font-8 font-weight-bold" htmlFor="inputGroupFile03">
-              {inputBinary?.name ? inputBinary?.name : 'Select file'}
+              {inputBinary?.name ? inputBinary?.name : 'Select files'}
             </label>
           </div>
         </div>
+        {imagesToUpload.length !== 0
+          ? imagesToUpload.map((image, index) => {
+              return (
+                <div
+                  style={{
+                    paddingRight: 'calc(var(--bs-gutter-x) * 0.5)',
+                    paddingLeft: 'calc(var(--bs-gutter-x) * 0.5)',
+                    marginBottom: '0.5rem',
+                  }}
+                >
+                  <div
+                    key={index}
+                    className=""
+                    style={{
+                      border: '1px solid lightgrey',
+                      fontSize: 'small',
+                      width: '100%',
+                      padding: '0.375rem 0.75rem',
+                      borderRadius: '0.25rem',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {image.name}
+                    <i
+                      className="fa-solid fa-xmark"
+                      onClick={() => {
+                        setImagesToUpload(imagesToUpload.filter(img => img !== image))
+                      }}
+                    ></i>
+                  </div>
+                </div>
+              )
+            })
+          : null}
         <div className="col-12 justify-content-center d-flex mt-3">
           <button
             ref={element => {
@@ -1105,11 +1171,12 @@ const ProductDetail = () => {
           <button
             disabled={
               // addComponentData?.title === undefined ||
-              inputBinary === undefined || inputBinary === null
+              imagesToUpload.length === 0
             }
             className="btn btn-primary ms-2"
             onClick={() => {
-              callAddComponentAPI('image')
+              //callAddComponentAPI('image')
+              bulkImageUpload()
             }}
           >
             Create
