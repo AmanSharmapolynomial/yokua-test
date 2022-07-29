@@ -733,7 +733,7 @@ const AddEventScreen = () => {
                             border: '1px solid black',
                           }}
                           onClick={event => {
-                            if (isAdmin) {
+                            if (!eventId && isAdmin) {
                               setDependOnButton('agenda')
                               setLinkModal(true)
                               openModal(event)
@@ -755,13 +755,14 @@ const AddEventScreen = () => {
                             border: '1px solid black',
                           }}
                           onClick={event => {
-                            if (isAdmin) {
+                            if (!eventId && isAdmin) {
                               setDependOnButton('alink')
                               setLinkModal(true)
                               openModal(event)
                             } else {
                               event.preventDefault()
-                              window.open(alinkMessage.link, '_blank')
+                              if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                              else toast.error('No Link Added')
                             }
                           }}
                         >
@@ -777,13 +778,14 @@ const AddEventScreen = () => {
                             border: '1px solid black',
                           }}
                           onClick={event => {
-                            if (isAdmin) {
+                            if (!eventId && isAdmin) {
                               setDependOnButton('blink')
                               setLinkModal(true)
                               openModal(event)
                             } else {
                               event.preventDefault()
-                              window.open(blinkMessage.link, '_blank')
+                              if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
+                              else toast.error('No Link Added')
                             }
                           }}
                         >
