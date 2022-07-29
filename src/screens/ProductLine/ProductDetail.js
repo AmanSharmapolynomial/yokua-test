@@ -38,6 +38,7 @@ const ProductDetail = () => {
   const accordionRef = React.useRef(null)
   const [isMd, setIsMd] = useState(false)
   const [imagesToUpload, setImagesToUpload] = useState([])
+  const [isImageGridEditable, setIsImageGridEditable] = useState([])
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -466,19 +467,72 @@ const ProductDetail = () => {
           if (element.type === 'image') {
             IMAGES.push(
               <div
-                className={`col-6 col-lg-2 mt-2${
-                  !isMd
-                    ? IMAGES.length % 2 === 0
-                      ? ' ps-0'
-                      : ' pe-0'
-                    : IMAGES.length % 6 === 0
-                    ? ' ps-0'
-                    : IMAGES.length % 6 === 5
-                    ? ' pe-0'
-                    : ''
-                }`}
+                className={`col-6 col-lg-2 mt-2`}
+                // NOTE: THE BELOW COMMENTED LINES OF CODE WAS USED IN THE CLASSNAME ABOVE. THEY HAVE BEEN COMMENTED BECAUSE THEY WERE CAUSING SIZE ISSUES.
+                // ${
+                //   !isMd
+                //     ? IMAGES.length % 2 === 0
+                //       ? ' ps-0'
+                //       : ' pe-0'
+                //     : IMAGES.length % 6 === 0
+                //     ? ' ps-0'
+                //     : IMAGES.length % 6 === 5
+                //     ? ' pe-0'
+                //     : ''
+                // }
               >
-                <Image src={ele.image_link} className="border rounded img-product-line" />
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    //border: '1px solid black',
+                    borderRadius: '0.25 rem',
+                    boxShadow: '0 0 0.313rem #00000035',
+                    padding: '0.5rem',
+                  }}
+                >
+                  {isImageGridEditable.includes(idx) && (
+                    <i
+                      className="fa-solid fa-xmark"
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        right: '-10px',
+                        float: 'right',
+                        padding: '0.188rem 0.313rem',
+                        borderRadius: '50%',
+                        background: '#cd0000',
+                        color: '#fff',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        let payload = {
+                          section_id: section.section_id,
+                          component_id: ele.id,
+                          component_type: ele.type,
+                        }
+                        setShowDeleteModal(payload)
+                      }}
+                    ></i>
+                  )}
+                  <Image src={ele.image_link} className="border rounded img-product-line" />
+                  <a
+                    href={ele.image_link}
+                    target="_blank"
+                    role={'button'}
+                    className="col register-link"
+                    style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                    download
+                  >
+                    {element.image_name.length > 20
+                      ? element.image_name.substring(0, 17) + '...'
+                      : element.image_name}
+                  </a>
+                </div>
               </div>
             )
           } else {
@@ -508,6 +562,21 @@ const ProductDetail = () => {
                     />
                     <i
                       role={'button'}
+                      className={
+                        !isImageGridEditable.includes(idx)
+                          ? 'fa-solid fa-pen-to-square me-2 theme'
+                          : 'fa-solid fa-floppy-disk theme'
+                      }
+                      onClick={() => {
+                        !isImageGridEditable.includes(idx)
+                          ? setIsImageGridEditable(prevState => [...prevState, idx])
+                          : setIsImageGridEditable(prevState =>
+                              prevState.filter(item => item !== idx)
+                            )
+                      }}
+                    />
+                    <i
+                      role={'button'}
                       className="fa-solid fa-trash ms-2 me-0"
                       onClick={() => {
                         let payload = {
@@ -529,23 +598,77 @@ const ProductDetail = () => {
       }
     } else if (ele.type === 'image_grid') {
       let IMAGES = []
+
       for (let index = 0; index < ele.images.length; index++) {
         const element = ele.images[index]
         IMAGES.push(
           <div
-            className={`col-6 col-lg-2 mt-2${
-              !isMd
-                ? IMAGES.length % 2 === 0
-                  ? ' ps-0'
-                  : ' pe-0'
-                : IMAGES.length % 6 === 0
-                ? ' ps-0'
-                : IMAGES.length % 6 === 5
-                ? ' pe-0'
-                : ''
-            }`}
+            className={`col-6 col-lg-2 mt-2`}
+            // NOTE: THE BELOW COMMENTED LINES OF CODE WAS USED IN THE CLASSNAME ABOVE. THEY HAVE BEEN COMMENTED BECAUSE THEY WERE CAUSING SIZE ISSUES.
+            // ${
+            //   !isMd
+            //     ? IMAGES.length % 2 === 0
+            //       ? ' ps-0'
+            //       : ' pe-0'
+            //     : IMAGES.length % 6 === 0
+            //     ? ' ps-0'
+            //     : IMAGES.length % 6 === 5
+            //     ? ' pe-0'
+            //     : ''
+            // }
           >
-            <img className="border rounded img-product-line" src={element.image_link} />
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                //border: '1px solid black',
+                borderRadius: '0.25 rem',
+                boxShadow: '0 0 0.313rem #00000035',
+                padding: '0.5rem',
+              }}
+            >
+              {isImageGridEditable.includes(idx) && (
+                <i
+                  className="fa-solid fa-xmark"
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    right: '-10px',
+                    float: 'right',
+                    padding: '0.188rem 0.313rem',
+                    borderRadius: '50%',
+                    background: '#cd0000',
+                    color: '#fff',
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: element.id,
+                      component_type: element.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              )}
+              <Image src={element.image_link} className="border rounded img-product-line" />
+              <a
+                href={element.image_link}
+                target="_blank"
+                role={'button'}
+                className="col register-link"
+                style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                download
+              >
+                {element.image_name.length > 20
+                  ? element.image_name.substring(0, 17) + '...'
+                  : element.image_name}
+              </a>
+            </div>
           </div>
         )
       }
@@ -568,6 +691,21 @@ const ProductDetail = () => {
                         component_id: ele.images[ele.images.length - 1].id,
                         component_type: 'image',
                       })
+                    }}
+                  />
+                  <i
+                    role={'button'}
+                    className={
+                      !isImageGridEditable.includes(idx)
+                        ? 'fa-solid fa-pen-to-square me-2 theme'
+                        : 'fa-solid fa-floppy-disk theme'
+                    }
+                    onClick={() => {
+                      !isImageGridEditable.includes(idx)
+                        ? setIsImageGridEditable(prevState => [...prevState, idx])
+                        : setIsImageGridEditable(prevState =>
+                            prevState.filter(item => item !== idx)
+                          )
                     }}
                   />
                   <i
