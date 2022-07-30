@@ -34,6 +34,8 @@ const RYGDetail = () => {
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const [isMd, setIsMd] = useState(false)
+  const [imagesToUpload, setImagesToUpload] = useState([])
+  const [isImageGridEditable, setIsImageGridEditable] = useState([])
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
 
@@ -167,6 +169,35 @@ const RYGDetail = () => {
       .catch(error => {
         console.log(error)
       })
+  }
+
+  const bulkImageUpload = () => {
+    setLoading(true)
+    const formData = new FormData()
+    const data = {
+      type: 'image',
+      section_id: productDetail[isAddComponentModalVisible].section_id,
+    }
+    formData.append('data', JSON.stringify(data))
+    imagesToUpload.map((image, index) => {
+      formData.append(`image${index + 1}`, image)
+    })
+    console.log(...formData)
+    API.post('/ryg_info/page/add_bulk_image', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getProductDetails()
+          setIsAddComponentModalVisible(-1)
+          setAddComponentData(initialTableState)
+          setImagesToUpload([])
+          if (type === 'binary' || type === 'image') setInputBinary()
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    setLoading(false)
   }
 
   const callAddComponentAPI = type => {
@@ -462,19 +493,72 @@ const RYGDetail = () => {
           if (element.type === 'image') {
             IMAGES.push(
               <div
-                className={`col-6 col-lg-2 mt-2${
-                  !isMd
-                    ? IMAGES.length % 2 === 0
-                      ? ' ps-0'
-                      : ' pe-0'
-                    : IMAGES.length % 6 === 0
-                    ? ' ps-0'
-                    : IMAGES.length % 6 === 5
-                    ? ' pe-0'
-                    : ''
-                }`}
+                className={`col-6 col-lg-2 mt-2`}
+                // NOTE: THE BELOW COMMENTED LINES OF CODE WAS USED IN THE CLASSNAME ABOVE. THEY HAVE BEEN COMMENTED BECAUSE THEY WERE CAUSING SIZE ISSUES.
+                // ${
+                //   !isMd
+                //     ? IMAGES.length % 2 === 0
+                //       ? ' ps-0'
+                //       : ' pe-0'
+                //     : IMAGES.length % 6 === 0
+                //     ? ' ps-0'
+                //     : IMAGES.length % 6 === 5
+                //     ? ' pe-0'
+                //     : ''
+                // }
               >
-                <img className="border rounded img-product-line" src={element.image_link} />
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    //border: '1px solid black',
+                    borderRadius: '0.25 rem',
+                    boxShadow: '0 0 0.313rem #00000035',
+                    padding: '0.5rem',
+                  }}
+                >
+                  {isImageGridEditable.includes(idx) && (
+                    <i
+                      className="fa-solid fa-xmark"
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        right: '-10px',
+                        float: 'right',
+                        padding: '0.188rem 0.313rem',
+                        borderRadius: '50%',
+                        background: '#cd0000',
+                        color: '#fff',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        let payload = {
+                          section_id: section.section_id,
+                          component_id: element.id,
+                          component_type: element.type,
+                        }
+                        setShowDeleteModal(payload)
+                      }}
+                    ></i>
+                  )}
+                  <Image src={element.image_link} className="border rounded img-product-line" />
+                  <a
+                    href={element.image_link}
+                    target="_blank"
+                    role={'button'}
+                    className="col register-link"
+                    style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                    download
+                  >
+                    {element.image_name.length > 20
+                      ? element.image_name.substring(0, 17) + '...'
+                      : element.image_name}
+                  </a>
+                </div>
               </div>
             )
           } else {
@@ -499,6 +583,21 @@ const RYGDetail = () => {
                         component_id: ele.id,
                         component_type: ele.type,
                       })
+                    }}
+                  />
+                  <i
+                    role={'button'}
+                    className={
+                      !isImageGridEditable.includes(idx)
+                        ? 'fa-solid fa-pen-to-square me-2 theme'
+                        : 'fa-solid fa-floppy-disk theme'
+                    }
+                    onClick={() => {
+                      !isImageGridEditable.includes(idx)
+                        ? setIsImageGridEditable(prevState => [...prevState, idx])
+                        : setIsImageGridEditable(prevState =>
+                            prevState.filter(item => item !== idx)
+                          )
                     }}
                   />
                   <i
@@ -528,19 +627,72 @@ const RYGDetail = () => {
         const element = ele.images[index]
         IMAGES.push(
           <div
-            className={`col-6 col-lg-2 mt-2${
-              !isMd
-                ? IMAGES.length % 2 === 0
-                  ? ' ps-0'
-                  : ' pe-0'
-                : IMAGES.length % 6 === 0
-                ? ' ps-0'
-                : IMAGES.length % 6 === 5
-                ? ' pe-0'
-                : ''
-            }`}
+            className={`col-6 col-lg-2 mt-2`}
+            // NOTE: THE BELOW COMMENTED LINES OF CODE WAS USED IN THE CLASSNAME ABOVE. THEY HAVE BEEN COMMENTED BECAUSE THEY WERE CAUSING SIZE ISSUES.
+            // ${
+            //   !isMd
+            //     ? IMAGES.length % 2 === 0
+            //       ? ' ps-0'
+            //       : ' pe-0'
+            //     : IMAGES.length % 6 === 0
+            //     ? ' ps-0'
+            //     : IMAGES.length % 6 === 5
+            //     ? ' pe-0'
+            //     : ''
+            // }
           >
-            <Image src={element.image_link} className="border rounded img-product-line" />
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                //border: '1px solid black',
+                borderRadius: '0.25 rem',
+                boxShadow: '0 0 0.313rem #00000035',
+                padding: '0.5rem',
+              }}
+            >
+              {isImageGridEditable.includes(idx) && (
+                <i
+                  className="fa-solid fa-xmark"
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    right: '-10px',
+                    float: 'right',
+                    padding: '0.188rem 0.313rem',
+                    borderRadius: '50%',
+                    background: '#cd0000',
+                    color: '#fff',
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    let payload = {
+                      section_id: section.section_id,
+                      component_id: element.id,
+                      component_type: element.type,
+                    }
+                    setShowDeleteModal(payload)
+                  }}
+                ></i>
+              )}
+              <Image src={element.image_link} className="border rounded img-product-line" />
+              <a
+                href={element.image_link}
+                target="_blank"
+                role={'button'}
+                className="col register-link"
+                style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                download
+              >
+                {element.image_name.length > 20
+                  ? element.image_name.substring(0, 17) + '...'
+                  : element.image_name}
+              </a>
+            </div>
           </div>
         )
       }
@@ -562,6 +714,19 @@ const RYGDetail = () => {
                       component_id: ele.images[ele.images.length - 1].id,
                       component_type: 'image',
                     })
+                  }}
+                />
+                <i
+                  role={'button'}
+                  className={
+                    !isImageGridEditable.includes(idx)
+                      ? 'fa-solid fa-pen-to-square me-2 theme'
+                      : 'fa-solid fa-floppy-disk theme'
+                  }
+                  onClick={() => {
+                    !isImageGridEditable.includes(idx)
+                      ? setIsImageGridEditable(prevState => [...prevState, idx])
+                      : setIsImageGridEditable(prevState => prevState.filter(item => item !== idx))
                   }}
                 />
                 <i
@@ -1066,7 +1231,7 @@ const RYGDetail = () => {
   const renderAddImage = () => {
     return (
       <div className="row">
-        <div className="input-group mb-3">
+        {/* <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text font-8 font-weight-bold" id="basic-addon1">
               {'Title'}
@@ -1086,31 +1251,67 @@ const RYGDetail = () => {
             aria-label={'Title'}
             aria-describedby="basic-addon1"
           />
-        </div>
+        </div> */}
         <div className="input-group mb-3">
           <div className="custom-file">
             <input
               onChange={e => {
-                setInputBinary(e.target.files[0])
-                if (addComponentData.title === undefined || addComponentData.title === null)
-                  setAddComponentData(prevState => {
-                    return {
-                      ...prevState,
-                      title: 'image',
-                    }
-                  })
+                let images = []
+                for (let i = 0; i < e.target.files.length; i++) {
+                  images.push(e.target.files[i])
+                }
+                setImagesToUpload(prevState => {
+                  return [...prevState, ...images]
+                })
               }}
               type="file"
               className="custom-file-input"
               id="inputGroupFile03"
               aria-describedby="inputGroupFileAddon03"
               accept="image/*"
+              multiple
             />
             <label className="custom-file-label font-8 font-weight-bold" htmlFor="inputGroupFile03">
-              {inputBinary?.name ? inputBinary?.name : 'Select file'}
+              {inputBinary?.name ? inputBinary?.name : 'Select files'}
             </label>
           </div>
         </div>
+        {imagesToUpload.length !== 0
+          ? imagesToUpload.map((image, index) => {
+              return (
+                <div
+                  style={{
+                    paddingRight: 'calc(var(--bs-gutter-x) * 0.5)',
+                    paddingLeft: 'calc(var(--bs-gutter-x) * 0.5)',
+                    marginBottom: '0.5rem',
+                  }}
+                >
+                  <div
+                    key={index}
+                    className=""
+                    style={{
+                      border: '1px solid lightgrey',
+                      fontSize: 'small',
+                      width: '100%',
+                      padding: '0.375rem 0.75rem',
+                      borderRadius: '0.25rem',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {image.name}
+                    <i
+                      className="fa-solid fa-xmark"
+                      onClick={() => {
+                        setImagesToUpload(imagesToUpload.filter(img => img !== image))
+                      }}
+                    ></i>
+                  </div>
+                </div>
+              )
+            })
+          : null}
         <div className="col-12 justify-content-center d-flex mt-3">
           <button
             ref={element => {
@@ -1130,11 +1331,13 @@ const RYGDetail = () => {
           <button
             disabled={
               // addComponentData?.title === undefined ||
-              inputBinary === undefined || inputBinary === null
+              //inputBinary === undefined || inputBinary === null
+              imagesToUpload.length === 0
             }
             className="btn btn-primary ms-2"
             onClick={() => {
-              callAddComponentAPI('image')
+              //callAddComponentAPI('image')
+              bulkImageUpload()
             }}
           >
             Create
