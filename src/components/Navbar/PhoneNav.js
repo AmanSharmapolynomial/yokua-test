@@ -89,7 +89,11 @@ const PhoneNav = React.forwardRef(({ isAdmin, isLogedIn, hideNavbar, ...props },
             className="w-100 pt-3 d-block d-lg-none"
             onSubmit={e => {
               e.preventDefault()
-              navigate(`/search/${e.target.search.value}`)
+              if (e.target.elements.search.value === '') {
+                toast.error('Please enter a search term')
+              } else {
+                navigate(`/search/${e.target.search.value}`)
+              }
             }}
           >
             <div className="input-group search px-3">

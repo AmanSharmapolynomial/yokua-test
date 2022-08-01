@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, useLocation } from 'react-router'
 import Navbar from '../Navbar'
 import './style.css'
+import { toast } from 'react-toastify'
 import Yokogawa from '../../assets/Yokogawa png.png'
 import PhoneNav from '../Navbar/PhoneNav'
 
@@ -83,7 +84,11 @@ const Header = ({ isLogedIn, isAdmin }) => {
                   className="w-auto float-right"
                   onSubmit={e => {
                     e.preventDefault()
-                    navigate(`/search/${e.target.search.value}`)
+                    if (e.target.elements.search.value === '') {
+                      toast.error('Please enter a search term')
+                    } else {
+                      navigate(`/search/${e.target.search.value}`)
+                    }
                   }}
                 >
                   <div className="input-group search px-3">
