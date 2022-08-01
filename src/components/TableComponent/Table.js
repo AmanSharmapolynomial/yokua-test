@@ -291,8 +291,16 @@ export default ({
   const customSort = (rows, selector, direction) => {
     return rows.sort((a, b) => {
       // use the selector to resolve your field names by passing the sort comparitors
-      const aField = selector(a).toLowerCase()
-      const bField = selector(b).toLowerCase()
+      // console.log("A", selector(a))
+      // console.log("B", selector(b))
+      const aField =
+        selector(a).type === 'a'
+          ? selector(a).props.children.toLowerCase()
+          : selector(a).toLowerCase()
+      const bField =
+        selector(b).type === 'a'
+          ? selector(b).props.children.toLowerCase()
+          : selector(b).toLowerCase()
 
       let comparison = 0
 
