@@ -23,6 +23,16 @@ const LoaderContainer = styled.div`
 
 function App() {
   const { loading } = useLoading()
+
+  // CLOSE DROPDOWN ON SCROLL
+  window.addEventListener('scroll', () => {
+    const dropDownClasses = document.getElementsByClassName('dropdown-menu')
+    for (let i = 0; i < dropDownClasses.length; i++) {
+      if (dropDownClasses[i].classList.contains('show')) {
+        dropDownClasses[i].classList.remove('show')
+      }
+    }
+  })
   return (
     <div id="main" className="container-fluid d-flex flex-column p-0 m-0 flex-fill">
       <Routing />
