@@ -24,8 +24,10 @@ const Search = props => {
   const [searchResults, setSearchResults] = useState([])
   const [expanded, setExpanded] = useState([])
   const [isHistory, setIsHistory] = useState(false)
+  const [noResults, setNoResults] = useState(true)
 
   const getSearchResults = () => {
+    setNoResults(true)
     setLoading(true)
     API.post('/search/', {
       query: query,
@@ -33,7 +35,15 @@ const Search = props => {
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setSearchResults(res.data.response)
+          const results = res.data.response
+          results.map(object => {
+            if (object.data.length != 0) {
+              console.log('OBJECT DATA', object.data)
+              console.log('SETTING NO RESULTS FALSE')
+              setNoResults(false)
+            }
+          })
+          setSearchResults(results)
         }
         setLoading(false)
       })
@@ -190,6 +200,22 @@ const Search = props => {
     </div>
   )
 
+  const renderNoResultsDiv = () => {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '2rem',
+        }}
+      >
+        <p>No Results Found</p>
+      </div>
+    )
+  }
+
   useEffect(() => {
     setIsHistory(false)
     getSearchResults()
@@ -216,7 +242,7 @@ const Search = props => {
                 Search results for "{query}"
               </div>
             </div>
-            <div className="row">{renderComponents()}</div>
+            <div className="row">{noResults ? renderNoResultsDiv() : renderComponents()}</div>
             <div className="row mt-3">
               <button
                 className="btn create-domain-btn w-auto mx-auto"
