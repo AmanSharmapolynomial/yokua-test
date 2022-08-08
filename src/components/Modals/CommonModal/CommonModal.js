@@ -16,12 +16,21 @@ const CommonModal = ({
   children,
   propFile,
   editFile,
+  register = false,
+  uploadedFileLink = '',
+  editLinkName,
 }) => {
   const [file, setFile] = useState(propFile || null)
+  const [editFileState, setEditFileState] = useState(false)
 
   useEffect(() => {
     if (show) setFile(propFile)
+    setEditFileState(false)
   }, [show])
+
+  useEffect(() => {
+    if (register) editFile(file)
+  }, [file])
 
   const handleFileSaveClick = () => {
     //if (file) {
@@ -31,6 +40,29 @@ const CommonModal = ({
     // } else {
     //   toast.error('Please select a file')
     // }
+  }
+
+  const selectedFileBoxStyle = {
+    border: '1px solid gray',
+    fontSize: 'small',
+    width: '100%',
+    padding: '0.375rem 0.75rem',
+    borderRadius: '0.25rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: '0.7rem',
+  }
+
+  const updateFile = async () => {
+    // if(editFileState){
+
+    // }else{
+
+    // }
+    await saveAction(editFileState)
+    setEditFileState(false)
+    handleClose()
   }
 
   return (
@@ -69,22 +101,17 @@ const CommonModal = ({
               onChange={e => setFile(e.target.files[0])}
             />
             {file ? (
-              <div
-                className=""
-                style={{
-                  border: '1px solid gray',
-                  fontSize: 'small',
-                  width: '100%',
-                  padding: '0.375rem 0.75rem',
-                  borderRadius: '0.25rem',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: '0.7rem',
-                }}
-              >
+              <div className="" style={selectedFileBoxStyle}>
                 {file != null ? file.name : propFile?.name}
                 <i className="fa-solid fa-xmark" onClick={() => setFile(null)}></i>
+              </div>
+            ) : null}
+            {register && uploadedFileLink && file == null && !editFileState ? (
+              <div className="" style={selectedFileBoxStyle}>
+                {typeof uploadedFileLink == 'string'
+                  ? uploadedFileLink?.substring(uploadedFileLink?.lastIndexOf('/') + 1)
+                  : 'Uploaded File'}
+                <i className="fa-solid fa-xmark" onClick={() => setEditFileState(true)}></i>
               </div>
             ) : null}
           </>
@@ -113,6 +140,7 @@ const CommonModal = ({
           id="mybtn"
           className="btn btn-background me-4"
           onClick={() => {
+            if (register) editLinkName()
             setFile(null)
             cancelAction()
           }}
@@ -125,7 +153,9 @@ const CommonModal = ({
             action === 'confirm'
               ? saveAction(data)
               : action === 'fileUpload'
-              ? handleFileSaveClick()
+              ? register
+                ? updateFile()
+                : handleFileSaveClick()
               : saveAction()
           }}
         >

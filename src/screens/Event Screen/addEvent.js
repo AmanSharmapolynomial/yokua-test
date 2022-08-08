@@ -140,8 +140,21 @@ const AddEventScreen = () => {
     },
   }
 
+  const linkStyles = {
+    boxShadow: '0 0 0.313rem #00000035',
+    width: 'max-content',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: '#FFFFFF 0% 0% no-repeat padding-box',
+    padding: '0.25rem 0.4rem',
+    borderRadius: '3px',
+    marginRight: '1rem',
+  }
+
   const handleSaveFile = file => {
-    console.log(file)
+    //console.log(file)
     dependOnButton === 'agenda'
       ? setAgendaFile(file)
       : dependOnButton === 'alink'
@@ -218,6 +231,8 @@ const AddEventScreen = () => {
           setAlinkMessage(result.links['link_a'])
           setBlinkMessage(result.links['link_b'])
           setRequirement(result.requirements)
+          setLinkAName(result.links['link_a'].name)
+          setLinkBName(result.links['link_b'].name)
         } else {
           toast.error('Error while getting record')
           navigate('/event/all')
@@ -237,6 +252,7 @@ const AddEventScreen = () => {
   const closeModal = () => {
     setIsOpen(false)
     setLinkModal(false)
+    if (eventId) handleUpdateLinkNameFromModal()
   }
 
   //handle publish event
@@ -355,6 +371,55 @@ const AddEventScreen = () => {
         window.scrollTo(0, 0)
         navigate('/event/update/' + eventId)
       })
+  }
+
+  const updateEvent = async editFileState => {
+    if (!agendaFile && dependOnButton == 'agenda') {
+      toast.error('Agenda cannot be empty')
+      return
+    }
+    setLoading(true)
+    let formData = new FormData()
+    const data = {
+      event_id: eventId,
+      agenda: 'Agenda',
+      link_a: linkAName,
+      link_b: linkBName,
+      delete_link_a: editFileState && dependOnButton == 'alink',
+      delete_link_b: editFileState && dependOnButton == 'blink',
+    }
+    formData.append('data', JSON.stringify(data))
+    if (agendaFile) formData.append('agenda', agendaFile)
+    if (linkAFile) formData.append('link_a', linkAFile)
+    if (linkBFile) formData.append('link_b', linkBFile)
+
+    //console.log("FORM DATA", formData)
+    await API.post('/training/update_event', formData)
+      .then(data => {
+        if (data.status == 200 || data.status == 201) {
+          toast.success(data.data.message)
+          setAgendaFile(null)
+          setLinkAFile(null)
+          setLinkBFile(null)
+          getEventDetailById(eventId)
+        } else {
+          toast.error(data.data.message)
+        }
+      })
+      .catch(err => {
+        toast.error(err)
+      })
+    setLoading(false)
+  }
+
+  const handleUpdateLinkNameFromModal = () => {
+    if (dependOnButton == 'alink') {
+      setLinkAName(alinkMessage.name)
+    } else if (dependOnButton == 'blink') {
+      setLinkBName(blinkMessage.name)
+    } else {
+      return
+    }
   }
 
   useEffect(() => {
@@ -723,75 +788,178 @@ const AddEventScreen = () => {
                         />
                       </div>
                     </div>
-                    <div className="row mt-4">
-                      <div className="col-12 col-lg-auto">
+                    <div
+                      className="row d-flex align-items-center mt-4"
+                      style={{
+                        marginLeft: '0.2rem',
+                        //justifyContent: 'space-between'
+                      }}
+                    >
+                      {/* <div className='col'> */}
+                      <div className="col-12 col-lg-auto" style={linkStyles}>
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
-                            background: 'rgb(0, 79, 155)',
+                            background:
+                              agendaFile != null ||
+                              (agendaMessage != '' && agendaMessage.link != '')
+                                ? 'rgb(0, 79, 155)'
+                                : 'grey',
                             color: 'white',
                             border: '1px solid black',
+                            cursor: eventId && agendaMessage.link ? 'pointer' : 'initial',
                           }}
                           onClick={event => {
-                            if (!eventId && isAdmin) {
-                              setDependOnButton('agenda')
-                              setLinkModal(true)
-                              openModal(event)
-                            } else {
-                              event.preventDefault()
-                              window.open(agendaMessage.link, '_blank')
+                            event.preventDefault()
+                            if (eventId) {
+                              if (agendaMessage.link) window.open(agendaMessage.link, '_blank')
+                              else toast.error('No Link Added')
                             }
+                            // if (!eventId && isAdmin) {
+                            //   setDependOnButton('agenda')
+                            //   setLinkModal(true)
+                            //   openModal(event)
+                            // } else {
+                            //   event.preventDefault()
+                            //   window.open(agendaMessage.link, '_blank')
+                            // }
                           }}
                         >
                           Agenda
                         </button>
+                        {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                        {isAdmin && (
+                          <i
+                            className="fa-solid fa-pen-to-square theme"
+                            style={{
+                              fontSize: 'small',
+                              alignSelf: 'center',
+                              margin: 0,
+                              cursor: 'pointer',
+                            }}
+                            onClick={event => {
+                              setDependOnButton('agenda')
+                              setLinkModal(true)
+                              openModal(event)
+                            }}
+                          ></i>
+                        )}
                       </div>
-                      <div className="col-12 col-lg-auto">
+                      {/* </div> */}
+                      {/* <div className='col'> */}
+                      <div className="col-12 col-lg-auto" style={linkStyles}>
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
-                            background: 'rgb(0, 79, 155)',
+                            background:
+                              linkAFile != null || (alinkMessage != '' && alinkMessage.link != '')
+                                ? 'rgb(0, 79, 155)'
+                                : 'grey',
                             color: 'white',
                             border: '1px solid black',
+                            cursor: eventId && alinkMessage.link ? 'pointer' : 'initial',
                           }}
                           onClick={event => {
-                            if (!eventId && isAdmin) {
-                              setDependOnButton('alink')
-                              setLinkModal(true)
-                              openModal(event)
-                            } else {
-                              event.preventDefault()
+                            event.preventDefault()
+                            if (eventId) {
                               if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
                               else toast.error('No Link Added')
                             }
+                            // if (!eventId && isAdmin) {
+                            //   setDependOnButton('alink')
+                            //   setLinkModal(true)
+                            //   openModal(event)
+                            // } else {
+                            //   event.preventDefault()
+                            //   if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                            //   else toast.error('No Link Added')
+                            // }
                           }}
                         >
-                          {linkAName ? linkAName : 'Other Possible link A'}
+                          {eventId
+                            ? alinkMessage.name
+                              ? alinkMessage.name
+                              : 'Other Possible Link A'
+                            : linkAName
+                            ? linkAName
+                            : 'Other Possible link A'}
                         </button>
+                        {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                        {isAdmin && (
+                          <i
+                            className="fa-solid fa-pen-to-square theme"
+                            style={{
+                              fontSize: 'small',
+                              alignSelf: 'center',
+                              margin: 0,
+                              cursor: 'pointer',
+                            }}
+                            onClick={event => {
+                              setDependOnButton('alink')
+                              setLinkModal(true)
+                              openModal(event)
+                            }}
+                          ></i>
+                        )}
                       </div>
-                      <div className="col-12 col-lg-auto">
+                      {/* </div> */}
+                      {/* <div className='col'> */}
+                      <div className="col-12 col-lg-auto" style={linkStyles}>
                         <button
                           className="px-2 py-1 rounded-3 clamp-08v"
                           style={{
-                            background: 'rgb(0, 79, 155)',
+                            background:
+                              linkBFile != null || (blinkMessage != '' && blinkMessage.link != '')
+                                ? 'rgb(0, 79, 155)'
+                                : 'grey',
                             color: 'white',
                             border: '1px solid black',
+                            cursor: eventId && blinkMessage.link ? 'pointer' : 'initial',
                           }}
                           onClick={event => {
-                            if (!eventId && isAdmin) {
-                              setDependOnButton('blink')
-                              setLinkModal(true)
-                              openModal(event)
-                            } else {
-                              event.preventDefault()
+                            event.preventDefault()
+                            if (eventId) {
                               if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
                               else toast.error('No Link Added')
                             }
+                            // if (!eventId && isAdmin) {
+                            //   setDependOnButton('blink')
+                            //   setLinkModal(true)
+                            //   openModal(event)
+                            // } else {
+                            //   event.preventDefault()
+                            //   if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
+                            //   else toast.error('No Link Added')
+                            // }
                           }}
                         >
-                          {linkBName ? linkBName : 'Other Possible link B'}
+                          {eventId
+                            ? blinkMessage.name
+                              ? blinkMessage.name
+                              : 'Other Possible Link B'
+                            : linkBName
+                            ? linkBName
+                            : 'Other Possible link B'}
                         </button>
+                        {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                        {isAdmin && (
+                          <i
+                            className="fa-solid fa-pen-to-square theme"
+                            style={{
+                              fontSize: 'small',
+                              alignSelf: 'center',
+                              margin: 0,
+                              cursor: 'pointer',
+                            }}
+                            onClick={event => {
+                              setDependOnButton('blink')
+                              setLinkModal(true)
+                              openModal(event)
+                            }}
+                          ></i>
+                        )}
                       </div>
+                      {/* </div> */}
                     </div>
 
                     <div className="mt-4">
@@ -1380,13 +1548,23 @@ const AddEventScreen = () => {
         data={''}
         handleDataChange={null}
         cancelAction={closeModal}
-        saveAction={handleSaveFile}
+        saveAction={eventId ? updateEvent : handleSaveFile}
         propFile={
           dependOnButton === 'agenda'
             ? agendaFile
             : dependOnButton === 'alink'
             ? linkAFile
             : linkBFile
+        }
+        register={eventId ? true : false}
+        uploadedFileLink={
+          eventId
+            ? dependOnButton === 'agenda'
+              ? agendaMessage.link
+              : dependOnButton === 'alink'
+              ? alinkMessage.link
+              : blinkMessage.link
+            : ''
         }
         editFile={
           dependOnButton === 'agenda'
@@ -1395,6 +1573,7 @@ const AddEventScreen = () => {
             ? setLinkAFile
             : setLinkBFile
         }
+        editLinkName={handleUpdateLinkNameFromModal}
       >
         {dependOnButton === 'agenda' ? (
           <></>
@@ -1406,7 +1585,14 @@ const AddEventScreen = () => {
               placeholder={'Name'}
               aria-label={'Name'}
               aria-describedby="basic-addon2"
-              value={dependOnButton === 'alink' ? linkAName : linkBName}
+              value={
+                // eventId ? (
+                //   dependOnButton === 'alink' ? alinkMessage.name : blinkMessage.name
+                // ) : (
+                //   dependOnButton === 'alink' ? linkAName : linkBName
+                // )
+                dependOnButton === 'alink' ? linkAName : linkBName
+              }
               onChange={e => {
                 dependOnButton === 'alink'
                   ? setLinkAName(e.target.value)
