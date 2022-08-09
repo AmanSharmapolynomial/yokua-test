@@ -197,8 +197,9 @@ const ProductCard = ({
                   textAlign: 'center',
                 }}
               >
-                Are you sure you want to move the {subProduct ? item.sub_product_name : item.name}{' '}
-                product folder to archive?
+                Are you sure you want to move the{' '}
+                {htmlParser(subProduct ? item.sub_product_name : item.name)} product folder to
+                archive?
               </span>
 
               <div className="domain-modal-cta">
