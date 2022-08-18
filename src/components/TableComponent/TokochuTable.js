@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import DataTable from 'react-data-table-component'
+import { useLoading } from '../../utils/LoadingContext'
 import { getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
@@ -7,18 +8,21 @@ import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 
-export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRequest }) => {
+const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRequest }) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [needToReload, setNeedToReload] = useState(false)
-
+  const { setLoading } = useLoading()
   const [editModeData, setEditModeData] = useState([])
 
   const [emptyNewRow, setEmptyNewRow] = useState(null)
   const [rowName, setRowName] = useState({})
   const [isEdit, setEdit] = useState(false)
   const [deleteSelected, setDeleteSelected] = useState(null)
+  const [editSelected, setEditSelected] = useState(null)
+  const [editedTableObject, setEditedTableObject] = useState(tableObject.table_data)
+  const [updatedTokuchuFile, setUpdatedTokuchuFile] = useState(null)
   const customStyles = {
     // table: {
     //   style: {
@@ -71,6 +75,68 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
     setRowName({ ...updatedRowName })
   }
 
+  const handleTableDataChange = (name, value, index, file = null) => {
+    setEditedTableObject(prevState => {
+      let arr = [...prevState]
+      const columnIndex = arr.findIndex(ele => ele.column_name === name)
+      if (columnIndex !== -1) {
+        try {
+          arr[columnIndex].isEdited = true
+          arr[columnIndex].values[index].isEdited = true
+          arr[columnIndex].values[index].value = value
+          if (file != null) setUpdatedTokuchuFile(file)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      return arr
+    })
+  }
+
+  const updateTableValues = tableObject => {
+    setLoading(true)
+    let payload = {
+      action_type: 'update_cell',
+      update_objs: [],
+    }
+    for (let index = 0; index < tableObject.length; index++) {
+      if (tableObject[index].isEdited) {
+        const values = tableObject[index].values.filter(value => value.isEdited)
+        values.map(value => {
+          payload.update_objs.push({
+            table_id: value.table_id,
+            column_name: value.column_name,
+            row_index: value.row_index,
+            value: value.value,
+          })
+        })
+        //payload.update_objs.push(...values)
+      }
+    }
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    if (updatedTokuchuFile !== null) {
+      formData.append('file', updatedTokuchuFile)
+    }
+    API.post('tokuchu/page/update_table_data', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
+          }
+        }
+        //getProductDetails()
+        setEdit(false)
+        setEditSelected(null)
+        setLoading(false)
+        onRefresh()
+      })
+      .catch(err => {
+        console.log(err)
+        setLoading(false)
+      })
+  }
+
   const _setTableHeaders = () => {
     const tableColumns = []
     tableObject.table_data?.map((column, index) => {
@@ -92,6 +158,10 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
     setTableHeader([...tableColumns])
   }
 
+  useEffect(() => {
+    _setTableData()
+  }, [editedTableObject])
+
   const _setTableData = (isAddNewRow = false) => {
     const tableData = tableObject.table_data
     const finalTableData = []
@@ -103,34 +173,91 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
 
         tableData?.map((tableC, tableI) => {
           const tempObject = {}
+          const row_i = tableC.values[index].row_index
           if (tableC['column_name'] === 'Tokuchu') {
             tempObject[tableC['column_name']] = (
               <>
-                <a href={tableC.values[index].value} download target={'_blank'}>
-                  <img
-                    src={Uploadicon}
-                    style={{ width: '15px', marginRight: '10px' }}
-                    alt={'FileImage'}
+                {editSelected === row_i && isEdit ? (
+                  <input
+                    style={{
+                      all: 'initial',
+                    }}
+                    type={'file'}
+                    onChange={e => {
+                      handleTableDataChange(tableC['column_name'], '', index, e.target.files[0])
+                    }}
                   />
-                </a>
+                ) : (
+                  <a href={tableC.values[index].value} download target={'_blank'}>
+                    <img
+                      src={Uploadicon}
+                      style={{ width: '15px', marginRight: '10px' }}
+                      alt={'FileImage'}
+                    />
+                  </a>
+                )}
               </>
             )
           } else {
-            tempObject[tableC['column_name']] = tableC?.values[index]
-              ? tableC?.values[index]?.value
-              : []
+            {
+              editSelected === row_i && isEdit
+                ? (tempObject[tableC['column_name']] = (
+                    <input
+                      style={{
+                        borderBottom: '1px solid rgb(0, 79, 155)',
+                        borderTop: 'none',
+                        borderRight: 'none',
+                        borderLeft: 'none',
+                      }}
+                      type={tableC.is_date ? 'date' : 'text form-control'}
+                      value={tableC.values[index].value}
+                      onChange={e => {
+                        handleTableDataChange(tableC['column_name'], e.target.value, index)
+                      }}
+                    />
+                  ))
+                : (tempObject[tableC['column_name']] = tableC?.values[index]
+                    ? tableC?.values[index]?.value
+                    : [])
+            }
           }
           Object.assign(tableRowObject, tempObject)
         })
         if (isEdit)
           tableRowObject.edit = (
-            <i
-              className="fa-solid fa-trash"
-              role={'button'}
-              onClick={() => {
-                setDeleteSelected(item)
-              }}
-            />
+            <div>
+              {editSelected == item.row_index ? (
+                <i
+                  className="fa-solid fa-floppy-disk theme"
+                  style={{
+                    marginRight: '1rem',
+                  }}
+                  role={'button'}
+                  onClick={() => {
+                    updateTableValues(editedTableObject)
+                  }}
+                />
+              ) : (
+                <i
+                  className="fa-solid fa-pen-to-square ms-2 theme"
+                  style={{
+                    marginRight: '1rem',
+                  }}
+                  role={'button'}
+                  onClick={() => {
+                    setEditSelected(item.row_index)
+                  }}
+                />
+              )}
+
+              <i
+                className="fa-solid fa-trash"
+                role={'button'}
+                onClick={() => {
+                  setDeleteSelected(item)
+                }}
+              />
+            </div>
           )
         finalTableData.push(tableRowObject)
       })
@@ -299,7 +426,7 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
       _setTableHeaders()
       _setTableData()
     }
-  }, [tableObject, isEdit])
+  }, [tableObject, isEdit, editSelected])
 
   return (
     <>
@@ -323,6 +450,7 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
                   onClick={() => {
                     setEditModeData([...tableRows])
                     setEdit(false)
+                    setEditSelected(null)
                   }}
                 />
               ) : (
@@ -444,3 +572,5 @@ export default ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRe
     </>
   )
 }
+
+export default TokuchuTable
