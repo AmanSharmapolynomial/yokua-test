@@ -52,6 +52,7 @@ const CommonModal = ({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: '0.7rem',
+    wordBreak: 'break-all',
   }
 
   const updateFile = async () => {
