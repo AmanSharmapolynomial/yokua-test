@@ -224,6 +224,8 @@ export default ({
         })
       } else {
         const filters = column.values.map(item => item.value)
+        // remove duplicates from filters
+        const uniqueFilters = filters.filter((item, index) => filters.indexOf(item) === index)
         tableColumns.push({
           name: (
             <div className="dropdown">
@@ -239,7 +241,21 @@ export default ({
               </div>
 
               <div className="dropdown-menu">
-                {filters.map((element, index) => (
+                <span
+                  style={{
+                    color: 'rgba(0,0,0,0.87)',
+                    fontWeight: '400',
+                  }}
+                  className="dropdown-item filter-item"
+                  onClick={() => {
+                    setSortMethod('')
+                    handleSort(column.column_name, undefined)
+                    _setTableHeaders(undefined)
+                  }}
+                >
+                  <i>Clear Filter</i>
+                </span>
+                {uniqueFilters.map((element, index) => (
                   <span
                     style={{
                       color: 'rgba(0,0,0,0.87)',
