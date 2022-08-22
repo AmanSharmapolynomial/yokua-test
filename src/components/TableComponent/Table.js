@@ -11,6 +11,7 @@ import ic_link from '../../assets/link_icon.png'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
+import Tooltip from '@mui/material/Tooltip'
 
 /**
  *
@@ -442,36 +443,40 @@ export default ({
                   }}
                 />
               ) : (
+                <Tooltip title="Edit Row">
+                  <i
+                    className="fa-solid fa-pen-to-square ms-2 theme"
+                    style={{
+                      marginRight: '1rem',
+                    }}
+                    role={'button'}
+                    onClick={() => {
+                      setEditSelected(item.row_index)
+                    }}
+                  />
+                </Tooltip>
+              )}
+              <Tooltip title="Archive Row">
                 <i
-                  className="fa-solid fa-pen-to-square ms-2 theme"
+                  className="fa-solid fa-box-archive theme"
                   style={{
                     marginRight: '1rem',
                   }}
                   role={'button'}
                   onClick={() => {
-                    setEditSelected(item.row_index)
+                    setArchiveSelected(item)
                   }}
                 />
-              )}
-
-              <i
-                className="fa-solid fa-box-archive theme"
-                style={{
-                  marginRight: '1rem',
-                }}
-                role={'button'}
-                onClick={() => {
-                  setArchiveSelected(item)
-                }}
-              />
-
-              <i
-                className="fa-solid fa-trash"
-                role={'button'}
-                onClick={() => {
-                  setDeleteSelected(item)
-                }}
-              />
+              </Tooltip>
+              <Tooltip title="Delete Row">
+                <i
+                  className="fa-solid fa-trash"
+                  role={'button'}
+                  onClick={() => {
+                    setDeleteSelected(item)
+                  }}
+                />
+              </Tooltip>
             </div>
           )
           if (editSelected == item.row_index) {
@@ -629,37 +634,43 @@ export default ({
           </div>
           {isAdmin && !archivedFilter && (
             <div className="col-auto my-2 p-0 d-none d-lg-block">
-              <Image
-                className="me-2"
-                style={{ width: '1.4rem' }}
-                role={'button'}
-                src={ic_link}
-                onClick={() => {
-                  onLinkClick()
-                }}
-              />
-              <i
-                role={'button'}
-                className={
-                  !isTableEditable
-                    ? 'fa-solid fa-pen-to-square me-2 theme'
-                    : 'fa-solid fa-floppy-disk theme'
-                }
-                onClick={() => {
-                  onEditableClick()
-                  setEditSelected(null)
-                  // if (isTableEditable) {
-                  //   onTableUpdate(editedTableObject)
-                  // }
-                }}
-              />
-              <i
-                role={'button'}
-                className="fa-solid fa-trash ms-2 me-0"
-                onClick={() => {
-                  onDeleteComponent()
-                }}
-              ></i>
+              <Tooltip title="Link Component">
+                <Image
+                  className="me-2"
+                  style={{ width: '1.4rem' }}
+                  role={'button'}
+                  src={ic_link}
+                  onClick={() => {
+                    onLinkClick()
+                  }}
+                />
+              </Tooltip>
+              <Tooltip title={isTableEditable ? 'Save' : 'Edit Table'}>
+                <i
+                  role={'button'}
+                  className={
+                    !isTableEditable
+                      ? 'fa-solid fa-pen-to-square me-2 theme'
+                      : 'fa-solid fa-floppy-disk theme'
+                  }
+                  onClick={() => {
+                    onEditableClick()
+                    setEditSelected(null)
+                    // if (isTableEditable) {
+                    //   onTableUpdate(editedTableObject)
+                    // }
+                  }}
+                />
+              </Tooltip>
+              <Tooltip title="Delete Table">
+                <i
+                  role={'button'}
+                  className="fa-solid fa-trash ms-2 me-0"
+                  onClick={() => {
+                    onDeleteComponent()
+                  }}
+                ></i>
+              </Tooltip>
             </div>
           )}
         </div>
