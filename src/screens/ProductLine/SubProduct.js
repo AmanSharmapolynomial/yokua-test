@@ -104,7 +104,11 @@ const SubProduct = () => {
             archiveProducts(item.id)
           }}
           onClick={() => {
-            navigate('/product-lines/product-detail', { state: { ...item, parentId: state.id } })
+            const updatedItem = item
+            updatedItem.is_archived = archivedFilter
+            navigate('/product-lines/product-detail', {
+              state: { ...updatedItem, parentId: state.id },
+            })
           }}
           onUpdate={payload => {
             updateSubProduct(payload)
