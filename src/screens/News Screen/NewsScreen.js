@@ -11,6 +11,9 @@ import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Tooltip from '@mui/material/Tooltip'
 // pre-wrap
 const NewsScreen = () => {
   const { setLoading } = useLoading()
@@ -18,7 +21,10 @@ const NewsScreen = () => {
   const [isAnyNewsUnderEdit, setNewsUnderEdit] = useState(false)
   const [isCheckListActivated, setCheckListActivated] = useState(false)
 
+  const [category, setCategory] = useState(null)
+  const [subCategory, setSubCategory] = useState(null)
   const [categoryFilter, setCategoryFilter] = useState(null)
+  const [categoryFilterForSub, setCategoryFilterforSub] = useState(null)
   const [subCategoryFilter, setSubCategoryFilter] = useState(null)
   const [archivedFilter, setArchivedFilter] = useState(false)
 
@@ -133,101 +139,152 @@ const NewsScreen = () => {
                     }
                     src={Filtermg}
                   />
-                  <div
-                    className="dropdown-menu"
-                    style={{
-                      overflowY: 'scroll',
-                      maxHeight: '10rem',
-                    }}
-                  >
-                    {backendData &&
-                      backendData.categories.map((category, index) => (
-                        <span
-                          key={index}
-                          className="dropdown-item filter-item"
-                          style={
-                            categoryFilter === category.id
-                              ? {
-                                  fontWeight: 'bold',
-                                }
-                              : {
-                                  fontWeight: '300',
-                                }
-                          }
-                          onClick={() => {
-                            if (categoryFilter == category.id) {
-                              toast.success('Category filter removed')
-                              setCategoryFilter(null)
-                              setSubCategoryFilter(null)
-                            } else {
-                              toast.success('Category filter applied')
-                              setPageNoCall(1)
-                              setCategoryFilter(category.id)
-                            }
-                          }}
-                        >
-                          {category.category_name}
+                  <div className="ml-4" style={{ marginTop: '-1.4rem', zIndex: '1000' }}>
+                    <Stack direction="row" spacing={2}>
+                      <Tooltip title="Category">
+                        <span className="chip">
+                          {category ? (
+                            <Chip
+                              size="small"
+                              label={JSON.parse(category).category_name}
+                              variant="outlined"
+                              onDelete={() => {
+                                toast.success('Category filter removed')
+                                setCategoryFilter(null)
+                                setCategory(null)
+                                setSubCategory(null)
+                                setSubCategoryFilter(null)
+                              }}
+                            />
+                          ) : (
+                            ''
+                          )}
                         </span>
-                      ))}
-                  </div>
-                </div>
-              </div>
-              <div className="filter-icons mx-auto">
-                <div className="dropdown">
-                  {backendData?.sub_categories?.length > 0 && (
-                    <img
-                      data-spy="affix"
-                      id="dropdownMenuButton"
-                      data-toggle={categoryFilter && 'dropdown'}
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      className={
-                        subCategoryFilter === null
-                          ? 'dropdown-toggle greyed filter-icon'
-                          : 'dropdown-toggle filter-icon'
-                      }
-                      src={Filtermg}
-                      onClick={() => {
-                        if (!categoryFilter) {
-                          // setShowFilterDropdown2(!showFilterDropdown2)
-                          // } else {
-                          toast.success('Please select the category filter first')
-                        }
-                      }}
-                    />
-                  )}
-
-                  <div
-                    className="dropdown-menu"
-                    style={{
-                      overflowY: 'scroll',
-                      maxHeight: '10rem',
-                    }}
-                  >
-                    {backendData &&
-                      backendData.sub_categories
-                        .filter(item => item.category_id == categoryFilter)
-                        .map((category, index) => (
-                          <span
-                            key={index}
-                            className="dropdown-item filter-item"
-                            style={{
-                              fontWeight: subCategoryFilter === category.id ? 'bold' : '300',
-                            }}
-                            onClick={() => {
-                              if (subCategoryFilter === category.id) {
+                      </Tooltip>
+                      <Tooltip title="Sub-Category">
+                        <span className="chip-sub">
+                          {subCategory ? (
+                            <Chip
+                              size="small"
+                              label={JSON.parse(subCategory).sub_category_name}
+                              variant="outlined"
+                              onDelete={() => {
                                 toast.success('Sub-category filter removed')
                                 setSubCategoryFilter(null)
-                              } else {
-                                toast.success('Sub-category filter applied')
-                                setPageNoCall(1)
-                                setSubCategoryFilter(category.id)
+                                setSubCategory(null)
+                              }}
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </span>
+                      </Tooltip>
+                    </Stack>
+                  </div>
+                  <div
+                    className="dropdown-menu"
+                    style={{
+                      overflowY: 'scroll',
+                      maxHeight: '10rem',
+                      padding: '4px',
+                    }}
+                  >
+                    <label for="categories" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                      Choose a Category:
+                    </label>
+                    <select
+                      style={{ cursor: 'pointer', padding: '0rem' }}
+                      onClick={event => {
+                        event.stopPropagation()
+                      }}
+                      value={category}
+                      name="categories"
+                      id="categories"
+                      onChange={e => {
+                        let obj = JSON.parse(e.target.value)
+                        if (categoryFilter == obj.id && subCategoryFilter == null) {
+                          toast.success('Category filter removed')
+                          setCategoryFilter(null)
+                          setCategory(null)
+                          setSubCategory(null)
+                          setSubCategoryFilter(null)
+                        } else {
+                          toast.success('Category filter applied')
+                          setPageNoCall(1)
+                          setCategory(JSON.stringify(obj))
+                          setSubCategory(null)
+                          setSubCategoryFilter(null)
+                          setCategoryFilter(obj.id)
+                          setCategoryFilterforSub(obj.id)
+                        }
+                      }}
+                    >
+                      <option value="">Select option</option>
+                      {backendData &&
+                        backendData.categories.map((category, index) => (
+                          <>
+                            <option
+                              style={
+                                categoryFilter === category.id
+                                  ? {
+                                      fontWeight: 'bold',
+                                    }
+                                  : {
+                                      fontWeight: '300',
+                                    }
                               }
-                            }}
-                          >
-                            {category.sub_category_name}
-                          </span>
+                              value={JSON.stringify(category)}
+                            >
+                              {category.category_name}
+                            </option>
+                          </>
                         ))}
+                    </select>
+                    <label for="sub-categories" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                      Choose a Sub-Category:
+                    </label>
+                    <select
+                      value={subCategory}
+                      name="sub-categories"
+                      id="sub-categories"
+                      disabled={category ? false : true}
+                      style={
+                        !category
+                          ? { backgroundColor: '#E3E6E8', cursor: 'not-allowed', padding: '0rem' }
+                          : { cursor: 'pointer', padding: '0rem' }
+                      }
+                      onClick={event => event.stopPropagation()}
+                      onChange={e => {
+                        let obj = JSON.parse(e.target.value)
+                        if (subCategoryFilter === obj.id) {
+                          toast.success('Sub-category filter removed')
+                          setSubCategoryFilter(null)
+                          setSubCategory(null)
+                        } else {
+                          toast.success('Sub-category filter applied')
+                          setPageNoCall(1)
+                          setSubCategory(JSON.stringify(obj))
+                          setSubCategoryFilter(obj.id)
+                        }
+                      }}
+                    >
+                      <option value="">Select option</option>
+                      {backendData &&
+                        backendData.sub_categories
+                          .filter(item => item.category_id == categoryFilter)
+                          .map((subc, index) => (
+                            <option
+                              key={index}
+                              style={{
+                                fontWeight: subCategoryFilter === subc.id ? 'bold' : '300',
+                                marginLeft: '30px',
+                              }}
+                              value={JSON.stringify(subc)}
+                            >
+                              {subc.sub_category_name}
+                            </option>
+                          ))}
+                    </select>
                   </div>
                 </div>
               </div>

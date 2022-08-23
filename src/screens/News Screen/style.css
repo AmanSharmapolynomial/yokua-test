@@ -11,11 +11,49 @@
 }
 
 .filter-icon {
-  height: auto;
+  height: 1.3rem;
   width: 1rem;
+  margin-top: 0.2rem;
 }
 
 .filter-item {
   font-weight: 500;
   font-size: 0.8rem;
 }
+
+.sub-category-div{
+  /* display: none; */
+  z-index: 1000;
+  margin-left: 350px;
+  background-color: white;
+  background-clip: padding-box;
+}
+
+
+.mainCategory:hover .sub-category-div{
+  display: block;
+}
+
+.chip div span{
+  color: #004f9b
+}
+
+.chip div svg path{
+  color: #004f9b
+}
+
+.chip div{
+  border-color: #004f9b;
+}
+.chip-sub div span{
+  color: #004f9b
+}
+
+.chip-sub div svg path{
+  color: #004f9b
+}
+
+.chip-sub div{
+  border-color: #004f9b;
+}
+
