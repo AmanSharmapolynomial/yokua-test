@@ -142,7 +142,8 @@ export default ({
     if (updatedProductFile !== null) {
       formData.append('file', updatedProductFile)
     }
-    API.post('/products/page/update_table_data', formData)
+    let updateUrl = isRYG ? '/ryg_info/page/update_table_data' : '/products/page/update_table_data'
+    API.post(updateUrl, formData)
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           if (res.data?.message) {
@@ -168,8 +169,8 @@ export default ({
       component_type: 'table row',
       row_index: row.row_index,
     }
-
-    API.post('/products/page/set_archive', payload)
+    let archiveUrl = isRYG ? '/ryg_info/page/set_archive' : '/products/page/set_archive'
+    API.post(archiveUrl, payload)
       .then(data => {
         toast.success('Row archived successfully')
         setArchiveSelected(null)
@@ -185,7 +186,8 @@ export default ({
   }
 
   const deleteRow = item => {
-    API.post('/products/page/delete_table_row', {
+    let deleteUrl = isRYG ? '/ryg_info/page/delete_table_row' : '/products/page/delete_table_row'
+    API.post(deleteUrl, {
       table_id: item.table_id,
       row_index: item.row_index,
     })
@@ -456,18 +458,20 @@ export default ({
                   />
                 </Tooltip>
               )}
-              <Tooltip title="Archive Row">
-                <i
-                  className="fa-solid fa-box-archive theme"
-                  style={{
-                    marginRight: '1rem',
-                  }}
-                  role={'button'}
-                  onClick={() => {
-                    setArchiveSelected(item)
-                  }}
-                />
-              </Tooltip>
+              {!isRYG && (
+                <Tooltip title="Archive Row">
+                  <i
+                    className="fa-solid fa-box-archive theme"
+                    style={{
+                      marginRight: '1rem',
+                    }}
+                    role={'button'}
+                    onClick={() => {
+                      setArchiveSelected(item)
+                    }}
+                  />
+                </Tooltip>
+              )}
               <Tooltip title="Delete Row">
                 <i
                   className="fa-solid fa-trash"
