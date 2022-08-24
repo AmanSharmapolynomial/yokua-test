@@ -273,6 +273,10 @@ form input {
   height: 95%;
 }
 
+.img-product-line{
+  object-fit: contain;
+}
+
 @media (min-width: 768px) {
   .news-img {
     height: 12rem !important;
