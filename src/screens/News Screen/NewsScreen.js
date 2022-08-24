@@ -38,6 +38,8 @@ const NewsScreen = () => {
 
   const [readNews, setNewsRead] = useState([])
 
+  const [isMobile, setIsMobile] = useState(false)
+
   const _updateNewsRead = id => {
     const updatedReadNews = readNews
     const isAlreadyAdded = updatedReadNews.findIndex(item => item == id)
@@ -57,6 +59,7 @@ const NewsScreen = () => {
   }
 
   useEffect(async () => {
+    window.addEventListener('resize', handleResize)
     payload = {
       category_id: parseInt(categoryFilter),
       sub_category_id: parseInt(subCategoryFilter),
@@ -65,6 +68,14 @@ const NewsScreen = () => {
     }
     getAllNews(payload)
   }, [archivedFilter, categoryFilter, subCategoryFilter, isLoading, pageNoCall])
+
+  const handleResize = () => {
+    if (window.innerWidth < 590) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
 
   const getAllNews = payload => {
     setLoading(true)
@@ -140,13 +151,17 @@ const NewsScreen = () => {
                     src={Filtermg}
                   />
                   <div className="ml-4" style={{ marginTop: '-1.4rem', zIndex: '1000' }}>
-                    <Stack direction="row" spacing={2}>
-                      <Tooltip title="Category">
-                        <span className="chip">
-                          {category ? (
+                    <Stack direction="row" spacing={1}>
+                      {category ? (
+                        <Tooltip title={'Category: ' + JSON.parse(category).category_name}>
+                          <span className="chip">
                             <Chip
                               size="small"
-                              label={JSON.parse(category).category_name}
+                              label={
+                                isMobile
+                                  ? JSON.parse(category).category_name.slice(0, 5) + '...'
+                                  : JSON.parse(category).category_name
+                              }
                               variant="outlined"
                               onDelete={() => {
                                 toast.success('Category filter removed')
@@ -156,17 +171,23 @@ const NewsScreen = () => {
                                 setSubCategoryFilter(null)
                               }}
                             />
-                          ) : (
-                            ''
-                          )}
-                        </span>
-                      </Tooltip>
-                      <Tooltip title="Sub-Category">
-                        <span className="chip-sub">
-                          {subCategory ? (
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        ''
+                      )}
+                      {subCategory ? (
+                        <Tooltip
+                          title={'Sub-Category: ' + JSON.parse(subCategory).sub_category_name}
+                        >
+                          <span className="chip-sub">
                             <Chip
                               size="small"
-                              label={JSON.parse(subCategory).sub_category_name}
+                              label={
+                                isMobile
+                                  ? JSON.parse(subCategory).sub_category_name.slice(0, 5) + '...'
+                                  : JSON.parse(subCategory).sub_category_name
+                              }
                               variant="outlined"
                               onDelete={() => {
                                 toast.success('Sub-category filter removed')
@@ -174,11 +195,11 @@ const NewsScreen = () => {
                                 setSubCategory(null)
                               }}
                             />
-                          ) : (
-                            ''
-                          )}
-                        </span>
-                      </Tooltip>
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        ''
+                      )}
                     </Stack>
                   </div>
                   <div
