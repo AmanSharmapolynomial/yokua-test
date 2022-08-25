@@ -10,6 +10,8 @@ import { getUserRoles } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
+import ReactCrop from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 
 const NewsItem = ({
   data,
@@ -1297,6 +1299,41 @@ function AddCategoryModal({
   )
   const [catImg, setCatImg] = useState(preloadedCategoryData?.image_link)
   const imageFileInputRef = useRef()
+  const [showCropModal, setShowCropModal] = useState(false)
+  const [crop, setCrop] = useState(
+    // default crop config
+    {
+      unit: '%',
+      width: 30,
+      aspect: 1 / 1,
+    }
+  )
+  const [imageRef, setImageRef] = useState()
+  const [aspect, setAspect] = useState(1)
+  const [croppedImage, setCroppedImage] = useState(null)
+  const [imageToCrop, setImageToCrop] = useState(null)
+  const [finalCroppedImageFile, setFinalCroppedImageFile] = useState(null)
+  // const [cropState, setCropState] = useState(false)
+
+  const setCropImage = () => {}
+
+  async function cropImage(crop) {
+    if (imageRef && crop.width && crop.height) {
+      const croppedImage = await retrieveCroppedImage(
+        imageRef,
+        crop,
+        'croppedImage.jpeg' // destination filename
+      )
+
+      // calling the props function to expose
+      // croppedImage to the parent component
+      setCroppedImage(croppedImage)
+    }
+  }
+
+  const handleCropModalClose = () => {
+    setShowCropModal(false)
+  }
 
   useEffect(() => {
     _setImage()
@@ -1343,14 +1380,15 @@ function AddCategoryModal({
       id: preloadedCategoryData?.id,
       category_name: categoryName,
     }
-    if (typeof imageFile != 'string') {
-      formData.append('image', imageFile)
+    if (typeof finalCroppedImageFile != 'string') {
+      formData.append('image', finalCroppedImageFile)
     }
     formData.append('data', JSON.stringify(data))
 
     await API.post('news/edit_category', formData)
       .then(data => {
         SetImageFile(null)
+        setFinalCroppedImageFile(null)
         closeModal()
         toast.success(data.data.message)
         setShow(false)
@@ -1381,6 +1419,112 @@ function AddCategoryModal({
     }
   }
 
+  function retrieveCroppedImage(sourceImage, crop, fileName) {
+    // creating the cropped image from the source image
+    const canvas = document.createElement('canvas')
+    //const pixelRatio = window.devicePixelRatio
+    const scaleX = sourceImage.naturalWidth / sourceImage.width
+    const scaleY = sourceImage.naturalHeight / sourceImage.height
+    // canvas.width = crop.width * pixelRatio
+    // canvas.height = crop.height * pixelRatio
+    canvas.width = Math.ceil(crop.width * scaleX)
+    canvas.height = Math.ceil(crop.height * scaleY)
+    const ctx = canvas.getContext('2d')
+    //ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+    //ctx.imageSmoothingQuality = 'high'
+
+    ctx.drawImage(
+      sourceImage,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width * scaleX,
+      crop.height * scaleY
+    )
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        // returning an error
+        if (!blob) {
+          reject(new Error('Canvas is empty'))
+          return
+        }
+
+        blob.name = fileName
+        // creating a Object URL representing the Blob object given
+        var file = new File([blob], 'image.png', { type: 'image/png' })
+        console.log('GENERATED IMAGE', file)
+        setFinalCroppedImageFile(file)
+        const croppedImageUrl = window.URL.createObjectURL(blob)
+
+        resolve(croppedImageUrl)
+      }, 'image/png')
+    })
+  }
+
+  const renderImageCropModal = () => {
+    return (
+      <Modal show={showCropModal && imageToCrop} onHide={handleCropModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Crop Image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {imageToCrop && (
+            <ReactCrop
+              src={imageToCrop}
+              crop={crop}
+              onImageLoaded={imageRef => setImageRef(imageRef)}
+              onComplete={crop => cropImage(crop)}
+              onChange={crop => setCrop(crop)}
+            />
+          )}
+          {/* <ReactCrop
+              crop={crop}
+              onChange={setCrop}
+              aspect={aspect}
+              //onComplete={c => setCompletedCrop(c)}
+            >
+              <img
+                src={URL.createObjectURL(image)}
+                //style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                //onLoad={onImageLoad}
+              />
+            </ReactCrop> */}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCropModalClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCropModalClose} disabled={croppedImage == null}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )
+  }
+
+  const handleImageChange = event => {
+    if (event.target.files && event.target.files.length > 0) {
+      const reader = new FileReader()
+
+      reader.addEventListener('load', () => {
+        const image = reader.result
+
+        setImageToCrop(image)
+      })
+
+      reader.readAsDataURL(event.target.files[0])
+      //SetImageFile(event.target.files[0])
+      //_setImage(event.target.files[0])
+      setShowCropModal(true)
+    }
+    setShowCropModal(true)
+    //renderImageCropModal(image)
+  }
+
   return (
     <>
       <Modal show={show} centered onHide={handleClose}>
@@ -1408,17 +1552,18 @@ function AddCategoryModal({
             accept="image/png, image/gif, image/jpeg"
             id="imageFile"
             ref={imageFileInputRef}
+            //ref={imageRef}
             className="inputfile yk-icon-hover"
             onChange={e => {
-              SetImageFile(e.target.files[0])
-              _setImage(e.target.files[0])
+              handleImageChange(e)
             }}
           />
           <div className="d-flex justify-content-center w-100">
             <Image
               thumbnail={true}
               style={{ maxWidth: '40%', width: 'auto' }}
-              src={catImg ? catImg : placeholder}
+              //src={catImg ? catImg : placeholder}
+              src={croppedImage ? croppedImage : catImg ? catImg : placeholder}
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
             />
@@ -1452,6 +1597,17 @@ function AddCategoryModal({
           >
             Cancel
           </button>
+          {croppedImage != null && (
+            <button
+              id="crop-btn"
+              className="btn btn-background me-4"
+              onClick={() => {
+                setShowCropModal(true)
+              }}
+            >
+              Crop Image
+            </button>
+          )}
           <button
             className="btn"
             onClick={() => {
@@ -1465,6 +1621,7 @@ function AddCategoryModal({
             Confirm
           </button>
         </Modal.Footer>
+        {showCropModal && renderImageCropModal()}
       </Modal>
     </>
   )
