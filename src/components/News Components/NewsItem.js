@@ -1388,6 +1388,7 @@ function AddCategoryModal({
     await API.post('news/edit_category', formData)
       .then(data => {
         SetImageFile(null)
+        setCroppedImage(null)
         setFinalCroppedImageFile(null)
         closeModal()
         toast.success(data.data.message)
@@ -1468,7 +1469,7 @@ function AddCategoryModal({
   const renderImageCropModal = () => {
     return (
       <Modal show={showCropModal && imageToCrop} onHide={handleCropModalClose}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{ justifyContent: 'center' }}>
           <Modal.Title>Crop Image</Modal.Title>
         </Modal.Header>
         <Modal.Body>
