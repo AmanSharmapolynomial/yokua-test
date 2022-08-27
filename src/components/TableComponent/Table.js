@@ -59,6 +59,7 @@ export default ({
   const [deleteSelected, setDeleteSelected] = useState(null)
   const [archiveSelected, setArchiveSelected] = useState(null)
   const [updatedProductFile, setUpdatedProductFile] = useState(null)
+  const [uploadInProgress, setUploadInProgress] = useState(false)
   const { setLoading } = useLoading()
   const inputRef = useRef([])
   const customStyles = {
@@ -526,6 +527,7 @@ export default ({
     })
   }
   const callAddRowAPI = async () => {
+    setUploadInProgress(true)
     let data = []
     let file = undefined
     tableObject.forEach(col => {
@@ -559,6 +561,7 @@ export default ({
     toast.success(response.data.message)
     onRefresh()
     setIsEditable(false)
+    setUploadInProgress(false)
   }
 
   const renderDummyRow = () => {
@@ -595,6 +598,10 @@ export default ({
                     onClick={() => {
                       if (inputRef.current[idx].value === '') {
                         toast.error('Cannot add with empty data')
+                        return
+                      }
+                      if (uploadInProgress) {
+                        toast.error('Upload in progress')
                         return
                       }
                       callAddRowAPI()
