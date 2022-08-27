@@ -36,6 +36,7 @@ import RYGDetail from '../screens/RYG/RYGDetail'
 import Search from '../screens/Search/Search'
 import Home from '../screens/Home/Home'
 import EventDetail from '../screens/Event Screen/EventDetail'
+import PageNotFound from '../screens/404/404'
 
 const Routing = () => {
   return (
@@ -321,6 +322,7 @@ const Routing = () => {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
     </React.Fragment>
