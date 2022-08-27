@@ -1058,7 +1058,7 @@ select {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  margin-right: 2rem;
+  margin-right: 1.5rem;
 }
 
 .filter-icons > img {
