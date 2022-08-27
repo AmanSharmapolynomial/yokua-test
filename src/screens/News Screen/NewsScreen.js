@@ -134,7 +134,7 @@ const NewsScreen = () => {
         <div className="profile-setting-container col center py-3">
           <PrimaryHeading title={'News'} backgroundImage={'yk-back-image-news'} />
           <div className="row py-3">
-            <div className="filter-actions col-6">
+            <div className="filter-actions filter-news col-6">
               <div className="filter-icons">
                 <div className="dropdown">
                   <img
@@ -309,6 +309,7 @@ const NewsScreen = () => {
                   </div>
                 </div>
               </div>
+              <p>Filter News</p>
             </div>
             {!archivedFilter && (
               <div className="col-6">

@@ -1046,6 +1046,11 @@ select {
   flex-wrap: wrap;
 }
 
+.filter-news{
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
 .filter-icons {
   width: 0%;
   height: 25px;
@@ -1053,6 +1058,7 @@ select {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  margin-right: 2rem;
 }
 
 .filter-icons > img {
