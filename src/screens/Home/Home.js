@@ -13,6 +13,7 @@ import GoTo from '../../assets/goto.png'
 import saveIcon from '../../assets/ic_save.png'
 import { Modal } from 'react-bootstrap'
 import RYGImage from '../../assets/RYG-Information banner.png'
+import Tooltip from '@mui/material/Tooltip'
 const Home = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -128,14 +129,29 @@ const Home = () => {
                 </span>
                 {isAdmin && (
                   <span className="col-auto d-none d-lg-block">
-                    <img
-                      style={{ width: '1.4rem', height: '1.4rem' }}
-                      src={state ? saveIcon : editIcon}
-                      onClick={e => {
-                        e.stopPropagation()
-                        set(!state)
-                      }}
-                    />
+                    {!state ? (
+                      <Tooltip title="Edit">
+                        <i
+                          className="fa-solid fa-pen-to-square theme"
+                          style={{ cursor: 'pointer' }}
+                          onClick={e => {
+                            e.stopPropagation()
+                            set(!state)
+                          }}
+                        />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Save">
+                        <i
+                          className="fa-solid fa-floppy-disk theme"
+                          style={{ cursor: 'pointer' }}
+                          onClick={e => {
+                            e.stopPropagation()
+                            set(!state)
+                          }}
+                        />
+                      </Tooltip>
+                    )}
                   </span>
                 )}
               </div>
@@ -152,16 +168,18 @@ const Home = () => {
                       {capitalizeFirstLetter(item.name)}
                     </a>
                     {state && (
-                      <i
-                        role={'button'}
-                        className="fa-solid fa-trash col-auto"
-                        style={{
-                          color: '#000',
-                        }}
-                        onClick={e => {
-                          setDelete(item)
-                        }}
-                      />
+                      <Tooltip title="Delete">
+                        <i
+                          role={'button'}
+                          className="fa-solid fa-trash col-auto"
+                          style={{
+                            color: '#000',
+                          }}
+                          onClick={e => {
+                            setDelete(item)
+                          }}
+                        />
+                      </Tooltip>
                     )}
                   </div>
                 ))}
@@ -278,13 +296,15 @@ const Home = () => {
                 </li>
               </ul>
               <div className="mt-2 text-center" role={'button'}>
-                <Link to={'/ryg-information'}>
-                  <img
-                    src={GoTo}
-                    style={{ width: '2rem', height: '2rem', objectFit: 'contain' }}
-                    className="mt-2 mx-auto"
-                  />
-                </Link>
+                <Tooltip title="Go to RYG Information Page">
+                  <Link to={'/ryg-information'}>
+                    <img
+                      src={GoTo}
+                      style={{ width: '2rem', height: '2rem', objectFit: 'contain' }}
+                      className="mt-2 mx-auto"
+                    />
+                  </Link>
+                </Tooltip>
               </div>
               {/* </div> */}
             </div>

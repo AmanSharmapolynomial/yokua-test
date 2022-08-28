@@ -20,6 +20,36 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
     }
   }, [isEditable])
 
+  const handleEditClick = e => {
+    e.stopPropagation()
+    if (isEditable) {
+      try {
+        if (
+          /*inputRef.current.value.trim() !== '' &&*/
+          textareaRef.current.value.trim() !== '' &&
+          item.id !== undefined &&
+          item.id !== null
+        ) {
+          const payload = new FormData()
+          payload.append(
+            'data',
+            JSON.stringify({
+              id: item.id,
+              page_title: /*inputRef.current.value*/ item.page_title,
+              description: textareaRef.current.value,
+            })
+          )
+          imageInputRef.current.files[0] && payload.append('file', imageInputRef.current.files[0])
+          onUpdate(payload)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      setPreview(undefined)
+    }
+    setIsEditable(!isEditable)
+  }
+
   return (
     <div
       onClick={event => {
@@ -96,40 +126,11 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
             getUserRoles() == 'PMK Content Manager' ||
             getUserRoles() == 'Technical Administrator') && (
             <span className="col-auto d-none d-lg-block">
-              <img
-                className="image-sq-2v"
-                src={isEditable ? saveIcon : editIcon}
-                onClick={e => {
-                  e.stopPropagation()
-                  if (isEditable) {
-                    try {
-                      if (
-                        /*inputRef.current.value.trim() !== '' &&*/
-                        textareaRef.current.value.trim() !== '' &&
-                        item.id !== undefined &&
-                        item.id !== null
-                      ) {
-                        const payload = new FormData()
-                        payload.append(
-                          'data',
-                          JSON.stringify({
-                            id: item.id,
-                            page_title: /*inputRef.current.value*/ item.page_title,
-                            description: textareaRef.current.value,
-                          })
-                        )
-                        imageInputRef.current.files[0] &&
-                          payload.append('file', imageInputRef.current.files[0])
-                        onUpdate(payload)
-                      }
-                    } catch (error) {
-                      console.log(error)
-                    }
-                    setPreview(undefined)
-                  }
-                  setIsEditable(!isEditable)
-                }}
-              />
+              {isEditable ? (
+                <i className="fa-solid fa-floppy-disk theme" onClick={e => handleEditClick(e)} />
+              ) : (
+                <i className="fa-solid fa-pen-to-square theme" onClick={e => handleEditClick(e)} />
+              )}
             </span>
           )}
         </div>

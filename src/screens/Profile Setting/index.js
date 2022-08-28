@@ -587,11 +587,7 @@ const ProfileSettingScreen = () => {
               <h1 className="profile-setting__heading py-3">CHANGE PASSWORD</h1>
               <div className="profile-setting__basic-profile-edit">
                 <div className="edit_input">
-                  <img
-                    style={{ width: '20px', height: '20px' }}
-                    src={require('../../assets/Icon awesome-unlock.png')}
-                  />
-
+                  <i class="fa-solid fa-unlock-keyhole theme" style={{ fontSize: '20px' }} />
                   <input
                     required
                     type={passwordVisible ? 'text' : 'password'}
@@ -617,10 +613,7 @@ const ProfileSettingScreen = () => {
                   )}
                 </div>
                 <div className="edit_input">
-                  <img
-                    style={{ width: '20px', height: '20px' }}
-                    src={require('../../assets/Icon awesome-unlock.png')}
-                  />
+                  <i class="fa-solid fa-unlock-keyhole theme" style={{ fontSize: '20px' }} />
                   <input
                     required
                     type={passwordVisible2 ? 'text' : 'password'}
