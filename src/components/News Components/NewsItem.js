@@ -1596,8 +1596,11 @@ function AddCategoryModal({
             className="btn btn-background me-4"
             onClick={() => {
               setCategoryName('')
-              SetImageFile(null)
               setShow(p => false)
+              SetImageFile(null)
+              setCroppedImage(null)
+              setImageToCrop(null)
+              setFinalCroppedImageFile(null)
             }}
           >
             Cancel
