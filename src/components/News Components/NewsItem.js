@@ -694,7 +694,13 @@ const NewsItem = ({
                 </div>
               </div>
 
-              <div className="col-12 col-lg-3 p-sm-0 p-lg-auto mt-2 mt-lg-0">
+              <div
+                className="col-12 col-lg-3 p-sm-0 p-lg-auto mt-2 mt-lg-0 news-item-image-card"
+                style={{
+                  width: '23rem',
+                  height: 'auto',
+                }}
+              >
                 <div className="news-img rounded mx-lg-3">
                   <img
                     src={catImg}
@@ -1305,7 +1311,7 @@ function AddCategoryModal({
     {
       unit: '%',
       width: 30,
-      aspect: 1 / 1,
+      aspect: 1.77 / 1,
     }
   )
   const [imageRef, setImageRef] = useState()
@@ -1314,8 +1320,6 @@ function AddCategoryModal({
   const [imageToCrop, setImageToCrop] = useState(null)
   const [finalCroppedImageFile, setFinalCroppedImageFile] = useState(null)
   // const [cropState, setCropState] = useState(false)
-
-  const setCropImage = () => {}
 
   async function cropImage(crop) {
     if (imageRef && crop.width && crop.height) {
@@ -1615,7 +1619,7 @@ function AddCategoryModal({
               if (preloadedCategoryData) {
                 EditCategory()
               } else {
-                AddNewCategoryCall(imageFile, categoryName)
+                AddNewCategoryCall(finalCroppedImageFile, categoryName)
               }
             }}
           >
