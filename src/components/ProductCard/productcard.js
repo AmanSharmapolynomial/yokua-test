@@ -8,6 +8,7 @@ import { getUserRoles, getToken } from '../../utils/token'
 import './productcard.css'
 import { Modal } from 'react-bootstrap'
 import htmlParser from 'html-react-parser'
+import Tooltip from '@mui/material/Tooltip'
 
 const ProductCard = ({
   index,
@@ -122,59 +123,64 @@ const ProductCard = ({
             getUserRoles() == 'Technical Administrator') &&
             !archive && (
               <span className="col-auto d-none d-lg-block">
-                <img
-                  className="me-3"
-                  src={archiveIcon}
-                  onClick={e => {
-                    e.stopPropagation()
-                    setShowArchiveModal(true)
-                    // onArchiveClick()
-                  }}
-                />
-                <img
-                  src={isEditable ? saveIcon : editIcon}
-                  onClick={e => {
-                    e.stopPropagation()
-                    if (isEditable) {
-                      try {
-                        if (
-                          /*inputRef.current.value.trim() !== '' &&*/
-                          textareaRef.current.value.trim() !== '' &&
-                          item.id !== undefined &&
-                          item.id !== null
-                        ) {
-                          const payload = new FormData()
-                          if (subProduct)
-                            payload.append(
-                              'data',
-                              JSON.stringify({
-                                id: item.id,
-                                product_id: item.product_id,
-                                sub_product_name: /* inputRef.current.value*/ item.sub_product_name,
-                                description: textareaRef.current.value,
-                              })
-                            )
-                          else
-                            payload.append(
-                              'data',
-                              JSON.stringify({
-                                id: item.id,
-                                product_name: /*inputRef.current.value*/ item.name,
-                                description: textareaRef.current.value,
-                              })
-                            )
-                          imageInputRef.current.files[0] &&
-                            payload.append('file', imageInputRef.current.files[0])
-                          onUpdate(payload)
+                <Tooltip title="Archive Product Line">
+                  <img
+                    className="me-3"
+                    src={archiveIcon}
+                    onClick={e => {
+                      e.stopPropagation()
+                      setShowArchiveModal(true)
+                      // onArchiveClick()
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="Edit Product Line">
+                  <img
+                    src={isEditable ? saveIcon : editIcon}
+                    onClick={e => {
+                      e.stopPropagation()
+                      if (isEditable) {
+                        try {
+                          if (
+                            /*inputRef.current.value.trim() !== '' &&*/
+                            textareaRef.current.value.trim() !== '' &&
+                            item.id !== undefined &&
+                            item.id !== null
+                          ) {
+                            const payload = new FormData()
+                            if (subProduct)
+                              payload.append(
+                                'data',
+                                JSON.stringify({
+                                  id: item.id,
+                                  product_id: item.product_id,
+                                  sub_product_name:
+                                    /* inputRef.current.value*/ item.sub_product_name,
+                                  description: textareaRef.current.value,
+                                })
+                              )
+                            else
+                              payload.append(
+                                'data',
+                                JSON.stringify({
+                                  id: item.id,
+                                  product_name: /*inputRef.current.value*/ item.name,
+                                  description: textareaRef.current.value,
+                                })
+                              )
+                            imageInputRef.current.files[0] &&
+                              payload.append('file', imageInputRef.current.files[0])
+                            onUpdate(payload)
+                          }
+                        } catch (error) {
+                          console.log(error)
                         }
-                      } catch (error) {
-                        console.log(error)
+                        setPreview(undefined)
                       }
-                      setPreview(undefined)
-                    }
-                    setIsEditable(!isEditable)
-                  }}
-                />
+                      setIsEditable(!isEditable)
+                    }}
+                  />
+                </Tooltip>
               </span>
             )}
         </div>
