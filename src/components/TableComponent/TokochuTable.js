@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { useLoading } from '../../utils/LoadingContext'
-import { getUserRoles } from '../../utils/token'
+import { getToken, getUserRoles } from '../../utils/token'
 import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
 import { toast } from 'react-toastify'
@@ -189,7 +189,11 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
                     }}
                   />
                 ) : (
-                  <a href={tableC.values[index].value} download target={'_blank'}>
+                  <a
+                    href={tableC.values[index].value + `?token=${getToken()}`}
+                    download
+                    target={'_blank'}
+                  >
                     <img
                       src={Uploadicon}
                       style={{ width: '15px', marginRight: '10px' }}

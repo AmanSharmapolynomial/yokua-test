@@ -4,7 +4,7 @@ import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import archiveIcon from '../../assets/archive.png'
-import { getUserRoles } from '../../utils/token'
+import { getUserRoles, getToken } from '../../utils/token'
 import './productcard.css'
 import { Modal } from 'react-bootstrap'
 import htmlParser from 'html-react-parser'
@@ -68,7 +68,13 @@ const ProductCard = ({
                       />
                       <img
                         className="img-thumbnail border-black"
-                        src={preview ? preview : item?.image_link ? item.image_link : upload}
+                        src={
+                          preview
+                            ? preview
+                            : item?.image_link
+                            ? item.image_link + `?token=${getToken()}`
+                            : upload
+                        }
                         onClick={e => {
                           e.stopPropagation()
                           imageInputRef.current.click()
@@ -78,7 +84,7 @@ const ProductCard = ({
                   ) : (
                     <img
                       className="img-thumbnail border-black"
-                      src={item.image_link ? item.image_link : placeholder}
+                      src={item.image_link ? item.image_link + `?token=${getToken()}` : placeholder}
                     />
                   )}
                 </div>

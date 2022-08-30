@@ -105,9 +105,9 @@ export default () => {
                           className="border-black"
                           src={
                             preview
-                              ? preview
-                              : contact?.general_info?.image_link
-                              ? contact?.general_info?.image_link
+                              ? preview + `?token=${getToken()}`
+                              : contact?.general_info?.image_link + `?token=${getToken()}`
+                              ? contact?.general_info?.image_link + `?token=${getToken()}`
                               : upload
                           }
                           onClick={e => {
@@ -121,7 +121,7 @@ export default () => {
                         className="border-black"
                         src={
                           contact?.general_info?.image_link
-                            ? contact?.general_info?.image_link
+                            ? contact?.general_info?.image_link + `?token=${getToken()}`
                             : placeholder
                         }
                       />
@@ -241,7 +241,11 @@ export default () => {
                       <div className="gen-product-item d-flex ms-2 mb-4">
                         <div className="sm-img-box border border-dark rounded col-3 p-0">
                           <img
-                            src={item?.image_link ? item.image_link : placeholder}
+                            src={
+                              item?.image_link
+                                ? item.image_link + `?token=${getToken()}`
+                                : placeholder
+                            }
                             style={{
                               objectFit: 'cover',
                               width: '100%',
@@ -332,7 +336,11 @@ export default () => {
                           <div className="col-3 p-0">
                             <img
                               className="border border-dark rounded"
-                              src={card?.image_link ? card?.image_link : placeholder}
+                              src={
+                                card?.image_link
+                                  ? card?.image_link + `?token=${getToken()}`
+                                  : placeholder
+                              }
                               style={{
                                 objectFit: 'cover',
                                 width: '100%',

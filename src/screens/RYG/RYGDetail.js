@@ -364,7 +364,7 @@ const RYGDetail = () => {
             <a
               className="bordered-btn rounded w-auto"
               role={'button'}
-              href={ele.binary_link}
+              href={ele.binary_link + `?token=${getToken()}`}
               download
             >
               Download
@@ -448,7 +448,12 @@ const RYGDetail = () => {
           )}
           <div className="row">
             {/* <span className="flex-fill">{ele.title}</span> */}
-            <a role={'button'} href={ele.link} target="_blank" className="w-auto p-0 theme">
+            <a
+              role={'button'}
+              href={ele.link + `?token=${getToken()}`}
+              target="_blank"
+              className="w-auto p-0 theme"
+            >
               {ele.title}
             </a>
           </div>
@@ -559,7 +564,7 @@ const RYGDetail = () => {
                   )}
                   <Image src={element.image_link} className="border rounded img-product-line" />
                   <a
-                    href={element.image_link}
+                    href={element.image_link + `?token=${getToken()}`}
                     target="_blank"
                     role={'button'}
                     className="col register-link"
@@ -696,9 +701,12 @@ const RYGDetail = () => {
                   }}
                 ></i>
               )}
-              <Image src={element.image_link} className="border rounded img-product-line" />
+              <Image
+                src={element.image_link + `?token=${getToken()}`}
+                className="border rounded img-product-line"
+              />
               <a
-                href={element.image_link}
+                href={element.image_link + `?token=${getToken()}`}
                 target="_blank"
                 role={'button'}
                 className="col register-link"

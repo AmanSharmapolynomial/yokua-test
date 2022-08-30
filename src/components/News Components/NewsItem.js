@@ -6,7 +6,7 @@ import API from '../../utils/api'
 import DeleteModal from '../Modals/Delete Modal/DeleteModal'
 import { toast } from 'react-toastify'
 
-import { getUserRoles } from '../../utils/token'
+import { getUserRoles, getToken } from '../../utils/token'
 import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
@@ -704,7 +704,7 @@ const NewsItem = ({
               >
                 <div className="news-img rounded mx-lg-3">
                   <img
-                    src={catImg}
+                    src={catImg + `?token=${getToken()}`}
                     onError={_onErrorImage}
                     placeholder={placeholder}
                     style={{ objectFit: 'contain' }}
@@ -1269,7 +1269,10 @@ const NewsItem = ({
                   {data.attachment_link !== '' && (
                     <>
                       <i className="fa-solid fa-file" />
-                      <a target="_blank" href={data ? data.attachment_link : ''}>
+                      <a
+                        target="_blank"
+                        href={data ? data.attachment_link + `?token=${getToken()}` : ''}
+                      >
                         Read attached file
                       </a>
                     </>

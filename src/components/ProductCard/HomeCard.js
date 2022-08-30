@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
-import { getUserRoles } from '../../utils/token'
+import { getUserRoles, getToken } from '../../utils/token'
 import './productcard.css'
 
 const HomeCard = ({ index, item, onClick }) => {
@@ -22,7 +22,7 @@ const HomeCard = ({ index, item, onClick }) => {
                 <div className="img-box thumb rounded d-flex border-dark">
                   <img
                     className="img-thumbnail"
-                    src={item.image_link ? item.image_link : placeholder}
+                    src={item.image_link ? item.image_link + `?token=${getToken()}` : placeholder}
                   />
                 </div>
                 <div className="border text-center rounded mt-3 clamp-2v border-dark">

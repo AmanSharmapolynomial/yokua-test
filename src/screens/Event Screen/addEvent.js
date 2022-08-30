@@ -820,7 +820,8 @@ const AddEventScreen = () => {
                             onClick={event => {
                               event.preventDefault()
                               if (eventId) {
-                                if (agendaMessage.link) window.open(agendaMessage.link, '_blank')
+                                if (agendaMessage.link)
+                                  window.open(agendaMessage.link + `?token=${getToken()}`, '_blank')
                                 else toast.error('No Link Added')
                               }
                               // if (!eventId && isAdmin) {
@@ -882,7 +883,11 @@ const AddEventScreen = () => {
                               onClick={event => {
                                 event.preventDefault()
                                 if (eventId) {
-                                  if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                                  if (alinkMessage.link)
+                                    window.open(
+                                      alinkMessage.link + `?token=${getToken()}`,
+                                      '_blank'
+                                    )
                                   else toast.error('No Link Added')
                                 }
                                 // if (!eventId && isAdmin) {
@@ -952,7 +957,11 @@ const AddEventScreen = () => {
                               onClick={event => {
                                 event.preventDefault()
                                 if (eventId) {
-                                  if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
+                                  if (blinkMessage.link)
+                                    window.open(
+                                      blinkMessage.link + `?token=${getToken()}`,
+                                      '_blank'
+                                    )
                                   else toast.error('No Link Added')
                                 }
                                 // if (!eventId && isAdmin) {

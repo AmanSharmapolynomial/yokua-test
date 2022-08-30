@@ -330,7 +330,7 @@ const ProductDetail = () => {
             <a
               className="bordered-btn rounded w-auto"
               role={'button'}
-              href={ele.binary_link}
+              href={ele.binary_link + `?token=${getToken()}`}
               download
             >
               Download
@@ -419,7 +419,7 @@ const ProductDetail = () => {
             {/* <span className="flex-fill">{ele.title}</span> */}
             <a
               role={'button'}
-              href={ele.link}
+              href={ele.link + `?token=${getToken()}`}
               target="_blank"
               className="w-auto p-0 text-bold theme"
             >
@@ -534,9 +534,12 @@ const ProductDetail = () => {
                       ></i>
                     </Tooltip>
                   )}
-                  <Image src={ele.image_link} className="border rounded img-product-line" />
+                  <Image
+                    src={ele.image_link + `?token=${getToken()}`}
+                    className="border rounded img-product-line"
+                  />
                   <a
-                    href={ele.image_link}
+                    href={ele.image_link + `?token=${getToken()}`}
                     target="_blank"
                     role={'button'}
                     className="col register-link"
@@ -680,9 +683,12 @@ const ProductDetail = () => {
                   ></i>
                 </Tooltip>
               )}
-              <Image src={element.image_link} className="border rounded img-product-line" />
+              <Image
+                src={element.image_link + `?token=${getToken()}`}
+                className="border rounded img-product-line"
+              />
               <a
-                href={element.image_link}
+                href={element.image_link + `?token=${getToken()}`}
                 target="_blank"
                 role={'button'}
                 className="col register-link"

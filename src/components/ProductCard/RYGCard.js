@@ -3,7 +3,7 @@ import editIcon from '../../assets/Icon awesome-edit.png'
 import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
-import { getUserRoles } from '../../utils/token'
+import { getToken, getUserRoles } from '../../utils/token'
 import Tooltip from '@mui/material/Tooltip'
 import './productcard.css'
 
@@ -85,7 +85,13 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                       />
                       <img
                         className="img-thumbnail border-black"
-                        src={preview ? preview : item?.image_link ? item.image_link : upload}
+                        src={
+                          preview
+                            ? preview + `?token=${getToken()}`
+                            : item?.image_link
+                            ? item.image_link + `?token=${getToken()}`
+                            : upload
+                        }
                         onClick={e => {
                           e.stopPropagation()
                           imageInputRef.current.click()
@@ -95,7 +101,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                   ) : (
                     <img
                       className="img-thumbnail border-black"
-                      src={item.image_link ? item.image_link : placeholder}
+                      src={item.image_link ? item.image_link + `?token=${getToken()}` : placeholder}
                     />
                   )}
                 </div>

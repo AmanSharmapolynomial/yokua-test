@@ -6,7 +6,7 @@ import decline from '../../assets/Icon ionic-md-close-circle.png'
 import { Image } from 'react-bootstrap'
 import API from '../../utils/api'
 import { toast } from 'react-toastify'
-import { getUserRoles } from '../../utils/token'
+import { getToken, getUserRoles } from '../../utils/token'
 import ic_link from '../../assets/link_icon.png'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
@@ -315,7 +315,7 @@ export default ({
           let value = column_name.values[index]?.value
           if (column_name.is_link) {
             value = (
-              <a href={value} target="_blank">
+              <a href={value + `?token=${getToken()}`} target="_blank">
                 {value}
               </a>
             )
@@ -376,7 +376,7 @@ export default ({
                   onChange={e => handleChange(column_name['column_name'], e.target.value, index)}
                 />
               ) : (
-                <a href={link} target="_blank">
+                <a href={link + `?token=${getToken()}`} target="_blank">
                   {value}
                 </a>
               )
@@ -390,7 +390,7 @@ export default ({
                   onChange={e => handleChange(column_name['column_name'], e.target.value, index)}
                 />
               ) : (
-                <a href={value} target="_blank">
+                <a href={value + `?token=${getToken()}`} target="_blank">
                   {value}
                 </a>
               )
@@ -404,7 +404,7 @@ export default ({
                   onChange={e => handleChange(column_name['column_name'], e.target.value, index)}
                 />
               ) : (
-                <a href={value} download>
+                <a href={value + `?token=${getToken()}`} download>
                   <img
                     src={Uploadicon}
                     style={{ width: '15px', marginRight: '10px' }}
