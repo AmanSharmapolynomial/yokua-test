@@ -12,6 +12,8 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 import RYGFlowComponent from '../../components/RYGFlowComponent/RYGFlowComponent'
 import htmlParser from 'html-react-parser'
+import Tooltip from '@mui/material/Tooltip'
+
 const RYGDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -325,31 +327,35 @@ const RYGDetail = () => {
             getUserRoles() == 'Technical Administrator') && (
             <div className="row">
               <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
-                <Image
-                  className="me-2"
-                  style={{ width: '1.4rem' }}
-                  role={'button'}
-                  src={ic_link}
-                  onClick={() => {
-                    setIsSubProductsModalVisible(true)
-                    setComponentToLink({
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    })
-                  }}
-                />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ms-2 me-0"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+                <Tooltip title="Link Component">
+                  <Image
+                    className="me-2"
+                    style={{ width: '1.4rem' }}
+                    role={'button'}
+                    src={ic_link}
+                    onClick={() => {
+                      setIsSubProductsModalVisible(true)
+                      setComponentToLink({
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      })
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ms-2 me-0"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </Tooltip>
               </div>
             </div>
           )}
@@ -423,18 +429,20 @@ const RYGDetail = () => {
                     })
                   }}
                 />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ms-2 me-0"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+                <Tooltip title="Delete">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ms-2 me-0"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </Tooltip>
               </div>
             </div>
           )}
@@ -467,18 +475,20 @@ const RYGDetail = () => {
                     })
                   }}
                 />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ms-2 me-0"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.id,
-                      component_type: ele.type,
-                    }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+                <Tooltip title="Delete">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ms-2 me-0"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.id,
+                        component_type: ele.type,
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </Tooltip>
               </div>
             </div>
           )}
@@ -521,29 +531,31 @@ const RYGDetail = () => {
                   }}
                 >
                   {isImageGridEditable.includes(idx) && (
-                    <i
-                      className="fa-solid fa-xmark"
-                      style={{
-                        position: 'absolute',
-                        top: '-10px',
-                        right: '-10px',
-                        float: 'right',
-                        padding: '0.188rem 0.313rem',
-                        borderRadius: '50%',
-                        background: '#cd0000',
-                        color: '#fff',
-                        fontSize: '0.75rem',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        let payload = {
-                          section_id: section.section_id,
-                          component_id: element.id,
-                          component_type: element.type,
-                        }
-                        setShowDeleteModal(payload)
-                      }}
-                    ></i>
+                    <Tooltip title="Delete Image">
+                      <i
+                        className="fa-solid fa-xmark"
+                        style={{
+                          position: 'absolute',
+                          top: '-10px',
+                          right: '-10px',
+                          float: 'right',
+                          padding: '0.188rem 0.313rem',
+                          borderRadius: '50%',
+                          background: '#cd0000',
+                          color: '#fff',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          let payload = {
+                            section_id: section.section_id,
+                            component_id: element.id,
+                            component_type: element.type,
+                          }
+                          setShowDeleteModal(payload)
+                        }}
+                      ></i>
+                    </Tooltip>
                   )}
                   <Image src={element.image_link} className="border rounded img-product-line" />
                   <a
@@ -572,46 +584,51 @@ const RYGDetail = () => {
               getUserRoles() == 'Technical Administrator') && (
               <div className="row">
                 <div className="ms-auto w-auto my-2 p-0 d-none d-lg-block">
-                  <Image
-                    className="me-2"
-                    style={{ width: '1.4rem' }}
-                    role={'button'}
-                    src={ic_link}
-                    onClick={() => {
-                      setIsSubProductsModalVisible(true)
-                      setComponentToLink({
-                        component_id: ele.id,
-                        component_type: ele.type,
-                      })
-                    }}
-                  />
-                  <i
-                    role={'button'}
-                    className={
-                      !isImageGridEditable.includes(idx)
-                        ? 'fa-solid fa-pen-to-square me-2 theme'
-                        : 'fa-solid fa-floppy-disk theme'
-                    }
-                    onClick={() => {
-                      !isImageGridEditable.includes(idx)
-                        ? setIsImageGridEditable(prevState => [...prevState, idx])
-                        : setIsImageGridEditable(prevState =>
-                            prevState.filter(item => item !== idx)
-                          )
-                    }}
-                  />
-                  <i
-                    role={'button'}
-                    className="fa-solid fa-trash ms-2 me-0"
-                    onClick={() => {
-                      let payload = {
-                        section_id: section.section_id,
-                        component_id: ele.id,
-                        component_type: ele.type,
+                  <Tooltip title="Link Component">
+                    <Image
+                      className="me-2"
+                      style={{ width: '1.4rem' }}
+                      src={ic_link}
+                      onClick={() => {
+                        setIsSubProductsModalVisible(true)
+                        setComponentToLink({
+                          component_id: ele.id,
+                          component_type: ele.type,
+                        })
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title={!isImageGridEditable.includes(idx) ? 'Edit Image Grid' : 'Save'}>
+                    <i
+                      role={'button'}
+                      className={
+                        !isImageGridEditable.includes(idx)
+                          ? 'fa-solid fa-pen-to-square me-2 theme'
+                          : 'fa-solid fa-floppy-disk theme'
                       }
-                      setShowDeleteModal(payload)
-                    }}
-                  ></i>
+                      onClick={() => {
+                        !isImageGridEditable.includes(idx)
+                          ? setIsImageGridEditable(prevState => [...prevState, idx])
+                          : setIsImageGridEditable(prevState =>
+                              prevState.filter(item => item !== idx)
+                            )
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Delete Image Grid">
+                    <i
+                      role={'button'}
+                      className="fa-solid fa-trash ms-2 me-0"
+                      onClick={() => {
+                        let payload = {
+                          section_id: section.section_id,
+                          component_id: ele.id,
+                          component_type: ele.type,
+                        }
+                        setShowDeleteModal(payload)
+                      }}
+                    ></i>
+                  </Tooltip>
                 </div>
               </div>
             )}
@@ -716,31 +733,37 @@ const RYGDetail = () => {
                     })
                   }}
                 />
-                <i
-                  role={'button'}
-                  className={
-                    !isImageGridEditable.includes(idx)
-                      ? 'fa-solid fa-pen-to-square me-2 theme'
-                      : 'fa-solid fa-floppy-disk theme'
-                  }
-                  onClick={() => {
-                    !isImageGridEditable.includes(idx)
-                      ? setIsImageGridEditable(prevState => [...prevState, idx])
-                      : setIsImageGridEditable(prevState => prevState.filter(item => item !== idx))
-                  }}
-                />
-                <i
-                  role={'button'}
-                  className="fa-solid fa-trash ms-2 me-0"
-                  onClick={() => {
-                    let payload = {
-                      section_id: section.section_id,
-                      component_id: ele.images[ele.images.length - 1].id,
-                      component_type: 'image',
+                <Tooltip title={!isImageGridEditable.includes(idx) ? 'Edit Image Grid' : 'Save'}>
+                  <i
+                    role={'button'}
+                    className={
+                      !isImageGridEditable.includes(idx)
+                        ? 'fa-solid fa-pen-to-square me-2 theme'
+                        : 'fa-solid fa-floppy-disk theme'
                     }
-                    setShowDeleteModal(payload)
-                  }}
-                ></i>
+                    onClick={() => {
+                      !isImageGridEditable.includes(idx)
+                        ? setIsImageGridEditable(prevState => [...prevState, idx])
+                        : setIsImageGridEditable(prevState =>
+                            prevState.filter(item => item !== idx)
+                          )
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip title="Delete Image Grid">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-trash ms-2 me-0"
+                    onClick={() => {
+                      let payload = {
+                        section_id: section.section_id,
+                        component_id: ele.images[ele.images.length - 1].id,
+                        component_type: 'image',
+                      }
+                      setShowDeleteModal(payload)
+                    }}
+                  ></i>
+                </Tooltip>
               </div>
             </div>
           )}

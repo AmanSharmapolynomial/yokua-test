@@ -15,6 +15,8 @@ import { useLoading } from '../../utils/LoadingContext'
 import Modal from 'react-modal'
 import { Modal as BSModal } from 'react-bootstrap'
 import CustomDropdown from '../../components/Sign Up/CustomDropdown'
+import Tooltip from '@mui/material/Tooltip'
+
 const customStyles = {
   overlay: {
     zIndex: 10,
@@ -368,17 +370,19 @@ const ProfileSettingScreen = () => {
                   {getUserRoles() == 'Technical Administrator' ? (
                     <></>
                   ) : (
-                    <i
-                      className="fa-solid fa-pen-to-square edit"
-                      style={{
-                        color: disabledInputName ? 'var(--bgColor2)' : 'grey',
-                      }}
-                      onClick={() => {
-                        console.log('NAMEREF', nameRef)
-                        setDisabledInputName(!disabledInputName)
-                        nameRef.focus()
-                      }}
-                    />
+                    <Tooltip title="Edit Name">
+                      <i
+                        className="fa-solid fa-pen-to-square edit"
+                        style={{
+                          color: disabledInputName ? 'var(--bgColor2)' : 'grey',
+                        }}
+                        onClick={() => {
+                          console.log('NAMEREF', nameRef)
+                          setDisabledInputName(!disabledInputName)
+                          nameRef.focus()
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
                 <div className="edit_input onclick_edit">
@@ -400,16 +404,18 @@ const ProfileSettingScreen = () => {
                   {getUserRoles() == 'Technical Administrator' ? (
                     <></>
                   ) : (
-                    <i
-                      className="fa-solid fa-pen-to-square edit"
-                      style={{
-                        color: disabledInputEmail ? 'var(--bgColor2)' : 'grey',
-                      }}
-                      onClick={() => {
-                        setDisabledInputEmail(!disabledInputEmail)
-                        emailRef.current.focus()
-                      }}
-                    />
+                    <Tooltip title="Edit Email">
+                      <i
+                        className="fa-solid fa-pen-to-square edit"
+                        style={{
+                          color: disabledInputEmail ? 'var(--bgColor2)' : 'grey',
+                        }}
+                        onClick={() => {
+                          setDisabledInputEmail(!disabledInputEmail)
+                          emailRef.current.focus()
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
                 <div className="edit_input onclick_edit">
@@ -444,15 +450,17 @@ const ProfileSettingScreen = () => {
                   {getUserRoles() == 'Technical Administrator' ? (
                     <></>
                   ) : (
-                    <i
-                      className="fa-solid fa-pen-to-square edit"
-                      style={{
-                        color: disabledInputAddress ? 'var(--bgColor2)' : 'grey',
-                      }}
-                      onClick={() => {
-                        setDisabledInputAddress(!disabledInputAddress)
-                      }}
-                    />
+                    <Tooltip title="Edit Company">
+                      <i
+                        className="fa-solid fa-pen-to-square edit"
+                        style={{
+                          color: disabledInputAddress ? 'var(--bgColor2)' : 'grey',
+                        }}
+                        onClick={() => {
+                          setDisabledInputAddress(!disabledInputAddress)
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
               </div>
@@ -597,19 +605,23 @@ const ProfileSettingScreen = () => {
                     placeholder="Enter New Password"
                   />
                   {passwordVisible ? (
-                    <i
-                      className="fa-regular fa-eye"
-                      onClick={() => {
-                        setPasswordVisible(false)
-                      }}
-                    />
+                    <Tooltip title="Hide Password">
+                      <i
+                        className="fa-regular fa-eye"
+                        onClick={() => {
+                          setPasswordVisible(false)
+                        }}
+                      />
+                    </Tooltip>
                   ) : (
-                    <i
-                      className="fa-regular fa-eye-slash"
-                      onClick={() => {
-                        setPasswordVisible(true)
-                      }}
-                    />
+                    <Tooltip title="Show Password">
+                      <i
+                        className="fa-regular fa-eye-slash"
+                        onClick={() => {
+                          setPasswordVisible(true)
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
                 <div className="edit_input">
@@ -624,19 +636,23 @@ const ProfileSettingScreen = () => {
                   />
 
                   {passwordVisible2 ? (
-                    <i
-                      className="fa-regular fa-eye"
-                      onClick={() => {
-                        setPasswordVisible2(false)
-                      }}
-                    />
+                    <Tooltip title="Hide Password">
+                      <i
+                        className="fa-regular fa-eye"
+                        onClick={() => {
+                          setPasswordVisible2(false)
+                        }}
+                      />
+                    </Tooltip>
                   ) : (
-                    <i
-                      className="fa-regular fa-eye-slash"
-                      onClick={() => {
-                        setPasswordVisible2(true)
-                      }}
-                    />
+                    <Tooltip title="Show Password">
+                      <i
+                        className="fa-regular fa-eye-slash"
+                        onClick={() => {
+                          setPasswordVisible2(true)
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </div>
                 <span
@@ -715,23 +731,25 @@ const ProfileSettingScreen = () => {
                               <span>{training.date}</span>
                               <span>Latest cancellation date {training.cancellation_date}</span>
                             </div>
-                            <i
-                              onClick={() => {
-                                setIsModalOpen(true)
-                                fetchEventData(
-                                  training.event_id,
-                                  training.participant_email,
-                                  training.type
-                                )
-                              }}
-                              style={{
-                                cursor: 'pointer',
-                                color: '#004f9b',
-                                fontSize: '20px',
-                                marginLeft: 'auto',
-                              }}
-                              className="fa-solid fa-pen-to-square"
-                            />
+                            <Tooltip title="Edit Event">
+                              <i
+                                onClick={() => {
+                                  setIsModalOpen(true)
+                                  fetchEventData(
+                                    training.event_id,
+                                    training.participant_email,
+                                    training.type
+                                  )
+                                }}
+                                style={{
+                                  cursor: 'pointer',
+                                  color: '#004f9b',
+                                  fontSize: '20px',
+                                  marginLeft: 'auto',
+                                }}
+                                className="fa-solid fa-pen-to-square"
+                              />
+                            </Tooltip>
                           </div>
                           <div style={{ height: '1rem' }}></div>
                           <div className="edit_training" key={index} style={{ margin: 0 }}>

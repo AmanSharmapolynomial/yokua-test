@@ -6,6 +6,7 @@ import Plusicon from '../../assets/Group 331.png'
 import API from '../../../src/utils/api'
 import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
+import Tooltip from '@mui/material/Tooltip'
 import { Modal } from 'react-bootstrap'
 
 const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRequest }) => {
@@ -238,25 +239,28 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
                   }}
                 />
               ) : (
+                <Tooltip title="Edit Row">
+                  <i
+                    className="fa-solid fa-pen-to-square ms-2 theme"
+                    style={{
+                      marginRight: '1rem',
+                    }}
+                    role={'button'}
+                    onClick={() => {
+                      setEditSelected(item.row_index)
+                    }}
+                  />
+                </Tooltip>
+              )}
+              <Tooltip title="Delete Row">
                 <i
-                  className="fa-solid fa-pen-to-square ms-2 theme"
-                  style={{
-                    marginRight: '1rem',
-                  }}
+                  className="fa-solid fa-trash"
                   role={'button'}
                   onClick={() => {
-                    setEditSelected(item.row_index)
+                    setDeleteSelected(item)
                   }}
                 />
-              )}
-
-              <i
-                className="fa-solid fa-trash"
-                role={'button'}
-                onClick={() => {
-                  setDeleteSelected(item)
-                }}
-              />
+              </Tooltip>
             </div>
           )
         finalTableData.push(tableRowObject)
@@ -444,25 +448,29 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
           <div className="row text-primary d-none d-lg-flex">
             <div className="ms-auto w-auto my-2">
               {isEdit ? (
-                <i
-                  role={'button'}
-                  className="fa-solid fa-floppy-disk theme"
-                  onClick={() => {
-                    setEditModeData([...tableRows])
-                    setEdit(false)
-                    setEditSelected(null)
-                  }}
-                />
+                <Tooltip title="Save Changes">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-floppy-disk theme"
+                    onClick={() => {
+                      setEditModeData([...tableRows])
+                      setEdit(false)
+                      setEditSelected(null)
+                    }}
+                  />
+                </Tooltip>
               ) : (
-                <i
-                  role={'button'}
-                  className="fa-solid fa-pen-to-square ms-2 theme"
-                  aria-hidden="true"
-                  onClick={() => {
-                    setEditModeData([...tableRows])
-                    setEdit(true)
-                  }}
-                />
+                <Tooltip title="Edit Tokuchu">
+                  <i
+                    role={'button'}
+                    className="fa-solid fa-pen-to-square ms-2 theme"
+                    aria-hidden="true"
+                    onClick={() => {
+                      setEditModeData([...tableRows])
+                      setEdit(true)
+                    }}
+                  />
+                </Tooltip>
               )}
               {/* <i
                 role={'button'}

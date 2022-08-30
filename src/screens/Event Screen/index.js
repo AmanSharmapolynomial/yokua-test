@@ -10,6 +10,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import './style.css'
 import Modal from 'react-modal'
+import Tooltip from '@mui/material/Tooltip'
 
 const moment = require('moment')
 
@@ -336,19 +337,25 @@ const EventScreen = () => {
                           >
                             {getUserRoles() == 'Technical Administrator' ||
                             getUserRoles() == 'PMK Administrator' ? (
-                              <i
-                                className="fas fa-trash"
-                                onClick={() => {
-                                  const currDate = new Date()
-                                  const eventCancelDate = parseDate(e.cancelled_date)
-                                  if (currDate > eventCancelDate) {
-                                    handleSingleEventDelete(e.id, handleDeleteEvent)
-                                  } else {
-                                    openModal(e.id)
-                                  }
-                                }}
-                                style={{ fontSize: '1.15rem', cursor: 'pointer', color: '#cd2727' }}
-                              />
+                              <Tooltip title="Delete Event">
+                                <i
+                                  className="fas fa-trash"
+                                  onClick={() => {
+                                    const currDate = new Date()
+                                    const eventCancelDate = parseDate(e.cancelled_date)
+                                    if (currDate > eventCancelDate) {
+                                      handleSingleEventDelete(e.id, handleDeleteEvent)
+                                    } else {
+                                      openModal(e.id)
+                                    }
+                                  }}
+                                  style={{
+                                    fontSize: '1.15rem',
+                                    cursor: 'pointer',
+                                    color: '#cd2727',
+                                  }}
+                                />
+                              </Tooltip>
                             ) : null}
                           </div>
                         </td>

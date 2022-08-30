@@ -9,6 +9,7 @@ import CommonModal from '../../../components/Modals/CommonModal/CommonModal'
 import './yokogawa-component.css'
 import { useLoading } from '../../../utils/LoadingContext'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
+import Tooltip from '@mui/material/Tooltip'
 
 export default () => {
   const [companyList, setCompanyList] = useState([])
@@ -68,17 +69,19 @@ export default () => {
                 </span>
               </div>
               {/* <div className="d-flex align-items-center"> */}
-              <i
-                className="fa fa-trash w-auto"
-                style={{ fontSize: '1rem' }}
-                aria-hidden="true"
-                onClick={e => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                  setCurrentDeleteId(data.parent_company_id)
-                  setDelete(true)
-                }}
-              />
+              <Tooltip title="Delete Company">
+                <i
+                  className="fa fa-trash w-auto"
+                  style={{ fontSize: '1rem' }}
+                  aria-hidden="true"
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setCurrentDeleteId(data.parent_company_id)
+                    setDelete(true)
+                  }}
+                />
+              </Tooltip>
               <i className="fa fa-caret-right w-auto" data-display="static" aria-hidden="true" />
               {/* </div> */}
               <div
@@ -98,18 +101,20 @@ export default () => {
                       }}
                     >
                       {item.sub_div_name}
-                      <i
-                        role={'button'}
-                        className="fa fa-trash"
-                        aria-hidden="true"
-                        style={{ fontSize: '1rem' }}
-                        onClick={e => {
-                          e.stopPropagation()
-                          e.preventDefault()
-                          setCurrentDeleteId(item.id)
-                          setDelete(true)
-                        }}
-                      />
+                      <Tooltip title="Delete Company">
+                        <i
+                          role={'button'}
+                          className="fa fa-trash"
+                          aria-hidden="true"
+                          style={{ fontSize: '1rem' }}
+                          onClick={e => {
+                            e.stopPropagation()
+                            e.preventDefault()
+                            setCurrentDeleteId(item.id)
+                            setDelete(true)
+                          }}
+                        />
+                      </Tooltip>
                     </a>
                     <hr />
                   </>

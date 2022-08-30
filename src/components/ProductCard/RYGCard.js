@@ -4,6 +4,7 @@ import saveIcon from '../../assets/ic_save.png'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import { getUserRoles } from '../../utils/token'
+import Tooltip from '@mui/material/Tooltip'
 import './productcard.css'
 
 const RYGCard = ({ index, item, onClick, onUpdate }) => {
@@ -127,9 +128,16 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
             getUserRoles() == 'Technical Administrator') && (
             <span className="col-auto d-none d-lg-block">
               {isEditable ? (
-                <i className="fa-solid fa-floppy-disk theme" onClick={e => handleEditClick(e)} />
+                <Tooltip title="Save Changes">
+                  <i className="fa-solid fa-floppy-disk theme" onClick={e => handleEditClick(e)} />
+                </Tooltip>
               ) : (
-                <i className="fa-solid fa-pen-to-square theme" onClick={e => handleEditClick(e)} />
+                <Tooltip title="Edit">
+                  <i
+                    className="fa-solid fa-pen-to-square theme"
+                    onClick={e => handleEditClick(e)}
+                  />
+                </Tooltip>
               )}
             </span>
           )}

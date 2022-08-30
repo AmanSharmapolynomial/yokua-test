@@ -435,16 +435,18 @@ export default ({
           tableRowObject.edit = (
             <div>
               {editSelected == item.row_index ? (
-                <i
-                  className="fa-solid fa-floppy-disk theme"
-                  style={{
-                    marginRight: '1rem',
-                  }}
-                  role={'button'}
-                  onClick={() => {
-                    updateTableValues(editedTableObject)
-                  }}
-                />
+                <Tooltip title="Save Changes">
+                  <i
+                    className="fa-solid fa-floppy-disk theme"
+                    style={{
+                      marginRight: '1rem',
+                    }}
+                    role={'button'}
+                    onClick={() => {
+                      updateTableValues(editedTableObject)
+                    }}
+                  />
+                </Tooltip>
               ) : (
                 <Tooltip title="Edit Row">
                   <i
@@ -583,30 +585,34 @@ export default ({
               )}
               {tableObject.length === idx + 1 && (
                 <>
-                  <Image
-                    role={'button'}
-                    src={decline}
-                    className="ms-2"
-                    onClick={() => {
-                      setIsEditable(false)
-                    }}
-                  />
-                  <Image
-                    role={'button'}
-                    src={accept}
-                    className="mx-2"
-                    onClick={() => {
-                      if (inputRef.current[idx].value === '') {
-                        toast.error('Cannot add with empty data')
-                        return
-                      }
-                      if (uploadInProgress) {
-                        toast.error('Upload in progress')
-                        return
-                      }
-                      callAddRowAPI()
-                    }}
-                  />
+                  <Tooltip title="Cancel">
+                    <Image
+                      role={'button'}
+                      src={decline}
+                      className="ms-2"
+                      onClick={() => {
+                        setIsEditable(false)
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Save Row">
+                    <Image
+                      role={'button'}
+                      src={accept}
+                      className="mx-2"
+                      onClick={() => {
+                        if (inputRef.current[idx].value === '') {
+                          toast.error('Cannot add with empty data')
+                          return
+                        }
+                        if (uploadInProgress) {
+                          toast.error('Upload in progress')
+                          return
+                        }
+                        callAddRowAPI()
+                      }}
+                    />
+                  </Tooltip>
                 </>
               )}
             </div>

@@ -11,6 +11,7 @@ import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import Plusicon from '../../../assets/Group 331.png'
 import Filtermg from '../../../assets/whiteFilter.png'
 import { useLoading } from '../../../utils/LoadingContext'
+import Tooltip from '@mui/material/Tooltip'
 
 const NEW_TO_OLD = 'latest'
 const OLD_TO_NEW = 'old'
@@ -124,16 +125,17 @@ const UserListView = () => {
     {
       name: (
         <div className="dropdown">
-          <img
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            style={{ width: '14px', height: '14px' }}
-            className="dropdown-toggle"
-            src={require('../../../assets/Rearrange order.png')}
-          />
-
+          <Tooltip title="Sort">
+            <img
+              id="dropdownMenuButton"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              style={{ width: '14px', height: '14px', cursor: 'pointer' }}
+              className="dropdown-toggle"
+              src={require('../../../assets/Rearrange order.png')}
+            />
+          </Tooltip>
           <div className="dropdown-menu">
             {customeSortDown.map((element, index) => (
               <span
@@ -270,33 +272,37 @@ const UserListView = () => {
         edit: (getUserRoles() === 'PMK Administrator' ||
           getUserRoles() === 'Technical Administrator') && (
           <div className="edit-icons" key={index}>
-            <i
-              className="fa-solid fa-pen-to-square mx-2"
-              data={dropdownData}
-              style={{
-                color: 'var(--bgColor2)',
-              }}
-              onClick={() => {
-                setChangeModal('Edit')
-                setOpenModal(true)
-                setModalTitle('Update user detail')
+            <Tooltip title="Edit User Details">
+              <i
+                className="fa-solid fa-pen-to-square mx-2"
+                data={dropdownData}
+                style={{
+                  color: 'var(--bgColor2)',
+                }}
+                onClick={() => {
+                  setChangeModal('Edit')
+                  setOpenModal(true)
+                  setModalTitle('Update user detail')
 
-                // document.documentElement.scrollTop = 0
-                // document.body.style.overflow = 'hidden'
-                setDataToChange(index)
-              }}
-            />
-            <i
-              className="fa-solid fa-trash mx-2"
-              style={{
-                color: '#CD2727',
-              }}
-              onClick={() => {
-                // delete single user
-                setDeleteEmail(data.email)
-                setOpenBasicDeleteModal(true)
-              }}
-            />
+                  // document.documentElement.scrollTop = 0
+                  // document.body.style.overflow = 'hidden'
+                  setDataToChange(index)
+                }}
+              />
+            </Tooltip>
+            <Tooltip title="Delete User">
+              <i
+                className="fa-solid fa-trash mx-2"
+                style={{
+                  color: '#CD2727',
+                }}
+                onClick={() => {
+                  // delete single user
+                  setDeleteEmail(data.email)
+                  setOpenBasicDeleteModal(true)
+                }}
+              />
+            </Tooltip>
           </div>
         ),
       })
@@ -451,17 +457,18 @@ const UserListView = () => {
   const renderFilterIcon = () => (
     <div className="filter-icons">
       <div className="dropdown">
-        <img
-          data-spy="affix"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          style={{ opacity: filterActive === '' ? 0.2 : 1 }}
-          className={'dropdown-toggle filter-icon'}
-          src={Filtermg}
-        />
-
+        <Tooltip title="Filter">
+          <img
+            data-spy="affix"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style={{ opacity: filterActive === '' ? 0.2 : 1 }}
+            className={'dropdown-toggle filter-icon'}
+            src={Filtermg}
+          />
+        </Tooltip>
         <div
           className="dropdown-menu"
           style={{
@@ -632,7 +639,11 @@ const UserListView = () => {
           </div>
           <div className="user-list-view-table mt-3">
             <DataTable
-              sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
+              sortIcon={
+                <Tooltip title="Sort">
+                  <i className="fa-solid fa-sort ms-1"></i>
+                </Tooltip>
+              }
               columns={columns}
               data={contentRow}
               selectableRows

@@ -21,6 +21,7 @@ import { max } from 'moment'
 import { validateUrl } from '../../utils/urlValidator'
 import CommonModal from '../../components/Modals/CommonModal/CommonModal'
 import { useLoading } from '../../utils/LoadingContext'
+import Tooltip from '@mui/material/Tooltip'
 
 const AddEventScreen = () => {
   const navigate = useNavigate()
@@ -797,96 +798,47 @@ const AddEventScreen = () => {
                     >
                       {/* <div className='col'> */}
                       <div className="col-12 col-lg-auto" style={linkStyles}>
-                        <button
-                          className="px-2 py-1 rounded-3 clamp-08v"
-                          style={{
-                            background:
-                              agendaFile != null ||
-                              (agendaMessage != '' && agendaMessage.link != '')
-                                ? 'rgb(0, 79, 155)'
-                                : 'grey',
-                            color: 'white',
-                            border: '1px solid black',
-                            cursor: eventId && agendaMessage.link ? 'pointer' : 'initial',
-                          }}
-                          onClick={event => {
-                            event.preventDefault()
-                            if (eventId) {
-                              if (agendaMessage.link) window.open(agendaMessage.link, '_blank')
-                              else toast.error('No Link Added')
-                            }
-                            // if (!eventId && isAdmin) {
-                            //   setDependOnButton('agenda')
-                            //   setLinkModal(true)
-                            //   openModal(event)
-                            // } else {
-                            //   event.preventDefault()
-                            //   window.open(agendaMessage.link, '_blank')
-                            // }
-                          }}
+                        <Tooltip
+                          title={
+                            agendaFile != null || (agendaMessage != '' && agendaMessage.link != '')
+                              ? 'Download File'
+                              : 'No file added'
+                          }
                         >
-                          Agenda
-                        </button>
-                        {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
-                        {isAdmin && (
-                          <i
-                            className="fa-solid fa-pen-to-square theme"
-                            style={{
-                              fontSize: 'small',
-                              alignSelf: 'center',
-                              margin: 0,
-                              cursor: 'pointer',
-                            }}
-                            onClick={event => {
-                              setDependOnButton('agenda')
-                              setLinkModal(true)
-                              openModal(event)
-                            }}
-                          ></i>
-                        )}
-                      </div>
-                      {/* </div> */}
-                      {/* <div className='col'> */}
-                      {eventId && !isAdmin && !alinkMessage.link ? null : (
-                        <div className="col-12 col-lg-auto" style={linkStyles}>
                           <button
                             className="px-2 py-1 rounded-3 clamp-08v"
                             style={{
                               background:
-                                linkAFile != null || (alinkMessage != '' && alinkMessage.link != '')
+                                agendaFile != null ||
+                                (agendaMessage != '' && agendaMessage.link != '')
                                   ? 'rgb(0, 79, 155)'
                                   : 'grey',
                               color: 'white',
                               border: '1px solid black',
-                              cursor: eventId && alinkMessage.link ? 'pointer' : 'initial',
+                              cursor: eventId && agendaMessage.link ? 'pointer' : 'initial',
                             }}
                             onClick={event => {
                               event.preventDefault()
                               if (eventId) {
-                                if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                                if (agendaMessage.link) window.open(agendaMessage.link, '_blank')
                                 else toast.error('No Link Added')
                               }
                               // if (!eventId && isAdmin) {
-                              //   setDependOnButton('alink')
+                              //   setDependOnButton('agenda')
                               //   setLinkModal(true)
                               //   openModal(event)
                               // } else {
                               //   event.preventDefault()
-                              //   if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
-                              //   else toast.error('No Link Added')
+                              //   window.open(agendaMessage.link, '_blank')
                               // }
                             }}
                           >
-                            {eventId
-                              ? alinkMessage.name
-                                ? alinkMessage.name
-                                : 'Other Possible Link A'
-                              : linkAName
-                              ? linkAName
-                              : 'Other Possible link A'}
+                            Agenda
                           </button>
-                          {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
-                          {isAdmin && (
+                        </Tooltip>
+                        {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                        {isAdmin && (
+                          <Tooltip title="Edit File">
                             <i
                               className="fa-solid fa-pen-to-square theme"
                               style={{
@@ -896,11 +848,81 @@ const AddEventScreen = () => {
                                 cursor: 'pointer',
                               }}
                               onClick={event => {
-                                setDependOnButton('alink')
+                                setDependOnButton('agenda')
                                 setLinkModal(true)
                                 openModal(event)
                               }}
                             ></i>
+                          </Tooltip>
+                        )}
+                      </div>
+                      {/* </div> */}
+                      {/* <div className='col'> */}
+                      {eventId && !isAdmin && !alinkMessage.link ? null : (
+                        <div className="col-12 col-lg-auto" style={linkStyles}>
+                          <Tooltip
+                            title={
+                              linkAFile != null || (alinkMessage != '' && alinkMessage.link != '')
+                                ? 'Download File'
+                                : 'No file added'
+                            }
+                          >
+                            <button
+                              className="px-2 py-1 rounded-3 clamp-08v"
+                              style={{
+                                background:
+                                  linkAFile != null ||
+                                  (alinkMessage != '' && alinkMessage.link != '')
+                                    ? 'rgb(0, 79, 155)'
+                                    : 'grey',
+                                color: 'white',
+                                border: '1px solid black',
+                                cursor: eventId && alinkMessage.link ? 'pointer' : 'initial',
+                              }}
+                              onClick={event => {
+                                event.preventDefault()
+                                if (eventId) {
+                                  if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                                  else toast.error('No Link Added')
+                                }
+                                // if (!eventId && isAdmin) {
+                                //   setDependOnButton('alink')
+                                //   setLinkModal(true)
+                                //   openModal(event)
+                                // } else {
+                                //   event.preventDefault()
+                                //   if (alinkMessage.link) window.open(alinkMessage.link, '_blank')
+                                //   else toast.error('No Link Added')
+                                // }
+                              }}
+                            >
+                              {eventId
+                                ? alinkMessage.name
+                                  ? alinkMessage.name
+                                  : 'Other Possible Link A'
+                                : linkAName
+                                ? linkAName
+                                : 'Other Possible link A'}
+                            </button>
+                          </Tooltip>
+                          {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                          {isAdmin && (
+                            <Tooltip title="Edit File">
+                              <i
+                                className="fa-solid fa-pen-to-square theme"
+                                style={{
+                                  fontSize: 'small',
+                                  alignSelf: 'center',
+                                  margin: 0,
+                                  cursor: 'pointer',
+                                }}
+                                onClick={event => {
+                                  setDependOnButton('alink')
+                                  setLinkModal(true)
+                                  openModal(event)
+                                }}
+                              ></i>
+                            </Tooltip>
                           )}
                         </div>
                       )}
@@ -908,58 +930,69 @@ const AddEventScreen = () => {
                       {/* <div className='col'> */}
                       {eventId && !isAdmin && !blinkMessage.link ? null : (
                         <div className="col-12 col-lg-auto" style={linkStyles}>
-                          <button
-                            className="px-2 py-1 rounded-3 clamp-08v"
-                            style={{
-                              background:
-                                linkBFile != null || (blinkMessage != '' && blinkMessage.link != '')
-                                  ? 'rgb(0, 79, 155)'
-                                  : 'grey',
-                              color: 'white',
-                              border: '1px solid black',
-                              cursor: eventId && blinkMessage.link ? 'pointer' : 'initial',
-                            }}
-                            onClick={event => {
-                              event.preventDefault()
-                              if (eventId) {
-                                if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
-                                else toast.error('No Link Added')
-                              }
-                              // if (!eventId && isAdmin) {
-                              //   setDependOnButton('blink')
-                              //   setLinkModal(true)
-                              //   openModal(event)
-                              // } else {
-                              //   event.preventDefault()
-                              //   if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
-                              //   else toast.error('No Link Added')
-                              // }
-                            }}
+                          <Tooltip
+                            title={
+                              linkBFile != null || (blinkMessage != '' && blinkMessage.link != '')
+                                ? 'Download File'
+                                : 'No file added'
+                            }
                           >
-                            {eventId
-                              ? blinkMessage.name
-                                ? blinkMessage.name
-                                : 'Other Possible Link B'
-                              : linkBName
-                              ? linkBName
-                              : 'Other Possible link B'}
-                          </button>
-                          {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
-                          {isAdmin && (
-                            <i
-                              className="fa-solid fa-pen-to-square theme"
+                            <button
+                              className="px-2 py-1 rounded-3 clamp-08v"
                               style={{
-                                fontSize: 'small',
-                                alignSelf: 'center',
-                                margin: 0,
-                                cursor: 'pointer',
+                                background:
+                                  linkBFile != null ||
+                                  (blinkMessage != '' && blinkMessage.link != '')
+                                    ? 'rgb(0, 79, 155)'
+                                    : 'grey',
+                                color: 'white',
+                                border: '1px solid black',
+                                cursor: eventId && blinkMessage.link ? 'pointer' : 'initial',
                               }}
                               onClick={event => {
-                                setDependOnButton('blink')
-                                setLinkModal(true)
-                                openModal(event)
+                                event.preventDefault()
+                                if (eventId) {
+                                  if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
+                                  else toast.error('No Link Added')
+                                }
+                                // if (!eventId && isAdmin) {
+                                //   setDependOnButton('blink')
+                                //   setLinkModal(true)
+                                //   openModal(event)
+                                // } else {
+                                //   event.preventDefault()
+                                //   if (blinkMessage.link) window.open(blinkMessage.link, '_blank')
+                                //   else toast.error('No Link Added')
+                                // }
                               }}
-                            ></i>
+                            >
+                              {eventId
+                                ? blinkMessage.name
+                                  ? blinkMessage.name
+                                  : 'Other Possible Link B'
+                                : linkBName
+                                ? linkBName
+                                : 'Other Possible link B'}
+                            </button>
+                          </Tooltip>
+                          {isAdmin ? <div>&nbsp;&nbsp;</div> : null}
+                          {isAdmin && (
+                            <Tooltip title="Edit File">
+                              <i
+                                className="fa-solid fa-pen-to-square theme"
+                                style={{
+                                  fontSize: 'small',
+                                  alignSelf: 'center',
+                                  margin: 0,
+                                  cursor: 'pointer',
+                                }}
+                                onClick={event => {
+                                  setDependOnButton('blink')
+                                  setLinkModal(true)
+                                  openModal(event)
+                                }}
+                              ></i>
+                            </Tooltip>
                           )}
                         </div>
                       )}

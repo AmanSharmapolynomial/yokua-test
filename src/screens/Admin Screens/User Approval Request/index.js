@@ -8,6 +8,7 @@ import DeleteDomainModal from '../../../components/Modals/DeleteDomainModal/Dele
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import Example from '../../../components/Modals/Delete Modal/DeleteModal'
+import Tooltip from '@mui/material/Tooltip'
 
 const UserApprovalScreen = () => {
   const [show, setShow] = useState(false)
@@ -87,38 +88,42 @@ const UserApprovalScreen = () => {
           data.type == 'approval' ? (
             <div className="edit-icons">
               <div className="icon reject">
-                <i
-                  role="button"
-                  className="fa-solid fa-xmark reject"
-                  onClick={() => {
-                    // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
-                    // document.body.style.overflow = 'hidden'
-                    const sendData = {
-                      email: data.email_id,
-                      status: 'deactivate',
-                    }
-                    setRejectionData(sendData)
-                    setChangeModal('Rejected')
-                    setOpenARModal(true)
-                    setModalTitle(data.request_for)
-                  }}
-                />
+                <Tooltip title="Reject">
+                  <i
+                    role="button"
+                    className="fa-solid fa-xmark reject"
+                    onClick={() => {
+                      // document.body.scrollTop = 0
+                      // document.documentElement.scrollTop = 0
+                      // document.body.style.overflow = 'hidden'
+                      const sendData = {
+                        email: data.email_id,
+                        status: 'deactivate',
+                      }
+                      setRejectionData(sendData)
+                      setChangeModal('Rejected')
+                      setOpenARModal(true)
+                      setModalTitle(data.request_for)
+                    }}
+                  />
+                </Tooltip>
               </div>
               <div className="icon accept">
-                <i
-                  role="button"
-                  className="fa-solid fa-check"
-                  onClick={() => {
-                    // document.body.scrollTop = 0
-                    // document.documentElement.scrollTop = 0
-                    // document.body.style.overflow = 'hidden'
-                    setAcceptData(data.email_id)
-                    setChangeModal('Accepted')
-                    setOpenARModal(true)
-                    setModalTitle(data.request_for)
-                  }}
-                />
+                <Tooltip title="Accept">
+                  <i
+                    role="button"
+                    className="fa-solid fa-check"
+                    onClick={() => {
+                      // document.body.scrollTop = 0
+                      // document.documentElement.scrollTop = 0
+                      // document.body.style.overflow = 'hidden'
+                      setAcceptData(data.email_id)
+                      setChangeModal('Accepted')
+                      setOpenARModal(true)
+                      setModalTitle(data.request_for)
+                    }}
+                  />
+                </Tooltip>
               </div>
             </div>
           ) : (
@@ -488,7 +493,11 @@ const UserApprovalScreen = () => {
               ) : (
                 <>
                   <DataTable
-                    sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
+                    sortIcon={
+                      <Tooltip title="Sort">
+                        <i className="fa-solid fa-sort ms-1"></i>
+                      </Tooltip>
+                    }
                     columns={columnsApprovalTable}
                     data={contentRowApprovalTable}
                     selectableRows
@@ -535,27 +544,28 @@ const UserApprovalScreen = () => {
                         <span className="mx-2">({data.count})</span>
                         {data.id != 1 && data.id != 2 ? (
                           <div>
-                            <i
-                              className="fa-solid fa-trash"
-                              style={{
-                                cursor: 'pointer',
-                                color: '#CD2727',
-                              }}
-                              onClick={() => {
-                                // admin/delete_whitelisted_domain
-                                const sendData = {
-                                  id: data.id,
-                                  name: data.domain,
-                                  associated_users: 'false',
-                                }
-                                // document.body.scrollTop = 0
-                                // document.documentElement.scrollTop = 0
-                                // document.body.style.overflow = 'hidden'
-                                setDeleteDomainData(sendData)
-                                setOpenDeleteDomainModal(true)
-                              }}
-                            />
-
+                            <Tooltip title="Delete Domain">
+                              <i
+                                className="fa-solid fa-trash"
+                                style={{
+                                  cursor: 'pointer',
+                                  color: '#CD2727',
+                                }}
+                                onClick={() => {
+                                  // admin/delete_whitelisted_domain
+                                  const sendData = {
+                                    id: data.id,
+                                    name: data.domain,
+                                    associated_users: 'false',
+                                  }
+                                  // document.body.scrollTop = 0
+                                  // document.documentElement.scrollTop = 0
+                                  // document.body.style.overflow = 'hidden'
+                                  setDeleteDomainData(sendData)
+                                  setOpenDeleteDomainModal(true)
+                                }}
+                              />
+                            </Tooltip>
                             <i className="fa-solid fa-caret-right" />
                           </div>
                         ) : (

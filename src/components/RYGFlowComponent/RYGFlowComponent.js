@@ -2,6 +2,7 @@ import React from 'react'
 import { Image } from 'react-bootstrap'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
+import Tooltip from '@mui/material/Tooltip'
 
 const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
   const [isEditable, setEditable] = React.useState(false)
@@ -113,65 +114,67 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
             </div>
             {isAdmin && (
               <div className="col-auto my-2 p-0 d-none d-lg-block">
-                <i
-                  role={'button'}
-                  className={
-                    !isEditable
-                      ? 'fa-solid fa-pen-to-square me-2 theme'
-                      : 'fa-solid fa-floppy-disk theme'
-                  }
-                  onClick={() => {
-                    if (isEditable) {
-                      const payload = []
-
-                      if (
-                        descRef.current.value !== data.description &&
-                        descRef.current.value.trim() !== ''
-                      ) {
-                        const formData = new FormData()
-                        formData.append(
-                          'data',
-                          JSON.stringify({
-                            id: data.description_id,
-                            component_type: 'description',
-                            description: descRef.current.value,
-                          })
-                        )
-                        payload.push(formData)
-                      }
-                      if (imageInputRef.current.files[0]) {
-                        const formData = new FormData()
-                        formData.append('file', imageInputRef.current.files[0])
-                        formData.append(
-                          'data',
-                          JSON.stringify({
-                            id: data.image_id,
-                            component_type: 'image',
-                            description: '',
-                          })
-                        )
-                        payload.push(formData)
-                      }
-                      if (binaryRef.current.files[0]) {
-                        const formData = new FormData()
-                        formData.append('file', binaryRef.current.files[0])
-                        formData.append(
-                          'data',
-                          JSON.stringify({
-                            id: data.binary_id,
-                            component_type: 'binary',
-                            title: data.binary_title,
-                          })
-                        )
-                        payload.push(formData)
-                      }
-                      props.onUpdate(payload)
-                      setEditable(false)
-                    } else {
-                      setEditable(true)
+                <Tooltip title={!isEditable ? 'Edit Component' : 'Save Changes'}>
+                  <i
+                    role={'button'}
+                    className={
+                      !isEditable
+                        ? 'fa-solid fa-pen-to-square me-2 theme'
+                        : 'fa-solid fa-floppy-disk theme'
                     }
-                  }}
-                />
+                    onClick={() => {
+                      if (isEditable) {
+                        const payload = []
+
+                        if (
+                          descRef.current.value !== data.description &&
+                          descRef.current.value.trim() !== ''
+                        ) {
+                          const formData = new FormData()
+                          formData.append(
+                            'data',
+                            JSON.stringify({
+                              id: data.description_id,
+                              component_type: 'description',
+                              description: descRef.current.value,
+                            })
+                          )
+                          payload.push(formData)
+                        }
+                        if (imageInputRef.current.files[0]) {
+                          const formData = new FormData()
+                          formData.append('file', imageInputRef.current.files[0])
+                          formData.append(
+                            'data',
+                            JSON.stringify({
+                              id: data.image_id,
+                              component_type: 'image',
+                              description: '',
+                            })
+                          )
+                          payload.push(formData)
+                        }
+                        if (binaryRef.current.files[0]) {
+                          const formData = new FormData()
+                          formData.append('file', binaryRef.current.files[0])
+                          formData.append(
+                            'data',
+                            JSON.stringify({
+                              id: data.binary_id,
+                              component_type: 'binary',
+                              title: data.binary_title,
+                            })
+                          )
+                          payload.push(formData)
+                        }
+                        props.onUpdate(payload)
+                        setEditable(false)
+                      } else {
+                        setEditable(true)
+                      }
+                    }}
+                  />
+                </Tooltip>
               </div>
             )}
           </div>

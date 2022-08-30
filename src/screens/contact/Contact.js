@@ -7,6 +7,7 @@ import PrimaryHeading from '../../components/Primary Headings'
 import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import { toast } from 'react-toastify'
+import Tooltip from '@mui/material/Tooltip'
 
 export default () => {
   const [contact, setContact] = useState({})
@@ -179,23 +180,27 @@ export default () => {
                       getUserRoles() == 'PMK Content Manager' ||
                       getUserRoles() == 'Technical Administrator') &&
                     isEdit ? (
-                      <i
-                        role={'button'}
-                        className="fa-solid fa-floppy-disk theme ms-auto col-auto p-0"
-                        onClick={() => {
-                          setEdit(false)
-                          updateGeneralInformation()
-                        }}
-                      />
+                      <Tooltip title="Save Changes">
+                        <i
+                          role={'button'}
+                          className="fa-solid fa-floppy-disk theme ms-auto col-auto p-0"
+                          onClick={() => {
+                            setEdit(false)
+                            updateGeneralInformation()
+                          }}
+                        />
+                      </Tooltip>
                     ) : (
-                      <i
-                        role={'button'}
-                        className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
-                        aria-hidden="true"
-                        onClick={() => {
-                          setEdit(true)
-                        }}
-                      />
+                      <Tooltip title="Edit Information">
+                        <i
+                          role={'button'}
+                          className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
+                          aria-hidden="true"
+                          onClick={() => {
+                            setEdit(true)
+                          }}
+                        />
+                      </Tooltip>
                     )}
                   </div>
                   <div className="row mt-5">
