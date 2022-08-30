@@ -11,6 +11,7 @@ import { Dropdown, InputGroup, FormControl, Button, Modal, Image } from 'react-b
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import ReactCrop from 'react-image-crop'
+import Tooltip from '@mui/material/Tooltip'
 import 'react-image-crop/dist/ReactCrop.css'
 
 const NewsItem = ({
@@ -1078,68 +1079,76 @@ const NewsItem = ({
             <div className="yk-news-edit-icons mb-5">
               {editView
                 ? hasPermission && (
-                    <i
-                      className="fa-solid fa-floppy-disk yk-icon-hover"
-                      style={{
-                        color: 'var(--bgColor2)',
-                        fontSize: '20px',
-                        cursor: 'pointer',
-                      }}
-                      onClick={async () => {
-                        // add save value to a payload
-                        // call the save or edit api here
-                        uploadNews()
-                        // call the upsert News API here
-                        // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
-                        //   console.log(afterUpdateNewsMsg)
-                      }}
-                    />
+                    <Tooltip title="Save Changes">
+                      <i
+                        className="fa-solid fa-floppy-disk yk-icon-hover"
+                        style={{
+                          color: 'var(--bgColor2)',
+                          fontSize: '20px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={async () => {
+                          // add save value to a payload
+                          // call the save or edit api here
+                          uploadNews()
+                          // call the upsert News API here
+                          // const afterUpdateNewsMsg = API.post('news/upsert_news', payloadNews)
+                          //   console.log(afterUpdateNewsMsg)
+                        }}
+                      />
+                    </Tooltip>
                   )
                 : hasPermission && (
-                    <i
-                      className="fa-solid fa-pen-to-square"
-                      style={{
-                        color: 'var(--bgColor2)',
-                        fontSize: '20px',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        _handleEditView()
-                        // change box to edit version
-                      }}
-                    />
+                    <Tooltip title="Edit News">
+                      <i
+                        className="fa-solid fa-pen-to-square"
+                        style={{
+                          color: 'var(--bgColor2)',
+                          fontSize: '20px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                          _handleEditView()
+                          // change box to edit version
+                        }}
+                      />
+                    </Tooltip>
                   )}
               {editView && hasPermission ? (
-                <i
-                  className="fa-solid fa-xmark yk-icon-hover mx-2"
-                  style={{
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    setNewsUnderEdit(false)
-                    setEditView(false)
-                    cancelAddNews(data.id)
-                    setIsNewCatAdded(false)
-                    setIsNewSubCatAdded(false)
-                  }}
-                />
-              ) : (
-                hasPermission && (
+                <Tooltip title="Discard Changes">
                   <i
-                    className="fa-solid fa-trash mx-2"
+                    className="fa-solid fa-xmark yk-icon-hover mx-2"
                     style={{
-                      color: '#CD2727',
                       fontSize: '20px',
                       cursor: 'pointer',
                     }}
-                    onClick={e => {
-                      // call the delete news API here
-                      setDeleteNewsArr([data.id])
-
-                      setDeleteModal(true)
+                    onClick={() => {
+                      setNewsUnderEdit(false)
+                      setEditView(false)
+                      cancelAddNews(data.id)
+                      setIsNewCatAdded(false)
+                      setIsNewSubCatAdded(false)
                     }}
                   />
+                </Tooltip>
+              ) : (
+                hasPermission && (
+                  <Tooltip title="Delete News">
+                    <i
+                      className="fa-solid fa-trash mx-2"
+                      style={{
+                        color: '#CD2727',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={e => {
+                        // call the delete news API here
+                        setDeleteNewsArr([data.id])
+
+                        setDeleteModal(true)
+                      }}
+                    />
+                  </Tooltip>
                 )
               )}
             </div>
@@ -1156,11 +1165,13 @@ const NewsItem = ({
                       }}
                     >
                       <div>
-                        <i
-                          className="fa-solid fa-paperclip yk-icon-hover"
-                          style={{ fontSize: '22px' }}
-                          onClick={() => fileInputRef.current.click()}
-                        />
+                        <Tooltip title="Attach a Document">
+                          <i
+                            className="fa-solid fa-paperclip yk-icon-hover"
+                            style={{ fontSize: '22px' }}
+                            onClick={() => fileInputRef.current.click()}
+                          />
+                        </Tooltip>
                         <input
                           accept="application/pdf"
                           type="file"
@@ -1319,6 +1330,7 @@ function AddCategoryModal({
   const [croppedImage, setCroppedImage] = useState(null)
   const [imageToCrop, setImageToCrop] = useState(null)
   const [finalCroppedImageFile, setFinalCroppedImageFile] = useState(null)
+  const [dragged, setDragged] = useState(false)
   // const [cropState, setCropState] = useState(false)
 
   async function cropImage(crop) {
@@ -1331,7 +1343,7 @@ function AddCategoryModal({
 
       // calling the props function to expose
       // croppedImage to the parent component
-      setCroppedImage(croppedImage)
+      if (croppedImage) setCroppedImage(croppedImage)
     }
   }
 
@@ -1427,16 +1439,13 @@ function AddCategoryModal({
   function retrieveCroppedImage(sourceImage, crop, fileName) {
     // creating the cropped image from the source image
     const canvas = document.createElement('canvas')
-    //const pixelRatio = window.devicePixelRatio
+
     const scaleX = sourceImage.naturalWidth / sourceImage.width
     const scaleY = sourceImage.naturalHeight / sourceImage.height
-    // canvas.width = crop.width * pixelRatio
-    // canvas.height = crop.height * pixelRatio
+
     canvas.width = Math.ceil(crop.width * scaleX)
     canvas.height = Math.ceil(crop.height * scaleY)
     const ctx = canvas.getContext('2d')
-    //ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
-    //ctx.imageSmoothingQuality = 'high'
 
     ctx.drawImage(
       sourceImage,
@@ -1458,14 +1467,18 @@ function AddCategoryModal({
           return
         }
 
-        blob.name = fileName
-        // creating a Object URL representing the Blob object given
-        var file = new File([blob], 'image.png', { type: 'image/png' })
-        console.log('GENERATED IMAGE', file)
-        setFinalCroppedImageFile(file)
-        const croppedImageUrl = window.URL.createObjectURL(blob)
-
-        resolve(croppedImageUrl)
+        if (dragged) {
+          blob.name = fileName
+          // creating a Object URL representing the Blob object given
+          var file = new File([blob], 'image.png', { type: 'image/png' })
+          console.log('GENERATED IMAGE', file)
+          setFinalCroppedImageFile(file)
+          const croppedImageUrl = window.URL.createObjectURL(blob)
+          setDragged(false)
+          resolve(croppedImageUrl)
+        } else {
+          resolve(false)
+        }
       }, 'image/png')
     })
   }
@@ -1484,6 +1497,9 @@ function AddCategoryModal({
               onImageLoaded={imageRef => setImageRef(imageRef)}
               onComplete={crop => cropImage(crop)}
               onChange={crop => setCrop(crop)}
+              onDragStart={() => {
+                setDragged(true)
+              }}
             />
           )}
           {/* <ReactCrop
