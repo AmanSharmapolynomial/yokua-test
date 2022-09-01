@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import placeholder from '../../assets/placeholder.png'
+import { getToken } from '../../utils/token'
 import upload from '../../assets/upload.png'
 import Tooltip from '@mui/material/Tooltip'
 
@@ -43,7 +44,13 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                   <img
                     role={'button'}
                     className="img-thumbnail img-ryg border-dark"
-                    src={preview ? preview : data?.image_link ? data.image_link : upload}
+                    src={
+                      preview
+                        ? preview
+                        : data?.image_link
+                        ? data.image_link + `?token=${getToken()}`
+                        : upload
+                    }
                     onClick={e => {
                       e.stopPropagation()
                       imageInputRef.current.click()
@@ -53,7 +60,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
               ) : (
                 <img
                   className="img-thumbnail img-ryg border-dark"
-                  src={data.image_link ? data.image_link : placeholder}
+                  src={data.image_link ? data.image_link + `?token=${getToken()}` : placeholder}
                 />
               )}
               <div className="row mt-3">

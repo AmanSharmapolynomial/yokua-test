@@ -562,7 +562,10 @@ const RYGDetail = () => {
                       ></i>
                     </Tooltip>
                   )}
-                  <Image src={element.image_link} className="border rounded img-product-line" />
+                  <Image
+                    src={element.image_link + `?token=${getToken()}`}
+                    className="border rounded img-product-line"
+                  />
                   <a
                     href={element.image_link + `?token=${getToken()}`}
                     target="_blank"
