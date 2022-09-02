@@ -1069,7 +1069,7 @@ const NewsItem = ({
                     }}
                   />
                 ) : (
-                  <p>{data ? data.description : ''}</p>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{data ? data.description : ''}</p>
                 )}
               </div>
             </div>
