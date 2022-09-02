@@ -309,7 +309,7 @@ const NewsScreen = () => {
                   </div>
                 </div>
               </div>
-              <p>Filter News</p>
+              {category == null && <p>Filter News</p>}
             </div>
             {!archivedFilter && (
               <div className="col-6">
