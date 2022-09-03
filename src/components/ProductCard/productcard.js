@@ -113,7 +113,7 @@ const ProductCard = ({
                 <textarea ref={textareaRef} className="col-6 d-flex product-desc clamp-1v" />
               ) : (
                 <div className="col-6 d-flex product-desc clamp-1v">
-                  <p>{item.description}</p>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{item.description}</p>
                 </div>
               )}
             </div>
