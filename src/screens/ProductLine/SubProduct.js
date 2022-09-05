@@ -10,7 +10,7 @@ import Plusicon from '../../assets/Group 331.png'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useLocation } from 'react-router-dom'
 
 import ProductCard from '../../components/ProductCard/productcard'
