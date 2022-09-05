@@ -37,13 +37,15 @@ API.interceptors.response.use(null, async e => {
           const { access: accessToken, refresh: refreshToken } = rs.data
           setToken(accessToken)
           setRefreshToken(refreshToken)
-          toast.success('Token refreshed successfully')
+          //toast.success('Token refreshed successfully')
           window.location.reload()
           return instance(originalConfig)
         } catch (err) {
-          toast.error('Session Expired')
-          removeToken()
-          window.location.href = '/auth/login'
+          if (originalConfig.url == '/auth/token/refresh/') {
+            toast.error('Session Expired')
+            removeToken()
+            window.location.href = '/auth/login'
+          }
           return Promise.reject(err)
         }
       }
