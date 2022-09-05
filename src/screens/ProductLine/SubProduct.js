@@ -17,23 +17,36 @@ import ProductCard from '../../components/ProductCard/productcard'
 import htmlParser from 'html-react-parser'
 
 const SubProduct = () => {
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const itemId = urlParams.get('itemId')
+  const archiveStatus = urlParams.get('archiveStatus')
+  const itemName = urlParams.get('itemName')
+
   const navigate = useNavigate()
-  const { state } = useLocation()
+  //const { state } = useLocation()
+  const [state, setNewState] = useState({
+    is_archived: archiveStatus,
+    id: itemId,
+    name: itemName,
+  })
   const { setLoading } = useLoading()
-  const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
+  const { archived_status, subproduct_id } = useParams()
+  const [archivedFilter, setArchivedFilter] = useState(state?.is_archived || archived_status)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
+
   const getProductList = () => {
     setIsLoading(true)
     API.post('products/list_view/sub_products/', {
-      is_archived: archivedFilter,
-      product_id: state.id,
+      is_archived: state.is_archived == 'true' ? true : false,
+      product_id: Number(state.id),
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           if (res.data.length === 1 && res.data[0].sub_product_name === 'proxy') {
             const item = res.data[0]
-            navigate('/product-lines/product-detail', {
+            navigate(`/product-lines/product-detail/`, {
               state: { ...item, sub_product_name: state.name, parentId: state.id },
             })
           } else {
@@ -106,9 +119,12 @@ const SubProduct = () => {
           onClick={() => {
             const updatedItem = item
             updatedItem.is_archived = archivedFilter
-            navigate('/product-lines/product-detail', {
-              state: { ...updatedItem, parentId: state.id },
-            })
+            navigate(
+              `/product-lines/product-detail/?pageId=${item.page_id}&productId=${item.id}&productArchivedStatus=${item.is_archived}&subProductName=${item.sub_product_name}`,
+              {
+                state: { ...updatedItem, parentId: state.id },
+              }
+            )
           }}
           onUpdate={payload => {
             updateSubProduct(payload)

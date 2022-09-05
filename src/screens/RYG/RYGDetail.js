@@ -15,13 +15,25 @@ import htmlParser from 'html-react-parser'
 import Tooltip from '@mui/material/Tooltip'
 
 const RYGDetail = () => {
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const rygId = urlParams.get('rygId')
+  const rygPageId = urlParams.get('rygPageId')
+  const rygPageTitle = urlParams.get('rygPageTitle')
+
+  const [state, setNewState] = useState({
+    page_title: rygPageTitle,
+    page_id: Number(rygPageId),
+    id: Number(rygId),
+  })
+
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
     getUserRoles() == 'PMK Administrator' ||
     getUserRoles() == 'PMK Content Manager'
 
   const navigate = useNavigate()
-  const { state } = useLocation()
+  //const { state } = useLocation()
   const { setLoading } = useLoading()
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])

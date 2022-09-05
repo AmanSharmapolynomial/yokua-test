@@ -20,7 +20,22 @@ const ProductDetail = () => {
     getUserRoles() == 'PMK Content Manager'
 
   const navigate = useNavigate()
-  const { state } = useLocation()
+  //const { state } = useLocation()
+
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const pageId = urlParams.get('pageId')
+  const productId = urlParams.get('productId')
+  const productArchivedStatus = urlParams.get('productArchivedStatus')
+  const subProductName = urlParams.get('subProductName')
+
+  const [state, setNewState] = useState({
+    is_archived: productArchivedStatus,
+    id: productId,
+    page_id: pageId,
+    sub_product_name: subProductName,
+  })
+
   const { setLoading } = useLoading()
   const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
@@ -70,8 +85,6 @@ const ProductDetail = () => {
 
   const [addComponentData, setAddComponentData] = useState(initialTableState)
 
-  console.log(addComponentData.table_data)
-
   const components = [
     {
       title: 'Table',
@@ -95,7 +108,7 @@ const ProductDetail = () => {
   const getProductDetails = () => {
     setLoading(true)
     API.post('products/details/', {
-      is_archived: archivedFilter,
+      is_archived: archivedFilter == 'true' ? true : false,
       parent_id: state.id,
     })
       .then(res => {
@@ -166,7 +179,7 @@ const ProductDetail = () => {
 
   const getSubProductsList = () => {
     API.post('products/page/list_sections', {
-      is_archived: archivedFilter,
+      is_archived: archivedFilter == 'true' ? true : false,
     })
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
@@ -189,7 +202,6 @@ const ProductDetail = () => {
     imagesToUpload.map((image, index) => {
       formData.append(`image${index + 1}`, image)
     })
-    console.log(...formData)
     API.post('/products/page/add_bulk_image', formData)
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {

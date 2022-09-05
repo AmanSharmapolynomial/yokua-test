@@ -82,7 +82,13 @@ const ProductLine = ({ archieve }) => {
             const updatedItem = item
             updatedItem.is_archived = archieve
             if (item?.tokuchu) navigate('/admin/approved-tokuchus')
-            else navigate('/product-lines/sub-product', { state: updatedItem })
+            else
+              navigate(
+                `/product-lines/sub-product/?itemId=${item.id}&archiveStatus=${archieve}&itemName=${
+                  item.sub_product_name || item.name
+                }`,
+                { state: updatedItem }
+              )
           }}
           onUpdate={payload => {
             updateProduct(payload)
