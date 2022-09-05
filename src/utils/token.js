@@ -21,3 +21,23 @@ export const removeUserRole = role => {
 export const getRefreshToken = () => {
   return localStorage.getItem('refreshtoken')
 }
+
+export const setRefreshToken = refreshToken => {
+  return localStorage.setItem('refreshtoken', refreshToken)
+}
+
+export const removeRefreshToken = () => {
+  return localStorage.removeItem('refreshtoken')
+}
+
+export const setUserEmail = email => {
+  return localStorage.setItem('userEmail', email)
+}
+
+export const getUserEmail = () => {
+  return localStorage.getItem('userEmail')
+}
+
+export const removeUserEmail = () => {
+  return localStorage.removeItem('userEmail')
+}

@@ -1,7 +1,9 @@
 import { create } from 'axios'
-import { getToken, removeToken } from './token'
+import { getToken, removeToken, getRefreshToken, setToken, setRefreshToken } from './token'
 import { toast } from 'react-toastify'
 const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
+
+let refreshFlag = 0
 
 API.interceptors.request.use(
   config => {
@@ -17,10 +19,39 @@ API.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-API.interceptors.response.use(null, e => {
-  if (e.response.status === 401) {
-    removeToken()
-    window.location.href = '/auth/login'
+
+API.interceptors.response.use(null, async e => {
+  if (e.response.status === 401 && refreshFlag === 0) {
+    const originalConfig = e.config
+    if (originalConfig.url !== '/auth/login' && e.response) {
+      // Access Token was expired
+      if (!originalConfig._retry) {
+        refreshFlag = 1
+        originalConfig._retry = true
+        try {
+          console.log('inside TRY')
+          const rs = await API.post('/auth/token/refresh/', {
+            refresh: getRefreshToken(),
+          })
+          refreshFlag = 0
+          const { access: accessToken, refresh: refreshToken } = rs.data
+          setToken(accessToken)
+          setRefreshToken(refreshToken)
+          toast.success('Token refreshed successfully')
+          window.location.reload()
+          return instance(originalConfig)
+        } catch (err) {
+          toast.error('Session Expired')
+          removeToken()
+          window.location.href = '/auth/login'
+          return Promise.reject(err)
+        }
+      }
+    } else {
+      removeToken()
+      window.location.href = '/auth/login'
+    }
+    //return Promise.reject(err)
   }
 
   if (Array.isArray(e.response.data?.message)) {
@@ -28,9 +59,9 @@ API.interceptors.response.use(null, e => {
   } else if (e.response.data?.message && e.response.data?.message[0]) {
     toast.error(e.response.data?.message)
   }
-  toast.error(e.response.data?.email[0])
-  toast.error(e.response.data?.new_password2[0])
-  toast.error(e.response.data?.new_password2[1])
+  if (Array.isArray(e.response.data?.email)) toast.error(e.response.data?.email[0])
+  if (Array.isArray(e.response.data?.new_password2)) toast.error(e.response.data?.new_password2[0])
+  if (Array.isArray(e.response.data?.new_password2)) toast.error(e.response.data?.new_password2[1])
 
   if (e.response.status == 400) {
     e.response.data.message?.forEach(message => {

@@ -3,7 +3,14 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { getUserRoles } from '../../utils/token'
 import NavDropdown from './navDropdown'
-import { removeToken, removeUserRole } from '../../utils/token'
+import {
+  removeToken,
+  removeUserRole,
+  getRefreshToken,
+  removeRefreshToken,
+  getUserEmail,
+  removeUserEmail,
+} from '../../utils/token'
 import { toast } from 'react-toastify'
 import './style.css'
 import API from '../../utils/api'
@@ -40,6 +47,24 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
       const response = await API.get('/news/unread_count')
       setUnreadNewsCount(response.data.message)
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await API.post('/auth/logout/', {
+        email: getUserEmail(),
+        refresh: getRefreshToken(),
+      })
+      toast.success('Logout Successful')
+      removeToken()
+      removeRefreshToken()
+      removeUserEmail()
+      removeUserRole()
+      navigate('/auth/login')
+    } catch (error) {
+      toast.error(error)
       console.log(error)
     }
   }
@@ -221,15 +246,7 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
         </ul>
         {isLogedIn && (
           <ul className="nav navbar-nav flex-row justify-content-lg-center justify-content-start flex-nowrap d-none d-lg-block">
-            <button
-              className="logout-btn"
-              onClick={() => {
-                toast.success('Log out successfully')
-                removeToken()
-                removeUserRole()
-                navigate('/auth/login')
-              }}
-            >
+            <button className="logout-btn" onClick={logout}>
               Log out
             </button>
           </ul>
