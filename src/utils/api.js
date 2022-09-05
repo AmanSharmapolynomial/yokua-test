@@ -56,10 +56,12 @@ API.interceptors.response.use(null, async e => {
     //return Promise.reject(err)
   }
 
-  if (Array.isArray(e.response.data?.message)) {
+  if (Array.isArray(e.response.data?.message) && e.response.status !== 401) {
     toast.error(e.response.data?.message[0])
-  } else if (e.response.data?.message && e.response.data?.message[0]) {
+  } else if (e.response.data?.message && e.response.data?.message[0] && e.response.status !== 401) {
     toast.error(e.response.data?.message)
+  } else {
+    toast.success('Refreshing the Website')
   }
   if (Array.isArray(e.response.data?.email)) toast.error(e.response.data?.email[0])
   if (Array.isArray(e.response.data?.new_password2)) toast.error(e.response.data?.new_password2[0])
