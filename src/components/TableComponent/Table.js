@@ -572,7 +572,16 @@ export default ({
         {tableObject.map((ele, idx) => {
           let typeOrSizeColumn = ele.column_name === 'Type' || ele.column_name === 'Size'
           return (
-            <div className="dummy-col" style={{ minWidth: '100px' }}>
+            <div
+              className="dummy-col"
+              style={{
+                minWidth:
+                  ele.column_name !== 'File' && ele.column_name !== 'Classification'
+                    ? '100px'
+                    : 'none',
+                maxWidth: ele.column_name == 'Classification' ? '150px' : 'none',
+              }}
+            >
               {!ele.is_file ? (
                 <input
                   ref={el => (inputRef.current[idx] = el)}
