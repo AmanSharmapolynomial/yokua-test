@@ -32,14 +32,14 @@ const SubProduct = () => {
   })
   const { setLoading } = useLoading()
   const { archived_status, subproduct_id } = useParams()
-  const [archivedFilter, setArchivedFilter] = useState(state?.is_archived || archived_status)
+  const [archivedFilter, setArchivedFilter] = useState(state.is_archived == 'true' ? true : false)
   const [isLoading, setIsLoading] = useState(false)
   const [productList, setProductList] = useState([])
 
   const getProductList = () => {
     setIsLoading(true)
     API.post('products/list_view/sub_products/', {
-      is_archived: state.is_archived == 'true' ? true : false,
+      is_archived: archivedFilter,
       product_id: Number(state.id),
     })
       .then(res => {
