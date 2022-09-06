@@ -37,7 +37,7 @@ const ProductDetail = () => {
   })
 
   const { setLoading } = useLoading()
-  const [archivedFilter, setArchivedFilter] = useState(state.is_archived)
+  const [archivedFilter, setArchivedFilter] = useState(state.is_archived == 'true' ? true : false)
   const [isAddComponentModalVisible, setIsAddComponentModalVisible] = useState(-1)
   const [productDetail, setProductDetail] = useState([])
   const [subProductList, setSubProductList] = useState([])
@@ -108,7 +108,7 @@ const ProductDetail = () => {
   const getProductDetails = () => {
     setLoading(true)
     API.post('products/details/', {
-      is_archived: archivedFilter == 'true' ? true : false,
+      is_archived: archivedFilter,
       parent_id: state.id,
     })
       .then(res => {
