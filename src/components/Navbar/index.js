@@ -186,7 +186,13 @@ const Navbar = ({ isAdmin, isLogedIn }) => {
                     role={'button'}
                     onClick={() => {
                       if (element?.event) navigate('/event/all')
-                      else navigate('/ryg-information/details', { state: element })
+                      else {
+                        navigate(
+                          `/ryg-information/details/?rygPageId=${element.page_id}&rygPageTitle=${element.page_title}&rygId=${element.id}`,
+                          { state: element }
+                        )
+                        window.location.reload()
+                      }
                     }}
                     key={index}
                     className="dropdown-item font-6"
