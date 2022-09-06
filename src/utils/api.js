@@ -42,6 +42,7 @@ API.interceptors.response.use(null, async e => {
       setRefreshToken(refresh)
       window.location.reload()
     } catch (error) {
+      toast.error('Session Expired, Login Again')
       console.log('Inside CATCH')
       removeToken()
       removeUserEmail()
