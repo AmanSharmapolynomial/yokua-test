@@ -20,7 +20,7 @@ const Impressum = () => {
           Rota Yokogawa Verwaltungsgesellschaft mbH, HRB 630230 Registergericht Freiburg
         </div>
         <div className="h6 weight-bold mt-5">Being represented by the Managing Directors:</div>
-        <div className="font-8">Frank Schramm, Katsuya Ikezawa</div>
+        <div className="font-8">Frank Schramm, Toshiyuki Suzuki</div>
         <div className="font-8">Register Court Freiburg</div>
         <div className="font-8">HRA 630 604</div>
         <div className="font-8">VAT Reg. No. DE 142697009</div>
