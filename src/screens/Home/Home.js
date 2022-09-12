@@ -276,7 +276,13 @@ const Home = () => {
                 onClick={() => {
                   if (item?.tokuchu) navigate('/admin/approved-tokuchus')
                   else if (item?.name === 'Archive') navigate('/product-lines/archive')
-                  else navigate('/product-lines/sub-product', { state: item })
+                  else
+                    navigate(
+                      `/product-lines/sub-product/?itemId=${item.id}&archiveStatus=${
+                        item.is_archived
+                      }&itemName=${item.sub_product_name || item.name}`,
+                      { state: item }
+                    )
                 }}
               />
             ))}
