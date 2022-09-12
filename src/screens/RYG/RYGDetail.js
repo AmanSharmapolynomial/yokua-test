@@ -1438,8 +1438,17 @@ const RYGDetail = () => {
           <div className="row d-none d-lg-block">
             <div className="col-12 col-lg-5 border rounded py-2">
               <div className="row">
-                <span role="button" className="col-4 light-grey">
+                {/* <span role="button" className="col-4 light-grey">
                   <Link to={'/ryg-information'}>Previous page</Link>
+                </span> */}
+                <span
+                  role="button"
+                  className="col-4 light-grey"
+                  onClick={() => {
+                    navigate(-1)
+                  }}
+                >
+                  Previous page
                 </span>
                 <span
                   className="col-8"
