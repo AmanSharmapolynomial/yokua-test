@@ -275,20 +275,23 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
     setTableRows([...finalTableData])
   }
   const customSort = (rows, selector, direction) => {
-    return rows.sort((a, b) => {
+    const sortFunction = rows.sort((a, b) => {
       // use the selector to resolve your field names by passing the sort comparitors
-      const aField = selector(a).toLowerCase()
-      const bField = selector(b).toLowerCase()
+      if (typeof selector(a) == typeof selector(b)) {
+        const aField = selector(a).toLowerCase()
+        const bField = selector(b).toLowerCase()
 
-      let comparison = 0
+        let comparison = 0
 
-      if (aField > bField) {
-        comparison = 1
-      } else if (aField < bField) {
-        comparison = -1
-      }
-      return direction === 'desc' ? comparison * -1 : comparison
+        if (aField > bField) {
+          comparison = 1
+        } else if (aField < bField) {
+          comparison = -1
+        }
+        return direction === 'desc' ? comparison * -1 : comparison
+      } else return 1
     })
+    return sortFunction
   }
   const _updateTableData = (image, payload, actionType = 'add_row') => {
     const formData = new FormData()
