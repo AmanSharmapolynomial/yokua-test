@@ -578,18 +578,20 @@ const RYGDetail = () => {
                     src={element.image_link + `?token=${getToken()}`}
                     className="border rounded img-product-line"
                   />
-                  <a
-                    href={element.image_link + `?token=${getToken()}`}
-                    target="_blank"
-                    role={'button'}
-                    className="col register-link"
-                    style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
-                    download
-                  >
-                    {element.image_name.length > 20
-                      ? element.image_name.substring(0, 17) + '...'
-                      : element.image_name}
-                  </a>
+                  <Tooltip title={element.image_name}>
+                    <a
+                      href={element.image_link + `?token=${getToken()}`}
+                      target="_blank"
+                      role={'button'}
+                      className="col register-link"
+                      style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                      download
+                    >
+                      {element.image_name.length > 20
+                        ? element.image_name.substring(0, 17) + '...'
+                        : element.image_name}
+                    </a>
+                  </Tooltip>
                 </div>
               </div>
             )
@@ -720,18 +722,20 @@ const RYGDetail = () => {
                 src={element.image_link + `?token=${getToken()}`}
                 className="border rounded img-product-line"
               />
-              <a
-                href={element.image_link + `?token=${getToken()}`}
-                target="_blank"
-                role={'button'}
-                className="col register-link"
-                style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
-                download
-              >
-                {element.image_name.length > 20
-                  ? element.image_name.substring(0, 17) + '...'
-                  : element.image_name}
-              </a>
+              <Tooltip title={element.image_name}>
+                <a
+                  href={element.image_link + `?token=${getToken()}`}
+                  target="_blank"
+                  role={'button'}
+                  className="col register-link"
+                  style={{ textAlign: 'center', fontSize: 'small', padding: '0.25rem 0' }}
+                  download
+                >
+                  {element.image_name.length > 20
+                    ? element.image_name.substring(0, 17) + '...'
+                    : element.image_name}
+                </a>
+              </Tooltip>
             </div>
           </div>
         )
