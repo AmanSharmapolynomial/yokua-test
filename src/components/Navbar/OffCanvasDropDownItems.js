@@ -65,7 +65,11 @@ const OffCanvasDropDownItems = props => {
               role={'button'}
               onClick={() => {
                 if (element?.event) navigate('/event/all')
-                else navigate('/ryg-information/details', { state: element })
+                else
+                  navigate(
+                    `/ryg-information/details/?rygPageId=${element.page_id}&rygPageTitle=${element.page_title}&rygId=${element.id}`,
+                    { state: element }
+                  )
               }}
               key={index}
               className="dropdown-item font-6"
