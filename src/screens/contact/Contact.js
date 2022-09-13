@@ -324,7 +324,9 @@ export default () => {
                       {item?.detail[0]?.email && (
                         <div className="d-flex mb-2 align-items-center">
                           <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
-                          <p className="ps-2">{item?.detail[0]?.email}</p>
+                          <p className="ps-2" style={{ wordBreak: 'break-all' }}>
+                            {item?.detail[0]?.email}
+                          </p>
                         </div>
                       )}
                     </div>
