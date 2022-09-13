@@ -11,7 +11,7 @@ const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
 const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
 
-export default () => {
+const Tokuchu = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [currentEdit, setCurrentEdit] = useState('')
@@ -80,47 +80,35 @@ export default () => {
     }
   }
 
-  const _getDetails = (productItemId = 1) => {
+  const _getDetails = async (productItemId = 1) => {
     setAllRequest(false)
     setAllTableData({})
     setTableData([])
-    API.post('tokuchu/details/', {
+    const res = await API.post('tokuchu/details/', {
       page_id: productItemId,
     })
-      .then(data => {
-        if (data.data.length < 1) {
-          setPageDetails({})
-          setTableDetails({})
-          setTableData([])
-        }
-        // FOR ALL PRODUCTS REQUEST
-        else if (selectedProduct.name.toLowerCase().includes('all')) {
-          setAllRequest(true)
-          const allData = data.data[0].components[0]
-          data.data.map(item => {
-            item.components[0].table_data.map(tableItem => {
-              let index = allData.table_data.findIndex(
-                allItem => allItem.column_name === tableItem.column_name
-              )
-              allData.table_data[index].values = allData.table_data[index].values.concat(
-                tableItem.values
-              )
-            })
-          })
-          for (let i = 0; i < allData.table_data.length; i++) {
-            allData.table_data[i].values.splice(0, 1)
-            console.log('TABLE ITEM', allData.table_data[i].values)
-          }
-          console.log('ORIGINAL', data.data)
-          console.log('ALL DATA', allData)
-          setAllTableData(allData)
-        } else {
-          setPageDetails(data.data)
-          setTableData(data.data)
-          setTableDetails(data.data[0].components[0])
-        }
-      })
-      .catch(err => {})
+    if (res.data.length < 1) {
+      setPageDetails({})
+      setTableDetails({})
+      setTableData([])
+    }
+    // // FOR ALL PRODUCTS REQUEST
+    else if (selectedProduct.name.toLowerCase().includes('all')) {
+      setAllRequest(true)
+      let allData = res.data[0].components[0]
+      for (let i = 1; i < res.data.length; i++) {
+        res.data[i].components[0].table_data.map(column => {
+          allData.table_data
+            .find(item => item.column_name === column.column_name)
+            .values.push(...column.values)
+        })
+      }
+      setAllTableData(allData)
+    } else {
+      setPageDetails(res.data)
+      setTableData(res.data)
+      setTableDetails(res.data[0].components[0])
+    }
   }
 
   const _deleteComponent = () => {
@@ -582,6 +570,8 @@ export default () => {
     </>
   )
 }
+
+export default Tokuchu
 
 const AddModal = ({ show, setShow, currentEdit, parentId, saveCompany }) => {
   const [name, setName] = useState('')
