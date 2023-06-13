@@ -145,7 +145,9 @@ const ProductLine = ({ archieve }) => {
                   Home
                 </u>
                 {' > '}{' '}
-                {currentPath === '/product-lines' ? 'Product Line' : 'Product Line > Archive '}
+                {currentPath === '/product-lines'
+                  ? 'Field Instruments'
+                  : 'Field Instruments > Archive '}
               </span>
             </div>
           </div>
