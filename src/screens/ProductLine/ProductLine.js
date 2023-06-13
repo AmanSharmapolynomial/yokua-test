@@ -18,7 +18,8 @@ import Breadcrumb from '../../components/Breadcrumb'
 
 const ProductLine = ({ archieve }) => {
   // Get the location
-  const { state } = useLocation()
+  const currentPath = window.location.pathname
+  console.log(currentPath)
 
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
@@ -118,7 +119,36 @@ const ProductLine = ({ archieve }) => {
       <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Product Lines'} backgroundImage={'Product-line'} />
-          {/* <Breadcrumb previousPages={state.previousPage} currentPage={state.header} /> */}
+          <div className="col-12 col-lg-5 border-md rounded py-2 my-2">
+            <div className="row">
+              <span
+                role="button"
+                className="col-4 light-grey"
+                onClick={() => {
+                  navigate(-1)
+                }}
+              >
+                Previous page
+              </span>
+              <span
+                className="col-8"
+                // style={{
+                //   wordBreak: 'break-all',
+                // }}
+              >
+                <u
+                  role="button"
+                  onClick={() => {
+                    navigate('/home')
+                  }}
+                >
+                  Home
+                </u>
+                {' > '}{' '}
+                {currentPath === '/product-lines' ? 'Product Line' : 'Product Line > Archive '}
+              </span>
+            </div>
+          </div>
           {isLoading ? (
             <div className="col text-center mt-3">
               <div className="spinner-border" role="status">

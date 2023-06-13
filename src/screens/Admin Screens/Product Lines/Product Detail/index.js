@@ -16,6 +16,7 @@ import DeleteModal from '../../../../components/Modals/DeleteModal/index'
 const ProductDetail = () => {
   const { id } = useParams()
   const { state } = useLocation()
+  console.log(state)
   const [isArchived] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [productDetail, setProductDetail] = useState([])

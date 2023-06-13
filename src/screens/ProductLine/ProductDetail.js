@@ -1444,7 +1444,8 @@ const ProductDetail = () => {
                   >
                     Field Instruments
                   </u>
-                  {'>'} {htmlParser(state.sub_product_name)}
+                  {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '}{' '}
+                  {htmlParser(state.sub_product_name)}
                 </span>
               </div>
             </div>

@@ -184,7 +184,7 @@ const SubProduct = () => {
                     >
                       Field Instruments
                     </u>
-                    {' > '} {htmlParser(state.name)}
+                    {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '} {htmlParser(state.name)}
                   </span>
                 </div>
               </div>
