@@ -118,7 +118,7 @@ const CustomDropdown = ({
                   </li>
                 ))}
 
-                {!isTopicAdd && (
+                {/* {!isTopicAdd && (
                   <Dropdown.Item
                     className="yg-font-size-r"
                     onClick={() => {
@@ -128,7 +128,7 @@ const CustomDropdown = ({
                   >
                     Others
                   </Dropdown.Item>
-                )}
+                )} */}
                 {isTopicAdd && (
                   <InputGroup className="yg-font-size-registrtion p-1 ">
                     <FormControl
