@@ -580,7 +580,7 @@ const RYGDetail = () => {
                   />
                   <Tooltip title={element.image_name}>
                     <a
-                      href={element.image_link + `?token=${getToken()}`}
+                      href={element.full_size_image_link + `?token=${getToken()}`}
                       target="_blank"
                       role={'button'}
                       className="col register-link"

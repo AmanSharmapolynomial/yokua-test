@@ -552,7 +552,7 @@ const ProductDetail = () => {
                   />
                   <Tooltip title={element.image_name}>
                     <a
-                      href={ele.image_link + `?token=${getToken()}`}
+                      href={ele.full_size_image_link + `?token=${getToken()}`}
                       target="_blank"
                       role={'button'}
                       className="col register-link"

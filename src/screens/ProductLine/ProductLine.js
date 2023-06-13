@@ -12,10 +12,14 @@ import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import ProductCard from '../../components/ProductCard/productcard'
-import { Link, Router } from 'react-router-dom'
+import { Link, Router, useLocation } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
+import Breadcrumb from '../../components/Breadcrumb'
 
 const ProductLine = ({ archieve }) => {
+  // Get the location
+  const { state } = useLocation()
+
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
   const navigate = useNavigate()
@@ -114,6 +118,7 @@ const ProductLine = ({ archieve }) => {
       <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Product Lines'} backgroundImage={'Product-line'} />
+          {/* <Breadcrumb previousPages={state.previousPage} currentPage={state.header} /> */}
           {isLoading ? (
             <div className="col text-center mt-3">
               <div className="spinner-border" role="status">

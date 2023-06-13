@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import API from '../../../../utils/api'
 import PrimaryHeading from '../../../../components/Primary Headings'
 import { useLocation, useNavigate } from 'react-router-dom'
+import Breadcrumb from '../../../../components/Breadcrumb'
 
 const ProductList = () => {
   let navigate = useNavigate()
@@ -103,6 +104,7 @@ const ProductList = () => {
     <>
       <div className="product-list-container">
         <PrimaryHeading title={'Product Lines'} />
+        <Breadcrumb previousPages={state.previousPage} currentPage={state.header} />
         <div className="container">
           <div className="img-section mb-5 m">
             {productList.map((item, index) => (
