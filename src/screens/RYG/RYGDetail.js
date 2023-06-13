@@ -58,7 +58,7 @@ const RYGDetail = () => {
     else setIsMd(false)
   }
 
-  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Classification', 'File']
+  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Document Type', 'File']
 
   const returnTableData = () => {
     let tableData = []
