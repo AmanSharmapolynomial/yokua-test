@@ -58,6 +58,7 @@ export default ({
   const [editSelected, setEditSelected] = useState(null)
   const [deleteSelected, setDeleteSelected] = useState(null)
   const [archiveSelected, setArchiveSelected] = useState(null)
+  const [unarchiveSelected, setUnarchiveSelected] = useState(null)
   const [updatedProductFile, setUpdatedProductFile] = useState(null)
   const [uploadInProgress, setUploadInProgress] = useState(false)
   const { setLoading } = useLoading()
@@ -183,6 +184,28 @@ export default ({
       })
       .catch(err => {
         toast.error('Error in Archiving')
+      })
+  }
+  const unArchiveRow = row => {
+    let payload = {
+      id: row.table_id,
+      archive_type: 'component',
+      component_type: 'table row',
+      row_index: row.row_index,
+    }
+    let archiveUrl = isRYG ? '/ryg_info/page/unarchive' : '/products/page/unarchive'
+    API.post(archiveUrl, payload)
+      .then(data => {
+        toast.success('Row unarchived successfully')
+        setUnarchiveSelected(null)
+        onEditableClick()
+        onRefresh()
+        _setTableHeaders()
+        _setTableData()
+        onTableUpdate(editedTableObject)
+      })
+      .catch(err => {
+        toast.error('Error in unarchiving')
       })
   }
 
@@ -462,7 +485,7 @@ export default ({
                 </Tooltip>
               )}
               {!isRYG && (
-                <Tooltip title="Archive Row">
+                <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
                   <i
                     className="fa-solid fa-box-archive theme"
                     style={{
@@ -470,7 +493,7 @@ export default ({
                     }}
                     role={'button'}
                     onClick={() => {
-                      setArchiveSelected(item)
+                      archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
                     }}
                   />
                 </Tooltip>
@@ -658,7 +681,7 @@ export default ({
           <div className="col p-0 table-header d-flex align-items-center">
             <span style={{ fontSize: '1.25rem' }}>{table_name}</span>
           </div>
-          {isAdmin && !archivedFilter && (
+          {isAdmin && (
             <div className="col-auto my-2 p-0 d-none d-lg-block">
               <Tooltip title="Link Component">
                 <Image
@@ -742,12 +765,14 @@ export default ({
       <Modal
         show={
           (deleteSelected !== null && Object.keys(deleteSelected).length > 0) ||
-          archiveSelected !== null
+          archiveSelected !== null ||
+          unarchiveSelected != null
         }
         centered
         onHide={() => {
           setDeleteSelected(null)
           setArchiveSelected(null)
+          setUnarchiveSelected(null)
         }}
       >
         <Modal.Header
@@ -761,7 +786,11 @@ export default ({
           <Modal.Title>
             {deleteSelected !== null && Object.keys(deleteSelected).length > 0
               ? 'Delete Row'
-              : 'Archive Row'}
+              : archiveSelected !== null && Object.keys(archiveSelected).length > 0
+              ? 'Archive Row'
+              : unarchiveSelected !== null && Object.keys(unarchiveSelected).length > 0
+              ? 'Unarchive Row'
+              : ''}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body
@@ -776,7 +805,11 @@ export default ({
         >
           {deleteSelected !== null && Object.keys(deleteSelected).length > 0
             ? 'Are you sure you want to delete this row?'
-            : 'Are you sure you want to archive this row?'}
+            : archiveSelected !== null && Object.keys(archiveSelected).length > 0
+            ? 'Are you sure you want to archive this row?'
+            : unarchiveSelected !== null && Object.keys(unarchiveSelected).length > 0
+            ? 'Are you sure you want to unarchive this row?'
+            : ''}
         </Modal.Body>
         <Modal.Footer
           style={{
@@ -793,6 +826,7 @@ export default ({
             onClick={() => {
               setDeleteSelected(null)
               setArchiveSelected(null)
+              setUnarchiveSelected(null)
             }}
           >
             Cancel
@@ -805,6 +839,9 @@ export default ({
               }
               if (archiveSelected !== null) {
                 archiveRow(archiveSelected)
+              }
+              if (unarchiveSelected !== null) {
+                unArchiveRow(unarchiveSelected)
               }
             }}
           >
