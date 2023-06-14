@@ -55,6 +55,7 @@ const ProductDetail = () => {
   const [isMd, setIsMd] = useState(false)
   const [imagesToUpload, setImagesToUpload] = useState([])
   const [isImageGridEditable, setIsImageGridEditable] = useState([])
+  const [productName, setProductName] = useState('')
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -114,6 +115,10 @@ const ProductDetail = () => {
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           setProductDetail(res.data)
+          const firstProduct = res.data[0] // Access the first object in the array
+          const productName = firstProduct.product_name
+          setProductName(productName)
+          console.log(productName) // Output: "Coriolis"
         }
         setLoading(false)
       })
@@ -1418,38 +1423,40 @@ const ProductDetail = () => {
       />
       <div className="row mx-2 mx-lg-5 h-100 gray-table">
         <div className="col center py-3">
-          <div className="row d-none d-lg-block">
-            <div className="col-12 col-lg-5 border-md rounded py-2">
-              <div className="row">
-                <span
-                  role="button"
-                  className="col-4 light-grey"
-                  onClick={() => {
-                    navigate(-1)
-                  }}
-                >
-                  Previous page
-                </span>
-                <span
-                  className="col-8"
-                  // style={{
-                  //   wordBreak: 'break-all',
-                  // }}
-                >
-                  <u
+          {productName != '' && (
+            <div className="row d-none d-lg-block">
+              <div className="col-12 col-lg-5 border-md rounded py-2">
+                <div className="row">
+                  <span
                     role="button"
-                    onClick={e => {
-                      navigate(-2)
+                    className="col-4 light-grey"
+                    onClick={() => {
+                      navigate(-1)
                     }}
                   >
-                    Field Instruments
-                  </u>
-                  {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '}{' '}
-                  {htmlParser(state.sub_product_name)}
-                </span>
+                    Previous page
+                  </span>
+                  <span
+                    className="col-8"
+                    // style={{
+                    //   wordBreak: 'break-all',
+                    // }}
+                  >
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-2)
+                      }}
+                    >
+                      Field Instruments
+                    </u>
+                    {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '} {productName} {' > '}{' '}
+                    {htmlParser(state.sub_product_name)}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <>
             <div className="row">{renderComponents()}</div>
             {(getUserRoles() == 'PMK Administrator' ||
