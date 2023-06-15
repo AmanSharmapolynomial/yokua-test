@@ -1,0 +1,11 @@
+version: "2"
+services:
+    nginx-react:
+        container_name: yokogawa-client-service
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 83:80
+        environment:
+            NODE_ENV: production
