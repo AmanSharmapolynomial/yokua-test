@@ -455,60 +455,82 @@ export default ({
           Object.assign(tableRowObject, tempObject)
         })
         if (isTableEditable) {
-          tableRowObject.edit = (
-            <div>
-              {editSelected == item.row_index ? (
-                <Tooltip title="Save Changes">
+          if (archivedFilter) {
+            tableRowObject.edit = (
+              <div>
+                {!isRYG && (
+                  <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
+                    <i
+                      className="fa-solid fa-box-archive theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </div>
+            )
+          } else {
+            tableRowObject.edit = (
+              <div>
+                {editSelected === item.row_index ? (
+                  <Tooltip title="Save Changes">
+                    <i
+                      className="fa-solid fa-floppy-disk theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        updateTableValues(editedTableObject)
+                      }}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Edit Row">
+                    <i
+                      className="fa-solid fa-pen-to-square ms-2 theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        setEditSelected(item.row_index)
+                      }}
+                    />
+                  </Tooltip>
+                )}
+                {!isRYG &&
+                  !archivedFilter && ( // Added the condition here
+                    <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
+                      <i
+                        className="fa-solid fa-box-archive theme"
+                        style={{
+                          marginRight: '1rem',
+                        }}
+                        role={'button'}
+                        onClick={() => {
+                          archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                <Tooltip title="Delete Row">
                   <i
-                    className="fa-solid fa-floppy-disk theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
+                    className="fa-solid fa-trash"
                     role={'button'}
                     onClick={() => {
-                      updateTableValues(editedTableObject)
+                      setDeleteSelected(item)
                     }}
                   />
                 </Tooltip>
-              ) : (
-                <Tooltip title="Edit Row">
-                  <i
-                    className="fa-solid fa-pen-to-square ms-2 theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
-                    role={'button'}
-                    onClick={() => {
-                      setEditSelected(item.row_index)
-                    }}
-                  />
-                </Tooltip>
-              )}
-              {!isRYG && (
-                <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
-                  <i
-                    className="fa-solid fa-box-archive theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
-                    role={'button'}
-                    onClick={() => {
-                      archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
-                    }}
-                  />
-                </Tooltip>
-              )}
-              <Tooltip title="Delete Row">
-                <i
-                  className="fa-solid fa-trash"
-                  role={'button'}
-                  onClick={() => {
-                    setDeleteSelected(item)
-                  }}
-                />
-              </Tooltip>
-            </div>
-          )
+              </div>
+            )
+          }
           if (editSelected == item.row_index) {
             tableRowObject.editFile = (
               <input
@@ -681,7 +703,7 @@ export default ({
           <div className="col p-0 table-header d-flex align-items-center">
             <span style={{ fontSize: '1.25rem' }}>{table_name}</span>
           </div>
-          {isAdmin && (
+          {isAdmin && !archivedFilter && (
             <div className="col-auto my-2 p-0 d-none d-lg-block">
               <Tooltip title="Link Component">
                 <Image
@@ -719,6 +741,27 @@ export default ({
                     onDeleteComponent()
                   }}
                 ></i>
+              </Tooltip>
+            </div>
+          )}
+          {isAdmin && archivedFilter && (
+            <div className="col-auto my-2 p-0 d-none d-lg-block">
+              <Tooltip title={isTableEditable ? 'Save' : 'Edit Table'}>
+                <i
+                  role={'button'}
+                  className={
+                    !isTableEditable
+                      ? 'fa-solid fa-pen-to-square me-2 theme'
+                      : 'fa-solid fa-floppy-disk theme'
+                  }
+                  onClick={() => {
+                    onEditableClick()
+                    setEditSelected(null)
+                    // if (isTableEditable) {
+                    //   onTableUpdate(editedTableObject)
+                    // }
+                  }}
+                />
               </Tooltip>
             </div>
           )}
