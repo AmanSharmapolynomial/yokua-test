@@ -8,6 +8,7 @@ import API from '../../utils/api'
 import { toast } from 'react-toastify'
 import { getToken, getUserRoles } from '../../utils/token'
 import ic_link from '../../assets/link_icon.png'
+import upload_link from '../../assets/Icon awesome-file-upload.png'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
@@ -44,6 +45,7 @@ export default ({
   isTableEditable,
   onDeleteComponent,
   onLinkClick,
+  onUploadClick,
   table_name,
   onEditableClick,
   archivedFilter,
@@ -705,6 +707,17 @@ export default ({
           </div>
           {isAdmin && !archivedFilter && (
             <div className="col-auto my-2 p-0 d-none d-lg-block">
+              <Tooltip title="Upload File">
+                <Image
+                  className="me-2"
+                  style={{ width: '0.9rem' }}
+                  role={'button'}
+                  src={upload_link}
+                  onClick={() => {
+                    onUploadClick()
+                  }}
+                />
+              </Tooltip>
               <Tooltip title="Link Component">
                 <Image
                   className="me-2"

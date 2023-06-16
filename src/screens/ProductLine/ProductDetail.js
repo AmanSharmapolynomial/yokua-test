@@ -12,6 +12,7 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 import htmlParser from 'html-react-parser'
 import Tooltip from '@mui/material/Tooltip'
+import * as XLSX from 'xlsx'
 
 const ProductDetail = () => {
   const isAdmin =
@@ -45,12 +46,14 @@ const ProductDetail = () => {
   const [inputBinary, setInputBinary] = useState()
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const [isUploadModalVisible, setUploadModalVisible] = useState(false)
   const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
   const [isEditable, setIsEditable] = useState(-1)
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const sectionTitleRef = React.useRef(null)
+  const sectionFileRef = React.useRef(null)
   const accordionRef = React.useRef(null)
   const [isMd, setIsMd] = useState(false)
   const [imagesToUpload, setImagesToUpload] = useState([])
@@ -266,6 +269,57 @@ const ProductDetail = () => {
     setInputBinary()
   }
 
+  const handleFileUpload = file => {
+    const reader = new FileReader()
+
+    reader.onload = e => {
+      const data = new Uint8Array(e.target.result)
+      const workbook = XLSX.read(data, { type: 'array' })
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
+
+      // Process the jsonData array as needed
+      setLoading(true)
+      let payload = {
+        action_type: 'update_cell',
+        update_objs: [],
+      }
+      console.log(jsonData)
+      payload.update_objs.push(jsonData)
+      console.log(payload)
+
+      const formData = new FormData()
+      formData.append('data', JSON.stringify(payload))
+      API.post('products/page/update_table_data', formData)
+        .then(res => {
+          if (res.status === 200 && res.data !== undefined) {
+            if (res.data?.message) {
+              toast.success(res.data?.message)
+            }
+          }
+          getProductDetails()
+          setLoading(false)
+        })
+        .catch(err => {
+          console.log(err)
+          setLoading(false)
+        })
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+
+  const onFileUpload = () => {
+    const file = sectionFileRef.current.files[0]
+    if (file) {
+      handleFileUpload(file)
+      setUploadModalVisible(false)
+      toast.success('File is being processed')
+    } else {
+      toast.error('Please choose a file to upload')
+    }
+  }
+
   const onAddSection = () => {
     API.post('/products/create_section', {
       page_id: state.page_id,
@@ -370,6 +424,9 @@ const ProductDetail = () => {
               component_id: ele.id,
               component_type: ele.type,
             })
+          }}
+          onUploadClick={() => {
+            setUploadModalVisible(true)
           }}
           onDeleteComponent={() => {
             let payload = {
@@ -1571,6 +1628,64 @@ const ProductDetail = () => {
           </button>
         </Modal.Footer> */}
       </Modal>
+
+      {/* New modal for uploading file */}
+      <Modal
+        show={isUploadModalVisible}
+        centered
+        onHide={() => {
+          setUploadModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Upload a File</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            <input
+              ref={sectionFileRef}
+              placeholder="Choose a file to upload"
+              type="file"
+              className="form-control w-100"
+              aria-label={'File'}
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setUploadModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onFileUpload()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* modal for file upload ends */}
+
       <Modal
         show={Object.keys(showDeleteModal).length > 0}
         centered

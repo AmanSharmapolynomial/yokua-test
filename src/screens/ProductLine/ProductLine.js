@@ -145,9 +145,18 @@ const ProductLine = ({ archieve }) => {
                   Home
                 </u>
                 {' > '}{' '}
-                {currentPath === '/product-lines'
-                  ? 'Field Instruments'
-                  : 'Field Instruments > Archive '}
+                <u
+                  role="button"
+                  onClick={() => {
+                    {
+                      currentPath === '/product-lines' ? navigate() : navigate('/product-lines')
+                    }
+                  }}
+                >
+                  {currentPath === '/product-lines'
+                    ? 'Field Instruments'
+                    : 'Field Instruments > Archive '}
+                </u>
               </span>
             </div>
           </div>

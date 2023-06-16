@@ -1308,6 +1308,7 @@ const EventDetail = () => {
           </div>
         </Modal.Body>
       </Modal>
+
       <Modal
         show={isAddSectionModalVisible}
         centered
