@@ -101,7 +101,7 @@ const CustomDropdown = ({
                       onClick={() => handleChange(item.company_name)}
                     >
                       {item.company_name}
-                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                      {/* <i className="fa fa-chevron-right mt-1" aria-hidden="true" /> */}
                     </a>
                     {item.company_divisions.length > 0 && (
                       <ul className="dropdown-menu">
