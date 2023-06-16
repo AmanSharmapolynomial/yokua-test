@@ -184,7 +184,16 @@ const SubProduct = () => {
                     >
                       Field Instruments
                     </u>
-                    {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '} {htmlParser(state.name)}
+                    {' > '}
+                    <u
+                      role="button"
+                      onClick={() => {
+                        navigate(-1)
+                      }}
+                    >
+                      {archivedFilter ? 'Archive' : 'Live'}
+                    </u>
+                    {' > '} {htmlParser(state.name)}
                   </span>
                 </div>
               </div>

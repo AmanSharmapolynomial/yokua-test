@@ -1450,8 +1450,25 @@ const ProductDetail = () => {
                     >
                       Field Instruments
                     </u>
-                    {' > '} {archivedFilter ? 'Archive' : 'Live'} {' > '} {productName} {' > '}{' '}
-                    {htmlParser(state.sub_product_name)}
+                    {' > '}
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-2)
+                      }}
+                    >
+                      {archivedFilter ? 'Archive' : 'Live'}
+                    </u>
+                    {' > '}
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-1)
+                      }}
+                    >
+                      {productName}
+                    </u>
+                    {' > '} {htmlParser(state.sub_product_name)}
                   </span>
                 </div>
               </div>
