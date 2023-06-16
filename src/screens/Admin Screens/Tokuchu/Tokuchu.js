@@ -359,7 +359,8 @@ const Tokuchu = () => {
                               className="dropdown-submenu"
                               key={i}
                               onMouseEnter={() => {
-                                _getProductItems(sub.id, item.id)
+                                // _getProductItems(sub.id, item.id)
+                                setSelectedProduct(sub)
                               }}
                             >
                               <li className="dropdown-submenu">
@@ -370,9 +371,9 @@ const Tokuchu = () => {
                                   className="dropdown-item"
                                 >
                                   {sub.name}
-                                  <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
+                                  {/* <i className="fa fa-chevron-right mt-1" aria-hidden="true" /> */}
                                 </a>
-                                <ul
+                                {/* <ul
                                   className="dropdown-menu"
                                   style={{
                                     maxHeight: '16rem',
@@ -408,7 +409,7 @@ const Tokuchu = () => {
                                       <a>No Data Found ..</a>
                                     </li>
                                   )}
-                                </ul>
+                                </ul> */}
                               </li>
                             </li>
                           ))
