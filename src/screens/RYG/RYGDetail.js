@@ -16,13 +16,26 @@ import Tooltip from '@mui/material/Tooltip'
 
 const RYGDetail = () => {
   const queryString = window.location.search
+  // const queryStringTwo = queryString.substring(queryString.indexOf('?') + 1);
+  // console.log(queryStringTwo)
   const urlParams = new URLSearchParams(queryString)
   const rygId = urlParams.get('rygId')
   const rygPageId = urlParams.get('rygPageId')
   const rygPageTitle = urlParams.get('rygPageTitle')
+  // console.log(rygPageTitle)
+  const decodedRygPageTitle = decodeURIComponent(rygPageTitle)
+  // console.log(decodedRygPageTitle)
+  const regex = /rygPageTitle=(.*?)&rygId/
+  const match = queryString.match(regex)
+  const extractedString = match ? match[1] : null
+  // console.log(extractedString)
+
+  // Decode the extracted string
+  const decodedString = extractedString ? decodeURIComponent(extractedString) : null
+  // console.log(decodedString)
 
   const [state, setNewState] = useState({
-    page_title: rygPageTitle,
+    page_title: decodedString,
     page_id: Number(rygPageId),
     id: Number(rygId),
   })
