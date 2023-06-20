@@ -38,6 +38,7 @@ import Tooltip from '@mui/material/Tooltip'
  *
  */
 export default ({
+  table_id,
   tableObject,
   setShowDeleteModal,
   onRefresh,

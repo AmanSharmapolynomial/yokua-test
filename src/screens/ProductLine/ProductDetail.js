@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import API from '../../utils/api'
-import { getToken, getUserRoles } from '../../utils/token'
+import {
+  getToken,
+  getUserRoles,
+  setToken,
+  removeToken,
+  getRefreshToken,
+  setRefreshToken,
+  removeRefreshToken,
+} from '../../utils/token'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -59,6 +67,7 @@ const ProductDetail = () => {
   const [imagesToUpload, setImagesToUpload] = useState([])
   const [isImageGridEditable, setIsImageGridEditable] = useState([])
   const [productName, setProductName] = useState('')
+  const [tableId, settableId] = useState(null)
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -160,6 +169,60 @@ const ProductDetail = () => {
         setLoading(false)
       })
   }
+  // const updateTableValues = async (tableObject) => {
+  //   console.log
+  //   setLoading(true);
+  //   let payload = {
+  //     action_type: 'update_cell',
+  //     update_objs: [],
+  //   };
+
+  //   for (let index = 0; index < tableObject.length; index++) {
+  //     if (tableObject[index].isEdited) {
+  //       const values = tableObject[index].values.filter((value) => value.isEdited);
+  //       payload.update_objs.push(...values);
+  //     }
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('data', JSON.stringify(payload));
+
+  //   try {
+  //     console.log("trying api")
+  //     const res = await API.post('products/page/update_table_data', formData);
+  //     if (res.status === 200 && res.data !== undefined) {
+  //       if (res.data?.message) {
+  //         toast.success(res.data?.message);
+  //       }
+  //     }
+  //     getProductDetails();
+  //     setLoading(false);
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 401) {
+  //       console.log("trying this")
+  //       try {
+  //         const rs = await API.post('/auth/token/refresh/', {
+  //         refresh: getRefreshToken(),
+  //       })
+  //       const { access, refresh } = rs.data
+  //       toast.success('Refreshing Website')
+  //       setToken(access)
+  //       setRefreshToken(refresh)
+  //         // Retry the original request
+  //         updateTableValues(tableObject);
+  //       window.location.reload()
+  //       } catch (refreshError) {
+  //         console.log(refreshError);
+  //         setLoading(false);
+  //         // Handle the token refresh error appropriately (e.g., redirect to login page)
+  //       }
+  //     } else {
+  //       console.log(error);
+  //       setLoading(false);
+  //       // Handle other errors as needed
+  //     }
+  //   }
+  // }
 
   const linkComponentToSections = () => {
     let data = { ...componentToLink }
@@ -269,6 +332,45 @@ const ProductDetail = () => {
     setInputBinary()
   }
 
+  // const handleFileUpload = file => {
+  //   const reader = new FileReader()
+
+  //   reader.onload = e => {
+  //     const data = new Uint8Array(e.target.result)
+  //     const workbook = XLSX.read(data, { type: 'array' })
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+  //     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+
+  //     setLoading(true)
+  //     let payload = {
+  //       action_type: 'update_cell',
+  //       update_objs: [],
+  //     }
+  //     console.log(jsonData)
+  //     payload.update_objs.push(jsonData)
+  //     console.log(payload)
+
+  //     const formData = new FormData()
+  //     formData.append('data', JSON.stringify(payload))
+  //     API.post('products/page/update_table_data', formData)
+  //       .then(res => {
+  //         if (res.status === 200 && res.data !== undefined) {
+  //           if (res.data?.message) {
+  //             toast.success(res.data?.message)
+  //           }
+  //         }
+  //         getProductDetails()
+  //         setLoading(false)
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //         setLoading(false)
+  //       })
+  //   }
+
+  //   reader.readAsArrayBuffer(file)
+  // }
+
   const handleFileUpload = file => {
     const reader = new FileReader()
 
@@ -276,21 +378,25 @@ const ProductDetail = () => {
       const data = new Uint8Array(e.target.result)
       const workbook = XLSX.read(data, { type: 'array' })
       const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 })
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
 
-      // Process the jsonData array as needed
       setLoading(true)
-      let payload = {
-        action_type: 'update_cell',
-        update_objs: [],
+
+      const payload = {
+        table_id: tableId,
+        rows_data: jsonData.map((row, index) => ({
+          row_id: index + 1,
+          data: Object.entries(row).map(([column_name, values]) => ({
+            column_name,
+            values,
+          })),
+        })),
       }
-      console.log(jsonData)
-      payload.update_objs.push(jsonData)
-      console.log(payload)
 
       const formData = new FormData()
       formData.append('data', JSON.stringify(payload))
-      API.post('products/page/update_table_data', formData)
+
+      API.post('products/page/bulk_update_table_data', formData)
         .then(res => {
           if (res.status === 200 && res.data !== undefined) {
             if (res.data?.message) {
@@ -312,9 +418,16 @@ const ProductDetail = () => {
   const onFileUpload = () => {
     const file = sectionFileRef.current.files[0]
     if (file) {
-      handleFileUpload(file)
-      setUploadModalVisible(false)
-      toast.success('File is being processed')
+      // Check if the file is an Excel file
+      const isExcelFile = file.name.endsWith('.xls') || file.name.endsWith('.xlsx')
+
+      if (isExcelFile) {
+        handleFileUpload(file)
+        setUploadModalVisible(false)
+        toast.success('File is being processed')
+      } else {
+        toast.error('Please upload an Excel file')
+      }
     } else {
       toast.error('Please choose a file to upload')
     }
@@ -412,6 +525,7 @@ const ProductDetail = () => {
     } else if (ele.type === 'table') {
       return (
         <Table
+          table_id={ele.id}
           archivedFilter={archivedFilter}
           onEditableClick={() => {
             if (ele.id !== isEditable) setIsEditable(ele.id)
@@ -426,6 +540,9 @@ const ProductDetail = () => {
             })
           }}
           onUploadClick={() => {
+            settableId(ele.id)
+            console.log('This is the table id', ele.id)
+            console.log('This is the update is', tableId)
             setUploadModalVisible(true)
           }}
           onDeleteComponent={() => {
