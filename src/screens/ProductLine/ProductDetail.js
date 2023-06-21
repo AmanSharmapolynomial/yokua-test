@@ -68,6 +68,7 @@ const ProductDetail = () => {
   const [isImageGridEditable, setIsImageGridEditable] = useState([])
   const [productName, setProductName] = useState('')
   const [tableId, settableId] = useState(null)
+  const [extractedData, setExtractedData] = useState([])
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -371,6 +372,64 @@ const ProductDetail = () => {
   //   reader.readAsArrayBuffer(file)
   // }
 
+  // const handleFileUpload = file => {
+  //   const reader = new FileReader()
+
+  //   reader.onload = e => {
+  //     const data = new Uint8Array(e.target.result)
+  //     const workbook = XLSX.read(data, { type: 'array' })
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+  //     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+
+  //     setLoading(true)
+
+  //     // const payload = {
+  //     //   table_id: tableId,
+  //     //   rows_data: jsonData.map((row, index) => ({
+  //     //     row_id: index + 1,
+  //     //     data: Object.entries(row).map(([column_name, values]) => ({
+  //     //       column_name,
+  //     //       values,
+  //     //     })),
+  //     //   })),
+  //     // }
+  //     const modifiedData = jsonData.map((row, index) => ({
+  //       row_id: index + 1,
+  //       data: Object.entries(row).map(([column_name, values]) => ({
+  //         column_name,
+  //         values
+  //       }))
+  //     }));
+
+  //     const payload = {
+  //       table_id: 15,
+  //       rows_data: modifiedData
+  //     };
+
+  //     setExtractedData(modifiedData);
+
+  //     const formData = new FormData()
+  //     formData.append('data', JSON.stringify(payload))
+
+  //     API.post('products/page/bulk_update_table_data', formData)
+  //       .then(res => {
+  //         if (res.status === 200 && res.data !== undefined) {
+  //           if (res.data?.message) {
+  //             toast.success(res.data?.message)
+  //           }
+  //         }
+  //         getProductDetails()
+  //         setLoading(false)
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //         setLoading(false)
+  //       })
+  //   }
+
+  //   reader.readAsArrayBuffer(file)
+  // }
+
   const handleFileUpload = file => {
     const reader = new FileReader()
 
@@ -382,34 +441,16 @@ const ProductDetail = () => {
 
       setLoading(true)
 
-      const payload = {
-        table_id: tableId,
-        rows_data: jsonData.map((row, index) => ({
-          row_id: index + 1,
-          data: Object.entries(row).map(([column_name, values]) => ({
-            column_name,
-            values,
-          })),
+      const modifiedData = jsonData.map((row, index) => ({
+        row_id: index + 1,
+        data: Object.entries(row).map(([column_name, values]) => ({
+          column_name,
+          values,
         })),
-      }
+      }))
 
-      const formData = new FormData()
-      formData.append('data', JSON.stringify(payload))
-
-      API.post('products/page/bulk_update_table_data', formData)
-        .then(res => {
-          if (res.status === 200 && res.data !== undefined) {
-            if (res.data?.message) {
-              toast.success(res.data?.message)
-            }
-          }
-          getProductDetails()
-          setLoading(false)
-        })
-        .catch(err => {
-          console.log(err)
-          setLoading(false)
-        })
+      setExtractedData(modifiedData)
+      setLoading(false)
     }
 
     reader.readAsArrayBuffer(file)
@@ -563,6 +604,10 @@ const ProductDetail = () => {
           onTableUpdate={tableObject => {
             updateTableValues(tableObject)
           }}
+          handleFileUpload={handleFileUpload}
+          extractedData={extractedData}
+          tableId={tableId}
+          setExtractedData={setExtractedData}
         />
       )
     } else if (ele.type === 'link') {

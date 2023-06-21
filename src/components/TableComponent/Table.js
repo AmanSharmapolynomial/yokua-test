@@ -52,10 +52,15 @@ export default ({
   archivedFilter,
   onTableUpdate,
   isRYG = false,
+  handleFileUpload,
+  extractedData,
+  setExtractedData,
+  tableId,
 }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
+  const [bulkEditable, setBulkEditable] = useState(false)
   const [sortMethod, setSortMethod] = useState('')
   const [editedTableObject, setEditedTableObject] = useState(tableObject)
   const [editSelected, setEditSelected] = useState(null)
@@ -65,6 +70,7 @@ export default ({
   const [updatedProductFile, setUpdatedProductFile] = useState(null)
   const [uploadInProgress, setUploadInProgress] = useState(false)
   const { setLoading } = useLoading()
+  const [fileData, setFileData] = useState({})
   const inputRef = useRef([])
   const customStyles = {
     table: {
@@ -121,6 +127,14 @@ export default ({
     borderLeft: 'none',
     maxWidth: 'max-content',
   }
+
+  useEffect(() => {
+    if (extractedData.length > 0) {
+      setBulkEditable(true)
+    } else {
+      setBulkEditable(false)
+    }
+  }, [extractedData])
 
   const updateTableValues = tableObject => {
     setLoading(true)
@@ -679,6 +693,107 @@ export default ({
     )
   }
 
+  const handleUploadData = () => {
+    // Perform the upload process using extractedData
+    // Pass extractedData to the API endpoint or perform the necessary operations here
+    // Example code to send the data to an API endpoint:
+    console.log(extractedData)
+    const modifiedData = extractedData.map(row => {
+      const modifiedRow = {
+        ...row,
+        data: [
+          ...row.data,
+          { column_name: 'File', values: '' },
+          { column_name: 'Type', values: '' },
+          { column_name: 'Size', values: '' },
+        ],
+      }
+      return modifiedRow
+    })
+
+    const formData = new FormData()
+
+    // Add the table ID and extracted data to the form data
+    formData.append('data', JSON.stringify({ table_id: tableId, rows_data: modifiedData }))
+
+    // Add the file data to the form data
+    Object.keys(fileData).forEach(rowId => {
+      const file = fileData[rowId]
+      formData.append(`row_${rowId}`, file)
+    })
+
+    API.post('products/page/bulk_update_table_data', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
+          }
+        }
+      })
+      .catch(err => {
+        toast.error(err)
+        // Handle error
+      })
+  }
+
+  const renderDummyRows = () => {
+    const handleFileInputChange = (rowId, file) => {
+      setFileData(prevFileData => ({
+        ...prevFileData,
+        [rowId]: file,
+      }))
+    }
+    return (
+      <>
+        {extractedData.map((row, idx) => (
+          <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
+            {row.data.map((column, colIdx) => (
+              <input
+                key={colIdx}
+                ref={el => (inputRef.current[idx] = el)}
+                type={column.column_name === 'File' ? 'file' : 'text'}
+                disabled={column.column_name === 'Type' || column.column_name === 'Size'}
+                placeholder={column.column_name}
+                style={{
+                  backgroundColor:
+                    column.column_name === 'Type' || column.column_name === 'Size'
+                      ? '#f5f5f5'
+                      : '#fff',
+                }}
+                value={column.values}
+                onChange={e => handleInputChange(idx, colIdx, e.target)}
+              />
+            ))}
+            <input type="text" disabled placeholder="Type" />
+            <input type="text" disabled placeholder="Size" />
+            <input
+              type="file"
+              onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
+            />
+          </div>
+        ))}
+        <div className="add-row d-none d-lg-flex overflow-auto">
+          {extractedData.length > 0 && (
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-primary" onClick={handleUploadData}>
+                Upload Data
+              </button>
+            </div>
+          )}
+        </div>
+      </>
+    )
+  }
+
+  const handleInputChange = (rowIdx, colIdx, target) => {
+    const file = target.files && target.files[0]
+    if (file) {
+      const updatedData = [...extractedData]
+      updatedData[rowIdx].data[colIdx].values = file
+      setExtractedData(updatedData)
+    }
+  }
+
   useEffect(() => {
     if (tableObject !== {}) {
       _setTableHeaders()
@@ -816,6 +931,8 @@ export default ({
                 Add
               </div>
             ) : null}
+
+            {bulkEditable ? renderDummyRows() : null}
           </div>
         </div>
       </div>
