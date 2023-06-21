@@ -727,6 +727,8 @@ export default ({
         if (res.status === 200 && res.data !== undefined) {
           if (res.data?.message) {
             toast.success(res.data?.message)
+            onRefresh()
+            setBulkEditable(false)
           }
         }
       })
@@ -913,7 +915,7 @@ export default ({
             />
             {isEditable ? (
               renderDummyRow()
-            ) : isAdmin && !isTableEditable && !archivedFilter ? (
+            ) : isAdmin && !isTableEditable && !archivedFilter && !bulkEditable ? (
               <div
                 role={'button'}
                 className="add-row d-none d-lg-flex"
