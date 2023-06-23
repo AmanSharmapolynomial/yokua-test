@@ -39,6 +39,7 @@ const TokuchuTable = ({
   const [editSelected, setEditSelected] = useState(null)
   const [editedTableObject, setEditedTableObject] = useState(tableObject.table_data)
   const [updatedTokuchuFile, setUpdatedTokuchuFile] = useState(null)
+
   const customStyles = {
     // table: {
     //   style: {
@@ -86,7 +87,7 @@ const TokuchuTable = ({
   const imageFileInputRef = useRef()
 
   useEffect(() => {
-    if (extractedData.length > 0) {
+    if (extractedData && extractedData.length > 0) {
       setBulkEditable(true)
     } else {
       setBulkEditable(false)
@@ -495,6 +496,9 @@ const TokuchuTable = ({
       })
       .catch(err => {
         toast.error(err)
+        setBulkEditable(false)
+        setExtractedData([])
+        setFileData([])
         // Handle error
       })
   }
@@ -511,7 +515,7 @@ const TokuchuTable = ({
 
     const convertDateFormat = dateString => {
       dateString = String(dateString)
-      // console.log(typeof(dateString))
+      console.log(dateString)
       if (typeof dateString === 'string') {
         console.log('im here')
         const parts = dateString.split('/')
@@ -521,6 +525,7 @@ const TokuchuTable = ({
           const year = parseInt(parts[2], 10)
           if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
             const formattedDate = new Date(year, month - 1, day)
+            console.log(formattedDate)
             if (!isNaN(formattedDate.getTime())) {
               const yearStr = String(formattedDate.getFullYear())
               const monthStr = String(formattedDate.getMonth() + 1).padStart(2, '0')
@@ -535,16 +540,18 @@ const TokuchuTable = ({
 
     return (
       <>
-        <div className="dummy-row-container" style={{ overflow: 'scroll' }}>
+        <div className="dummy-row-container w-100" style={{ overflow: 'scroll' }}>
           {extractedData.map((row, idx) => (
-            <div className="dummy-row" key={idx}>
+            <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
               {row.data.map((column, colIdx) => {
+                console.log(column)
                 if (column.column_name === 'Valid Until') {
                   const formattedDate = convertDateFormat(column.values)
+                  console.log(formattedDate)
                   return (
                     <input
                       type="date"
-                      value={column.column_name === 'Valid Until' ? column.values : ''}
+                      value={column.column_name === 'Valid Until' ? { formattedDate } : ''}
                       onChange={e => handleDateInputChange(idx, e.target.value)}
                     />
                   )
@@ -569,6 +576,7 @@ const TokuchuTable = ({
               })}
               <input
                 type="file"
+                className="file-input"
                 onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
               />
             </div>
@@ -586,6 +594,10 @@ const TokuchuTable = ({
       </>
     )
   }
+
+  // New function
+
+  // New function ends
 
   // Function to handle input change after file upload and parsing
 

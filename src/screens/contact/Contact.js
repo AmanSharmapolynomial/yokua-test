@@ -8,6 +8,7 @@ import placeholder from '../../assets/placeholder.png'
 import upload from '../../assets/upload.png'
 import { toast } from 'react-toastify'
 import Tooltip from '@mui/material/Tooltip'
+import { Modal, Image } from 'react-bootstrap'
 
 export default () => {
   const [contact, setContact] = useState({})
@@ -20,12 +21,45 @@ export default () => {
   const addressRef = useRef(null)
   const phoneRef = useRef(null)
   const videoRef = useRef(null)
+  const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const sectionTitleRef = React.useRef(null)
+  const sectionNameFlagRef = React.useRef()
+  const sectionPictureFlagRef = React.useRef()
+  const sectionPhoneFlagRef = React.useRef()
+  const sectionEmailFlagRef = React.useRef()
+  const [sections, setSections] = useState([])
+  const [isContactUploadModalVisible, setIsContactUploadModalVisible] = useState(false)
+  const [contactSection, setContactSection] = useState()
+  const firstNameRef = React.useRef(null)
+  const lastNameRef = React.useRef(null)
+  const emailRef = React.useRef(null)
+  const contactPhoneRef = React.useRef(null)
+  const imageref = React.useRef(null)
 
   const _getContact = () => {
     API.get('contact').then(data => {
       setContact(data.data)
     })
   }
+
+  const getSections = () => {
+    API.get('/contact/view_section')
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          console.log(res.data)
+          setSections(res.data)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  useEffect(() => {
+    getSections()
+  }, [])
+
+  console.log(sections)
 
   const updateGeneralInformation = () => {
     const payload = {
@@ -47,6 +81,53 @@ export default () => {
       })
       .catch(err => {
         toast.error(err)
+      })
+  }
+
+  const onAddContact = () => {
+    const payload = {
+      id: '',
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
+      phone_no: contactPhoneRef.current.value,
+      email: emailRef.current.value,
+      category: contactSection,
+    }
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    imageref.current.files[0] && formData.append('file', imageref.current.files[0])
+    API.post('contact/add_contacts', formData)
+      .then(res => {
+        toast.success(res.data.message)
+        setIsContactUploadModalVisible(false)
+        _getContact()
+        getSections()
+      })
+      .catch(err => {
+        toast.error(err)
+      })
+  }
+
+  const onAddSection = () => {
+    console.log()
+    API.post('/contact/create_section', {
+      name: sectionTitleRef.current.value,
+      name_flag: sectionNameFlagRef.current.checked ? true : false,
+      phone_flag: sectionPhoneFlagRef.current.checked ? true : false,
+      email_flag: sectionEmailFlagRef.current.checked ? true : false,
+      image_flag: sectionPictureFlagRef.current.checked ? true : false,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getSections()
+          setIsAddSectionModalVisible(false)
+        }
+      })
+      .catch(error => {
+        setIsAddSectionModalVisible(false)
+        toast.error(error)
+        console.log(error)
       })
   }
 
@@ -314,7 +395,6 @@ export default () => {
             </div>
 
             {/* <!--------------PMK product sales-------------------> */}
-
             {contact?.contact_people?.map((item, index) => {
               return (
                 <div className="pmk-product p-2 p-lg-5 mt-5">
@@ -385,8 +465,261 @@ export default () => {
               )
             })}
           </div>
+
+          {sections
+            .filter(
+              section =>
+                !contact?.contact_people?.some(item => item.category === section.section_name)
+            )
+            .map((element, index) => (
+              <div className="pmk-product p-2 p-lg-5 mt-5 shadow-lg" key={index}>
+                <div className="row mb-3">
+                  <div className="col-lg-12 col-lg-12 col-xl-12">
+                    <p className="h">{element.section_name}</p>
+                    <button
+                      onClick={() => {
+                        setIsContactUploadModalVisible(true)
+                        setContactSection(element.section_name)
+                      }}
+                      class="btn create-domain-btn mx-auto"
+                    >
+                      Add Contact
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          {/* Add section Button */}
+          <div class="mt-2 justify-content-center d-none d-lg-flex">
+            <button
+              onClick={() => {
+                setIsAddSectionModalVisible(true)
+              }}
+              class="btn create-domain-btn mx-auto"
+            >
+              Add New Section
+            </button>
+          </div>
         </div>
       </div>
+
+      <Modal
+        show={isAddSectionModalVisible}
+        centered
+        onHide={() => {
+          setIsAddSectionModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Add New Section</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-2">
+            <input
+              ref={sectionTitleRef}
+              placeholder="Enter new title"
+              type="text"
+              className="form-control w-100"
+              aria-label={'Title'}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              ref={sectionPictureFlagRef}
+              type="checkbox"
+              defaultChecked
+              disabled
+              className="form-check-input"
+              aria-label={'Profile Picture'}
+              id="pictureFlag"
+            />
+            <label class="form-check-label" for="pictureFlag">
+              Picture
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              ref={sectionNameFlagRef}
+              type="checkbox"
+              className="form-check-input"
+              aria-label={'Name'}
+              id="nameFlag"
+            />
+            <label class="form-check-label" for="nameFlag">
+              Name
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              ref={sectionEmailFlagRef}
+              type="checkbox"
+              className="form-check-input"
+              aria-label={'Email'}
+              id="emailFlag"
+            />
+            <label class="form-check-label" for="emailFlag">
+              Email
+            </label>
+          </div>
+          <div className="mb-2">
+            <input
+              ref={sectionPhoneFlagRef}
+              type="checkbox"
+              className="form-check-input"
+              aria-label={'Phone'}
+              id="phoneFlag"
+            />
+            <label class="form-check-label" for="phoneFlag">
+              Phone
+            </label>
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setIsAddSectionModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                if (sectionTitleRef.current.value.length > 0) {
+                  onAddSection()
+                } else {
+                  toast.error('Please enter section title')
+                }
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Contact Upload Modal */}
+      <Modal
+        show={isContactUploadModalVisible}
+        centered
+        onHide={() => {
+          setIsContactUploadModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Add New Contact</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-2">
+            <input
+              disabled
+              placeholder={contactSection ? contactSection : ''}
+              type="text"
+              className="form-control w-100"
+              aria-label={'Section'}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              placeholder="First Name"
+              ref={firstNameRef}
+              type="text"
+              className="form-control w-100"
+              aria-label={'First Name'}
+              id="firstName"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              placeholder="Last Name"
+              ref={lastNameRef}
+              type="text"
+              className="form-control w-100"
+              aria-label={'Last Name'}
+              id="lastName"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              placeholder="Email"
+              ref={emailRef}
+              type="text"
+              className="form-control w-100"
+              aria-label={'First Name'}
+              id="emailID"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              placeholder="Phone Number"
+              ref={contactPhoneRef}
+              type="text"
+              className="form-control w-100"
+              aria-label={'Phone Number'}
+              id="phoneNo"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              ref={imageref}
+              type="file"
+              className="form-control w-100"
+              aria-label={'Profile Picture'}
+              id="proPic"
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setIsContactUploadModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                if (firstNameRef.current.value.length > 0 && lastNameRef.current.value.length > 0) {
+                  onAddContact()
+                } else {
+                  toast.error('Please enter the name')
+                }
+              }}
+            >
+              Add
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </>
   )
 }
