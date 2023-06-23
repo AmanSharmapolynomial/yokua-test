@@ -6,6 +6,8 @@ import PrimaryHeading from '../../../components/Primary Headings'
 import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { FormControl, Modal } from 'react-bootstrap'
+import * as XLSX from 'xlsx'
+import { useLoading } from '../../../utils/LoadingContext'
 
 const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
@@ -13,10 +15,13 @@ const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
 
 const Tokuchu = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showUploadModal, setShowUploadModal] = useState(false)
   const [showAddModal, setShowAddModal] = useState(false)
   const [currentEdit, setCurrentEdit] = useState('')
   const [parentId, setParentId] = useState(0)
+  const { setLoading } = useLoading()
 
+  const sectionFileRef = React.useRef(null)
   const [needToReload, setNeedToReload] = useState(true)
 
   const [isArchived, setIsArchived] = useState(false)
@@ -31,6 +36,8 @@ const Tokuchu = () => {
   const [dataToShow, setDataToShow] = useState()
   const [allRequest, setAllRequest] = useState(false)
   const [allTableData, setAllTableData] = useState({})
+  const [tableId, settableId] = useState(null)
+  const [extractedData, setExtractedData] = useState([])
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -232,6 +239,54 @@ const Tokuchu = () => {
     return temp
   }
 
+  // File Upload and Parsing Logic
+
+  const handleFileUpload = file => {
+    const reader = new FileReader()
+
+    reader.onload = e => {
+      const data = new Uint8Array(e.target.result)
+      const workbook = XLSX.read(data, { type: 'array' })
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+
+      setLoading(true)
+
+      const modifiedData = jsonData.map((row, index) => ({
+        row_id: index + 1,
+        data: Object.entries(row).map(([column_name, values]) => ({
+          column_name,
+          values,
+        })),
+      }))
+
+      setExtractedData(modifiedData)
+      setLoading(false)
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+
+  const onFileUpload = () => {
+    const file = sectionFileRef.current.files[0]
+    if (file) {
+      // Check if the file is an Excel file
+      const isExcelFile = file.name.endsWith('.xls') || file.name.endsWith('.xlsx')
+
+      if (isExcelFile) {
+        handleFileUpload(file)
+        setShowUploadModal(false)
+        toast.success('File is being processed')
+      } else {
+        toast.error('Please upload an Excel file')
+      }
+    } else {
+      toast.error('Please choose a file to upload')
+    }
+  }
+
+  // File Upload and Parsing Logic Ends
+
   const assignSubProducts = (data, productId) => {
     const updatedProducts = products
     updatedProducts.forEach(item => {
@@ -289,6 +344,63 @@ const Tokuchu = () => {
         currentEdit={currentEdit}
         saveCompany={_addNewItem}
       />
+      {/* New modal for uploading file */}
+      <Modal
+        show={showUploadModal}
+        centered
+        onHide={() => {
+          showUploadModal(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Upload a File</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            <input
+              ref={sectionFileRef}
+              placeholder="Choose a file to upload"
+              type="file"
+              className="form-control w-100"
+              aria-label={'File'}
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setShowUploadModal(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onFileUpload()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* modal for file upload ends */}
+
       <div className="row mx-2 mx-lg-5" style={{ minHeight: '120vh' }}>
         <div className="col center py-3">
           <PrimaryHeading title={'Approved Tokuchus'} backgroundImage={'yk-back-tokuchu-news'} />
@@ -543,9 +655,15 @@ const Tokuchu = () => {
                 sectionName={'ALL'}
                 tableObject={allTableData}
                 setShowDeleteModal={setShowDeleteModal}
+                setShowUploadModal={setShowUploadModal}
                 onRefresh={() => {
                   selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
                 }}
+                handleFileUpload={handleFileUpload}
+                extractedData={extractedData}
+                tableId={tableId}
+                setExtractedData={setExtractedData}
+                settableId={settableId}
               />
             ) : (
               //{
@@ -557,9 +675,15 @@ const Tokuchu = () => {
                     sectionName={tData.sectionName}
                     tableObject={tData.components[0]}
                     setShowDeleteModal={setShowDeleteModal}
+                    setShowUploadModal={setShowUploadModal}
                     onRefresh={() => {
                       selectedProduct?.id !== undefined && _getDetails(selectedProduct.id)
                     }}
+                    handleFileUpload={handleFileUpload}
+                    extractedData={extractedData}
+                    tableId={tableId}
+                    setExtractedData={setExtractedData}
+                    settableId={settableId}
                   />
                 )
               })

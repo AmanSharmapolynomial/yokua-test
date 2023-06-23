@@ -129,7 +129,7 @@ export default ({
   }
 
   useEffect(() => {
-    if (extractedData.length > 0) {
+    if (extractedData && extractedData.length > 0) {
       setBulkEditable(true)
     } else {
       setBulkEditable(false)
@@ -693,6 +693,8 @@ export default ({
     )
   }
 
+  // Bulk update table data function
+
   const handleUploadData = () => {
     // Perform the upload process using extractedData
     // Pass extractedData to the API endpoint or perform the necessary operations here
@@ -738,7 +740,11 @@ export default ({
       })
   }
 
+  // Rows to be shown when a file is uploaded and parsed
+
   const renderDummyRows = () => {
+    // Function to handle file inputs after excel sheet is parsed
+
     const handleFileInputChange = (rowId, file) => {
       setFileData(prevFileData => ({
         ...prevFileData,
@@ -786,6 +792,8 @@ export default ({
       </>
     )
   }
+
+  // Function to handle input change after file upload and parsing
 
   const handleInputChange = (rowIdx, colIdx, target) => {
     const file = target.files && target.files[0]
