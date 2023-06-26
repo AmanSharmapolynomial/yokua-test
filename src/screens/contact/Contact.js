@@ -435,7 +435,7 @@ export default () => {
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
                       getUserRoles() == 'Technical Administrator') && (
-                      <Tooltip title="Edit Information">
+                      <Tooltip title="Delete Section">
                         <i
                           role={'button'}
                           className="fa-solid fa-trash ms-auto col-auto p-0"
@@ -575,7 +575,7 @@ export default () => {
                     <Tooltip title="Delete Section">
                       <i
                         role={'button'}
-                        className="fa-solid fa-trash theme ms-auto col-auto p-0"
+                        className="fa-solid fa-trash ms-auto col-auto p-0"
                         aria-hidden="true"
                         onClick={() => {
                           setDeleteSectionId(element.section_id)
