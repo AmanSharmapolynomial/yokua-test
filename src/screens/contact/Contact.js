@@ -23,6 +23,7 @@ export default () => {
   const videoRef = useRef(null)
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const sectionTitleRef = React.useRef(null)
+  const sectionEmailRef = React.useRef(null)
   const sectionNameFlagRef = React.useRef()
   const sectionPictureFlagRef = React.useRef()
   const sectionPhoneFlagRef = React.useRef()
@@ -41,6 +42,14 @@ export default () => {
   const [contactPhoneFlag, setContactPhoneFlag] = useState(false)
   const [contactEmailFlag, setContactEmailFlag] = useState(false)
   const [contactImageFlag, setContactImageFlag] = useState(false)
+  const [sectionEmailChecked, setSectionEmailChecked] = useState(false)
+  const [disabledInput, setDisabledInput] = useState(false)
+
+  const [profilePicture, setProfilePicture] = useState(placeholder)
+
+  const handleSectionEmailChange = event => {
+    setSectionEmailChecked(event.target.checked)
+  }
 
   const _getContact = () => {
     API.get('contact').then(data => {
@@ -117,6 +126,7 @@ export default () => {
   const onAddSection = () => {
     API.post('/contact/create_section', {
       name: sectionTitleRef.current.value,
+      section_email: sectionEmailRef.current.value,
       name_flag: sectionNameFlagRef.current.checked ? true : false,
       phone_flag: sectionPhoneFlagRef.current.checked ? true : false,
       email_flag: sectionEmailFlagRef.current.checked ? true : false,
@@ -423,11 +433,11 @@ export default () => {
                   <div className="row mb-3">
                     <div className="col-lg-12 col-lg-12 col-xl-12">
                       <p className="h">{item.category}</p>
-                      {item?.detail[0]?.email && (
+                      {item?.category_email && (
                         <div className="d-flex mb-2 align-items-center">
                           <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
                           <p className="ps-2" style={{ wordBreak: 'break-all' }}>
-                            {item?.detail[0]?.email}
+                            {item?.category_email}
                           </p>
                         </div>
                       )}
@@ -592,6 +602,30 @@ export default () => {
           </div>
           <div className="mb-2">
             <input
+              type="checkbox"
+              className="form-check-input"
+              aria-label={'Section Email'}
+              id="sectionemailFlag"
+              checked={sectionEmailChecked}
+              onChange={handleSectionEmailChange}
+            />
+            <label class="form-check-label" for="sectionemailFlag">
+              Section Email
+            </label>
+          </div>
+          {sectionEmailChecked && (
+            <div className="mb-2">
+              <input
+                ref={sectionEmailRef}
+                placeholder="Enter section email"
+                type="text"
+                className="form-control w-100"
+                aria-label={'Section Email'}
+              />
+            </div>
+          )}
+          <div className="mb-2">
+            <input
               ref={sectionPictureFlagRef}
               type="checkbox"
               defaultChecked
@@ -721,6 +755,7 @@ export default () => {
         onHide={() => {
           setIsContactUploadModalVisible(false)
         }}
+        dialogClassName="max-width-40"
       >
         <Modal.Header
           style={{
@@ -734,63 +769,100 @@ export default () => {
           <Modal.Title>Add New Contact</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4 text-center">
-          <div className="mb-2">
-            <input
-              disabled
-              placeholder={contactSection ? contactSection : ''}
-              type="text"
-              className="form-control w-100"
-              aria-label={'Section'}
-            />
-          </div>
-          <div className="mb-2">
-            <input
-              placeholder="First Name"
-              ref={firstNameRef}
-              type="text"
-              className="form-control w-100"
-              aria-label={'First Name'}
-              id="firstName"
-            />
-          </div>
-          <div className="mb-2">
-            <input
-              placeholder="Last Name"
-              ref={lastNameRef}
-              type="text"
-              className="form-control w-100"
-              aria-label={'Last Name'}
-              id="lastName"
-            />
-          </div>
-          <div className={`mb-2 ${contactEmailFlag ? '' : 'd-none'}`}>
-            <input
-              placeholder="Email"
-              ref={emailRef}
-              type="text"
-              className="form-control w-100"
-              aria-label={'First Name'}
-              id="emailID"
-            />
-          </div>
-          <div className={`mb-2 ${contactPhoneFlag ? '' : 'd-none'}`}>
-            <input
-              placeholder="Phone Number"
-              ref={contactPhoneRef}
-              type="text"
-              className="form-control w-100"
-              aria-label={'Phone Number'}
-              id="phoneNo"
-            />
-          </div>
-          <div className="mb-2">
-            <input
-              ref={imageref}
-              type="file"
-              className="form-control w-100"
-              aria-label={'Profile Picture'}
-              id="proPic"
-            />
+          <div
+            className="row flex-row modal-content justify-content-center mt-4"
+            style={{
+              border: '0',
+            }}
+          >
+            <div className="col-auto user-img">
+              <input
+                type="file"
+                accept="image/png, image/gif, image/jpeg"
+                id="imageFile"
+                ref={imageref}
+                className="inputfile yk-icon-hover"
+                onChange={e => {
+                  console.log(e.target.files[0])
+                  // SetImageFile(e.target.files[0])
+                }}
+              />
+              <img
+                style={{
+                  cursor: !disabledInput ? 'pointer' : 'default',
+                }}
+                onClick={() => {
+                  !disabledInput && imageref.current.click()
+                }}
+                src={profilePicture}
+                // onError={() => setProfilePicture(placeholder)}
+              />
+            </div>
+            <div className="col user-details-form">
+              <div className="input-field-container">
+                <label htmlFor="contactSection" className="input-label font-weight-bold">
+                  Section
+                </label>
+                <input
+                  id="contactSection"
+                  disabled
+                  placeholder={contactSection ? contactSection : ''}
+                  type="text"
+                  className="input-text"
+                  aria-label="Section"
+                />
+              </div>
+              <div className="input-field-container">
+                <label htmlFor="firstName" className="input-label font-weight-bold">
+                  First Name
+                </label>
+                <input
+                  ref={firstNameRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="First Name"
+                  id="firstName"
+                />
+              </div>
+
+              <div className="input-field-container">
+                <label htmlFor="lastName" className="input-label font-weight-bold">
+                  Last Name
+                </label>
+                <input
+                  ref={lastNameRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Last Name"
+                  id="lastName"
+                />
+              </div>
+
+              <div className={`input-field-container ${contactEmailFlag ? '' : 'd-none'}`}>
+                <label htmlFor="emailID" className="input-label font-weight-bold">
+                  Email:
+                </label>
+                <input
+                  ref={emailRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Email"
+                  id="emailID"
+                />
+              </div>
+              <div className={`input-field-container ${contactPhoneFlag ? '' : 'd-none'}`}>
+                <label htmlFor="phoneNo" className="input-label font-weight-bold">
+                  Phone Number:
+                </label>
+                <input
+                  ref={contactPhoneRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Phone Number"
+                  id="phoneNo"
+                />
+              </div>
+            </div>
           </div>
           <div className="col-12 justify-content-center d-flex mt-3">
             <button
