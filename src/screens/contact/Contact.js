@@ -23,7 +23,7 @@ export default () => {
   const videoRef = useRef(null)
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const sectionTitleRef = React.useRef(null)
-  const sectionEmailRef = React.useRef(null)
+  const sectionEmailRef = React.useRef('')
   const sectionNameFlagRef = React.useRef()
   const sectionPictureFlagRef = React.useRef()
   const sectionPhoneFlagRef = React.useRef()
@@ -44,6 +44,7 @@ export default () => {
   const [contactImageFlag, setContactImageFlag] = useState(false)
   const [sectionEmailChecked, setSectionEmailChecked] = useState(false)
   const [disabledInput, setDisabledInput] = useState(false)
+  const [deletionWarning, setDeletionWarning] = useState('')
 
   const [profilePicture, setProfilePicture] = useState(placeholder)
 
@@ -430,6 +431,26 @@ export default () => {
             {contact?.contact_people?.map((item, index) => {
               return (
                 <div className="pmk-product p-2 p-lg-5 mt-5">
+                  <div className="row d-none d-lg-flex">
+                    {(getUserRoles() == 'PMK Administrator' ||
+                      getUserRoles() == 'PMK Content Manager' ||
+                      getUserRoles() == 'Technical Administrator') && (
+                      <Tooltip title="Edit Information">
+                        <i
+                          role={'button'}
+                          className="fa-solid fa-trash ms-auto col-auto p-0"
+                          aria-hidden="true"
+                          onClick={() => {
+                            setDeleteSectionId(item?.category_id)
+                            setDeletionWarning(
+                              'You are attempting to delete a non-empty section. It will delete all the contacts of this section. Do you want to proceed?'
+                            )
+                            setDeleteSectionModalVisible(true)
+                          }}
+                        />
+                      </Tooltip>
+                    )}
+                  </div>
                   <div className="row mb-3">
                     <div className="col-lg-12 col-lg-12 col-xl-12">
                       <p className="h">{item.category}</p>
@@ -494,27 +515,31 @@ export default () => {
                     ))}
                   </div>
                   {/* Add Contact Button */}
-                  <div class="mt-4 justify-content-center d-none d-lg-flex">
-                    <button
-                      onClick={() => {
-                        setIsContactUploadModalVisible(true)
-                        setContactSection(item.category)
-                        if (item?.detail[0].email !== '') {
-                          setContactEmailFlag(true)
-                        } else {
-                          setContactEmailFlag(false)
-                        }
-                        if (item?.detail[0].phone_no !== '') {
-                          setContactPhoneFlag(true)
-                        } else {
-                          setContactPhoneFlag(false)
-                        }
-                      }}
-                      class="btn create-domain-btn mx-auto"
-                    >
-                      Add Contact
-                    </button>
-                  </div>
+                  {(getUserRoles() == 'PMK Administrator' ||
+                    getUserRoles() == 'PMK Content Manager' ||
+                    getUserRoles() == 'Technical Administrator') && (
+                    <div class="mt-4 justify-content-center d-none d-lg-flex">
+                      <button
+                        onClick={() => {
+                          setIsContactUploadModalVisible(true)
+                          setContactSection(item.category)
+                          if (item?.detail[0].email !== '') {
+                            setContactEmailFlag(true)
+                          } else {
+                            setContactEmailFlag(false)
+                          }
+                          if (item?.detail[0].phone_no !== '') {
+                            setContactPhoneFlag(true)
+                          } else {
+                            setContactPhoneFlag(false)
+                          }
+                        }}
+                        class="btn create-domain-btn mx-auto"
+                      >
+                        Add Contact
+                      </button>
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -530,19 +555,23 @@ export default () => {
                 <div className="row mb-3">
                   <div className="col-lg-12 col-lg-12 col-xl-12">
                     <p className="h">{element.section_name}</p>
-                    <button
-                      onClick={() => {
-                        setIsContactUploadModalVisible(true)
-                        setContactSection(element.section_name)
-                        setContactNameFlag(element.section_name_flag)
-                        setContactPhoneFlag(element.section_phone_flag)
-                        setContactEmailFlag(element.section_email_flag)
-                        setContactImageFlag(element.section_image_flag)
-                      }}
-                      class="btn create-domain-btn mx-4"
-                    >
-                      Add Contact
-                    </button>
+                    {(getUserRoles() == 'PMK Administrator' ||
+                      getUserRoles() == 'PMK Content Manager' ||
+                      getUserRoles() == 'Technical Administrator') && (
+                      <button
+                        onClick={() => {
+                          setIsContactUploadModalVisible(true)
+                          setContactSection(element.section_name)
+                          setContactNameFlag(element.section_name_flag)
+                          setContactPhoneFlag(element.section_phone_flag)
+                          setContactEmailFlag(element.section_email_flag)
+                          setContactImageFlag(element.section_image_flag)
+                        }}
+                        class="btn create-domain-btn mx-4"
+                      >
+                        Add Contact
+                      </button>
+                    )}
                     <Tooltip title="Delete Section">
                       <i
                         role={'button'}
@@ -559,16 +588,20 @@ export default () => {
               </div>
             ))}
           {/* Add section Button */}
-          <div class="mt-2 justify-content-center d-none d-lg-flex">
-            <button
-              onClick={() => {
-                setIsAddSectionModalVisible(true)
-              }}
-              class="btn create-domain-btn mx-auto"
-            >
-              Add New Section
-            </button>
-          </div>
+          {(getUserRoles() == 'PMK Administrator' ||
+            getUserRoles() == 'PMK Content Manager' ||
+            getUserRoles() == 'Technical Administrator') && (
+            <div class="mt-2 justify-content-center d-none d-lg-flex">
+              <button
+                onClick={() => {
+                  setIsAddSectionModalVisible(true)
+                }}
+                class="btn create-domain-btn mx-auto"
+              >
+                Add New Section
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -724,6 +757,9 @@ export default () => {
         >
           <Modal.Title>Confirm Section Deletion</Modal.Title>
         </Modal.Header>
+        <p className="text-center" style={{ fontWeight: '12px' }}>
+          {deletionWarning}
+        </p>
         <Modal.Body className="p-4 text-center">
           <div className="col-12 justify-content-center d-flex mt-3">
             <button
