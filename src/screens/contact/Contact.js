@@ -30,6 +30,8 @@ export default () => {
   const [sections, setSections] = useState([])
   const [isContactUploadModalVisible, setIsContactUploadModalVisible] = useState(false)
   const [contactSection, setContactSection] = useState()
+  const [deleteSectionId, setDeleteSectionId] = useState()
+  const [deleteSectionModalVisible, setDeleteSectionModalVisible] = useState(false)
   const firstNameRef = React.useRef(null)
   const lastNameRef = React.useRef(null)
   const emailRef = React.useRef(null)
@@ -109,7 +111,6 @@ export default () => {
   }
 
   const onAddSection = () => {
-    console.log()
     API.post('/contact/create_section', {
       name: sectionTitleRef.current.value,
       name_flag: sectionNameFlagRef.current.checked ? true : false,
@@ -128,6 +129,23 @@ export default () => {
         setIsAddSectionModalVisible(false)
         toast.error(error)
         console.log(error)
+      })
+  }
+
+  const onDeletSection = () => {
+    API.post('/contact/delete_section', {
+      section_id: deleteSectionId,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getSections()
+          setDeleteSectionModalVisible(false)
+        }
+      })
+      .catch(error => {
+        setDeleteSectionModalVisible(false)
+        toast.error(error)
       })
   }
 
@@ -481,10 +499,21 @@ export default () => {
                         setIsContactUploadModalVisible(true)
                         setContactSection(element.section_name)
                       }}
-                      class="btn create-domain-btn mx-auto"
+                      class="btn create-domain-btn mx-4"
                     >
                       Add Contact
                     </button>
+                    <Tooltip title="Delete Section">
+                      <i
+                        role={'button'}
+                        className="fa-solid fa-trash theme ms-auto col-auto p-0"
+                        aria-hidden="true"
+                        onClick={() => {
+                          setDeleteSectionId(element.section_id)
+                          setDeleteSectionModalVisible(true)
+                        }}
+                      />
+                    </Tooltip>
                   </div>
                 </div>
               </div>
@@ -611,6 +640,49 @@ export default () => {
           </div>
         </Modal.Body>
       </Modal>
+
+      {/* Delete Section Modal */}
+      <Modal
+        show={deleteSectionModalVisible}
+        centered
+        onHide={() => {
+          setDeleteSectionModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Confirm Section Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              onClick={() => {
+                setDeleteSectionModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onDeletSection()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Delete Section Modal Ends */}
 
       {/* Contact Upload Modal */}
       <Modal
