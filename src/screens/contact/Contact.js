@@ -390,7 +390,7 @@ export default () => {
 
             {/* <!--------------Profile-brief-------------------> */}
 
-            <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-lg-5">
+            {/* <div className="profile-brief card-md shadow-sm-md mt-5 p-2 p-lg-5">
               <div className="row mb-3 d-none d-lg-block">
                 <div className="col-lg-12 col-lg-12 col-xl-12">
                   <p className="h">Sales and Marketing Manager</p>
@@ -425,7 +425,7 @@ export default () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* <!--------------PMK product sales-------------------> */}
             {contact?.contact_people?.map((item, index) => {
