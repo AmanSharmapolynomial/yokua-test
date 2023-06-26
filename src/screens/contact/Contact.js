@@ -37,6 +37,10 @@ export default () => {
   const emailRef = React.useRef(null)
   const contactPhoneRef = React.useRef(null)
   const imageref = React.useRef(null)
+  const [contactNameFlag, setContactNameFlag] = useState(false)
+  const [contactPhoneFlag, setContactPhoneFlag] = useState(false)
+  const [contactEmailFlag, setContactEmailFlag] = useState(false)
+  const [contactImageFlag, setContactImageFlag] = useState(false)
 
   const _getContact = () => {
     API.get('contact').then(data => {
@@ -468,16 +472,38 @@ export default () => {
                                 </p>
                               </div>
                             )}
-                            {/* {card?.email && (
-                                <div className="d-flex mb-2 align-items-center">
-                                  <i className="fa fa-envelope mb-3" aria-hidden="true" />
-                                  <p className="ps-2">{card?.email}</p>
-                                </div>
-                              )} */}
+                            {card?.email && (
+                              <div className="d-flex mb-2 align-items-center">
+                                <i className="fa fa-envelope mb-3" aria-hidden="true" />
+                                <p className="ps-2">{card?.email}</p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
                     ))}
+                  </div>
+                  {/* Add Contact Button */}
+                  <div class="mt-4 justify-content-center d-none d-lg-flex">
+                    <button
+                      onClick={() => {
+                        setIsContactUploadModalVisible(true)
+                        setContactSection(item.category)
+                        if (item?.detail[0].email !== '') {
+                          setContactEmailFlag(true)
+                        } else {
+                          setContactEmailFlag(false)
+                        }
+                        if (item?.detail[0].phone_no !== '') {
+                          setContactPhoneFlag(true)
+                        } else {
+                          setContactPhoneFlag(false)
+                        }
+                      }}
+                      class="btn create-domain-btn mx-auto"
+                    >
+                      Add Contact
+                    </button>
                   </div>
                 </div>
               )
@@ -498,6 +524,10 @@ export default () => {
                       onClick={() => {
                         setIsContactUploadModalVisible(true)
                         setContactSection(element.section_name)
+                        setContactNameFlag(element.section_name_flag)
+                        setContactPhoneFlag(element.section_phone_flag)
+                        setContactEmailFlag(element.section_email_flag)
+                        setContactImageFlag(element.section_image_flag)
                       }}
                       class="btn create-domain-btn mx-4"
                     >
@@ -733,7 +763,7 @@ export default () => {
               id="lastName"
             />
           </div>
-          <div className="mb-2">
+          <div className={`mb-2 ${contactEmailFlag ? '' : 'd-none'}`}>
             <input
               placeholder="Email"
               ref={emailRef}
@@ -743,7 +773,7 @@ export default () => {
               id="emailID"
             />
           </div>
-          <div className="mb-2">
+          <div className={`mb-2 ${contactPhoneFlag ? '' : 'd-none'}`}>
             <input
               placeholder="Phone Number"
               ref={contactPhoneRef}
