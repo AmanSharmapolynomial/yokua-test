@@ -13,6 +13,7 @@ import { Modal, Image } from 'react-bootstrap'
 export default () => {
   const [contact, setContact] = useState({})
   const [isEdit, setEdit] = useState(false)
+  const [isSectionEditable, setSectionEditable] = useState(false)
   const [preview, setPreview] = useState()
   const imageInputRef = useRef(null)
   const openingHrsRef = useRef(null)
@@ -45,8 +46,17 @@ export default () => {
   const [sectionEmailChecked, setSectionEmailChecked] = useState(false)
   const [disabledInput, setDisabledInput] = useState(false)
   const [deletionWarning, setDeletionWarning] = useState('')
-
+  const [isEditable, setIsEditable] = useState(-1)
+  const [editSelected, setEditSelected] = useState(null)
+  const [delContactId, setDelContactId] = useState(-1)
+  const [updateContactId, setUpdateContactId] = useState(-1)
+  const [deleteContactModalVisible, setDeleteContactModalVisible] = useState(false)
+  const [updateContactModalVisible, setUpdateContactModalVisible] = useState(false)
   const [profilePicture, setProfilePicture] = useState(placeholder)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
 
   const handleSectionEmailChange = event => {
     setSectionEmailChecked(event.target.checked)
@@ -58,6 +68,25 @@ export default () => {
     })
   }
 
+  const onDeleteContact = () => {
+    API.post('/contact/delete_add_contacts', {
+      id: delContactId,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getSections()
+          _getContact()
+          setDeleteContactModalVisible(false)
+          setDelContactId()
+        }
+      })
+      .catch(error => {
+        setDeleteContactModalVisible(false)
+        setDelContactId()
+        toast.error(error)
+      })
+  }
   const getSections = () => {
     API.get('/contact/view_section')
       .then(res => {
@@ -124,6 +153,35 @@ export default () => {
       })
   }
 
+  const updateContact = () => {
+    const payload = {
+      id: updateContactId,
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
+      phone_no: contactPhoneRef.current.value,
+      email: emailRef.current.value,
+      category: contactSection,
+    }
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    imageref.current.files[0] && formData.append('file', imageref.current.files[0])
+    API.post('contact/add_contacts', formData)
+      .then(res => {
+        toast.success(res.data.message)
+        setUpdateContactModalVisible(false)
+        setUpdateContactId(-1)
+        setContactSection()
+        _getContact()
+        getSections()
+      })
+      .catch(err => {
+        toast.error(err)
+        setUpdateContactModalVisible(false)
+        setUpdateContactId(-1)
+        setContactSection()
+      })
+  }
+
   const onAddSection = () => {
     API.post('/contact/create_section', {
       name: sectionTitleRef.current.value,
@@ -154,12 +212,17 @@ export default () => {
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           res.data?.message && toast.success(res.data?.message)
+          _getContact()
           getSections()
           setDeleteSectionModalVisible(false)
+          setDeleteSectionId()
+          setDeletionWarning()
         }
       })
       .catch(error => {
         setDeleteSectionModalVisible(false)
+        setDeleteSectionId()
+        setDeletionWarning()
         toast.error(error)
       })
   }
@@ -434,18 +497,46 @@ export default () => {
                   <div className="row d-none d-lg-flex">
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
-                      getUserRoles() == 'Technical Administrator') && (
-                      <Tooltip title="Delete Section">
+                      getUserRoles() == 'Technical Administrator') &&
+                    isEditable == item.category_id ? (
+                      <div className="my-2 p-0 d-none d-lg-block text-right">
+                        <Tooltip title="Save Changes">
+                          <i
+                            role={'button'}
+                            className="fa-solid mx-2 fa-floppy-disk theme ms-auto col-auto p-0"
+                            aria-hidden="true"
+                            onClick={() => {
+                              setIsEditable(-1)
+                              toast.success('Section Updated')
+                            }}
+                          />
+                        </Tooltip>
+                        <Tooltip title="Delete Section">
+                          <i
+                            role={'button'}
+                            className="fa-solid mx-2 fa-trash ms-auto col-auto p-0"
+                            aria-hidden="true"
+                            onClick={() => {
+                              setDeleteSectionId(item?.category_id)
+                              setDeletionWarning(
+                                'You are attempting to delete a non-empty section. It will delete all the contacts of this section. Do you want to proceed?'
+                              )
+                              setDeleteSectionModalVisible(true)
+                            }}
+                          />
+                        </Tooltip>
+                      </div>
+                    ) : (
+                      <Tooltip title="Edit Section">
                         <i
                           role={'button'}
-                          className="fa-solid fa-trash ms-auto col-auto p-0"
+                          className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
                           aria-hidden="true"
                           onClick={() => {
-                            setDeleteSectionId(item?.category_id)
-                            setDeletionWarning(
-                              'You are attempting to delete a non-empty section. It will delete all the contacts of this section. Do you want to proceed?'
-                            )
-                            setDeleteSectionModalVisible(true)
+                            setSectionEditable(true)
+                            if (item.cateory_id !== isEditable) setIsEditable(item.category_id)
+                            else setIsEditable(-1)
+                            setEditSelected(null)
                           }}
                         />
                       </Tooltip>
@@ -509,6 +600,40 @@ export default () => {
                                 <p className="ps-2">{card?.email}</p>
                               </div>
                             )}
+                            {isEditable == item.category_id && (
+                              <div className="d-flex mb-2 align-items-center">
+                                <i
+                                  role={'button'}
+                                  className="fa fa-pen-to-square theme mb-3 mx-2"
+                                  aria-hidden="true"
+                                  onClick={() => {
+                                    setUpdateContactId(card?.id)
+                                    setUpdateContactModalVisible(true)
+                                    setContactSection(item.category)
+                                    setFirstName(card?.first_name)
+                                    setLastName(card?.last_name)
+                                    if (card?.email) {
+                                      setEmail(card?.email)
+                                      setContactEmailFlag(true)
+                                    }
+                                    if (card?.phone_no) {
+                                      setPhone(card?.phone_no)
+                                      setContactPhoneFlag(true)
+                                    }
+                                  }}
+                                />
+                                <i
+                                  role={'button'}
+                                  className="fa-solid fa-trash mb-3 mx-2"
+                                  style={{ color: 'red' }}
+                                  aria-hidden="true"
+                                  onClick={() => {
+                                    setDelContactId(card?.id)
+                                    setDeleteContactModalVisible(true)
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -517,7 +642,8 @@ export default () => {
                   {/* Add Contact Button */}
                   {(getUserRoles() == 'PMK Administrator' ||
                     getUserRoles() == 'PMK Content Manager' ||
-                    getUserRoles() == 'Technical Administrator') && (
+                    getUserRoles() == 'Technical Administrator') &&
+                  isEditable == item.category_id ? (
                     <div class="mt-4 justify-content-center d-none d-lg-flex">
                       <button
                         onClick={() => {
@@ -539,7 +665,7 @@ export default () => {
                         Add Contact
                       </button>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               )
             })}
@@ -784,6 +910,48 @@ export default () => {
 
       {/* Delete Section Modal Ends */}
 
+      {/* Delete Contact Modal */}
+      <Modal
+        show={deleteContactModalVisible}
+        centered
+        onHide={() => {
+          setDeleteContactModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Confirm Contact Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              onClick={() => {
+                setDeleteContactModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onDeleteContact()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Delete Contact Modal Ends */}
+
       {/* Contact Upload Modal */}
       <Modal
         show={isContactUploadModalVisible}
@@ -926,6 +1094,169 @@ export default () => {
               }}
             >
               Add
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Update Contact Person */}
+      <Modal
+        show={updateContactModalVisible}
+        centered
+        onHide={() => {
+          setUpdateContactModalVisible(false)
+        }}
+        dialogClassName="max-width-40"
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Update Contact Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div
+            className="row flex-row modal-content justify-content-center mt-4"
+            style={{
+              border: '0',
+            }}
+          >
+            <div className="col-auto user-img">
+              <input
+                type="file"
+                accept="image/png, image/gif, image/jpeg"
+                id="imageFile"
+                ref={imageref}
+                className="inputfile yk-icon-hover"
+                onChange={e => {
+                  console.log(e.target.files[0])
+                  // SetImageFile(e.target.files[0])
+                }}
+              />
+              <img
+                style={{
+                  cursor: !disabledInput ? 'pointer' : 'default',
+                }}
+                onClick={() => {
+                  !disabledInput && imageref.current.click()
+                }}
+                src={profilePicture}
+                // onError={() => setProfilePicture(placeholder)}
+              />
+            </div>
+            <div className="col user-details-form">
+              <div className="input-field-container">
+                <label htmlFor="contactSection" className="input-label font-weight-bold">
+                  Section
+                </label>
+                <input
+                  id="contactSection"
+                  disabled
+                  placeholder={contactSection ? contactSection : ''}
+                  type="text"
+                  className="input-text"
+                  aria-label="Section"
+                />
+              </div>
+              <div className="input-field-container">
+                <label htmlFor="firstName" className="input-label font-weight-bold">
+                  First Name
+                </label>
+                <input
+                  ref={firstNameRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="First Name"
+                  id="firstName"
+                  value={firstName}
+                  onChange={e => {
+                    setFirstName(e.target.value)
+                  }}
+                />
+              </div>
+
+              <div className="input-field-container">
+                <label htmlFor="lastName" className="input-label font-weight-bold">
+                  Last Name
+                </label>
+                <input
+                  ref={lastNameRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Last Name"
+                  id="lastName"
+                  value={lastName}
+                  onChange={e => {
+                    setLastName(e.target.value)
+                  }}
+                />
+              </div>
+
+              <div className={`input-field-container ${contactEmailFlag ? '' : 'd-none'}`}>
+                <label htmlFor="emailID" className="input-label font-weight-bold">
+                  Email:
+                </label>
+                <input
+                  ref={emailRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Email"
+                  id="emailID"
+                  value={email}
+                  onChange={e => {
+                    setEmail(e.target.value)
+                  }}
+                />
+              </div>
+              <div className={`input-field-container ${contactPhoneFlag ? '' : 'd-none'}`}>
+                <label htmlFor="phoneNo" className="input-label font-weight-bold">
+                  Phone Number:
+                </label>
+                <input
+                  ref={contactPhoneRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Phone Number"
+                  id="phoneNo"
+                  value={phone}
+                  onChange={e => {
+                    setPhone(e.target.value)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setUpdateContactModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                if (firstNameRef.current.value.length > 0 && lastNameRef.current.value.length > 0) {
+                  updateContact()
+                } else {
+                  toast.error('Please enter the name')
+                }
+              }}
+            >
+              Save
             </button>
           </div>
         </Modal.Body>
