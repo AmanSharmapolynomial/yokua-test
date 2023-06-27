@@ -421,6 +421,39 @@ export default () => {
             {/* <!--------------General Product Question start---------------> */}
 
             <div className="gen-product mt-5 p-2 p-lg-5">
+              <div className="row d-none d-lg-flex">
+                {(getUserRoles() == 'PMK Administrator' ||
+                  getUserRoles() == 'PMK Content Manager' ||
+                  getUserRoles() == 'Technical Administrator') &&
+                editGenProdQues == true ? (
+                  <div className="my-2 p-0 d-none d-lg-block text-right">
+                    <Tooltip title="Save Changes">
+                      <i
+                        role={'button'}
+                        className="fa-solid mx-2 fa-floppy-disk theme ms-auto col-auto p-0"
+                        aria-hidden="true"
+                        onClick={() => {
+                          setEditGenProdQues(false)
+                          toast.success('Section Updated')
+                          SetImageFile(placeholder)
+                        }}
+                      />
+                    </Tooltip>
+                  </div>
+                ) : (
+                  <Tooltip title="Edit Section">
+                    <i
+                      role={'button'}
+                      className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
+                      aria-hidden="true"
+                      onClick={() => {
+                        setEditGenProdQues(true)
+                        SetImageFile(placeholder)
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </div>
               <div className="row">
                 <div className="col-lg-12 col-lg-12 col-xl-12">
                   <p className="h">General Product Question</p>
@@ -742,6 +775,7 @@ export default () => {
                         className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
                         aria-hidden="true"
                         onClick={() => {
+                          SetImageFile(placeholder)
                           setSectionEditable(true)
                           if (element.section_id !== isEditable) setIsEditable(element.section_id)
                           else setIsEditable(-1)
