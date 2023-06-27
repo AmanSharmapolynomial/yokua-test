@@ -631,7 +631,11 @@ export default () => {
                                     setContactSection(item.category)
                                     setFirstName(card?.first_name)
                                     setLastName(card?.last_name)
-                                    SetImageFile(card?.image_link + `?token=${getToken()}`)
+                                    SetImageFile(
+                                      card?.image_link
+                                        ? card?.image_link + `?token=${getToken()}`
+                                        : placeholder
+                                    )
                                     if (card?.email) {
                                       setEmail(card?.email)
                                       setContactEmailFlag(true)
