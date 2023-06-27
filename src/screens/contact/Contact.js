@@ -59,6 +59,8 @@ export default () => {
   const [phone, setPhone] = useState('')
   const [imageFile, SetImageFile] = useState(placeholder)
   const [editGenProdQues, setEditGenProdQues] = useState(false)
+  const [deleteGenProdQuesModalVisible, setDeleteGenProdQuesModalVisible] = useState(false)
+  const [delGenProdQuesId, setDelGenProdQuesId] = useState(-1)
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
@@ -102,6 +104,27 @@ export default () => {
         toast.error(error)
       })
   }
+
+  const onDeleteGenProdQues = () => {
+    API.post('/contact/delete_products_question', {
+      id: delGenProdQuesId,
+    })
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          res.data?.message && toast.success(res.data?.message)
+          getSections()
+          _getContact()
+          setDeleteGenProdQuesModalVisible(false)
+          setDelGenProdQuesId()
+        }
+      })
+      .catch(error => {
+        setDeleteGenProdQuesModalVisible(false)
+        setDelGenProdQuesId()
+        toast.error(error)
+      })
+  }
+
   const getSections = () => {
     API.get('/contact/view_section')
       .then(res => {
@@ -490,6 +513,45 @@ export default () => {
                               />
                               <span className="sm-txt text-break col ps-0">{item.email}</span>
                             </div>
+                            {editGenProdQues == true && (
+                              <div className="d-flex mt-2 mb-2 align-items-center">
+                                <i
+                                  role={'button'}
+                                  className="fa fa-pen-to-square theme mb-3 mx-2"
+                                  aria-hidden="true"
+                                  onClick={() => {
+                                    // setUpdateContactId(card?.id)
+                                    // setUpdateContactModalVisible(true)
+                                    // setContactSection(item.category)
+                                    // setFirstName(card?.first_name)
+                                    // setLastName(card?.last_name)
+                                    // SetImageFile(
+                                    //   card?.image_link
+                                    //     ? card?.image_link + `?token=${getToken()}`
+                                    //     : placeholder
+                                    // )
+                                    // if (card?.email) {
+                                    //   setEmail(card?.email)
+                                    //   setContactEmailFlag(true)
+                                    // }
+                                    // if (card?.phone_no) {
+                                    //   setPhone(card?.phone_no)
+                                    //   setContactPhoneFlag(true)
+                                    // }
+                                  }}
+                                />
+                                <i
+                                  role={'button'}
+                                  className="fa-solid fa-trash mb-3 mx-2"
+                                  style={{ color: 'red' }}
+                                  aria-hidden="true"
+                                  onClick={() => {
+                                    setDelGenProdQuesId(item.id)
+                                    setDeleteGenProdQuesModalVisible(true)
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1014,6 +1076,52 @@ export default () => {
       </Modal>
 
       {/* Delete Section Modal Ends */}
+
+      {/* Delete General Product Question Modal */}
+      <Modal
+        show={deleteGenProdQuesModalVisible}
+        centered
+        onHide={() => {
+          setDeleteGenProdQuesModalVisible(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Confirm Product Question Deletion</Modal.Title>
+        </Modal.Header>
+        <p className="text-center" style={{ fontWeight: '12px' }}>
+          {deletionWarning}
+        </p>
+        <Modal.Body className="p-4 text-center">
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              onClick={() => {
+                setDeleteGenProdQuesModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onDeleteGenProdQues()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Delete General Product Question Ends */}
 
       {/* Delete Contact Modal */}
       <Modal
