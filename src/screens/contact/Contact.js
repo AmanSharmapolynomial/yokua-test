@@ -59,6 +59,19 @@ export default () => {
   const [phone, setPhone] = useState('')
   const [imageFile, SetImageFile] = useState(placeholder)
 
+  const _setImage = () => {
+    if (imageFile && imageFile != '') {
+      if (typeof imageFile == 'string') {
+        setProfilePicture(imageFile)
+      } else {
+        setProfilePicture(window.URL.createObjectURL(imageFile))
+      }
+    }
+  }
+  useEffect(() => {
+    _setImage()
+  }, [imageFile])
+
   const handleSectionEmailChange = event => {
     setSectionEmailChecked(event.target.checked)
   }
@@ -509,6 +522,7 @@ export default () => {
                             onClick={() => {
                               setIsEditable(-1)
                               toast.success('Section Updated')
+                              SetImageFile(placeholder)
                             }}
                           />
                         </Tooltip>
@@ -535,6 +549,7 @@ export default () => {
                           aria-hidden="true"
                           onClick={() => {
                             setSectionEditable(true)
+                            SetImageFile(placeholder)
                             if (item.cateory_id !== isEditable) setIsEditable(item.category_id)
                             else setIsEditable(-1)
                             setEditSelected(null)
