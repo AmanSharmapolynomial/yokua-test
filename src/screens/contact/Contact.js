@@ -57,6 +57,7 @@ export default () => {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [imageFile, SetImageFile] = useState(placeholder)
 
   const handleSectionEmailChange = event => {
     setSectionEmailChecked(event.target.checked)
@@ -677,13 +678,69 @@ export default () => {
                 !contact?.contact_people?.some(item => item.category === section.section_name)
             )
             .map((element, index) => (
-              <div className="pmk-product p-2 p-lg-5 mt-5 shadow-lg" key={index}>
+              <div
+                className="pmk-product p-2 p-lg-5 mt-5 mb-3"
+                style={{ boxShadow: '0px 0px 8px #c4c4c4' }}
+                key={index}
+              >
+                <div className="row d-none d-lg-flex">
+                  {(getUserRoles() == 'PMK Administrator' ||
+                    getUserRoles() == 'PMK Content Manager' ||
+                    getUserRoles() == 'Technical Administrator') &&
+                  isEditable == element.section_id ? (
+                    <div className="my-2 p-0 d-none d-lg-block text-right">
+                      <Tooltip title="Save Changes">
+                        <i
+                          role={'button'}
+                          className="fa-solid mx-2 fa-floppy-disk theme ms-auto col-auto p-0"
+                          aria-hidden="true"
+                          onClick={() => {
+                            setIsEditable(-1)
+                            toast.success('Section Updated')
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip title="Delete Section">
+                        <i
+                          role={'button'}
+                          className="fa-solid mx-2 fa-trash ms-auto col-auto p-0"
+                          aria-hidden="true"
+                          onClick={() => {
+                            setDeleteSectionId(element.section_id)
+                            setDeleteSectionModalVisible(true)
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  ) : (
+                    <Tooltip title="Edit Section">
+                      <i
+                        role={'button'}
+                        className="fa-solid fa-pen-to-square theme ms-auto col-auto p-0"
+                        aria-hidden="true"
+                        onClick={() => {
+                          setSectionEditable(true)
+                          if (element.section_id !== isEditable) setIsEditable(element.section_id)
+                          else setIsEditable(-1)
+                          setEditSelected(null)
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                </div>
                 <div className="row mb-3">
                   <div className="col-lg-12 col-lg-12 col-xl-12">
                     <p className="h">{element.section_name}</p>
+                    <div className="d-flex mb-2 align-items-center">
+                      <i className="fa fa-envelope mb-3 theme" aria-hidden="true" />
+                      <p className="ps-2" style={{ wordBreak: 'break-all' }}>
+                        {element?.section_email}
+                      </p>
+                    </div>
                     {(getUserRoles() == 'PMK Administrator' ||
                       getUserRoles() == 'PMK Content Manager' ||
-                      getUserRoles() == 'Technical Administrator') && (
+                      getUserRoles() == 'Technical Administrator') &&
+                    isEditable == element.section_id ? (
                       <button
                         onClick={() => {
                           setIsContactUploadModalVisible(true)
@@ -697,18 +754,7 @@ export default () => {
                       >
                         Add Contact
                       </button>
-                    )}
-                    <Tooltip title="Delete Section">
-                      <i
-                        role={'button'}
-                        className="fa-solid fa-trash ms-auto col-auto p-0"
-                        aria-hidden="true"
-                        onClick={() => {
-                          setDeleteSectionId(element.section_id)
-                          setDeleteSectionModalVisible(true)
-                        }}
-                      />
-                    </Tooltip>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -801,6 +847,8 @@ export default () => {
             <input
               ref={sectionNameFlagRef}
               type="checkbox"
+              defaultChecked
+              disabled
               className="form-check-input"
               aria-label={'Name'}
               id="nameFlag"
@@ -988,7 +1036,7 @@ export default () => {
                 className="inputfile yk-icon-hover"
                 onChange={e => {
                   console.log(e.target.files[0])
-                  // SetImageFile(e.target.files[0])
+                  SetImageFile(e.target.files[0])
                 }}
               />
               <img

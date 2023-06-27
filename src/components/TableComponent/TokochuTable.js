@@ -86,13 +86,13 @@ const TokuchuTable = ({
   }
   const imageFileInputRef = useRef()
 
-  useEffect(() => {
-    if (extractedData && extractedData.length > 0) {
-      setBulkEditable(true)
-    } else {
-      setBulkEditable(false)
-    }
-  }, [extractedData])
+  // useEffect(() => {
+  //   if (extractedData && extractedData.length > 0) {
+  //     setBulkEditable(true)
+  //   } else {
+  //     setBulkEditable(false)
+  //   }
+  // }, [extractedData])
 
   const handleChange = (name, value) => {
     const updatedRowName = rowName
@@ -357,7 +357,7 @@ const TokuchuTable = ({
     setImageFile(e.event.files[0])
   }
 
-  const addRow = () => {
+  const addRow = extractedData => {
     const tempObject = {
       isEdit: true,
       edit: (
@@ -411,7 +411,8 @@ const TokuchuTable = ({
               type={item.isDate ? 'date' : 'text form-control'}
               id={rowName[item['name']] + Math.random().toString()}
               key={rowName[item['name']] + Math.random().toString()}
-              value={rowName[item['name']]}
+              // value={rowName[item['name']]}
+              value={extractedData ? extractedData.data[0].values : rowName[item['name']]}
               onChange={e => handleChange(item['name'], e.target.value)}
             />
           </>
@@ -512,87 +513,89 @@ const TokuchuTable = ({
         [rowId]: file,
       }))
     }
+    console.log(extractedData)
+    addRow(extractedData[0])
 
-    const convertDateFormat = dateString => {
-      dateString = String(dateString)
-      console.log(dateString)
-      if (typeof dateString === 'string') {
-        console.log('im here')
-        const parts = dateString.split('/')
-        if (parts.length === 3) {
-          const month = parseInt(parts[0], 10)
-          const day = parseInt(parts[1], 10)
-          const year = parseInt(parts[2], 10)
-          if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
-            const formattedDate = new Date(year, month - 1, day)
-            console.log(formattedDate)
-            if (!isNaN(formattedDate.getTime())) {
-              const yearStr = String(formattedDate.getFullYear())
-              const monthStr = String(formattedDate.getMonth() + 1).padStart(2, '0')
-              const dayStr = String(formattedDate.getDate()).padStart(2, '0')
-              return `${yearStr}-${monthStr}-${dayStr}`
-            }
-          }
-        }
-      }
-      return dateString
-    }
+    // const convertDateFormat = dateString => {
+    //   dateString = String(dateString)
+    //   console.log(dateString)
+    //   if (typeof dateString === 'string') {
+    //     console.log('im here')
+    //     const parts = dateString.split('/')
+    //     if (parts.length === 3) {
+    //       const month = parseInt(parts[0], 10)
+    //       const day = parseInt(parts[1], 10)
+    //       const year = parseInt(parts[2], 10)
+    //       if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+    //         const formattedDate = new Date(year, month - 1, day)
+    //         console.log(formattedDate)
+    //         if (!isNaN(formattedDate.getTime())) {
+    //           const yearStr = String(formattedDate.getFullYear())
+    //           const monthStr = String(formattedDate.getMonth() + 1).padStart(2, '0')
+    //           const dayStr = String(formattedDate.getDate()).padStart(2, '0')
+    //           return `${yearStr}-${monthStr}-${dayStr}`
+    //         }
+    //       }
+    //     }
+    //   }
+    //   return dateString
+    // }
 
-    return (
-      <>
-        <div className="dummy-row-container w-100" style={{ overflow: 'scroll' }}>
-          {extractedData.map((row, idx) => (
-            <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
-              {row.data.map((column, colIdx) => {
-                console.log(column)
-                if (column.column_name === 'Valid Until') {
-                  const formattedDate = convertDateFormat(column.values)
-                  console.log(formattedDate)
-                  return (
-                    <input
-                      type="date"
-                      value={column.column_name === 'Valid Until' ? { formattedDate } : ''}
-                      onChange={e => handleDateInputChange(idx, e.target.value)}
-                    />
-                  )
-                }
-                return (
-                  <input
-                    key={colIdx}
-                    ref={el => (inputRef.current[idx] = el)}
-                    type="text"
-                    disabled={column.column_name === 'Type' || column.column_name === 'Size'}
-                    placeholder={column.column_name}
-                    style={{
-                      backgroundColor:
-                        column.column_name === 'Type' || column.column_name === 'Size'
-                          ? '#f5f5f5'
-                          : '#fff',
-                    }}
-                    value={column.values}
-                    onChange={e => handleInputChange(idx, colIdx, e.target)}
-                  />
-                )
-              })}
-              <input
-                type="file"
-                className="file-input"
-                onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="add-row d-none d-lg-flex overflow-auto">
-          {extractedData.length > 0 && (
-            <div className="d-flex justify-content-end">
-              <button className="btn btn-primary" onClick={handleUploadData}>
-                Upload Data
-              </button>
-            </div>
-          )}
-        </div>
-      </>
-    )
+    // return (
+    //   <>
+    //     <div className="dummy-row-container w-100" style={{ overflow: 'scroll' }}>
+    //       {extractedData.map((row, idx) => (
+    //         <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
+    //           {row.data.map((column, colIdx) => {
+    //             console.log(column)
+    //             if (column.column_name === 'Valid Until') {
+    //               const formattedDate = convertDateFormat(column.values)
+    //               console.log(formattedDate)
+    //               return (
+    //                 <input
+    //                   type="date"
+    //                   value={column.column_name === 'Valid Until' ? { formattedDate } : ''}
+    //                   onChange={e => handleDateInputChange(idx, e.target.value)}
+    //                 />
+    //               )
+    //             }
+    //             return (
+    //               <input
+    //                 key={colIdx}
+    //                 ref={el => (inputRef.current[idx] = el)}
+    //                 type="text"
+    //                 disabled={column.column_name === 'Type' || column.column_name === 'Size'}
+    //                 placeholder={column.column_name}
+    //                 style={{
+    //                   backgroundColor:
+    //                     column.column_name === 'Type' || column.column_name === 'Size'
+    //                       ? '#f5f5f5'
+    //                       : '#fff',
+    //                 }}
+    //                 value={column.values}
+    //                 onChange={e => handleInputChange(idx, colIdx, e.target)}
+    //               />
+    //             )
+    //           })}
+    //           <input
+    //             type="file"
+    //             className="file-input"
+    //             onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
+    //           />
+    //         </div>
+    //       ))}
+    //     </div>
+    //     <div className="add-row d-none d-lg-flex overflow-auto">
+    //       {extractedData.length > 0 && (
+    //         <div className="d-flex justify-content-end">
+    //           <button className="btn btn-primary" onClick={handleUploadData}>
+    //             Upload Data
+    //           </button>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </>
+    // )
   }
 
   // New function
