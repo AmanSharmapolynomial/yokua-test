@@ -38,6 +38,7 @@ const Tokuchu = () => {
   const [allTableData, setAllTableData] = useState({})
   const [tableId, settableId] = useState(null)
   const [extractedData, setExtractedData] = useState([])
+  const tableRef = React.useRef(null)
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -259,7 +260,15 @@ const Tokuchu = () => {
           values,
         })),
       }))
-
+      console.log(modifiedData, tableRef)
+      modifiedData.forEach(data => {
+        if (tableRef.current) {
+          tableRef.current.addRow(data)
+        }
+      })
+      // if (tableRef.current) {
+      //   tableRef.current.addRow();
+      // }
       setExtractedData(modifiedData)
       setLoading(false)
     }
@@ -664,6 +673,7 @@ const Tokuchu = () => {
                 tableId={tableId}
                 setExtractedData={setExtractedData}
                 settableId={settableId}
+                ref={tableRef}
               />
             ) : (
               //{
@@ -684,6 +694,7 @@ const Tokuchu = () => {
                     tableId={tableId}
                     setExtractedData={setExtractedData}
                     settableId={settableId}
+                    ref={tableRef}
                   />
                 )
               })
