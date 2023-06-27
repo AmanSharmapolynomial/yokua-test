@@ -64,6 +64,10 @@ export default () => {
   const [deleteGenProdQuesModalVisible, setDeleteGenProdQuesModalVisible] = useState(false)
   const [delGenProdQuesId, setDelGenProdQuesId] = useState(-1)
   const [addGenProdQuesModalVisible, setAddGenProdQuesModalVisible] = useState(false)
+  const [prodQuesName, setProdQuesName] = useState('')
+  const [prodQuesEmail, setProdQuesEmail] = useState('')
+  const [prodQuesUpdateModalVisible, setProdQuesUpdateModalVisible] = useState(false)
+  const [updateProdQuesId, setUpdateProdQuesId] = useState(-1)
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
@@ -186,6 +190,29 @@ export default () => {
       .then(res => {
         toast.success(res.data.message)
         setIsContactUploadModalVisible(false)
+        _getContact()
+        getSections()
+      })
+      .catch(err => {
+        toast.error(err)
+      })
+  }
+
+  const updateProdQuestion = () => {
+    const payload = {
+      id: updateProdQuesId,
+      name: prodQuesNameRef.current.value,
+      email: prodQuesEmailRef.current.value,
+    }
+
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    imageref.current.files[0] && formData.append('file', imageref.current.files[0])
+    API.post('contact/add_products_question', formData)
+      .then(res => {
+        toast.success(res.data.message)
+        setProdQuesUpdateModalVisible(false)
+        setUpdateProdQuesId()
         _getContact()
         getSections()
       })
@@ -482,7 +509,6 @@ export default () => {
                         aria-hidden="true"
                         onClick={() => {
                           setEditGenProdQues(false)
-                          toast.success('Section Updated')
                           SetImageFile(placeholder)
                         }}
                       />
@@ -545,24 +571,15 @@ export default () => {
                                   className="fa fa-pen-to-square theme mb-3 mx-2"
                                   aria-hidden="true"
                                   onClick={() => {
-                                    // setUpdateContactId(card?.id)
-                                    // setUpdateContactModalVisible(true)
-                                    // setContactSection(item.category)
-                                    // setFirstName(card?.first_name)
-                                    // setLastName(card?.last_name)
-                                    // SetImageFile(
-                                    //   card?.image_link
-                                    //     ? card?.image_link + `?token=${getToken()}`
-                                    //     : placeholder
-                                    // )
-                                    // if (card?.email) {
-                                    //   setEmail(card?.email)
-                                    //   setContactEmailFlag(true)
-                                    // }
-                                    // if (card?.phone_no) {
-                                    //   setPhone(card?.phone_no)
-                                    //   setContactPhoneFlag(true)
-                                    // }
+                                    setProdQuesName(item.name)
+                                    setProdQuesEmail(item.email)
+                                    setProdQuesUpdateModalVisible(true)
+                                    SetImageFile(
+                                      item?.image_link
+                                        ? item?.image_link + `?token=${getToken()}`
+                                        : placeholder
+                                    )
+                                    setUpdateProdQuesId(item.id)
                                   }}
                                 />
                                 <i
@@ -671,7 +688,6 @@ export default () => {
                             aria-hidden="true"
                             onClick={() => {
                               setIsEditable(-1)
-                              toast.success('Section Updated')
                               SetImageFile(placeholder)
                             }}
                           />
@@ -868,7 +884,6 @@ export default () => {
                           aria-hidden="true"
                           onClick={() => {
                             setIsEditable(-1)
-                            toast.success('Section Updated')
                           }}
                         />
                       </Tooltip>
@@ -1531,7 +1546,6 @@ export default () => {
       {/* Update Contact Modal Ends */}
 
       {/* Add Gen Prod Ques Modal Starts */}
-      {/* Update Contact Person */}
       <Modal
         show={addGenProdQuesModalVisible}
         centered
@@ -1639,6 +1653,123 @@ export default () => {
         </Modal.Body>
       </Modal>
       {/* Add Gen Prod Ques Modal Ends */}
+
+      {/* Update General Question Modal */}
+      <Modal
+        show={prodQuesUpdateModalVisible}
+        centered
+        onHide={() => {
+          setProdQuesUpdateModalVisible(false)
+        }}
+        dialogClassName="max-width-40"
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Update Product Question</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div
+            className="row flex-row modal-content justify-content-center mt-4"
+            style={{
+              border: '0',
+            }}
+          >
+            <div className="col-auto user-img">
+              <input
+                type="file"
+                accept="image/png, image/gif, image/jpeg"
+                id="imageFile"
+                ref={imageref}
+                className="inputfile yk-icon-hover"
+                onChange={e => {
+                  console.log(e.target.files[0])
+                  SetImageFile(e.target.files[0])
+                }}
+              />
+              <img
+                style={{
+                  cursor: !disabledInput ? 'pointer' : 'default',
+                }}
+                onClick={() => {
+                  !disabledInput && imageref.current.click()
+                }}
+                src={profilePicture}
+                onError={() => setProfilePicture(placeholder)}
+              />
+            </div>
+            <div className="col user-details-form">
+              <div className="input-field-container">
+                <label htmlFor="nameSection" className="input-label font-weight-bold">
+                  Name
+                </label>
+                <input
+                  ref={prodQuesNameRef}
+                  id="nameSection"
+                  type="text"
+                  className="input-text"
+                  aria-label="Section"
+                  value={prodQuesName}
+                  onChange={e => {
+                    setProdQuesName(e.target.value)
+                  }}
+                />
+              </div>
+              <div className="input-field-container">
+                <label htmlFor="emailID" className="input-label font-weight-bold">
+                  Email:
+                </label>
+                <input
+                  ref={prodQuesEmailRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Email"
+                  id="emailID"
+                  value={prodQuesEmail}
+                  onChange={e => {
+                    setProdQuesEmail(e.target.value)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setProdQuesUpdateModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                if (prodQuesNameRef.current.value.length > 0) {
+                  updateProdQuestion()
+                } else {
+                  toast.error('Please enter the name')
+                }
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Update General Question Modal Ends */}
     </>
   )
 }
