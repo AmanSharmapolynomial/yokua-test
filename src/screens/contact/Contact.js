@@ -37,6 +37,8 @@ export default () => {
   const firstNameRef = React.useRef(null)
   const lastNameRef = React.useRef(null)
   const emailRef = React.useRef(null)
+  const prodQuesEmailRef = React.useRef(null)
+  const prodQuesNameRef = React.useRef(null)
   const contactPhoneRef = React.useRef(null)
   const imageref = React.useRef(null)
   const [contactNameFlag, setContactNameFlag] = useState(false)
@@ -61,6 +63,7 @@ export default () => {
   const [editGenProdQues, setEditGenProdQues] = useState(false)
   const [deleteGenProdQuesModalVisible, setDeleteGenProdQuesModalVisible] = useState(false)
   const [delGenProdQuesId, setDelGenProdQuesId] = useState(-1)
+  const [addGenProdQuesModalVisible, setAddGenProdQuesModalVisible] = useState(false)
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
@@ -183,6 +186,28 @@ export default () => {
       .then(res => {
         toast.success(res.data.message)
         setIsContactUploadModalVisible(false)
+        _getContact()
+        getSections()
+      })
+      .catch(err => {
+        toast.error(err)
+      })
+  }
+
+  const addProdQuestion = () => {
+    const payload = {
+      id: '',
+      name: prodQuesNameRef.current.value,
+      email: prodQuesEmailRef.current.value,
+    }
+
+    const formData = new FormData()
+    formData.append('data', JSON.stringify(payload))
+    imageref.current.files[0] && formData.append('file', imageref.current.files[0])
+    API.post('contact/add_products_question', formData)
+      .then(res => {
+        toast.success(res.data.message)
+        setAddGenProdQuesModalVisible(false)
         _getContact()
         getSections()
       })
@@ -559,6 +584,35 @@ export default () => {
                   )
                 })}
               </div>
+              {/* Add Product Question Button */}
+              {(getUserRoles() == 'PMK Administrator' ||
+                getUserRoles() == 'PMK Content Manager' ||
+                getUserRoles() == 'Technical Administrator') &&
+              editGenProdQues == true ? (
+                <div class="mt-4 justify-content-center text-center d-none d-lg-flex">
+                  <button
+                    onClick={() => {
+                      SetImageFile(placeholder)
+                      setAddGenProdQuesModalVisible(true)
+                      // setIsContactUploadModalVisible(true)
+                      // setContactSection(item.category)
+                      // if (item?.detail[0].email !== '') {
+                      //   setContactEmailFlag(true)
+                      // } else {
+                      //   setContactEmailFlag(false)
+                      // }
+                      // if (item?.detail[0].phone_no !== '') {
+                      //   setContactPhoneFlag(true)
+                      // } else {
+                      //   setContactPhoneFlag(false)
+                      // }
+                    }}
+                    class="btn create-domain-btn mx-auto"
+                  >
+                    Add Product Question
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             {/* <!--------------Profile-brief-------------------> */}
@@ -1474,6 +1528,117 @@ export default () => {
           </div>
         </Modal.Body>
       </Modal>
+      {/* Update Contact Modal Ends */}
+
+      {/* Add Gen Prod Ques Modal Starts */}
+      {/* Update Contact Person */}
+      <Modal
+        show={addGenProdQuesModalVisible}
+        centered
+        onHide={() => {
+          setAddGenProdQuesModalVisible(false)
+        }}
+        dialogClassName="max-width-40"
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Add Product Question</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div
+            className="row flex-row modal-content justify-content-center mt-4"
+            style={{
+              border: '0',
+            }}
+          >
+            <div className="col-auto user-img">
+              <input
+                type="file"
+                accept="image/png, image/gif, image/jpeg"
+                id="imageFile"
+                ref={imageref}
+                className="inputfile yk-icon-hover"
+                onChange={e => {
+                  console.log(e.target.files[0])
+                  SetImageFile(e.target.files[0])
+                }}
+              />
+              <img
+                style={{
+                  cursor: !disabledInput ? 'pointer' : 'default',
+                }}
+                onClick={() => {
+                  !disabledInput && imageref.current.click()
+                }}
+                src={profilePicture}
+                onError={() => setProfilePicture(placeholder)}
+              />
+            </div>
+            <div className="col user-details-form">
+              <div className="input-field-container">
+                <label htmlFor="nameSection" className="input-label font-weight-bold">
+                  Name
+                </label>
+                <input
+                  ref={prodQuesNameRef}
+                  id="nameSection"
+                  type="text"
+                  className="input-text"
+                  aria-label="Section"
+                />
+              </div>
+              <div className="input-field-container">
+                <label htmlFor="emailID" className="input-label font-weight-bold">
+                  Email:
+                </label>
+                <input
+                  ref={prodQuesEmailRef}
+                  type="text"
+                  className="input-text"
+                  aria-label="Email"
+                  id="emailID"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setAddGenProdQuesModalVisible(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                if (prodQuesNameRef.current.value.length > 0) {
+                  addProdQuestion()
+                } else {
+                  toast.error('Please enter the name')
+                }
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Add Gen Prod Ques Modal Ends */}
     </>
   )
 }
