@@ -365,6 +365,7 @@ export default () => {
                             }
 
                             const objectUrl = URL.createObjectURL(e.target.files[0])
+                            console.log(objectUrl)
                             setPreview(objectUrl)
                           }}
                         />
@@ -565,10 +566,10 @@ export default () => {
                               <span className="sm-txt text-break col ps-0">{item.email}</span>
                             </div>
                             {editGenProdQues == true && (
-                              <div className="d-flex mt-2 mb-2 align-items-center">
+                              <div className="d-flex mt-2 mb-2">
                                 <i
                                   role={'button'}
-                                  className="fa fa-pen-to-square theme mb-3 mx-2"
+                                  className="fa fa-pen-to-square theme mb-3"
                                   aria-hidden="true"
                                   onClick={() => {
                                     setProdQuesName(item.name)
@@ -788,7 +789,7 @@ export default () => {
                               <div className="d-flex mb-2 align-items-center">
                                 <i
                                   role={'button'}
-                                  className="fa fa-pen-to-square theme mb-3 mx-2"
+                                  className="fa fa-pen-to-square theme mb-3"
                                   aria-hidden="true"
                                   onClick={() => {
                                     setUpdateContactId(card?.id)
