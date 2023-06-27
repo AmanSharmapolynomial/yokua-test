@@ -58,6 +58,7 @@ export default () => {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [imageFile, SetImageFile] = useState(placeholder)
+  const [editGenProdQues, setEditGenProdQues] = useState(false)
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
@@ -550,6 +551,8 @@ export default () => {
                           onClick={() => {
                             setSectionEditable(true)
                             SetImageFile(placeholder)
+                            setContactPhoneFlag(false)
+                            setContactEmailFlag(false)
                             if (item.cateory_id !== isEditable) setIsEditable(item.category_id)
                             else setIsEditable(-1)
                             setEditSelected(null)
@@ -628,6 +631,7 @@ export default () => {
                                     setContactSection(item.category)
                                     setFirstName(card?.first_name)
                                     setLastName(card?.last_name)
+                                    SetImageFile(card?.image_link + `?token=${getToken()}`)
                                     if (card?.email) {
                                       setEmail(card?.email)
                                       setContactEmailFlag(true)
@@ -1198,7 +1202,7 @@ export default () => {
                 className="inputfile yk-icon-hover"
                 onChange={e => {
                   console.log(e.target.files[0])
-                  // SetImageFile(e.target.files[0])
+                  SetImageFile(e.target.files[0])
                 }}
               />
               <img
