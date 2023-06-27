@@ -1070,7 +1070,7 @@ export default () => {
                   !disabledInput && imageref.current.click()
                 }}
                 src={profilePicture}
-                // onError={() => setProfilePicture(placeholder)}
+                onError={() => setProfilePicture(placeholder)}
               />
             </div>
             <div className="col user-details-form">
@@ -1217,7 +1217,7 @@ export default () => {
                   !disabledInput && imageref.current.click()
                 }}
                 src={profilePicture}
-                // onError={() => setProfilePicture(placeholder)}
+                onError={() => setProfilePicture(placeholder)}
               />
             </div>
             <div className="col user-details-form">
