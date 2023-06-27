@@ -1623,7 +1623,7 @@ export default () => {
               </div>
             </div>
           </div>
-          <div className="col-12 justify-content-center d-flex mt-3">
+          <div className="col-12 justify-content-center d-flex mt-3 mb-2">
             <button
               ref={element => {
                 if (element) {
@@ -1740,7 +1740,7 @@ export default () => {
               </div>
             </div>
           </div>
-          <div className="col-12 justify-content-center d-flex mt-3">
+          <div className="col-12 justify-content-center d-flex mt-3 mb-2">
             <button
               ref={element => {
                 if (element) {
