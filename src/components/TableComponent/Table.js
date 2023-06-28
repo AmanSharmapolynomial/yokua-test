@@ -600,7 +600,7 @@ export default ({
     })
   }
   const callAddRowAPI = async () => {
-    setUploadInProgress(true)
+    // setUploadInProgress(true)
     let data = []
     let file = undefined
     tableObject.forEach(col => {

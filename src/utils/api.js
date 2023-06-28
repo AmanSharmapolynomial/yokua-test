@@ -41,7 +41,7 @@ API.interceptors.response.use(null, async e => {
       toast.success('Refreshing Website')
       setToken(access)
       setRefreshToken(refresh)
-      window.location.reload()
+      // window.location.reload()
     } catch (error) {
       toast.error('Session Expired, Login Again')
       console.log('Inside CATCH')
@@ -77,5 +77,75 @@ API.interceptors.response.use(null, async e => {
   }
   return e
 })
+
+// let isRefreshing = false;
+// let failedRequestsQueue = [];
+
+// API.interceptors.response.use(null, async (error) => {
+//   if (error.response.status === 401 && error.config.url !== '/auth/login') {
+//     if (!isRefreshing) {
+//       isRefreshing = true;
+//       try {
+//         const rs = await API.post('/auth/token/refresh/', {
+//           refresh: getRefreshToken(),
+//         });
+//         const { access, refresh } = rs.data;
+//         setToken(access);
+//         setRefreshToken(refresh);
+//         // Retry failed requests
+//         failedRequestsQueue.forEach((request) => {
+//           request.headers['Authorization'] = 'Bearer ' + access;
+//           API(request)
+//             .then((response) => request.resolve(response))
+//             .catch((err) => request.reject(err));
+//         });
+//         failedRequestsQueue = [];
+//       } catch (refreshError) {
+//         // Handle refresh token error
+//         toast.error('Session Expired, Login Again');
+//         removeToken();
+//         removeUserEmail();
+//         removeUserRole();
+//         window.location.href = '/auth/login';
+//         return Promise.reject(refreshError);
+//       } finally {
+//         isRefreshing = false;
+//       }
+//     }
+//     // Create new promise to wait for token refresh
+//     const retryOriginalRequest = new Promise((resolve, reject) => {
+//       // Add original request to the queue
+//       failedRequestsQueue.push({ resolve, reject, ...error.config });
+//     });
+//     return retryOriginalRequest;
+//   }
+
+//   // Handle other error cases
+//   if (Array.isArray(error.response.data?.message) && error.response.status !== 401) {
+//     toast.error(error.response.data?.message[0]);
+//   } else if (error.response.data?.message && error.response.data?.message[0] && error.response.status !== 401) {
+//     toast.error(error.response.data?.message);
+//   }
+//   toast.error(error.response.data?.email[0]);
+//   toast.error(error.response.data?.new_password2[0]);
+//   toast.error(error.response.data?.new_password2[1]);
+
+//   if (error.response.status == 400) {
+//     error.response.data.message?.forEach((message) => {
+//       toast.error(message);
+//     });
+//     error.response.data.email?.forEach((email) => {
+//       toast.error(email);
+//     });
+//     error.response.data.password1?.forEach((password1) => {
+//       toast.error(password1);
+//     });
+//     error.response.data.password2?.forEach((password2) => {
+//       toast.error(password2);
+//     });
+//   }
+
+//   return Promise.reject(error);
+// });
 
 export default API
