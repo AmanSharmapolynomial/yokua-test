@@ -360,24 +360,25 @@ export default () => {
                           className="d-none"
                           onChange={e => {
                             if (!e.target.files[0]) {
-                              setPreview(undefined)
+                              SetImageFile(placeholder)
                               return
                             }
 
                             const objectUrl = URL.createObjectURL(e.target.files[0])
-                            console.log(objectUrl)
-                            setPreview(objectUrl)
+                            SetImageFile(e.target.files[0])
                           }}
                         />
                         <img
                           className="border-black"
-                          src={
-                            preview
-                              ? preview + `?token=${getToken()}`
-                              : contact?.general_info?.image_link + `?token=${getToken()}`
-                              ? contact?.general_info?.image_link + `?token=${getToken()}`
-                              : upload
-                          }
+                          src={profilePicture}
+                          onError={() => setProfilePicture(placeholder)}
+                          // src={
+                          //   preview
+                          //     ? preview + `?token=${getToken()}`
+                          //     : contact?.general_info?.image_link + `?token=${getToken()}`
+                          //     ? contact?.general_info?.image_link + `?token=${getToken()}`
+                          //     : upload
+                          // }
                           onClick={e => {
                             e.stopPropagation()
                             imageInputRef.current.click()
