@@ -759,6 +759,14 @@ export default ({
       })
   }
 
+  // Handle Cancel Upload
+  const handleCancelUpload = () => {
+    setExtractedData([])
+    setIsEditable(false)
+    setBulkEditable(false)
+    toast.error('Data Upload Cancelled')
+  }
+
   // Rows to be shown when a file is uploaded and parsed
 
   const renderDummyRows = () => {
@@ -804,6 +812,9 @@ export default ({
             <div className="d-flex justify-content-end">
               <button className="btn btn-primary" onClick={handleUploadData}>
                 Upload Data
+              </button>
+              <button className="btn mx-2 btn-primary" onClick={handleCancelUpload}>
+                Cancel
               </button>
             </div>
           )}
