@@ -360,7 +360,12 @@ export default () => {
                           className="d-none"
                           onChange={e => {
                             if (!e.target.files[0]) {
-                              SetImageFile(placeholder)
+                              SetImageFile(
+                                contact?.general_info?.image_link
+                                  ? contact.general_info.image_link + `?token=${getToken()}`
+                                  : placeholder
+                              )
+                              console.log('im here')
                               return
                             }
 
@@ -371,7 +376,13 @@ export default () => {
                         <img
                           className="border-black"
                           src={profilePicture}
-                          onError={() => setProfilePicture(placeholder)}
+                          onError={() =>
+                            setProfilePicture(
+                              contact?.general_info?.image_link
+                                ? contact.general_info.image_link + `?token=${getToken()}`
+                                : placeholder
+                            )
+                          }
                           // src={
                           //   preview
                           //     ? preview + `?token=${getToken()}`
