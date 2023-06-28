@@ -69,6 +69,7 @@ const ProductDetail = () => {
   const [productName, setProductName] = useState('')
   const [tableId, settableId] = useState(null)
   const [extractedData, setExtractedData] = useState([])
+  const [editableBulk, setEditableBulk] = useState(true)
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -606,6 +607,7 @@ const ProductDetail = () => {
           extractedData={extractedData}
           tableId={tableId}
           setExtractedData={setExtractedData}
+          editableBulk={editableBulk}
         />
       )
     } else if (ele.type === 'link') {
@@ -1795,6 +1797,7 @@ const ProductDetail = () => {
         centered
         onHide={() => {
           setUploadModalVisible(false)
+          setEditableBulk(false)
         }}
       >
         <Modal.Header
@@ -1828,6 +1831,7 @@ const ProductDetail = () => {
               }}
               onClick={() => {
                 setUploadModalVisible(false)
+                setEditableBulk(false)
               }}
               className="btn me-2"
             >

@@ -56,6 +56,7 @@ export default ({
   extractedData,
   setExtractedData,
   tableId,
+  editableBulk,
 }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -135,6 +136,14 @@ export default ({
       setBulkEditable(false)
     }
   }, [extractedData])
+
+  useEffect(() => {
+    if (editableBulk == false) {
+      setBulkEditable(false)
+      setIsEditable(false)
+    } else {
+    }
+  }, [editableBulk])
 
   const updateTableValues = tableObject => {
     setLoading(true)
