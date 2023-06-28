@@ -365,7 +365,7 @@ export default () => {
                                   ? contact.general_info.image_link + `?token=${getToken()}`
                                   : placeholder
                               )
-                              console.log('im here')
+                              // console.log('im here')
                               return
                             }
 

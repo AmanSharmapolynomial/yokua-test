@@ -582,8 +582,6 @@ const ProductDetail = () => {
           }}
           onUploadClick={() => {
             settableId(ele.id)
-            console.log('This is the table id', ele.id)
-            console.log('This is the update is', tableId)
             setUploadModalVisible(true)
           }}
           onDeleteComponent={() => {

@@ -699,6 +699,7 @@ export default ({
     // Perform the upload process using extractedData
     // Pass extractedData to the API endpoint or perform the necessary operations here
     // Example code to send the data to an API endpoint:
+    const increment = tableRows.length
     console.log(extractedData)
     const modifiedData = extractedData.map(row => {
       const modifiedRow = {
@@ -713,15 +714,21 @@ export default ({
       return modifiedRow
     })
 
+    // Update the row_id in the extractedData array
+    const updatedData = modifiedData.map(item => ({
+      ...item,
+      row_id: item.row_id + increment,
+    }))
+
     const formData = new FormData()
 
     // Add the table ID and extracted data to the form data
-    formData.append('data', JSON.stringify({ table_id: tableId, rows_data: modifiedData }))
+    formData.append('data', JSON.stringify({ table_id: tableId, rows_data: updatedData }))
 
     // Add the file data to the form data
     Object.keys(fileData).forEach(rowId => {
       const file = fileData[rowId]
-      formData.append(`row_${rowId}`, file)
+      formData.append(`row_${parseInt(rowId) + increment}`, file)
     })
 
     API.post('products/page/bulk_update_table_data', formData)
@@ -729,8 +736,11 @@ export default ({
         if (res.status === 200 && res.data !== undefined) {
           if (res.data?.message) {
             toast.success(res.data?.message)
+            setExtractedData([])
+            setIsEditable(false)
             onRefresh()
             setBulkEditable(false)
+            modifiedData = {}
           }
         }
       })
@@ -840,6 +850,8 @@ export default ({
                   role={'button'}
                   src={upload_link}
                   onClick={() => {
+                    setBulkEditable(true)
+                    setIsEditable(true)
                     onUploadClick()
                   }}
                 />
@@ -921,7 +933,7 @@ export default ({
               // selectableRows
               // onSelectedRowsChange={selectedRowsActionUA}
             />
-            {isEditable ? (
+            {isEditable && !bulkEditable ? (
               renderDummyRow()
             ) : isAdmin && !isTableEditable && !archivedFilter && !bulkEditable ? (
               <div
@@ -942,7 +954,7 @@ export default ({
               </div>
             ) : null}
 
-            {bulkEditable ? renderDummyRows() : null}
+            {bulkEditable && isEditable ? renderDummyRows() : null}
           </div>
         </div>
       </div>
