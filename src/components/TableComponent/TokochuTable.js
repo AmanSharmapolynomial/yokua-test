@@ -24,6 +24,8 @@ const TokuchuTable = forwardRef(
       extractedData,
       setExtractedData,
       tableId,
+      rowName,
+      setRowName,
     },
     ref
   ) => {
@@ -36,8 +38,9 @@ const TokuchuTable = forwardRef(
     const [bulkEditable, setBulkEditable] = useState(false)
     const [fileData, setFileData] = useState({})
     const inputRef = useRef([])
-    const [emptyNewRow, setEmptyNewRow] = useState(null)
-    const [rowName, setRowName] = useState({})
+    const [emptyNewRow, setEmptyNewRow] = useState([])
+    // const [rowName, setRowName] = useState([])
+    const [_rowName, _setRowName] = useState()
     const [isEdit, setEdit] = useState(false)
     const [deleteSelected, setDeleteSelected] = useState(null)
     const [editSelected, setEditSelected] = useState(null)
@@ -90,19 +93,35 @@ const TokuchuTable = forwardRef(
     }
     const imageFileInputRef = useRef()
 
-    // useEffect(() => {
-    //   if (extractedData && extractedData.length > 0) {
-    //     setBulkEditable(true)
-    //   } else {
-    //     setBulkEditable(false)
-    //   }
-    // }, [extractedData])
+    // const handleChange = (name, value, index) => {
+    //   console.log(rowName)
+    //   // const updatedRowName = rowName
+    //   // if (!updatedRowName[index]) {
+    //   //   updatedRowName[index] = {}
+    //   // }
+    //   // updatedRowName[index][name] = value
+    //   // setRowName([...updatedRowName])
+    // }
 
-    const handleChange = (name, value) => {
-      const updatedRowName = rowName
-      updatedRowName[name] = value
-      setRowName({ ...updatedRowName })
+    const handleChange = (name, value, index) => {
+      // setRowName(prevRowName => {
+      //   console.log(prevRowName) // Log previous state
+      //   return [...prevRowName] // Return a new array based on the previous state
+      // })
+      console.log(_rowName)
     }
+
+    const updateRow = row => {
+      setRowName(prevRowName => {
+        const newRowName = [...prevRowName, row] // Create a new array with the new value
+        return [...newRowName] // Return the new array as the updated state
+      })
+    }
+
+    useEffect(() => {
+      console.log('Row Update', rowName)
+      _setRowName([...rowName])
+    }, [rowName])
 
     const handleTableDataChange = (name, value, index, file = null) => {
       setEditedTableObject(prevState => {
@@ -376,8 +395,8 @@ const TokuchuTable = forwardRef(
             )
           finalTableData.push(tableRowObject)
         })
-      if (emptyNewRow) {
-        finalTableData.push(emptyNewRow)
+      if (emptyNewRow.length > 0) {
+        finalTableData.push(...emptyNewRow)
       }
       setTableRows([...finalTableData])
     }
@@ -414,7 +433,7 @@ const TokuchuTable = forwardRef(
       API.post('tokuchu/page/update_table_data', formData)
         .then(data => {
           toast.success('New row added successfully')
-          setRowName({})
+          setRowName([])
           setEmptyNewRow(null)
           onRefresh()
         })
@@ -428,7 +447,7 @@ const TokuchuTable = forwardRef(
       })
         .then(data => {
           toast.success('Row deleted successfully')
-          setRowName({})
+          setRowName([])
           setEmptyNewRow(null)
           onRefresh()
           setDeleteSelected(null)
@@ -440,8 +459,7 @@ const TokuchuTable = forwardRef(
       setImageFile(e.event.files[0])
     }
 
-    const addRow = extractedData => {
-      console.log('addRow called', extractedData)
+    const addRow = (extractedData, rowIndex) => {
       const tempObject = {
         isEdit: true,
         edit: (
@@ -451,7 +469,7 @@ const TokuchuTable = forwardRef(
                 className="fa-solid fa-xmark reject"
                 onClick={() => {
                   _setTableData()
-                  setRowName({})
+                  setRowName([])
                   setEmptyNewRow(null)
                 }}
                 role="button"
@@ -462,7 +480,7 @@ const TokuchuTable = forwardRef(
                 role="button"
                 className="fa-solid fa-check"
                 onClick={() => {
-                  convertData()
+                  convertData(rowIndex)
                 }}
               />
             </div>
@@ -471,7 +489,11 @@ const TokuchuTable = forwardRef(
       }
       const rowHandler = {}
       tableHeader.map((item, index) => {
-        rowHandler[item['name']] = ''
+        const initialValue = extractedData
+          ? findElementByColumnName(extractedData.data, item['name'])?.values
+          : ''
+
+        rowHandler[item['name']] = initialValue
         if (item['name'] === 'Tokuchu') {
           tempObject[item['name']] = (
             <input
@@ -493,9 +515,9 @@ const TokuchuTable = forwardRef(
                   borderLeft: 'none',
                 }}
                 type={item.isDate ? 'date' : 'text form-control'}
-                id={rowName[item['name']] + Math.random().toString()}
-                key={rowName[item['name']] + Math.random().toString()}
-                value={extractedData ? extractedData.data[0].values : rowName[item['name']]}
+                id={rowName[rowIndex]?.[item['name']] + Math.random().toString()}
+                key={rowName[rowIndex]?.[item['name']] + Math.random().toString()}
+                value={rowName[rowIndex]?.[item['name']]}
                 onChange={e => handleChange(item['name'], e.target.value)}
               />
             </>
@@ -503,16 +525,30 @@ const TokuchuTable = forwardRef(
         }
       })
 
-      setRowName(rowHandler)
-      setEmptyNewRow(tempObject)
+      // const _rowName = [...rowName]
+      // _rowName.push(rowHandler)
+      // setRowName(_rowName)
+      updateRow(rowHandler)
+
+      // setRowName(prevState => ({ ...prevState, [rowIndex]: rowHandler }))
+      const _emptyNewRow = [...emptyNewRow]
+      _emptyNewRow.push(tempObject)
+      setEmptyNewRow(_emptyNewRow)
       setNeedToReload(!needToReload)
       document.body.style.overflow = 'auto'
     }
 
-    const convertData = () => {
+    const findElementByColumnName = (data, columnName) => {
+      console.log(data, columnName)
+      return data.find(element => element.column_name === columnName)
+    }
+
+    const convertData = index => {
       let dataArray = []
       let isBlankValue = false
-      const keys = Object.keys(rowName)
+
+      console.log(rowName, index)
+      const keys = Object.keys(rowName[index])
       keys.forEach(key => {
         if (rowName[key] == '' || !rowName[key]) {
           isBlankValue = true
@@ -780,7 +816,7 @@ const TokuchuTable = forwardRef(
               className="add_row d-none d-lg-flex"
               style={{ fontSize: '1rem', background: 'none' }}
               onClick={() => {
-                if (!emptyNewRow) {
+                if (emptyNewRow.length === 0) {
                   addRow()
                 } else {
                   toast.error('Please finish the current edit')
@@ -799,8 +835,6 @@ const TokuchuTable = forwardRef(
               {'Add'}
             </div>
           )}
-        {/* {bulkEditable ? renderDummyRows() : null} */}
-        {console.log(extractedData, bulkEditable)}
         <Modal
           show={deleteSelected !== null && Object.keys(deleteSelected).length > 0}
           centered
