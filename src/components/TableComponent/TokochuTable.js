@@ -226,7 +226,7 @@ const TokuchuTable = forwardRef(
           const uniqueFilters = filters.filter((item, index) => filters.indexOf(item) === index)
           tableColumns.push({
             name: (
-              <div className="dropdown">
+              <div className="relative">
                 <div
                   id="dropdownMenuButton"
                   data-toggle="dropdown"
@@ -244,7 +244,7 @@ const TokuchuTable = forwardRef(
                       color: 'rgba(0,0,0,0.87)',
                       fontWeight: '400',
                     }}
-                    className="dropdown-item m-4 filter-item"
+                    className="dropdown-item filter-item"
                     onClick={() => {
                       // Handle clear filter action
                     }}
