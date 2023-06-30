@@ -1,4 +1,11 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import DataTable from 'react-data-table-component'
 import { useLoading } from '../../utils/LoadingContext'
 import { getToken, getUserRoles } from '../../utils/token'
@@ -38,7 +45,6 @@ const TokuchuTable = forwardRef(
     const inputRef = useRef([])
     const [emptyNewRow, setEmptyNewRow] = useState([])
     const [rowName, setRowName] = useState([])
-    const [_rowName, _setRowName] = useState()
     const [isEdit, setEdit] = useState(false)
     const [deleteSelected, setDeleteSelected] = useState(null)
     const [editSelected, setEditSelected] = useState(null)
@@ -101,24 +107,19 @@ const TokuchuTable = forwardRef(
     //   // setRowName([...updatedRowName])
     // }
 
-    const handleChange = (name, value, index) => {
-      // setRowName(prevRowName => {
-      //   console.log(prevRowName) // Log previous state
-      //   return [...prevRowName] // Return a new array based on the previous state
-      // })
-      console.log(_rowName)
-    }
-
-    const updateRow = row => {
-      setRowName(prevRowName => {
-        const newRowName = [...prevRowName, row] // Create a new array with the new value
-        return [...newRowName] // Return the new array as the updated state
-      })
-    }
+    const handleChange = useCallback(
+      (name, value, index) => {
+        setRowName(prevRowName => {
+          console.log(prevRowName) // Log previous state
+          return [...prevRowName] // Return a new array based on the previous state
+        })
+        console.log(rowName)
+      },
+      [rowName]
+    )
 
     useEffect(() => {
       console.log('Row Update', rowName)
-      _setRowName([...rowName])
     }, [rowName])
 
     const handleTableDataChange = (name, value, index, file = null) => {
@@ -487,6 +488,7 @@ const TokuchuTable = forwardRef(
       }
       const rowHandler = {}
       tableHeader.map((item, index) => {
+        console.log(item)
         const initialValue = extractedData
           ? findElementByColumnName(extractedData.data, item['name'])?.values
           : ''
@@ -537,7 +539,7 @@ const TokuchuTable = forwardRef(
     }
 
     const findElementByColumnName = (data, columnName) => {
-      console.log(data, columnName)
+      // console.log(data, columnName)
       return data.find(element => element.column_name === columnName)
     }
 
