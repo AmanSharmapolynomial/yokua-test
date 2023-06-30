@@ -24,8 +24,6 @@ const TokuchuTable = forwardRef(
       extractedData,
       setExtractedData,
       tableId,
-      rowName,
-      setRowName,
     },
     ref
   ) => {
@@ -39,7 +37,7 @@ const TokuchuTable = forwardRef(
     const [fileData, setFileData] = useState({})
     const inputRef = useRef([])
     const [emptyNewRow, setEmptyNewRow] = useState([])
-    // const [rowName, setRowName] = useState([])
+    const [rowName, setRowName] = useState([])
     const [_rowName, _setRowName] = useState()
     const [isEdit, setEdit] = useState(false)
     const [deleteSelected, setDeleteSelected] = useState(null)
@@ -525,10 +523,10 @@ const TokuchuTable = forwardRef(
         }
       })
 
-      // const _rowName = [...rowName]
-      // _rowName.push(rowHandler)
-      // setRowName(_rowName)
-      updateRow(rowHandler)
+      const _rowName = [...rowName]
+      _rowName.push(rowHandler)
+      setRowName(_rowName)
+      // updateRow(rowHandler)
 
       // setRowName(prevState => ({ ...prevState, [rowIndex]: rowHandler }))
       const _emptyNewRow = [...emptyNewRow]

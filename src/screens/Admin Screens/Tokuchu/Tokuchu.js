@@ -39,7 +39,6 @@ const Tokuchu = () => {
   const [tableId, settableId] = useState(null)
   const [extractedData, setExtractedData] = useState([])
   const tableRef = React.useRef(null)
-  const [rowName, setRowName] = useState([])
 
   const _getProducts = () => {
     API.post('tokuchu/list_view', {
@@ -698,8 +697,6 @@ const Tokuchu = () => {
                     setExtractedData={setExtractedData}
                     settableId={settableId}
                     ref={tableRef}
-                    rowName={rowName}
-                    setRowName={setRowName}
                   />
                 )
               })
