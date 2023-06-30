@@ -9,6 +9,7 @@ import upload from '../../assets/upload.png'
 import { toast } from 'react-toastify'
 import Tooltip from '@mui/material/Tooltip'
 import { Modal, Image } from 'react-bootstrap'
+import parsePhoneNumber from 'libphonenumber-js'
 
 export default () => {
   const [contact, setContact] = useState({})
@@ -68,6 +69,20 @@ export default () => {
   const [prodQuesEmail, setProdQuesEmail] = useState('')
   const [prodQuesUpdateModalVisible, setProdQuesUpdateModalVisible] = useState(false)
   const [updateProdQuesId, setUpdateProdQuesId] = useState(-1)
+
+  const formatPhoneNumber = phoneNumber => {
+    const parsedNumber = parsePhoneNumber(phoneNumber)
+
+    if (parsedNumber && parsedNumber.isValid()) {
+      const formattedPhoneNumber = parsedNumber.formatInternational()
+      return formattedPhoneNumber
+    }
+    if (phoneNumber.length === 10) {
+      phoneNumber = phoneNumber.slice(0, 5) + ' ' + phoneNumber.slice(5)
+      return phoneNumber
+    }
+    return phoneNumber
+  }
 
   const _setImage = () => {
     if (imageFile && imageFile != '') {
@@ -787,7 +802,7 @@ export default () => {
                               <div className="d-flex mb-2  align-items-center">
                                 <i className="fa fa-phone" aria-hidden="true"></i>
                                 <p className="ms-2 px-2 mb-0 border border-dark w-auto">
-                                  {card?.phone_no}
+                                  {formatPhoneNumber(card?.phone_no)}
                                 </p>
                               </div>
                             )}

@@ -20,6 +20,7 @@
         "easy-peasy": "^5.0.4",
         "history": "5",
         "html-react-parser": "^3.0.1",
+        "libphonenumber-js": "^1.10.37",
         "moment": "^2.29.1",
         "multiselect-react-dropdown": "^2.0.21",
         "react": "^17.0.2",
