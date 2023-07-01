@@ -7,5 +7,5 @@ export const readOpts = {
 export const jsonOpts = {
   header: 2,
   raw: false,
-  dateNF: 'm"/"d"/"yyyy',
+  dateNF: 'm"-"d"-"yyyy',
 }

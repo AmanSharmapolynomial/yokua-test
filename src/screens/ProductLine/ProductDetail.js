@@ -432,6 +432,18 @@ const ProductDetail = () => {
   //   reader.readAsArrayBuffer(file)
   // }
 
+  const getNextId = () => {
+    for (let i = 0; i < productDetail.length; i++) {
+      const components = productDetail[i].components
+      for (let j = 0; j < components.length; j++) {
+        const tables = components[j]
+        if (tables.id == tableId) {
+          return tables.next_id
+        }
+      }
+    }
+  }
+
   const handleFileUpload = file => {
     const reader = new FileReader()
 
@@ -442,17 +454,18 @@ const ProductDetail = () => {
       const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
       setLoading(true)
-
-      const modifiedData = jsonData.map((row, index) => ({
-        row_id: productDetail[0].components[0].next_id + index,
-        data: Object.entries(row).map(([column_name, values]) => {
-          console.log(column_name, values)
-          return {
-            column_name,
-            values,
-          }
-        }),
-      }))
+      const ni = getNextId()
+      const modifiedData = jsonData.map((row, index) => {
+        return {
+          row_id: ni + index,
+          data: Object.entries(row).map(([column_name, values]) => {
+            return {
+              column_name,
+              values,
+            }
+          }),
+        }
+      })
 
       setExtractedData(modifiedData)
       setLoading(false)
