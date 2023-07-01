@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { FormControl, Modal } from 'react-bootstrap'
 import * as XLSX from 'xlsx'
+import { jsonOpts, readOpts } from '../../config/xlsx.js'
 import { useLoading } from '../../../utils/LoadingContext'
 
 const EDIT_PRODUCT = 'Product'
@@ -274,9 +275,9 @@ const Tokuchu = () => {
     reader.onload = e => {
       try {
         const data = new Uint8Array(e.target.result)
-        const workbook = XLSX.read(data, { type: 'array' })
+        const workbook = XLSX.read(data, readOpts)
         const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
         setLoading(true)
         // if(jsonData.length < 8) {

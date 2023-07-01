@@ -21,6 +21,7 @@ import ic_link from '../../assets/link_icon.png'
 import htmlParser from 'html-react-parser'
 import Tooltip from '@mui/material/Tooltip'
 import * as XLSX from 'xlsx'
+import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
 const ProductDetail = () => {
   const isAdmin =
@@ -436,18 +437,21 @@ const ProductDetail = () => {
 
     reader.onload = e => {
       const data = new Uint8Array(e.target.result)
-      const workbook = XLSX.read(data, { type: 'array' })
+      const workbook = XLSX.read(data, readOpts)
       const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
       setLoading(true)
 
       const modifiedData = jsonData.map((row, index) => ({
         row_id: index + 1,
-        data: Object.entries(row).map(([column_name, values]) => ({
-          column_name,
-          values,
-        })),
+        data: Object.entries(row).map(([column_name, values]) => {
+          console.log(column_name, values)
+          return {
+            column_name,
+            values,
+          }
+        }),
       }))
 
       setExtractedData(modifiedData)
