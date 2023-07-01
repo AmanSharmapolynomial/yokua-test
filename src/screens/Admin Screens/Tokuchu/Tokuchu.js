@@ -12,11 +12,32 @@ import { useLoading } from '../../../utils/LoadingContext'
 const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
 const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
+
+const checkIfColumnIsMissing = (data, tableHeader) => {
+  // const set = new Set();
+  // set.add()
+  if (data.length === 0) throw 'No Data found'
+  const importedColumns = Object.keys(data[0]).sort()
+  tableHeader.sort()
+
+  debugger
+  for (let i = 0; i < tableHeader.length; i++) {
+    console.log(tableHeader[i].toLowerCase(), importedColumns[i].toLowerCase())
+    if (tableHeader[i].toLowerCase() != importedColumns[i].toLowerCase()) {
+      throw `${tableHeader[i]} missing`
+    }
+  }
+}
+
 function convertSerialDate(serialDate) {
-  const excelEpoch = new Date(1899, 11, 30) //adjusted to account for the leap year error in excel
-  const millisecondsPerDay = 24 * 60 * 60 * 1000
-  const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
-  return dateObject.toISOString().slice(0, 10)
+  try {
+    const excelEpoch = new Date(1899, 11, 30) //adjusted to account for the leap year error in excel
+    const millisecondsPerDay = 24 * 60 * 60 * 1000
+    const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
+    return dateObject.toISOString().slice(0, 10)
+  } catch (error) {
+    return ''
+  }
 }
 const Tokuchu = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -251,30 +272,32 @@ const Tokuchu = () => {
     const reader = new FileReader()
 
     reader.onload = e => {
-      const data = new Uint8Array(e.target.result)
-      const workbook = XLSX.read(data, { type: 'array' })
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+      try {
+        const data = new Uint8Array(e.target.result)
+        const workbook = XLSX.read(data, { type: 'array' })
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
 
-      setLoading(true)
-      const modifiedData = jsonData.map((row, index) => ({
-        row_id: tableData[0].components[0].next_id + index,
-        data: Object.entries(row).map(([column_name, values]) => ({
-          column_name,
-          values: column_name === 'Valid Until' ? convertSerialDate(values) : values,
-        })),
-      }))
-      // console.log(modifiedData, tableRef)
-      // modifiedData.forEach((data, index) => {
-      //   if (tableRef.current) {
-      //     tableRef.current.addRow(data, index)
-      //   }
-      // })
-      // if (tableRef.current) {
-      //   tableRef.current.addRow();
-      // }
-      setExtractedData(modifiedData)
-      setLoading(false)
+        setLoading(true)
+        // if(jsonData.length < 8) {
+        //   throw "Column is mssing"
+        // }
+        const tableHeader = tableData[0].components[0].table_data
+          .filter(({ column_name }) => column_name != 'Tokuchu')
+          .map(({ column_name }) => column_name)
+        checkIfColumnIsMissing(jsonData, tableHeader)
+        const modifiedData = jsonData.map((row, index) => ({
+          row_id: tableData[0].components[0].next_id + index,
+          data: Object.entries(row).map(([column_name, values]) => ({
+            column_name,
+            values: column_name === 'Valid Until' ? convertSerialDate(values) : values,
+          })),
+        }))
+        setExtractedData(modifiedData)
+      } catch (error) {
+        setLoading(false)
+        toast.error(`In valid Data: ${error}`)
+      }
     }
 
     reader.readAsArrayBuffer(file)

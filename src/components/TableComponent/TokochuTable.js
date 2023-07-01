@@ -535,10 +535,10 @@ const TokuchuTable = ({
       ),
     }
     const rowHandler = {}
-    tableHeader.map((item, index) => {
-      rowHandler[item['name']] = ''
-      if (item['name'] === 'Tokuchu') {
-        tempObject[item['name']] = (
+    tableObject.table_data.map((item, index) => {
+      rowHandler[item['column_name']] = ''
+      if (item['column_name'] === 'Tokuchu') {
+        tempObject[item['column_name']] = (
           <input
             ref={imageFileInputRef}
             id={Math.random().toString()}
@@ -548,7 +548,7 @@ const TokuchuTable = ({
           />
         )
       } else {
-        tempObject[item['name']] = (
+        tempObject[item['column_name']] = (
           <>
             <input
               style={{
@@ -557,10 +557,10 @@ const TokuchuTable = ({
                 borderRight: 'none',
                 borderLeft: 'none',
               }}
-              type={item.isDate ? 'date' : 'text form-control'}
-              id={rowName[item['name']] + Math.random().toString()}
-              key={rowName[item['name']] + Math.random().toString()}
-              value={rowName[item['name']]}
+              type={item['column_name'] === 'Valid Until' ? 'date' : 'text form-control'}
+              id={rowName[item['column_name']] + Math.random().toString()}
+              key={rowName[item['column_name']] + Math.random().toString()}
+              value={rowName[item['column_name']]}
               onChange={e => handleChange(item['name'], e.target.value)}
             />
           </>
