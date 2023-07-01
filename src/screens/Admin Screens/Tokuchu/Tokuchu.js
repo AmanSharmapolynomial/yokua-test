@@ -254,18 +254,18 @@ const Tokuchu = () => {
       setLoading(true)
 
       const modifiedData = jsonData.map((row, index) => ({
-        row_id: index + 1,
+        row_id: tableData[0].components[0].next_id + index,
         data: Object.entries(row).map(([column_name, values]) => ({
           column_name,
           values,
         })),
       }))
       // console.log(modifiedData, tableRef)
-      modifiedData.forEach((data, index) => {
-        if (tableRef.current) {
-          tableRef.current.addRow(data, index)
-        }
-      })
+      // modifiedData.forEach((data, index) => {
+      //   if (tableRef.current) {
+      //     tableRef.current.addRow(data, index)
+      //   }
+      // })
       // if (tableRef.current) {
       //   tableRef.current.addRow();
       // }
