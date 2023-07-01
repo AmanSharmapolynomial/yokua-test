@@ -13,6 +13,8 @@ import ic_link from '../../assets/link_icon.png'
 import RYGFlowComponent from '../../components/RYGFlowComponent/RYGFlowComponent'
 import htmlParser from 'html-react-parser'
 import Tooltip from '@mui/material/Tooltip'
+import * as XLSX from 'xlsx'
+import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
 const RYGDetail = () => {
   const queryString = window.location.search
@@ -53,6 +55,7 @@ const RYGDetail = () => {
   const [subProductList, setSubProductList] = useState([])
   // const [addComponentData, setAddComponentData] = useState({})
   const [inputBinary, setInputBinary] = useState()
+  const [isUploadModalVisible, setUploadModalVisible] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
   const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
@@ -64,7 +67,11 @@ const RYGDetail = () => {
   const [imagesToUpload, setImagesToUpload] = useState([])
   const [isImageGridEditable, setIsImageGridEditable] = useState([])
   const sectionTitleRef = React.useRef(null)
+  const sectionFileRef = React.useRef(null)
   const accordionRef = React.useRef(null)
+  const [tableId, settableId] = useState(null)
+  const [extractedData, setExtractedData] = useState([])
+  const [editableBulk, setEditableBulk] = useState(true)
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
@@ -333,6 +340,57 @@ const RYGDetail = () => {
       })
   }
 
+  const handleFileUpload = file => {
+    const reader = new FileReader()
+
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result)
+        const workbook = XLSX.read(data, readOpts)
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
+
+        setLoading(true)
+
+        const modifiedData = jsonData.map((row, index) => ({
+          row_id: productDetail[0].components[0].next_id + index,
+          data: Object.entries(row).map(([column_name, values]) => {
+            console.log(column_name, values)
+            return {
+              column_name,
+              values,
+            }
+          }),
+        }))
+
+        setExtractedData(modifiedData)
+      } catch (error) {
+        toast.error(`In valid Data: ${error}`)
+      }
+      setLoading(false)
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+
+  const onFileUpload = () => {
+    const file = sectionFileRef.current.files[0]
+    if (file) {
+      // Check if the file is an Excel file
+      const isExcelFile = file.name.endsWith('.xls') || file.name.endsWith('.xlsx')
+
+      if (isExcelFile) {
+        handleFileUpload(file)
+        setUploadModalVisible(false)
+        toast.success('File is being processed')
+      } else {
+        toast.error('Please upload an Excel file')
+      }
+    } else {
+      toast.error('Please choose a file to upload')
+    }
+  }
+
   const renderType = (ele, idx, arr, section) => {
     if (ele.type === 'flow_Configurator_component') {
       return (
@@ -413,6 +471,10 @@ const RYGDetail = () => {
               component_type: ele.type,
             })
           }}
+          onUploadClick={() => {
+            settableId(ele.id)
+            setUploadModalVisible(true)
+          }}
           onDeleteComponent={() => {
             let payload = {
               section_id: section.section_id,
@@ -431,6 +493,11 @@ const RYGDetail = () => {
           onTableUpdate={tableObject => {
             updateTableValues(tableObject)
           }}
+          handleFileUpload={handleFileUpload}
+          extractedData={extractedData}
+          tableId={tableId}
+          setExtractedData={setExtractedData}
+          editableBulk={editableBulk}
         />
       )
     } else if (ele.type === 'link') {
@@ -1494,6 +1561,7 @@ const RYGDetail = () => {
           </>
         </div>
       </div>
+
       <Modal
         show={isAddComponentModalVisible !== -1}
         centered
@@ -1809,6 +1877,62 @@ const RYGDetail = () => {
             Save
           </button>
         </Modal.Footer>
+      </Modal>
+      <Modal
+        show={isUploadModalVisible}
+        centered
+        onHide={() => {
+          setUploadModalVisible(false)
+          setEditableBulk(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Upload a File</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            <input
+              ref={sectionFileRef}
+              placeholder="Choose a file to upload"
+              type="file"
+              className="form-control w-100"
+              aria-label={'File'}
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setUploadModalVisible(false)
+                setEditableBulk(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onFileUpload()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
       </Modal>
     </>
   )

@@ -444,7 +444,7 @@ const ProductDetail = () => {
       setLoading(true)
 
       const modifiedData = jsonData.map((row, index) => ({
-        row_id: index + 1,
+        row_id: productDetail[0].components[0].next_id + index,
         data: Object.entries(row).map(([column_name, values]) => {
           console.log(column_name, values)
           return {

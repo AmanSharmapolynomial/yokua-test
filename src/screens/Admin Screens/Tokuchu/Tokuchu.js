@@ -20,7 +20,6 @@ const checkIfColumnIsMissing = (data, tableHeader) => {
   const importedColumns = Object.keys(data[0]).sort()
   tableHeader.sort()
 
-  debugger
   for (let i = 0; i < tableHeader.length; i++) {
     console.log(tableHeader[i].toLowerCase(), importedColumns[i].toLowerCase())
     if (tableHeader[i].toLowerCase() != importedColumns[i].toLowerCase()) {
