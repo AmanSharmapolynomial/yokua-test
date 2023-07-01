@@ -12,7 +12,12 @@ import { useLoading } from '../../../utils/LoadingContext'
 const EDIT_PRODUCT = 'Product'
 const EDIT_SUB_PRODUCT = 'Sub Product'
 const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
-
+function convertSerialDate(serialDate) {
+  const excelEpoch = new Date(1899, 11, 30) //adjusted to account for the leap year error in excel
+  const millisecondsPerDay = 24 * 60 * 60 * 1000
+  const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
+  return dateObject.toISOString().slice(0, 10)
+}
 const Tokuchu = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
@@ -252,12 +257,11 @@ const Tokuchu = () => {
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
 
       setLoading(true)
-
       const modifiedData = jsonData.map((row, index) => ({
         row_id: tableData[0].components[0].next_id + index,
         data: Object.entries(row).map(([column_name, values]) => ({
           column_name,
-          values,
+          values: column_name === 'Valid Until' ? convertSerialDate(values) : values,
         })),
       }))
       // console.log(modifiedData, tableRef)

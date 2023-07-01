@@ -87,30 +87,22 @@ const TokuchuTable = ({
   const imageFileInputRef = useRef()
   const [extractedDataChange, setExtractedDataChanged] = useState([])
   console.log('extractedDataChange', extractedDataChange)
+  const handleFileInputChange = (rowId, file) => {
+    setFileData(prevFileData => ({
+      ...prevFileData,
+      [rowId]: file,
+    }))
+  }
   useEffect(() => {
-    console.log('extractedData', extractedData, tableRows)
     if (extractedData && extractedData.length > 0) {
       setBulkEditable(true)
       setExtractedDataChanged(extractedData)
       const newRows = tableRows
       for (let i = 0; i < extractedData.length; i++) {
-        const data = extractedData[i].data
+        const { row_id, data } = extractedData[i]
         newRows.push(
-          data.reduce((acc, { column_name, values }) => {
-            if (column_name === 'Tokuchu') {
-              return {
-                ...acc,
-                [column_name]: (
-                  <input
-                    ref={imageFileInputRef}
-                    id={Math.random().toString()}
-                    key={Math.random().toString()}
-                    type="file"
-                    onChange={handleImage}
-                  />
-                ),
-              }
-            } else {
+          data.reduce(
+            (acc, { column_name, values }) => {
               return {
                 ...acc,
                 [column_name]: (
@@ -128,16 +120,24 @@ const TokuchuTable = ({
                       type={column_name === 'Valid Until' ? 'date' : 'text form-control'}
                       defaultValue={values}
                       onChange={e => {
+                        console.log('change', e.target.value)
                         setExtractedDataChanged(prev => {
+                          const index = prev[i].data.findIndex(
+                            ({ column_name: column_nameDomain }) =>
+                              column_nameDomain === column_name
+                          )
                           return [
                             ...prev.slice(0, i),
                             {
                               ...prev[i],
-                              data: {
-                                ...prev[i].data,
-                                column_name: column_name,
-                                values: e.target.value,
-                              },
+                              data: [
+                                ...prev[i].data.slice(0, index),
+                                {
+                                  column_name: column_name,
+                                  values: e.target.value,
+                                },
+                                ...prev[i].data.slice(index + 1),
+                              ],
                             },
                             ...prev.slice(i + 1),
                           ]
@@ -147,8 +147,19 @@ const TokuchuTable = ({
                   </>
                 ),
               }
+            },
+            {
+              Tokuchu: (
+                <input
+                  ref={imageFileInputRef}
+                  id={Math.random().toString()}
+                  key={Math.random().toString()}
+                  type="file"
+                  onChange={e => handleFileInputChange(row_id, e.target.files[0])}
+                />
+              ),
             }
-          }, {})
+          )
         )
       }
     } else {
@@ -531,7 +542,6 @@ const TokuchuTable = ({
     // Pass extractedData to the API endpoint or perform the necessary operations here
     // Example code to send the data to an API endpoint:
     console.log(extractedData)
-    debugger
     const formData = new FormData()
 
     // Add the table ID and extracted data to the form data
@@ -557,9 +567,9 @@ const TokuchuTable = ({
       })
       .catch(err => {
         toast.error(err)
-        setBulkEditable(false)
-        setExtractedData([])
-        setFileData([])
+        // setBulkEditable(false)
+        // setExtractedData([])
+        // setFileData([])
         // Handle error
       })
   }
@@ -740,9 +750,21 @@ const TokuchuTable = ({
       {bulkEditable ? (
         <div className="add-row d-none d-lg-flex overflow-auto">
           {extractedData.length > 0 && (
-            <div className="d-flex justify-content-end">
-              <button className="btn btn-primary" onClick={handleUploadData}>
+            <div className="d-flex justify-content-end gap">
+              <button className="btn btn-primary me-2" onClick={handleUploadData}>
                 Upload Data
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setBulkEditable(false)
+                  setExtractedData([])
+                  setExtractedDataChanged([])
+                  onRefresh()
+                  setFileData([])
+                }}
+              >
+                Cancel
               </button>
             </div>
           )}
