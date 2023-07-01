@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import DeleteModal from '../../../components/Modals/Delete Modal/DeleteModal'
 import { FormControl, Modal } from 'react-bootstrap'
 import * as XLSX from 'xlsx'
-import { jsonOpts, readOpts } from '../../config/xlsx.js'
+import { jsonOpts, readOpts } from '../../../config/xlsx.js'
 import { useLoading } from '../../../utils/LoadingContext'
 
 const EDIT_PRODUCT = 'Product'
