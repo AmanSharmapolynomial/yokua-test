@@ -607,13 +607,11 @@ const Tokuchu = () => {
                       className="dropdown-item"
                       key={sub.name}
                       onClick={e => {
-                        // e.stopPropagation()
-                        setDataToShow({ ...dataToShow, level: 2, subIdx: i, name: sub.name })
-                        _getProductItems(sub.id, dataToShow.id)
+                        setDataToShow({ ...dataToShow, name: sub.name })
+                        setSelectedProduct(sub)
                       }}
                     >
                       {sub.name}
-                      <i className="fa fa-chevron-right mt-1" aria-hidden="true" />
                     </div>
                     /*)*/
                   ))

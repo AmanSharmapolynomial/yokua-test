@@ -235,19 +235,95 @@ const TokuchuTable = ({
       })
   }
 
-  const _setTableHeaders = () => {
+  // const _setTableHeaders = () => {
+  //   const tableColumns = []
+  //   tableObject.table_data?.map((column, index) => {
+  //     const tempColumnName = column.column_name
+  //     tableColumns.push({
+  //       isEdit: isEdit,
+  //       name: column.column_name,
+  //       selector: row => row[tempColumnName],
+  //       sortable: column.is_sortable,
+  //       isLink: column.is_link,
+  //       isDate: column.is_date,
+  //       filterable: column.is_filterable,
+  //     })
+  //   })
+  //   tableColumns.push({
+  //     name: '',
+  //     selector: row => row.edit,
+  //   })
+  //   setTableHeader([...tableColumns])
+  // }
+
+  const _setTableHeaders = sort => {
     const tableColumns = []
     tableObject.table_data?.map((column, index) => {
       const tempColumnName = column.column_name
-      tableColumns.push({
-        isEdit: isEdit,
-        name: column.column_name,
-        selector: row => row[tempColumnName],
-        sortable: column.is_sortable,
-        isLink: column.is_link,
-        isDate: column.is_date,
-        filterable: column.is_filterable,
-      })
+      if (!column.is_filterable) {
+        tableColumns.push({
+          name: column.column_name,
+          selector: row => row[tempColumnName],
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      } else {
+        const filters = column.values.map(item => item.value)
+        const uniqueFilters = filters.filter((item, index) => filters.indexOf(item) === index)
+        tableColumns.push({
+          name: (
+            <div className="relative">
+              <div
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                className="dropdown-toggle"
+                src={require('../../assets/Rearrange order.png')}
+              >
+                {column.column_name}
+              </div>
+
+              <div className="dropdown-menu">
+                <span
+                  style={{
+                    color: 'rgba(0,0,0,0.87)',
+                    fontWeight: '400',
+                  }}
+                  className="dropdown-item filter-item"
+                  onClick={() => {
+                    // Handle clear filter action
+                  }}
+                >
+                  <i>Clear Filter</i>
+                </span>
+                {uniqueFilters.map((element, index) => (
+                  <span
+                    style={{
+                      color: 'rgba(0,0,0,0.87)',
+                      fontWeight: element === sort ? '600' : '400',
+                    }}
+                    key={index}
+                    className="dropdown-item filter-item"
+                    onClick={() => {
+                      // Handle filter action
+                    }}
+                  >
+                    {element}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ),
+          selector: row => row[tempColumnName],
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      }
     })
     tableColumns.push({
       name: '',
