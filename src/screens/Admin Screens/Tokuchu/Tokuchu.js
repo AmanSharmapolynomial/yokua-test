@@ -14,12 +14,15 @@ const EDIT_SUB_PRODUCT = 'Sub Product'
 const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
 
 const checkIfColumnIsMissing = (data, tableHeader) => {
+  // const set = new Set();
+  // set.add()
   if (data.length === 0) throw 'No Data found'
   const importedColumns = Object.keys(data[0]).sort()
   tableHeader.sort()
 
   for (let i = 0; i < tableHeader.length; i++) {
-    if (tableHeader[i] != importedColumns[i]) {
+    console.log(tableHeader[i].toLowerCase(), importedColumns[i].toLowerCase())
+    if (tableHeader[i].toLowerCase() != importedColumns[i].toLowerCase()) {
       throw `${tableHeader[i]} missing`
     }
   }
@@ -73,7 +76,7 @@ const Tokuchu = () => {
       .catch(err => console.log(err))
   }
 
-  const _getSutoLowerbProducts = (productId = 1) => {
+  const _getSubProducts = (productId = 1) => {
     const currentProduct = products.find(item => item.id === productId)
     if (!subProductLoading && currentProduct.subProducts.length < 1) {
       setSubProductLoading(true)

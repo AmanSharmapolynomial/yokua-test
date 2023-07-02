@@ -24,16 +24,6 @@ import * as XLSX from 'xlsx'
 import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
 const bulkUpdateApiRoute = 'products/page/bulk_update_table_data'
-const checkIfColumnIsMissing = (data, tableHeader) => {
-  if (data.length === 0) throw 'No Data found'
-  const importedColumns = Object.keys(data[0])
-  for (let i = 0; i < tableHeader.length; i++) {
-    if (!importedColumns.includes(tableHeader[i])) {
-      console.log(tableHeader[i], importedColumns[i])
-      throw `${tableHeader[i]} missing`
-    }
-  }
-}
 
 const ProductDetail = () => {
   const isAdmin =
@@ -449,32 +439,23 @@ const ProductDetail = () => {
     const reader = new FileReader()
 
     reader.onload = e => {
-      try {
-        const data = new Uint8Array(e.target.result)
-        const workbook = XLSX.read(data, readOpts)
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
+      const data = new Uint8Array(e.target.result)
+      const workbook = XLSX.read(data, readOpts)
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
-        setLoading(true)
-        const tableHeader = productDetail[0].components[0].table_data.map(
-          ({ column_name }) => column_name
-        )
-        checkIfColumnIsMissing(jsonData, tableHeader)
-        const modifiedData = jsonData.map((row, index) => {
-          return {
-            row_id: nextId + index,
-            data: Object.entries(row).map(([column_name, values]) => {
-              return {
-                column_name,
-                values,
-              }
-            }),
-          }
-        })
-      } catch (error) {
-        toast.error(`In valid Data: ${error}`)
-      }
-      setLoading(false)
+      setLoading(true)
+      const modifiedData = jsonData.map((row, index) => {
+        return {
+          row_id: nextId + index,
+          data: Object.entries(row).map(([column_name, values]) => {
+            return {
+              column_name,
+              values,
+            }
+          }),
+        }
+      })
 
       setExtractedData(modifiedData)
       setLoading(false)

@@ -17,16 +17,6 @@ import * as XLSX from 'xlsx'
 import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
 const bulkUpdateApiRoute = '/ryg_info/page/bulk_update_table_data'
-const checkIfColumnIsMissing = (data, tableHeader) => {
-  if (data.length === 0) throw 'No Data found'
-  const importedColumns = Object.keys(data[0])
-  for (let i = 0; i < tableHeader.length; i++) {
-    if (!importedColumns.includes(tableHeader[i])) {
-      console.log(tableHeader[i], importedColumns[i])
-      throw `${tableHeader[i]} missing`
-    }
-  }
-}
 
 const RYGDetail = () => {
   const queryString = window.location.search
@@ -364,10 +354,6 @@ const RYGDetail = () => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
         setLoading(true)
-        const tableHeader = tableData[0].components[0].table_data.map(
-          ({ column_name }) => column_name
-        )
-        checkIfColumnIsMissing(jsonData, tableHeader)
         const modifiedData = jsonData.map((row, index) => ({
           row_id: nextId + index,
           data: Object.entries(row).map(([column_name, values]) => {
