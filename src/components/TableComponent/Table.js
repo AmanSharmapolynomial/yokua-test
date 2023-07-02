@@ -13,6 +13,7 @@ import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
+import './table.css'
 
 /**
  *
