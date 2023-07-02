@@ -57,6 +57,7 @@ export default ({
   setExtractedData,
   tableId,
   editableBulk,
+  bulkUpdateApiRoute,
 }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
@@ -739,7 +740,7 @@ export default ({
       formData.append(`row_${parseInt(rowId) + increment}`, file)
     })
 
-    API.post('products/page/bulk_update_table_data', formData)
+    API.post(bulkUpdateApiRoute, formData)
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           if (res.data?.message) {

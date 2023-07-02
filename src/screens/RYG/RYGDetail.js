@@ -16,6 +16,8 @@ import Tooltip from '@mui/material/Tooltip'
 import * as XLSX from 'xlsx'
 import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
+const bulkUpdateApiRoute = '/ryg_info/page/bulk_update_table_data'
+
 const RYGDetail = () => {
   const queryString = window.location.search
   // const queryStringTwo = queryString.substring(queryString.indexOf('?') + 1);
@@ -353,7 +355,7 @@ const RYGDetail = () => {
 
         setLoading(true)
         const modifiedData = jsonData.map((row, index) => ({
-          row_id: next_id + index,
+          row_id: nextId + index,
           data: Object.entries(row).map(([column_name, values]) => {
             console.log(column_name, values)
             return {
@@ -459,6 +461,7 @@ const RYGDetail = () => {
       return (
         <Table
           isRYG={true}
+          bulkUpdateApiRoute={bulkUpdateApiRoute}
           onEditableClick={() => {
             if (ele.id !== isEditable) setIsEditable(ele.id)
             else setIsEditable(-1)

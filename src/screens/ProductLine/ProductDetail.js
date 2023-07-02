@@ -23,6 +23,8 @@ import Tooltip from '@mui/material/Tooltip'
 import * as XLSX from 'xlsx'
 import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
+const bulkUpdateApiRoute = 'products/page/bulk_update_table_data'
+
 const ProductDetail = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -573,6 +575,7 @@ const ProductDetail = () => {
       return (
         <Table
           table_id={ele.id}
+          bulkUpdateApiRoute={bulkUpdateApiRoute}
           archivedFilter={archivedFilter}
           onEditableClick={() => {
             if (ele.id !== isEditable) setIsEditable(ele.id)
