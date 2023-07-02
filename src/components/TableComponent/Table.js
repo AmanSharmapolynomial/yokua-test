@@ -781,7 +781,11 @@ export default ({
     return (
       <>
         {extractedData.map((row, idx) => (
-          <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
+          <div
+            className="dummy-row"
+            key={idx}
+            style={{ display: 'flex', border: '1px solid black' }}
+          >
             {row.data.map((column, colIdx) => (
               <input
                 key={colIdx}
@@ -790,6 +794,8 @@ export default ({
                 disabled={column.column_name === 'Type' || column.column_name === 'Size'}
                 placeholder={column.column_name}
                 style={{
+                  width: '6.5%',
+                  border: '1px solid black',
                   backgroundColor:
                     column.column_name === 'Type' || column.column_name === 'Size'
                       ? '#f5f5f5'
@@ -799,10 +805,11 @@ export default ({
                 onChange={e => handleInputChange(idx, colIdx, e.target)}
               />
             ))}
-            <input type="text" disabled placeholder="Type" />
-            <input type="text" disabled placeholder="Size" />
+            <input type="text" style={{ width: '15%' }} disabled placeholder="Type" />
+            <input type="text" style={{ width: '15%' }} disabled placeholder="Size" />
             <input
               type="file"
+              style={{ width: '15%' }}
               onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
             />
           </div>
