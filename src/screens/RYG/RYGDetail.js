@@ -70,6 +70,7 @@ const RYGDetail = () => {
   const sectionFileRef = React.useRef(null)
   const accordionRef = React.useRef(null)
   const [tableId, settableId] = useState(null)
+  const [nextId, setNextId] = useState(null)
   const [extractedData, setExtractedData] = useState([])
   const [editableBulk, setEditableBulk] = useState(true)
 
@@ -340,18 +341,6 @@ const RYGDetail = () => {
       })
   }
 
-  const getNextId = () => {
-    for (let i = 0; i < productDetail.length; i++) {
-      const components = productDetail[i].components
-      for (let j = 0; j < components.length; j++) {
-        const tables = components[j]
-        if (tables.id == tableId) {
-          return tables.next_id
-        }
-      }
-    }
-  }
-
   const handleFileUpload = file => {
     const reader = new FileReader()
 
@@ -363,9 +352,8 @@ const RYGDetail = () => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
         setLoading(true)
-        const ni = getNextId()
         const modifiedData = jsonData.map((row, index) => ({
-          row_id: ni + index,
+          row_id: next_id + index,
           data: Object.entries(row).map(([column_name, values]) => {
             console.log(column_name, values)
             return {
@@ -484,6 +472,7 @@ const RYGDetail = () => {
             })
           }}
           onUploadClick={() => {
+            setNextId(ele.next_id)
             settableId(ele.id)
             setUploadModalVisible(true)
           }}

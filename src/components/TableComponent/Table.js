@@ -709,7 +709,6 @@ export default ({
     // Pass extractedData to the API endpoint or perform the necessary operations here
     // Example code to send the data to an API endpoint:
     const increment = tableRows.length
-    console.log(extractedData)
     const modifiedData = extractedData.map(row => {
       const modifiedRow = {
         ...row,
