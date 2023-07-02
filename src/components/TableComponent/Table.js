@@ -723,11 +723,7 @@ export default ({
       return modifiedRow
     })
 
-    // Update the row_id in the extractedData array
-    const updatedData = modifiedData.map(item => ({
-      ...item,
-      row_id: item.row_id + increment,
-    }))
+    const updatedData = modifiedData
 
     const formData = new FormData()
 
@@ -737,7 +733,7 @@ export default ({
     // Add the file data to the form data
     Object.keys(fileData).forEach(rowId => {
       const file = fileData[rowId]
-      formData.append(`row_${parseInt(rowId) + increment}`, file)
+      formData.append(`row_${parseInt(rowId)}`, file)
     })
 
     API.post(bulkUpdateApiRoute, formData)

@@ -24,6 +24,19 @@ import * as XLSX from 'xlsx'
 import { jsonOpts, readOpts } from '../../config/xlsx.js'
 
 const bulkUpdateApiRoute = 'products/page/bulk_update_table_data'
+const checkIfColumnIsMissing = (data, tableHeader) => {
+  if (data.length === 0) {
+    throw 'No Data found'
+  }
+  const importedColumns = Object.keys(data[0]).sort()
+  tableHeader.sort()
+
+  for (let i = 0; i < tableHeader.length; i++) {
+    if (tableHeader[i] != importedColumns[i]) {
+      throw `${tableHeader[i]} missing`
+    }
+  }
+}
 
 const ProductDetail = () => {
   const isAdmin =
@@ -72,6 +85,7 @@ const ProductDetail = () => {
   const [productName, setProductName] = useState('')
   const [tableId, settableId] = useState(null)
   const [nextId, setNextId] = useState(null)
+  const [tableData, setTableData] = useState(null)
   const [extractedData, setExtractedData] = useState([])
   const [editableBulk, setEditableBulk] = useState(true)
 
@@ -439,14 +453,22 @@ const ProductDetail = () => {
     const reader = new FileReader()
 
     reader.onload = e => {
-      const data = new Uint8Array(e.target.result)
-      const workbook = XLSX.read(data, readOpts)
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
+      try {
+        const data = new Uint8Array(e.target.result)
+        const workbook = XLSX.read(data, readOpts)
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
 
-      setLoading(true)
-      const modifiedData = jsonData.map((row, index) => {
-        return {
+        setLoading(true)
+        const tableHeader = tableData
+          .filter(
+            ({ column_name }) =>
+              !(column_name == 'File' || column_name == 'Type' || column_name == 'Size')
+          )
+          .map(({ column_name }) => column_name)
+
+        checkIfColumnIsMissing(jsonData, tableHeader)
+        const modifiedData = jsonData.map((row, index) => ({
           row_id: nextId + index,
           data: Object.entries(row).map(([column_name, values]) => {
             return {
@@ -454,10 +476,12 @@ const ProductDetail = () => {
               values,
             }
           }),
-        }
-      })
+        }))
 
-      setExtractedData(modifiedData)
+        setExtractedData(modifiedData)
+      } catch (error) {
+        toast.error(`In valid Data: ${error}`)
+      }
       setLoading(false)
     }
 
@@ -591,6 +615,7 @@ const ProductDetail = () => {
           }}
           onUploadClick={() => {
             setNextId(ele.next_id)
+            setTableData(ele.table_data)
             settableId(ele.id)
             setUploadModalVisible(true)
           }}
