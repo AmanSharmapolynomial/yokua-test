@@ -14,15 +14,12 @@ const EDIT_SUB_PRODUCT = 'Sub Product'
 const EDIT_SUB_PRODUCT_ITEM = 'Sub Product Item'
 
 const checkIfColumnIsMissing = (data, tableHeader) => {
-  // const set = new Set();
-  // set.add()
   if (data.length === 0) throw 'No Data found'
   const importedColumns = Object.keys(data[0]).sort()
   tableHeader.sort()
 
   for (let i = 0; i < tableHeader.length; i++) {
-    console.log(tableHeader[i].toLowerCase(), importedColumns[i].toLowerCase())
-    if (tableHeader[i].toLowerCase() != importedColumns[i].toLowerCase()) {
+    if (tableHeader[i] != importedColumns[i]) {
       throw `${tableHeader[i]} missing`
     }
   }
