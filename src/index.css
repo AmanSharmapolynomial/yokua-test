@@ -160,11 +160,11 @@ body {
   justify-content: space-between;
   overflow: auto;
 }
-.product-detail-table div:first-child {
+/* .product-detail-table div:first-child {
   overflow-x: visible !important;
   overflow-y: visible !important;
   white-space: normal !important;
-}
+} */
 .react-calendar__tile--now {
   background-color: #00509b55 !important;
 }
