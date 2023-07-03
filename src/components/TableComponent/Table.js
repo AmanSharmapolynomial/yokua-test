@@ -15,6 +15,8 @@ import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
 import './table.css'
 
+let COLUMN_WIDTH = '150px'
+
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -276,6 +278,9 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
+          width: COLUMN_WIDTH,
+          minWidth: COLUMN_WIDTH,
+          maxWidth: COLUMN_WIDTH,
         })
       } else {
         const filters = column.values.map(item => item.value)
@@ -342,6 +347,9 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
+          width: COLUMN_WIDTH,
+          minWidth: COLUMN_WIDTH,
+          maxWidth: COLUMN_WIDTH,
         })
       }
     })
@@ -349,6 +357,9 @@ export default ({
     tableColumns.push({
       name: '',
       selector: row => row.edit,
+      width: COLUMN_WIDTH,
+      minWidth: COLUMN_WIDTH,
+      maxWidth: COLUMN_WIDTH,
     })
     setTableHeader([...tableColumns])
   }
@@ -641,7 +652,7 @@ export default ({
 
   const renderDummyRow = () => {
     return (
-      <div className="add-row d-none d-lg-flex overflow-auto">
+      <div className="d-none d-lg-flex overflow-auto" style={{ overflow: 'scroll' }}>
         {tableObject.map((ele, idx) => {
           let typeOrSizeColumn = ele.column_name === 'Type' || ele.column_name === 'Size'
           return (
@@ -653,6 +664,7 @@ export default ({
                     ? '100px'
                     : 'none',
                 maxWidth: ele.column_name == 'Classification' ? '150px' : 'none',
+                // width: "20%"
               }}
             >
               {!ele.is_file ? (
@@ -776,13 +788,9 @@ export default ({
       }))
     }
     return (
-      <>
+      <div style={{ overflow: 'scroll', border: '1px solid black' }}>
         {extractedData.map((row, idx) => (
-          <div
-            className="dummy-row"
-            key={idx}
-            style={{ display: 'flex', border: '1px solid black' }}
-          >
+          <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
             {row.data.map((column, colIdx) => (
               <input
                 key={colIdx}
@@ -791,7 +799,7 @@ export default ({
                 disabled={column.column_name === 'Type' || column.column_name === 'Size'}
                 placeholder={column.column_name}
                 style={{
-                  width: '6.5%',
+                  width: COLUMN_WIDTH,
                   border: '1px solid black',
                   backgroundColor:
                     column.column_name === 'Type' || column.column_name === 'Size'
@@ -802,11 +810,11 @@ export default ({
                 onChange={e => handleInputChange(idx, colIdx, e.target)}
               />
             ))}
-            <input type="text" style={{ width: '15%' }} disabled placeholder="Type" />
-            <input type="text" style={{ width: '15%' }} disabled placeholder="Size" />
+            <input type="text" style={{ width: COLUMN_WIDTH }} disabled placeholder="Type" />
+            <input type="text" style={{ width: COLUMN_WIDTH }} disabled placeholder="Size" />
             <input
               type="file"
-              style={{ width: '15%' }}
+              style={{ width: '200px', minWidth: '200px' }}
               onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
             />
           </div>
@@ -823,7 +831,7 @@ export default ({
             </div>
           )}
         </div>
-      </>
+      </div>
     )
   }
 
