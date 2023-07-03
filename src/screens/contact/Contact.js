@@ -566,7 +566,10 @@ export default () => {
                   return (
                     <div className="col-lg-4">
                       <div className="gen-product-item d-flex ms-2 mb-4">
-                        <div className="sm-img-box border border-dark rounded col-3 p-0">
+                        <div
+                          className="sm-img-box border border-dark rounded col-3 p-0"
+                          style={{ overflow: 'hidden' }}
+                        >
                           <img
                             src={
                               item?.image_link
@@ -576,7 +579,7 @@ export default () => {
                             style={{
                               objectFit: 'cover',
                               width: '100%',
-                              // height: '100%',
+                              height: '100%',
                             }}
                           />
                         </div>
