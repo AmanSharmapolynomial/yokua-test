@@ -1710,7 +1710,11 @@ const ProductDetail = () => {
                         navigate(-2)
                       }}
                     >
-                      {archivedFilter ? 'Archive' : 'Live'}
+                      {archivedFilter ? (
+                        <strong style={{ backgroundColor: 'yellow' }}> Archive </strong>
+                      ) : (
+                        'Live'
+                      )}
                     </u>
                     {' > '}
                     <u

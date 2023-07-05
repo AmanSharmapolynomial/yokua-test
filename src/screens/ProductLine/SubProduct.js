@@ -191,7 +191,11 @@ const SubProduct = () => {
                         navigate(-1)
                       }}
                     >
-                      {archivedFilter ? 'Archive' : 'Live'}
+                      {archivedFilter ? (
+                        <strong style={{ backgroundColor: 'yellow' }}> Archive </strong>
+                      ) : (
+                        'Live'
+                      )}
                     </u>
                     {' > '} {htmlParser(state.name)}
                   </span>

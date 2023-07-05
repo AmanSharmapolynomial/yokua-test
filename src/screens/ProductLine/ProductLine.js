@@ -153,9 +153,14 @@ const ProductLine = ({ archieve }) => {
                     }
                   }}
                 >
-                  {currentPath === '/product-lines'
-                    ? 'Field Instruments'
-                    : 'Field Instruments > Archive '}
+                  {currentPath === '/product-lines' ? (
+                    'Field Instruments'
+                  ) : (
+                    <>
+                      Field Instruments &gt;
+                      <strong style={{ backgroundColor: 'yellow' }}> Archive </strong>
+                    </>
+                  )}
                 </u>
               </span>
             </div>

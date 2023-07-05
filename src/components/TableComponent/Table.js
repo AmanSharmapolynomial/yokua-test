@@ -15,7 +15,7 @@ import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
 import './table.css'
 
-let COLUMN_WIDTH = '150px'
+let COLUMN_WIDTH = '238.15px'
 
 /**
  *
