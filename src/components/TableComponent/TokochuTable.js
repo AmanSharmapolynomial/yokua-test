@@ -561,7 +561,7 @@ const TokuchuTable = ({
               id={rowName[item['column_name']] + Math.random().toString()}
               key={rowName[item['column_name']] + Math.random().toString()}
               value={rowName[item['column_name']]}
-              onChange={e => handleChange(item['name'], e.target.value)}
+              onChange={e => handleChange(item['column_name'], e.target.value)}
             />
           </>
         )
@@ -578,6 +578,8 @@ const TokuchuTable = ({
     let dataArray = []
     let isBlankValue = false
     const keys = Object.keys(rowName)
+    console.log('These are the keys', keys)
+    console.log('This is the rowName', rowName)
     keys.forEach(key => {
       if (rowName[key] == '' || !rowName[key]) {
         isBlankValue = true
@@ -587,17 +589,17 @@ const TokuchuTable = ({
         values: rowName[key],
       })
     })
-
+    console.log('This is the data array', dataArray)
     if (isBlankValue) {
       toast.error('Please fill in all the fields')
       return
     }
-
     const payload = {
       table_id: tableObject.id,
       data: dataArray,
       action_type: 'add_row',
     }
+
     _updateTableData(imageFileInputRef.current.files[0], JSON.stringify(payload))
   }
 
