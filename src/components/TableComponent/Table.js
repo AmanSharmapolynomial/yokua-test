@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import Plusicon from '../../assets/Group 331.png'
 import accept from '../../assets/Icon ionic-md-checkmark-circle.png'
@@ -14,8 +14,10 @@ import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
 import './table.css'
+import useWindowDimensions from '../../utils/windowDimensions'
 
-let COLUMN_WIDTH = '238.15px'
+const MIN_COLUMN_WIDTH = 150
+const FILE_WIDTH = '250px'
 
 /**
  *
@@ -133,13 +135,35 @@ export default ({
     maxWidth: 'max-content',
   }
 
-  useEffect(() => {
-    if (extractedData && extractedData.length > 0) {
-      setBulkEditable(true)
-    } else {
-      setBulkEditable(false)
-    }
-  }, [extractedData])
+  const getPXformREM = number => {
+    const rem = useMemo(() => {
+      return parseInt(getComputedStyle(document.documentElement).fontSize) * number
+    }, [number])
+    return rem
+  }
+
+  const { width } = useWindowDimensions()
+
+  let tableWidth
+  if (width <= 992) {
+    tableWidth = width - getPXformREM(1.75)
+  } else {
+    tableWidth = width - getPXformREM(6) - 11
+  }
+
+  const getColumnWidth = (numberOfColumns, tableWidth) => {
+    const n = numberOfColumns - 1
+    const cw = useMemo(() => {
+      const minWidth = n * MIN_COLUMN_WIDTH
+      if (minWidth < tableWidth) {
+        return tableWidth / n
+      }
+      return MIN_COLUMN_WIDTH
+    }, [n, tableWidth])
+    return cw
+  }
+
+  const columnWidth = getColumnWidth(tableObject.length, tableWidth).toString() + 'px'
 
   useEffect(() => {
     if (editableBulk == false) {
@@ -278,9 +302,9 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
-          width: COLUMN_WIDTH,
-          minWidth: COLUMN_WIDTH,
-          maxWidth: COLUMN_WIDTH,
+          width: columnWidth,
+          minWidth: columnWidth,
+          maxWidth: columnWidth,
         })
       } else {
         const filters = column.values.map(item => item.value)
@@ -347,20 +371,22 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
-          width: COLUMN_WIDTH,
-          minWidth: COLUMN_WIDTH,
-          maxWidth: COLUMN_WIDTH,
+          width: columnWidth,
+          minWidth: columnWidth,
+          maxWidth: columnWidth,
         })
       }
     })
     tableColumns = tableColumns.filter(column => column.name != 'File')
-    tableColumns.push({
-      name: '',
-      selector: row => row.edit,
-      width: COLUMN_WIDTH,
-      minWidth: COLUMN_WIDTH,
-      maxWidth: COLUMN_WIDTH,
-    })
+    // removed empty column for file
+    // tableColumns.push({
+    //   name: '',
+    //   selector: row => row.edit,
+    //   width: columnWidth,
+    //   minWidth: columnWidth,
+    //   maxWidth: columnWidth,
+    // })
+    console.log(tableColumns, tableColumns.length, columnWidth)
     setTableHeader([...tableColumns])
   }
   const handleSort = (column, type) => {
@@ -661,7 +687,7 @@ export default ({
               style={{
                 minWidth:
                   ele.column_name !== 'File' && ele.column_name !== 'Classification'
-                    ? '100px'
+                    ? columnWidth
                     : 'none',
                 maxWidth: ele.column_name == 'Classification' ? '150px' : 'none',
                 // width: "20%"
@@ -799,7 +825,7 @@ export default ({
                 disabled={column.column_name === 'Type' || column.column_name === 'Size'}
                 placeholder={column.column_name}
                 style={{
-                  width: COLUMN_WIDTH,
+                  width: columnWidth,
                   border: '1px solid black',
                   backgroundColor:
                     column.column_name === 'Type' || column.column_name === 'Size'
@@ -810,11 +836,11 @@ export default ({
                 onChange={e => handleInputChange(idx, colIdx, e.target)}
               />
             ))}
-            <input type="text" style={{ width: COLUMN_WIDTH }} disabled placeholder="Type" />
-            <input type="text" style={{ width: COLUMN_WIDTH }} disabled placeholder="Size" />
+            <input type="text" style={{ width: columnWidth }} disabled placeholder="Type" />
+            <input type="text" style={{ width: columnWidth }} disabled placeholder="Size" />
             <input
               type="file"
-              style={{ width: '200px', minWidth: '200px' }}
+              style={{ width: FILE_WIDTH || columnWidth, minWidth: FILE_WIDTH || columnWidth }}
               onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
             />
           </div>
