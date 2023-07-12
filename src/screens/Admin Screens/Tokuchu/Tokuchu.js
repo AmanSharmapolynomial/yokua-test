@@ -27,11 +27,20 @@ const checkIfColumnIsMissing = (data, tableHeader) => {
 
 function convertSerialDate(serialDate) {
   try {
-    const excelEpoch = new Date(1899, 11, 30) //adjusted to account for the leap year error in excel
-    const millisecondsPerDay = 24 * 60 * 60 * 1000
-    const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
-    return dateObject.toISOString().slice(0, 10)
+    // console.log(serialDate)
+    // const parts = serialDate.split(/\D+/);
+    // const day = parseInt(parts[2], 10);
+    // const month = parseInt(parts[1], 10) - 1;
+    // const year = parseInt(parts[0], 10);
+    // const date = new Date(year, month, day).toISOString().slice(0, 10);
+    // console.log(date)
+    return serialDate.toISOString().slice(0, 10)
+    // const excelEpoch = new Date(1899, 11, 30) //adjusted to account for the leap year error in excel
+    // const millisecondsPerDay = 24 * 60 * 60 * 1000
+    // const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
+    // return dateObject.toISOString().slice(0, 10)
   } catch (error) {
+    console.log(error)
     return ''
   }
 }
@@ -270,7 +279,7 @@ const Tokuchu = () => {
     reader.onload = e => {
       try {
         const data = new Uint8Array(e.target.result)
-        const workbook = XLSX.read(data, { type: 'array' })
+        const workbook = XLSX.read(data, { type: 'array', cellDates: true })
         const worksheet = workbook.Sheets[workbook.SheetNames[0]]
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
 
