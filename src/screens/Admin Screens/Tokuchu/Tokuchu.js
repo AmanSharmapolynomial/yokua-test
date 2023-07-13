@@ -40,7 +40,7 @@ function convertSerialDate(serialDate) {
     // const dateObject = new Date(excelEpoch.getTime() + serialDate * millisecondsPerDay)
     // return dateObject.toISOString().slice(0, 10)
   } catch (error) {
-    console.log(error)
+    toast.error('Date must be in the formate of MM/DD/YYYY or YYYY/MM/DD')
     return ''
   }
 }
