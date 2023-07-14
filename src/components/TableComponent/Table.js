@@ -14,11 +14,13 @@ import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
 import './table.css'
-import useWindowDimensions from '../../utils/windowDimensions'
+import useWindowDimensions from '../../utils/useWindowDimensions'
 
 const MIN_COLUMN_WIDTH = 150
 const FILE_WIDTH = '250px'
-
+const getPXformREM = number => {
+  return parseInt(getComputedStyle(document.documentElement).fontSize) * number
+}
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -135,35 +137,26 @@ export default ({
     maxWidth: 'max-content',
   }
 
-  const getPXformREM = number => {
-    const rem = useMemo(() => {
-      return parseInt(getComputedStyle(document.documentElement).fontSize) * number
-    }, [number])
-    return rem
-  }
-
   const { width } = useWindowDimensions()
+  let tableWidth = useMemo(() => {
+    let ans
+    if (width <= 992) {
+      ans = width - getPXformREM(1.75)
+    } else {
+      ans = width - getPXformREM(6) - 11
+    }
+    return ans
+  }, [width])
 
-  let tableWidth
-  if (width <= 992) {
-    tableWidth = width - getPXformREM(1.75)
-  } else {
-    tableWidth = width - getPXformREM(6) - 11
-  }
-
-  const getColumnWidth = (numberOfColumns, tableWidth) => {
-    const n = numberOfColumns - 1
-    const cw = useMemo(() => {
-      const minWidth = n * MIN_COLUMN_WIDTH
-      if (minWidth < tableWidth) {
-        return tableWidth / n
-      }
-      return MIN_COLUMN_WIDTH
-    }, [n, tableWidth])
-    return cw
-  }
-
-  const columnWidth = getColumnWidth(tableObject.length, tableWidth).toString() + 'px'
+  const columnWidth = useMemo(() => {
+    let ans = MIN_COLUMN_WIDTH
+    const n = tableObject.length - 1
+    const minWidth = n * MIN_COLUMN_WIDTH
+    if (minWidth < tableWidth) {
+      ans = Math.ceil(tableWidth / n)
+    }
+    return ans.toString() + 'px'
+  }, [tableObject.length, tableWidth])
 
   useEffect(() => {
     if (editableBulk == false) {
