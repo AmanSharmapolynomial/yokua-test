@@ -10,7 +10,7 @@ import {
 } from './token'
 import { toast } from 'react-toastify'
 // const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
-const API = create({ baseURL: 'http://217.160.49.198:8081/' })
+const API = create({ baseURL: 'http://13.71.80.88:5000/' })
 
 let refreshFlag = 0
 

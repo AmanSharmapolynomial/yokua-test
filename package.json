@@ -2,7 +2,7 @@
     "name": "yokogawa-client-service",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://217.160.49.198:8081/",
+    "proxy": "http://13.71.80.88:5000/",
     "dependencies": {
         "@emotion/react": "^11.10.0",
         "@emotion/styled": "^11.10.0",
