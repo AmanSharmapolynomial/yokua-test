@@ -16,7 +16,8 @@ import Tooltip from '@mui/material/Tooltip'
 import './table.css'
 import useWindowDimensions from '../../utils/useWindowDimensions'
 
-const MIN_COLUMN_WIDTH = 150
+const MIN_COLUMN_WIDTH = '285px'
+const MAX_COLUMN_WIDTH = '285px'
 const FILE_WIDTH = '250px'
 const getPXformREM = number => {
   return parseInt(getComputedStyle(document.documentElement).fontSize) * number
