@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import DataTable from 'react-data-table-component'
 import Plusicon from '../../assets/Group 331.png'
 import accept from '../../assets/Icon ionic-md-checkmark-circle.png'
@@ -8,11 +8,20 @@ import API from '../../utils/api'
 import { toast } from 'react-toastify'
 import { getToken, getUserRoles } from '../../utils/token'
 import ic_link from '../../assets/link_icon.png'
+import upload_link from '../../assets/Icon awesome-file-upload.png'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import { Modal } from 'react-bootstrap'
 import { useLoading } from '../../utils/LoadingContext'
 import Tooltip from '@mui/material/Tooltip'
+import './table.css'
+import useWindowDimensions from '../../utils/useWindowDimensions'
 
+const MIN_COLUMN_WIDTH = '285px'
+const MAX_COLUMN_WIDTH = '285px'
+const FILE_WIDTH = '250px'
+const getPXformREM = number => {
+  return parseInt(getComputedStyle(document.documentElement).fontSize) * number
+}
 /**
  *
  * @param tableObject : { id, table_name, category_name, order, is_archived, type, table_data: [
@@ -37,6 +46,7 @@ import Tooltip from '@mui/material/Tooltip'
  *
  */
 export default ({
+  table_id,
   tableObject,
   setShowDeleteModal,
   onRefresh,
@@ -44,23 +54,33 @@ export default ({
   isTableEditable,
   onDeleteComponent,
   onLinkClick,
+  onUploadClick,
   table_name,
   onEditableClick,
   archivedFilter,
   onTableUpdate,
   isRYG = false,
+  handleFileUpload,
+  extractedData,
+  setExtractedData,
+  tableId,
+  editableBulk,
+  bulkUpdateApiRoute,
 }) => {
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [isEditable, setIsEditable] = useState(false)
+  const [bulkEditable, setBulkEditable] = useState(false)
   const [sortMethod, setSortMethod] = useState('')
   const [editedTableObject, setEditedTableObject] = useState(tableObject)
   const [editSelected, setEditSelected] = useState(null)
   const [deleteSelected, setDeleteSelected] = useState(null)
   const [archiveSelected, setArchiveSelected] = useState(null)
+  const [unarchiveSelected, setUnarchiveSelected] = useState(null)
   const [updatedProductFile, setUpdatedProductFile] = useState(null)
   const [uploadInProgress, setUploadInProgress] = useState(false)
   const { setLoading } = useLoading()
+  const [fileData, setFileData] = useState({})
   const inputRef = useRef([])
   const customStyles = {
     table: {
@@ -117,6 +137,35 @@ export default ({
     borderLeft: 'none',
     maxWidth: 'max-content',
   }
+
+  const { width } = useWindowDimensions()
+  let tableWidth = useMemo(() => {
+    let ans
+    if (width <= 992) {
+      ans = width - getPXformREM(1.75)
+    } else {
+      ans = width - getPXformREM(6) - 11
+    }
+    return ans
+  }, [width])
+
+  const columnWidth = useMemo(() => {
+    let ans = MIN_COLUMN_WIDTH
+    const n = tableObject.length - 1
+    const minWidth = n * MIN_COLUMN_WIDTH
+    if (minWidth < tableWidth) {
+      ans = Math.ceil(tableWidth / n)
+    }
+    return ans.toString() + 'px'
+  }, [tableObject.length, tableWidth])
+
+  useEffect(() => {
+    if (editableBulk == false) {
+      setBulkEditable(false)
+      setIsEditable(false)
+    } else {
+    }
+  }, [editableBulk])
 
   const updateTableValues = tableObject => {
     setLoading(true)
@@ -185,6 +234,28 @@ export default ({
         toast.error('Error in Archiving')
       })
   }
+  const unArchiveRow = row => {
+    let payload = {
+      id: row.table_id,
+      archive_type: 'component',
+      component_type: 'table row',
+      row_index: row.row_index,
+    }
+    let archiveUrl = isRYG ? '/ryg_info/page/unarchive' : '/products/page/unarchive'
+    API.post(archiveUrl, payload)
+      .then(data => {
+        toast.success('Row unarchived successfully')
+        setUnarchiveSelected(null)
+        onEditableClick()
+        onRefresh()
+        _setTableHeaders()
+        _setTableData()
+        onTableUpdate(editedTableObject)
+      })
+      .catch(err => {
+        toast.error('Error in unarchiving')
+      })
+  }
 
   const deleteRow = item => {
     let deleteUrl = isRYG ? '/ryg_info/page/delete_table_row' : '/products/page/delete_table_row'
@@ -225,6 +296,9 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
+          width: columnWidth,
+          minWidth: columnWidth,
+          maxWidth: columnWidth,
         })
       } else {
         const filters = column.values.map(item => item.value)
@@ -291,14 +365,22 @@ export default ({
           isLink: column.is_link,
           isDate: column.is_date,
           filterable: column.is_filterable,
+          width: columnWidth,
+          minWidth: columnWidth,
+          maxWidth: columnWidth,
         })
       }
     })
     tableColumns = tableColumns.filter(column => column.name != 'File')
-    tableColumns.push({
-      name: '',
-      selector: row => row.edit,
-    })
+    // removed empty column for file
+    // tableColumns.push({
+    //   name: '',
+    //   selector: row => row.edit,
+    //   width: columnWidth,
+    //   minWidth: columnWidth,
+    //   maxWidth: columnWidth,
+    // })
+    console.log(tableColumns, tableColumns.length, columnWidth)
     setTableHeader([...tableColumns])
   }
   const handleSort = (column, type) => {
@@ -432,60 +514,82 @@ export default ({
           Object.assign(tableRowObject, tempObject)
         })
         if (isTableEditable) {
-          tableRowObject.edit = (
-            <div>
-              {editSelected == item.row_index ? (
-                <Tooltip title="Save Changes">
+          if (archivedFilter) {
+            tableRowObject.edit = (
+              <div>
+                {!isRYG && (
+                  <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
+                    <i
+                      className="fa-solid fa-box-archive theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
+                      }}
+                    />
+                  </Tooltip>
+                )}
+              </div>
+            )
+          } else {
+            tableRowObject.edit = (
+              <div>
+                {editSelected === item.row_index ? (
+                  <Tooltip title="Save Changes">
+                    <i
+                      className="fa-solid fa-floppy-disk theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        updateTableValues(editedTableObject)
+                      }}
+                    />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Edit Row">
+                    <i
+                      className="fa-solid fa-pen-to-square ms-2 theme"
+                      style={{
+                        marginRight: '1rem',
+                      }}
+                      role={'button'}
+                      onClick={() => {
+                        setEditSelected(item.row_index)
+                      }}
+                    />
+                  </Tooltip>
+                )}
+                {!isRYG &&
+                  !archivedFilter && ( // Added the condition here
+                    <Tooltip title={`${archivedFilter ? 'Unarchive' : 'Archive'}`}>
+                      <i
+                        className="fa-solid fa-box-archive theme"
+                        style={{
+                          marginRight: '1rem',
+                        }}
+                        role={'button'}
+                        onClick={() => {
+                          archivedFilter ? setUnarchiveSelected(item) : setArchiveSelected(item)
+                        }}
+                      />
+                    </Tooltip>
+                  )}
+                <Tooltip title="Delete Row">
                   <i
-                    className="fa-solid fa-floppy-disk theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
+                    className="fa-solid fa-trash"
                     role={'button'}
                     onClick={() => {
-                      updateTableValues(editedTableObject)
+                      setDeleteSelected(item)
                     }}
                   />
                 </Tooltip>
-              ) : (
-                <Tooltip title="Edit Row">
-                  <i
-                    className="fa-solid fa-pen-to-square ms-2 theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
-                    role={'button'}
-                    onClick={() => {
-                      setEditSelected(item.row_index)
-                    }}
-                  />
-                </Tooltip>
-              )}
-              {!isRYG && (
-                <Tooltip title="Archive Row">
-                  <i
-                    className="fa-solid fa-box-archive theme"
-                    style={{
-                      marginRight: '1rem',
-                    }}
-                    role={'button'}
-                    onClick={() => {
-                      setArchiveSelected(item)
-                    }}
-                  />
-                </Tooltip>
-              )}
-              <Tooltip title="Delete Row">
-                <i
-                  className="fa-solid fa-trash"
-                  role={'button'}
-                  onClick={() => {
-                    setDeleteSelected(item)
-                  }}
-                />
-              </Tooltip>
-            </div>
-          )
+              </div>
+            )
+          }
           if (editSelected == item.row_index) {
             tableRowObject.editFile = (
               <input
@@ -529,7 +633,7 @@ export default ({
     })
   }
   const callAddRowAPI = async () => {
-    setUploadInProgress(true)
+    // setUploadInProgress(true)
     let data = []
     let file = undefined
     tableObject.forEach(col => {
@@ -568,7 +672,7 @@ export default ({
 
   const renderDummyRow = () => {
     return (
-      <div className="add-row d-none d-lg-flex overflow-auto">
+      <div className="d-none d-lg-flex overflow-auto" style={{ overflow: 'scroll' }}>
         {tableObject.map((ele, idx) => {
           let typeOrSizeColumn = ele.column_name === 'Type' || ele.column_name === 'Size'
           return (
@@ -577,9 +681,10 @@ export default ({
               style={{
                 minWidth:
                   ele.column_name !== 'File' && ele.column_name !== 'Classification'
-                    ? '100px'
+                    ? columnWidth
                     : 'none',
                 maxWidth: ele.column_name == 'Classification' ? '150px' : 'none',
+                // width: "20%"
               }}
             >
               {!ele.is_file ? (
@@ -631,6 +736,136 @@ export default ({
     )
   }
 
+  // Bulk update table data function
+
+  const handleUploadData = () => {
+    // Perform the upload process using extractedData
+    // Pass extractedData to the API endpoint or perform the necessary operations here
+    // Example code to send the data to an API endpoint:
+    const increment = tableRows.length
+    const modifiedData = extractedData.map(row => {
+      const modifiedRow = {
+        ...row,
+        data: [
+          ...row.data,
+          { column_name: 'File', values: '' },
+          { column_name: 'Type', values: '' },
+          { column_name: 'Size', values: '' },
+        ],
+      }
+      return modifiedRow
+    })
+
+    const updatedData = modifiedData
+
+    const formData = new FormData()
+
+    // Add the table ID and extracted data to the form data
+    formData.append('data', JSON.stringify({ table_id: tableId, rows_data: updatedData }))
+
+    // Add the file data to the form data
+    Object.keys(fileData).forEach(rowId => {
+      const file = fileData[rowId]
+      formData.append(`row_${parseInt(rowId)}`, file)
+    })
+
+    API.post(bulkUpdateApiRoute, formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
+            setExtractedData([])
+            setIsEditable(false)
+            onRefresh()
+            setBulkEditable(false)
+            modifiedData = {}
+          }
+        }
+      })
+      .catch(err => {
+        toast.error(err)
+        // Handle error
+      })
+  }
+
+  // Handle Cancel Upload
+  const handleCancelUpload = () => {
+    setExtractedData([])
+    setIsEditable(false)
+    setBulkEditable(false)
+    toast.error('Data Upload Cancelled')
+  }
+
+  // Rows to be shown when a file is uploaded and parsed
+
+  const renderDummyRows = () => {
+    // Function to handle file inputs after excel sheet is parsed
+
+    const handleFileInputChange = (rowId, file) => {
+      setFileData(prevFileData => ({
+        ...prevFileData,
+        [rowId]: file,
+      }))
+    }
+    return (
+      <div style={{ overflow: 'scroll', border: '1px solid black' }}>
+        {extractedData.map((row, idx) => (
+          <div className="dummy-row" key={idx} style={{ display: 'flex' }}>
+            {row.data.map((column, colIdx) => (
+              <input
+                key={colIdx}
+                ref={el => (inputRef.current[idx] = el)}
+                type={column.column_name === 'File' ? 'file' : 'text'}
+                disabled={column.column_name === 'Type' || column.column_name === 'Size'}
+                placeholder={column.column_name}
+                style={{
+                  width: columnWidth,
+                  border: '1px solid black',
+                  backgroundColor:
+                    column.column_name === 'Type' || column.column_name === 'Size'
+                      ? '#f5f5f5'
+                      : '#fff',
+                }}
+                value={column.values}
+                onChange={e => handleInputChange(idx, colIdx, e.target)}
+              />
+            ))}
+            <input type="text" style={{ width: columnWidth }} disabled placeholder="Type" />
+            <input type="text" style={{ width: columnWidth }} disabled placeholder="Size" />
+            <input
+              type="file"
+              style={{ width: FILE_WIDTH || columnWidth, minWidth: FILE_WIDTH || columnWidth }}
+              onChange={e => handleFileInputChange(row.row_id, e.target.files[0])}
+            />
+          </div>
+        ))}
+        <div className="add-row d-none d-lg-flex overflow-auto">
+          {extractedData.length > 0 && (
+            <div className="d-flex justify-content-end">
+              <button className="btn btn-primary" onClick={handleUploadData}>
+                Upload Data
+              </button>
+              <button className="btn mx-2 btn-primary" onClick={handleCancelUpload}>
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  // Function to handle input change after file upload and parsing
+
+  const handleInputChange = (rowIdx, colIdx, target) => {
+    const file = target.files && target.files[0]
+    if (file) {
+      const updatedData = [...extractedData]
+      updatedData[rowIdx].data[colIdx].values = file
+      setExtractedData(updatedData)
+    }
+  }
+
   useEffect(() => {
     if (tableObject !== {}) {
       _setTableHeaders()
@@ -660,6 +895,19 @@ export default ({
           </div>
           {isAdmin && !archivedFilter && (
             <div className="col-auto my-2 p-0 d-none d-lg-block">
+              <Tooltip title="Upload File">
+                <Image
+                  className="me-2"
+                  style={{ width: '0.9rem' }}
+                  role={'button'}
+                  src={upload_link}
+                  onClick={() => {
+                    setBulkEditable(true)
+                    setIsEditable(true)
+                    onUploadClick()
+                  }}
+                />
+              </Tooltip>
               <Tooltip title="Link Component">
                 <Image
                   className="me-2"
@@ -699,6 +947,27 @@ export default ({
               </Tooltip>
             </div>
           )}
+          {isAdmin && archivedFilter && (
+            <div className="col-auto my-2 p-0 d-none d-lg-block">
+              <Tooltip title={isTableEditable ? 'Save' : 'Edit Table'}>
+                <i
+                  role={'button'}
+                  className={
+                    !isTableEditable
+                      ? 'fa-solid fa-pen-to-square me-2 theme'
+                      : 'fa-solid fa-floppy-disk theme'
+                  }
+                  onClick={() => {
+                    onEditableClick()
+                    setEditSelected(null)
+                    // if (isTableEditable) {
+                    //   onTableUpdate(editedTableObject)
+                    // }
+                  }}
+                />
+              </Tooltip>
+            </div>
+          )}
         </div>
         <div className="row">
           <div className="border w-100 p-0 product-detail-table">
@@ -716,9 +985,9 @@ export default ({
               // selectableRows
               // onSelectedRowsChange={selectedRowsActionUA}
             />
-            {isEditable ? (
+            {isEditable && !bulkEditable ? (
               renderDummyRow()
-            ) : isAdmin && !isTableEditable && !archivedFilter ? (
+            ) : isAdmin && !isTableEditable && !archivedFilter && !bulkEditable ? (
               <div
                 role={'button'}
                 className="add-row d-none d-lg-flex"
@@ -736,18 +1005,22 @@ export default ({
                 Add
               </div>
             ) : null}
+
+            {bulkEditable && isEditable ? renderDummyRows() : null}
           </div>
         </div>
       </div>
       <Modal
         show={
           (deleteSelected !== null && Object.keys(deleteSelected).length > 0) ||
-          archiveSelected !== null
+          archiveSelected !== null ||
+          unarchiveSelected != null
         }
         centered
         onHide={() => {
           setDeleteSelected(null)
           setArchiveSelected(null)
+          setUnarchiveSelected(null)
         }}
       >
         <Modal.Header
@@ -761,7 +1034,11 @@ export default ({
           <Modal.Title>
             {deleteSelected !== null && Object.keys(deleteSelected).length > 0
               ? 'Delete Row'
-              : 'Archive Row'}
+              : archiveSelected !== null && Object.keys(archiveSelected).length > 0
+              ? 'Archive Row'
+              : unarchiveSelected !== null && Object.keys(unarchiveSelected).length > 0
+              ? 'Unarchive Row'
+              : ''}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body
@@ -776,7 +1053,11 @@ export default ({
         >
           {deleteSelected !== null && Object.keys(deleteSelected).length > 0
             ? 'Are you sure you want to delete this row?'
-            : 'Are you sure you want to archive this row?'}
+            : archiveSelected !== null && Object.keys(archiveSelected).length > 0
+            ? 'Are you sure you want to archive this row?'
+            : unarchiveSelected !== null && Object.keys(unarchiveSelected).length > 0
+            ? 'Are you sure you want to unarchive this row?'
+            : ''}
         </Modal.Body>
         <Modal.Footer
           style={{
@@ -793,6 +1074,7 @@ export default ({
             onClick={() => {
               setDeleteSelected(null)
               setArchiveSelected(null)
+              setUnarchiveSelected(null)
             }}
           >
             Cancel
@@ -805,6 +1087,9 @@ export default ({
               }
               if (archiveSelected !== null) {
                 archiveRow(archiveSelected)
+              }
+              if (unarchiveSelected !== null) {
+                unArchiveRow(unarchiveSelected)
               }
             }}
           >

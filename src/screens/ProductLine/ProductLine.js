@@ -12,10 +12,15 @@ import { toast } from 'react-toastify'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import ProductCard from '../../components/ProductCard/productcard'
-import { Link, Router } from 'react-router-dom'
+import { Link, Router, useLocation } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom'
+import Breadcrumb from '../../components/Breadcrumb'
 
 const ProductLine = ({ archieve }) => {
+  // Get the location
+  const currentPath = window.location.pathname
+  console.log(currentPath)
+
   const isAdmin =
     getUserRoles() == 'Technical Administrator' || getUserRoles() == 'PMK Administrator'
   const navigate = useNavigate()
@@ -114,6 +119,52 @@ const ProductLine = ({ archieve }) => {
       <div className="row mx-2 mx-lg-5 h-100">
         <div className="col center py-3">
           <PrimaryHeading title={'Product Lines'} backgroundImage={'Product-line'} />
+          <div className="col-12 col-lg-5 border-md rounded py-2 my-2">
+            <div className="row">
+              <span
+                role="button"
+                className="col-4 light-grey"
+                onClick={() => {
+                  navigate(-1)
+                }}
+              >
+                Previous page
+              </span>
+              <span
+                className="col-8"
+                // style={{
+                //   wordBreak: 'break-all',
+                // }}
+              >
+                <u
+                  role="button"
+                  onClick={() => {
+                    navigate('/home')
+                  }}
+                >
+                  Home
+                </u>
+                {' > '}{' '}
+                <u
+                  role="button"
+                  onClick={() => {
+                    {
+                      currentPath === '/product-lines' ? navigate() : navigate('/product-lines')
+                    }
+                  }}
+                >
+                  {currentPath === '/product-lines' ? (
+                    'Field Instruments'
+                  ) : (
+                    <>
+                      Field Instruments &gt;
+                      <strong style={{ backgroundColor: 'yellow' }}> Archive </strong>
+                    </>
+                  )}
+                </u>
+              </span>
+            </div>
+          </div>
           {isLoading ? (
             <div className="col text-center mt-3">
               <div className="spinner-border" role="status">

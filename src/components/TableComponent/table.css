@@ -1,0 +1,13 @@
+.rdt_Table,
+.rdt_TableRow,
+.rdt_TableCol,
+.rdt_TableCol_Sortable,
+.rdt_TableCell,
+.rdt_TableHeader,
+.rdt_TableFooter,
+.rdt_TableHead,
+.rdt_TableHeadRow,
+.rdt_TableBody,
+.rdt_ExpanderRow{
+    text-transform: none !important;
+}

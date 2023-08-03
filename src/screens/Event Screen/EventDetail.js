@@ -37,7 +37,7 @@ const EventDetail = () => {
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
 
-  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Classification', 'File']
+  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Document Type', 'File']
 
   const returnTableData = () => {
     let tableData = []
@@ -1308,6 +1308,7 @@ const EventDetail = () => {
           </div>
         </Modal.Body>
       </Modal>
+
       <Modal
         show={isAddSectionModalVisible}
         centered

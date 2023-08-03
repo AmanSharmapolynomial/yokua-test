@@ -15,22 +15,22 @@ export default () => {
   const [companyList, setCompanyList] = useState([])
   const { setLoading } = useLoading()
 
-  const deleteCompany = id => {
-    setLoading(true)
-    API.post('auth/delete_company', {
-      id: [id],
-    })
-      .then(data => {
-        setLoading(false)
+  // const deleteCompany = id => {
+  //   setLoading(true)
+  //   API.post('auth/delete_company', {
+  //     id: [id],
+  //   })
+  //     .then(data => {
+  //       setLoading(false)
 
-        toast.success(data.data.message)
-        getCompanyList()
-      })
-      .catch(error => {
-        setLoading(false)
-        console.log(error)
-      })
-  }
+  //       toast.success(data.data.message)
+  //       getCompanyList()
+  //     })
+  //     .catch(error => {
+  //       setLoading(false)
+  //       console.log(error)
+  //     })
+  // }
 
   useEffect(() => {
     getCompanyList()
@@ -69,7 +69,7 @@ export default () => {
                 </span>
               </div>
               {/* <div className="d-flex align-items-center"> */}
-              <Tooltip title="Delete Company">
+              {/* <Tooltip title="Delete Company">
                 <i
                   className="fa fa-trash w-auto"
                   style={{ fontSize: '1rem' }}
@@ -81,16 +81,16 @@ export default () => {
                     setDelete(true)
                   }}
                 />
-              </Tooltip>
-              <i className="fa fa-caret-right w-auto" data-display="static" aria-hidden="true" />
+              </Tooltip> */}
+              {/* <i className="fa fa-caret-right w-auto" data-display="static" aria-hidden="true" /> */}
               {/* </div> */}
-              <div
+              {/* <div
                 className="yk-drop-m dropdown-menu"
                 style={{ maxHeight: '12rem', overflow: 'auto' }}
-              >
-                {data.company_divisions.map((item, index) => (
-                  <>
-                    <a
+              > */}
+              {/* {data.company_divisions.map((item, index) => ( */}
+              <>
+                {/* <a
                       key={index}
                       className="d-flex col justify-content-between align-items-center yg-font-capitalize-only dropdown-item"
                       style={{
@@ -99,9 +99,9 @@ export default () => {
                         textDecoration: 'none',
                         cursor: 'default',
                       }}
-                    >
-                      {item.sub_div_name}
-                      <Tooltip title="Delete Company">
+                    > */}
+                {/* {item.sub_div_name} */}
+                {/* <Tooltip title="Delete Company">
                         <i
                           role={'button'}
                           className="fa fa-trash"
@@ -114,16 +114,12 @@ export default () => {
                             setDelete(true)
                           }}
                         />
-                      </Tooltip>
-                    </a>
-                    <hr />
-                  </>
-                ))}
-                <a
-                  onClick={e => {
-                    setShow(true)
-                    setParentCompany(data.company_name)
-                  }}
+                      </Tooltip> */}
+                {/* </a> */}
+                {/* <hr /> */}
+              </>
+              {/* ))} */}
+              {/* <a
                   className="d-flex justify-content-center align-items-center dropdown-item"
                   style={{ fontSize: '0.8rem', padding: '1.17rem' }}
                 >
@@ -136,12 +132,12 @@ export default () => {
                     alt={'PlusIcon'}
                   />
                   Add
-                </a>
-              </div>
+                </a> */}
             </div>
+            // </div>
           ))}
 
-          <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
+          {/* <div className="row yk-data-row d-flex justify-content-center align-items-center px-3">
             <div
               className="w-auto"
               style={{ padding: '1.17rem' }}
@@ -160,17 +156,17 @@ export default () => {
               />
               Add
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
-      <AddCompany
+      {/* <AddCompany
         show={show}
         setShow={setShow}
         getCompanyList={getCompanyList}
         parentCompnay={parentCompnay}
-      />
+      /> */}
 
-      <DeleteModal
+      {/* <DeleteModal
         setShow={setDelete}
         show={showDelete}
         title={'Are you sure want to delete this Company?'}
@@ -178,58 +174,58 @@ export default () => {
         saveAndExit={() => setDelete(false)}
         data={currentDeleteId}
         req={'Company'}
-      />
+      /> */}
     </div>
   )
 }
 
-const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
-  const [name, setName] = useState('')
-  const { loading, setLoading } = useLoading()
+// const AddCompany = ({ show, setShow, getCompanyList, parentCompnay = '' }) => {
+//   const [name, setName] = useState('')
+//   const { loading, setLoading } = useLoading()
 
-  const _handleSave = () => {
-    if (name.length < 2) {
-      toast.error('Please provide a company name')
-      return
-    }
-    setLoading(true)
-    setName('')
-    setShow(false)
+//   const _handleSave = () => {
+//     if (name.length < 2) {
+//       toast.error('Please provide a company name')
+//       return
+//     }
+//     setLoading(true)
+//     setName('')
+//     setShow(false)
 
-    const companyName = parentCompnay !== '' ? parentCompnay : name
-    API.post('auth/add_company', {
-      parent_company: companyName,
-      child_company: companyName === parentCompnay ? name : '',
-    })
-      .then(data => {
-        setLoading(false)
-        toast.success(data.data.message)
-        getCompanyList()
-      })
-      .catch(error => {
-        setLoading(false)
-        console.log(error)
-      })
-  }
+//     const companyName = parentCompnay !== '' ? parentCompnay : name
+//     API.post('auth/add_company', {
+//       parent_company: companyName,
+//       child_company: companyName === parentCompnay ? name : '',
+//     })
+//       .then(data => {
+//         setLoading(false)
+//         toast.success(data.data.message)
+//         getCompanyList()
+//       })
+//       .catch(error => {
+//         setLoading(false)
+//         console.log(error)
+//       })
+//   }
 
-  const handleClose = () => setShow(false)
+//   const handleClose = () => setShow(false)
 
-  const handleCancel = () => {
-    setName('')
-    setShow(false)
-  }
+//   const handleCancel = () => {
+//     setName('')
+//     setShow(false)
+//   }
 
-  return (
-    <CommonModal
-      show={show}
-      handleClose={handleClose}
-      modalTitle={'Add Company Name'}
-      data={name}
-      handleDataChange={setName}
-      cancelAction={handleCancel}
-      saveAction={_handleSave}
-      placeholder={'Name...'}
-      ariaLabel={"Recipient's username"}
-    />
-  )
-}
+//   return (
+//     <CommonModal
+//       show={show}
+//       handleClose={handleClose}
+//       modalTitle={'Add Company Name'}
+//       data={name}
+//       handleDataChange={setName}
+//       cancelAction={handleCancel}
+//       saveAction={_handleSave}
+//       placeholder={'Name...'}
+//       ariaLabel={"Recipient's username"}
+//     />
+//   )
+// }

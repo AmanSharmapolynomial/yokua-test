@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import API from '../../utils/api'
-import { getToken, getUserRoles } from '../../utils/token'
+import {
+  getToken,
+  getUserRoles,
+  setToken,
+  removeToken,
+  getRefreshToken,
+  setRefreshToken,
+  removeRefreshToken,
+} from '../../utils/token'
 import { useLoading } from '../../utils/LoadingContext'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router-dom'
@@ -12,6 +20,23 @@ import DeleteModal from '../../components/Modals/Delete Modal/DeleteModal'
 import ic_link from '../../assets/link_icon.png'
 import htmlParser from 'html-react-parser'
 import Tooltip from '@mui/material/Tooltip'
+import * as XLSX from 'xlsx'
+import { jsonOpts, readOpts } from '../../config/xlsx.js'
+
+const bulkUpdateApiRoute = 'products/page/bulk_update_table_data'
+const checkIfColumnIsMissing = (data, tableHeader) => {
+  if (data.length === 0) {
+    throw 'No Data found'
+  }
+  const importedColumns = Object.keys(data[0]).sort()
+  tableHeader.sort()
+
+  for (let i = 0; i < tableHeader.length; i++) {
+    if (tableHeader[i] != importedColumns[i]) {
+      throw `${tableHeader[i]} missing`
+    }
+  }
+}
 
 const ProductDetail = () => {
   const isAdmin =
@@ -45,23 +70,31 @@ const ProductDetail = () => {
   const [inputBinary, setInputBinary] = useState()
   const [showDeleteModal, setShowDeleteModal] = useState({})
   const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false)
+  const [isUploadModalVisible, setUploadModalVisible] = useState(false)
   const [isSubProductsModalVisible, setIsSubProductsModalVisible] = useState(false)
   const [isEditable, setIsEditable] = useState(-1)
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
   const sectionTitleRef = React.useRef(null)
+  const sectionFileRef = React.useRef(null)
   const accordionRef = React.useRef(null)
   const [isMd, setIsMd] = useState(false)
   const [imagesToUpload, setImagesToUpload] = useState([])
   const [isImageGridEditable, setIsImageGridEditable] = useState([])
+  const [productName, setProductName] = useState('')
+  const [tableId, settableId] = useState(null)
+  const [nextId, setNextId] = useState(null)
+  const [tableData, setTableData] = useState(null)
+  const [extractedData, setExtractedData] = useState([])
+  const [editableBulk, setEditableBulk] = useState(true)
 
   function updateWindowDimensions() {
     if (window.innerWidth >= 768) setIsMd(true)
     else setIsMd(false)
   }
 
-  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Classification', 'File']
+  const tableColumnNames = ['Name', 'Keywords', 'Type', 'Size', 'Document Type', 'File']
 
   const returnTableData = () => {
     let tableData = []
@@ -114,6 +147,10 @@ const ProductDetail = () => {
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
           setProductDetail(res.data)
+          const firstProduct = res.data[0] // Access the first object in the array
+          const productName = firstProduct.product_name
+          setProductName(productName)
+          console.log(productName) // Output: "Coriolis"
         }
         setLoading(false)
       })
@@ -152,6 +189,60 @@ const ProductDetail = () => {
         setLoading(false)
       })
   }
+  // const updateTableValues = async (tableObject) => {
+  //   console.log
+  //   setLoading(true);
+  //   let payload = {
+  //     action_type: 'update_cell',
+  //     update_objs: [],
+  //   };
+
+  //   for (let index = 0; index < tableObject.length; index++) {
+  //     if (tableObject[index].isEdited) {
+  //       const values = tableObject[index].values.filter((value) => value.isEdited);
+  //       payload.update_objs.push(...values);
+  //     }
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('data', JSON.stringify(payload));
+
+  //   try {
+  //     console.log("trying api")
+  //     const res = await API.post('products/page/update_table_data', formData);
+  //     if (res.status === 200 && res.data !== undefined) {
+  //       if (res.data?.message) {
+  //         toast.success(res.data?.message);
+  //       }
+  //     }
+  //     getProductDetails();
+  //     setLoading(false);
+  //   } catch (error) {
+  //     if (error.response && error.response.status === 401) {
+  //       console.log("trying this")
+  //       try {
+  //         const rs = await API.post('/auth/token/refresh/', {
+  //         refresh: getRefreshToken(),
+  //       })
+  //       const { access, refresh } = rs.data
+  //       toast.success('Refreshing Website')
+  //       setToken(access)
+  //       setRefreshToken(refresh)
+  //         // Retry the original request
+  //         updateTableValues(tableObject);
+  //       window.location.reload()
+  //       } catch (refreshError) {
+  //         console.log(refreshError);
+  //         setLoading(false);
+  //         // Handle the token refresh error appropriately (e.g., redirect to login page)
+  //       }
+  //     } else {
+  //       console.log(error);
+  //       setLoading(false);
+  //       // Handle other errors as needed
+  //     }
+  //   }
+  // }
 
   const linkComponentToSections = () => {
     let data = { ...componentToLink }
@@ -261,6 +352,160 @@ const ProductDetail = () => {
     setInputBinary()
   }
 
+  // const handleFileUpload = file => {
+  //   const reader = new FileReader()
+
+  //   reader.onload = e => {
+  //     const data = new Uint8Array(e.target.result)
+  //     const workbook = XLSX.read(data, { type: 'array' })
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+  //     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+
+  //     setLoading(true)
+  //     let payload = {
+  //       action_type: 'update_cell',
+  //       update_objs: [],
+  //     }
+  //     console.log(jsonData)
+  //     payload.update_objs.push(jsonData)
+  //     console.log(payload)
+
+  //     const formData = new FormData()
+  //     formData.append('data', JSON.stringify(payload))
+  //     API.post('products/page/update_table_data', formData)
+  //       .then(res => {
+  //         if (res.status === 200 && res.data !== undefined) {
+  //           if (res.data?.message) {
+  //             toast.success(res.data?.message)
+  //           }
+  //         }
+  //         getProductDetails()
+  //         setLoading(false)
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //         setLoading(false)
+  //       })
+  //   }
+
+  //   reader.readAsArrayBuffer(file)
+  // }
+
+  // const handleFileUpload = file => {
+  //   const reader = new FileReader()
+
+  //   reader.onload = e => {
+  //     const data = new Uint8Array(e.target.result)
+  //     const workbook = XLSX.read(data, { type: 'array' })
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+  //     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 2 })
+
+  //     setLoading(true)
+
+  //     // const payload = {
+  //     //   table_id: tableId,
+  //     //   rows_data: jsonData.map((row, index) => ({
+  //     //     row_id: index + 1,
+  //     //     data: Object.entries(row).map(([column_name, values]) => ({
+  //     //       column_name,
+  //     //       values,
+  //     //     })),
+  //     //   })),
+  //     // }
+  //     const modifiedData = jsonData.map((row, index) => ({
+  //       row_id: index + 1,
+  //       data: Object.entries(row).map(([column_name, values]) => ({
+  //         column_name,
+  //         values
+  //       }))
+  //     }));
+
+  //     const payload = {
+  //       table_id: 15,
+  //       rows_data: modifiedData
+  //     };
+
+  //     setExtractedData(modifiedData);
+
+  //     const formData = new FormData()
+  //     formData.append('data', JSON.stringify(payload))
+
+  //     API.post('products/page/bulk_update_table_data', formData)
+  //       .then(res => {
+  //         if (res.status === 200 && res.data !== undefined) {
+  //           if (res.data?.message) {
+  //             toast.success(res.data?.message)
+  //           }
+  //         }
+  //         getProductDetails()
+  //         setLoading(false)
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //         setLoading(false)
+  //       })
+  //   }
+
+  //   reader.readAsArrayBuffer(file)
+  // }
+
+  const handleFileUpload = file => {
+    const reader = new FileReader()
+
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result)
+        const workbook = XLSX.read(data, readOpts)
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]]
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, jsonOpts)
+
+        setLoading(true)
+        const tableHeader = tableData
+          .filter(
+            ({ column_name }) =>
+              !(column_name == 'File' || column_name == 'Type' || column_name == 'Size')
+          )
+          .map(({ column_name }) => column_name)
+
+        checkIfColumnIsMissing(jsonData, tableHeader)
+        const modifiedData = jsonData.map((row, index) => ({
+          row_id: nextId + index,
+          data: Object.entries(row).map(([column_name, values]) => {
+            return {
+              column_name,
+              values,
+            }
+          }),
+        }))
+
+        setExtractedData(modifiedData)
+      } catch (error) {
+        toast.error(`In valid Data: ${error}`)
+      }
+      setLoading(false)
+    }
+
+    reader.readAsArrayBuffer(file)
+  }
+
+  const onFileUpload = () => {
+    const file = sectionFileRef.current.files[0]
+    if (file) {
+      // Check if the file is an Excel file
+      const isExcelFile = file.name.endsWith('.xls') || file.name.endsWith('.xlsx')
+
+      if (isExcelFile) {
+        handleFileUpload(file)
+        setUploadModalVisible(false)
+        toast.success('File is being processed')
+      } else {
+        toast.error('Please upload an Excel file')
+      }
+    } else {
+      toast.error('Please choose a file to upload')
+    }
+  }
+
   const onAddSection = () => {
     API.post('/products/create_section', {
       page_id: state.page_id,
@@ -353,6 +598,8 @@ const ProductDetail = () => {
     } else if (ele.type === 'table') {
       return (
         <Table
+          table_id={ele.id}
+          bulkUpdateApiRoute={bulkUpdateApiRoute}
           archivedFilter={archivedFilter}
           onEditableClick={() => {
             if (ele.id !== isEditable) setIsEditable(ele.id)
@@ -365,6 +612,12 @@ const ProductDetail = () => {
               component_id: ele.id,
               component_type: ele.type,
             })
+          }}
+          onUploadClick={() => {
+            setNextId(ele.next_id)
+            setTableData(ele.table_data)
+            settableId(ele.id)
+            setUploadModalVisible(true)
           }}
           onDeleteComponent={() => {
             let payload = {
@@ -384,6 +637,11 @@ const ProductDetail = () => {
           onTableUpdate={tableObject => {
             updateTableValues(tableObject)
           }}
+          handleFileUpload={handleFileUpload}
+          extractedData={extractedData}
+          tableId={tableId}
+          setExtractedData={setExtractedData}
+          editableBulk={editableBulk}
         />
       )
     } else if (ele.type === 'link') {
@@ -552,7 +810,7 @@ const ProductDetail = () => {
                   />
                   <Tooltip title={element.image_name}>
                     <a
-                      href={ele.image_link + `?token=${getToken()}`}
+                      href={ele.full_size_image_link + `?token=${getToken()}`}
                       target="_blank"
                       role={'button'}
                       className="col register-link"
@@ -1418,37 +1676,61 @@ const ProductDetail = () => {
       />
       <div className="row mx-2 mx-lg-5 h-100 gray-table">
         <div className="col center py-3">
-          <div className="row d-none d-lg-block">
-            <div className="col-12 col-lg-5 border-md rounded py-2">
-              <div className="row">
-                <span
-                  role="button"
-                  className="col-4 light-grey"
-                  onClick={() => {
-                    navigate(-1)
-                  }}
-                >
-                  Previous page
-                </span>
-                <span
-                  className="col-8"
-                  // style={{
-                  //   wordBreak: 'break-all',
-                  // }}
-                >
-                  <u
+          {productName != '' && (
+            <div className="row d-none d-lg-block">
+              <div className="col-12 col-lg-5 border-md rounded py-2">
+                <div className="row">
+                  <span
                     role="button"
-                    onClick={e => {
-                      navigate(-2)
+                    className="col-4 light-grey"
+                    onClick={() => {
+                      navigate(-1)
                     }}
                   >
-                    Field Instruments
-                  </u>
-                  {'>'} {htmlParser(state.sub_product_name)}
-                </span>
+                    Previous page
+                  </span>
+                  <span
+                    className="col-8"
+                    // style={{
+                    //   wordBreak: 'break-all',
+                    // }}
+                  >
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-2)
+                      }}
+                    >
+                      Field Instruments
+                    </u>
+                    {' > '}
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-2)
+                      }}
+                    >
+                      {archivedFilter ? (
+                        <strong style={{ backgroundColor: 'yellow' }}> Archive </strong>
+                      ) : (
+                        'Live'
+                      )}
+                    </u>
+                    {' > '}
+                    <u
+                      role="button"
+                      onClick={e => {
+                        navigate(-1)
+                      }}
+                    >
+                      {productName}
+                    </u>
+                    {' > '} {htmlParser(state.sub_product_name)}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <>
             <div className="row">{renderComponents()}</div>
             {(getUserRoles() == 'PMK Administrator' ||
@@ -1546,6 +1828,66 @@ const ProductDetail = () => {
           </button>
         </Modal.Footer> */}
       </Modal>
+
+      {/* New modal for uploading file */}
+      <Modal
+        show={isUploadModalVisible}
+        centered
+        onHide={() => {
+          setUploadModalVisible(false)
+          setEditableBulk(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+            textAlign: 'center',
+          }}
+        >
+          <Modal.Title>Upload a File</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="p-4 text-center">
+          <div className="mb-5">
+            <input
+              ref={sectionFileRef}
+              placeholder="Choose a file to upload"
+              type="file"
+              className="form-control w-100"
+              aria-label={'File'}
+            />
+          </div>
+          <div className="col-12 justify-content-center d-flex mt-3">
+            <button
+              ref={element => {
+                if (element) {
+                  element.style.setProperty('background-color', 'transparent', 'important')
+                  element.style.setProperty('color', 'var(--bgColor2)', 'important')
+                }
+              }}
+              onClick={() => {
+                setUploadModalVisible(false)
+                setEditableBulk(false)
+              }}
+              className="btn me-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-primary ms-2"
+              onClick={() => {
+                onFileUpload()
+              }}
+            >
+              Confirm
+            </button>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* modal for file upload ends */}
+
       <Modal
         show={Object.keys(showDeleteModal).length > 0}
         centered

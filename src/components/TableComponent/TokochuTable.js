@@ -8,15 +8,30 @@ import { toast } from 'react-toastify'
 import Uploadicon from '../../assets/Icon awesome-file-download.png'
 import Tooltip from '@mui/material/Tooltip'
 import { Modal } from 'react-bootstrap'
+import upload_link from '../../assets/Icon awesome-file-upload.png'
 
-const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh, allRequest }) => {
+const TokuchuTable = ({
+  sectionName,
+  tableObject,
+  setShowDeleteModal,
+  onRefresh,
+  allRequest,
+  setShowUploadModal,
+  settableId,
+  handleFileUpload,
+  extractedData,
+  setExtractedData,
+  tableId,
+}) => {
   const [imageFile, setImageFile] = useState(null)
   const [tableRows, setTableRows] = useState([])
   const [tableHeader, setTableHeader] = useState([])
   const [needToReload, setNeedToReload] = useState(false)
   const { setLoading } = useLoading()
   const [editModeData, setEditModeData] = useState([])
-
+  const [bulkEditable, setBulkEditable] = useState(false)
+  const [fileData, setFileData] = useState({})
+  const inputRef = useRef([])
   const [emptyNewRow, setEmptyNewRow] = useState(null)
   const [rowName, setRowName] = useState({})
   const [isEdit, setEdit] = useState(false)
@@ -24,6 +39,7 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
   const [editSelected, setEditSelected] = useState(null)
   const [editedTableObject, setEditedTableObject] = useState(tableObject.table_data)
   const [updatedTokuchuFile, setUpdatedTokuchuFile] = useState(null)
+
   const customStyles = {
     // table: {
     //   style: {
@@ -69,6 +85,87 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
     },
   }
   const imageFileInputRef = useRef()
+  const [extractedDataChange, setExtractedDataChanged] = useState([])
+  console.log('extractedDataChange', extractedDataChange)
+  const handleFileInputChange = (rowId, file) => {
+    setFileData(prevFileData => ({
+      ...prevFileData,
+      [rowId]: file,
+    }))
+  }
+  useEffect(() => {
+    if (extractedData && extractedData.length > 0) {
+      setBulkEditable(true)
+      setExtractedDataChanged(extractedData)
+      const newRows = tableRows
+      for (let i = 0; i < extractedData.length; i++) {
+        const { row_id, data } = extractedData[i]
+        newRows.push(
+          data.reduce(
+            (acc, { column_name, values }) => {
+              return {
+                ...acc,
+                [column_name]: (
+                  <>
+                    <input
+                      style={{
+                        borderBottom: '1px solid rgb(0, 79, 155)',
+                        borderTop: 'none',
+                        borderRight: 'none',
+                        borderLeft: 'none',
+                      }}
+                      // type={item.isDate ? 'date' : 'text form-control'}
+                      // id={rowName[item['name']] + Math.random().toString()}
+                      // key={rowName[item['name']] + Math.random().toString()}
+                      type={column_name === 'Valid Until' ? 'date' : 'text form-control'}
+                      defaultValue={values}
+                      onChange={e => {
+                        console.log('change', e.target.value)
+                        setExtractedDataChanged(prev => {
+                          const index = prev[i].data.findIndex(
+                            ({ column_name: column_nameDomain }) =>
+                              column_nameDomain === column_name
+                          )
+                          return [
+                            ...prev.slice(0, i),
+                            {
+                              ...prev[i],
+                              data: [
+                                ...prev[i].data.slice(0, index),
+                                {
+                                  column_name: column_name,
+                                  values: e.target.value,
+                                },
+                                ...prev[i].data.slice(index + 1),
+                              ],
+                            },
+                            ...prev.slice(i + 1),
+                          ]
+                        })
+                      }}
+                    />
+                  </>
+                ),
+              }
+            },
+            {
+              Tokuchu: (
+                <input
+                  ref={imageFileInputRef}
+                  id={Math.random().toString()}
+                  key={Math.random().toString()}
+                  type="file"
+                  onChange={e => handleFileInputChange(row_id, e.target.files[0])}
+                />
+              ),
+            }
+          )
+        )
+      }
+    } else {
+      setBulkEditable(false)
+    }
+  }, [extractedData, tableRows])
 
   const handleChange = (name, value) => {
     const updatedRowName = rowName
@@ -138,19 +235,95 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
       })
   }
 
-  const _setTableHeaders = () => {
+  // const _setTableHeaders = () => {
+  //   const tableColumns = []
+  //   tableObject.table_data?.map((column, index) => {
+  //     const tempColumnName = column.column_name
+  //     tableColumns.push({
+  //       isEdit: isEdit,
+  //       name: column.column_name,
+  //       selector: row => row[tempColumnName],
+  //       sortable: column.is_sortable,
+  //       isLink: column.is_link,
+  //       isDate: column.is_date,
+  //       filterable: column.is_filterable,
+  //     })
+  //   })
+  //   tableColumns.push({
+  //     name: '',
+  //     selector: row => row.edit,
+  //   })
+  //   setTableHeader([...tableColumns])
+  // }
+
+  const _setTableHeaders = sort => {
     const tableColumns = []
     tableObject.table_data?.map((column, index) => {
       const tempColumnName = column.column_name
-      tableColumns.push({
-        isEdit: isEdit,
-        name: column.column_name,
-        selector: row => row[tempColumnName],
-        sortable: column.is_sortable,
-        isLink: column.is_link,
-        isDate: column.is_date,
-        filterable: column.is_filterable,
-      })
+      if (!column.is_filterable) {
+        tableColumns.push({
+          name: column.column_name,
+          selector: row => row[tempColumnName],
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      } else {
+        const filters = column.values.map(item => item.value)
+        const uniqueFilters = filters.filter((item, index) => filters.indexOf(item) === index)
+        tableColumns.push({
+          name: (
+            <div className="relative">
+              <div
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                className="dropdown-toggle"
+                src={require('../../assets/Rearrange order.png')}
+              >
+                {column.column_name}
+              </div>
+
+              <div className="dropdown-menu">
+                <span
+                  style={{
+                    color: 'rgba(0,0,0,0.87)',
+                    fontWeight: '400',
+                  }}
+                  className="dropdown-item filter-item"
+                  onClick={() => {
+                    // Handle clear filter action
+                  }}
+                >
+                  <i>Clear Filter</i>
+                </span>
+                {uniqueFilters.map((element, index) => (
+                  <span
+                    style={{
+                      color: 'rgba(0,0,0,0.87)',
+                      fontWeight: element === sort ? '600' : '400',
+                    }}
+                    key={index}
+                    className="dropdown-item filter-item"
+                    onClick={() => {
+                      // Handle filter action
+                    }}
+                  >
+                    {element}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ),
+          selector: row => row[tempColumnName],
+          sortable: column.is_sortable,
+          isLink: column.is_link,
+          isDate: column.is_date,
+          filterable: column.is_filterable,
+        })
+      }
     })
     tableColumns.push({
       name: '',
@@ -362,10 +535,10 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
       ),
     }
     const rowHandler = {}
-    tableHeader.map((item, index) => {
-      rowHandler[item['name']] = ''
-      if (item['name'] === 'Tokuchu') {
-        tempObject[item['name']] = (
+    tableObject.table_data.map((item, index) => {
+      rowHandler[item['column_name']] = ''
+      if (item['column_name'] === 'Tokuchu') {
+        tempObject[item['column_name']] = (
           <input
             ref={imageFileInputRef}
             id={Math.random().toString()}
@@ -375,7 +548,7 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
           />
         )
       } else {
-        tempObject[item['name']] = (
+        tempObject[item['column_name']] = (
           <>
             <input
               style={{
@@ -384,11 +557,11 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
                 borderRight: 'none',
                 borderLeft: 'none',
               }}
-              type={item.isDate ? 'date' : 'text form-control'}
-              id={rowName[item['name']] + Math.random().toString()}
-              key={rowName[item['name']] + Math.random().toString()}
-              value={rowName[item['name']]}
-              onChange={e => handleChange(item['name'], e.target.value)}
+              type={item['column_name'] === 'Valid Until' ? 'date' : 'text form-control'}
+              id={rowName[item['column_name']] + Math.random().toString()}
+              key={rowName[item['column_name']] + Math.random().toString()}
+              value={rowName[item['column_name']]}
+              onChange={e => handleChange(item['column_name'], e.target.value)}
             />
           </>
         )
@@ -405,6 +578,8 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
     let dataArray = []
     let isBlankValue = false
     const keys = Object.keys(rowName)
+    console.log('These are the keys', keys)
+    console.log('This is the rowName', rowName)
     keys.forEach(key => {
       if (rowName[key] == '' || !rowName[key]) {
         isBlankValue = true
@@ -414,17 +589,17 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
         values: rowName[key],
       })
     })
-
+    console.log('This is the data array', dataArray)
     if (isBlankValue) {
       toast.error('Please fill in all the fields')
       return
     }
-
     const payload = {
       table_id: tableObject.id,
       data: dataArray,
       action_type: 'add_row',
     }
+
     _updateTableData(imageFileInputRef.current.files[0], JSON.stringify(payload))
   }
 
@@ -438,6 +613,125 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
       _setTableData()
     }
   }, [tableObject, isEdit, editSelected])
+
+  // Bulk update table data function
+  const handleUploadData = () => {
+    // Perform the upload process using extractedData
+    // Pass extractedData to the API endpoint or perform the necessary operations here
+    // Example code to send the data to an API endpoint:
+    console.log(extractedData)
+    const formData = new FormData()
+
+    // Add the table ID and extracted data to the form data
+    formData.append('data', JSON.stringify({ table_id: tableId, rows_data: extractedDataChange }))
+
+    // Add the file data to the form data
+    Object.keys(fileData).forEach(rowId => {
+      const file = fileData[rowId]
+      formData.append(`row_${rowId}`, file)
+    })
+
+    API.post('tokuchu/page/bulk_update_table_data', formData)
+      .then(res => {
+        if (res.status === 200 && res.data !== undefined) {
+          if (res.data?.message) {
+            toast.success(res.data?.message)
+            onRefresh()
+            setBulkEditable(false)
+            setExtractedData([])
+            setFileData([])
+          }
+        }
+      })
+      .catch(err => {
+        toast.error(err)
+        // setBulkEditable(false)
+        // setExtractedData([])
+        // setFileData([])
+        // Handle error
+      })
+  }
+
+  // Rows to be shown when a file is uploaded and parsed
+
+  // const renderDummyRows = () => {
+  //   const handleFileInputChange = (rowId, file) => {
+  //     setFileData(prevFileData => ({
+  //       ...prevFileData,
+  //       [rowId]: file,
+  //     }))
+  //   }
+
+  //   // const convertDateFormat = dateString => {
+  //   //   dateString = String(dateString)
+  //   //   console.log(dateString)
+  //   //   if (typeof dateString === 'string') {
+  //   //     console.log('im here')
+  //   //     const parts = dateString.split('/')
+  //   //     if (parts.length === 3) {
+  //   //       const month = parseInt(parts[0], 10)
+  //   //       const day = parseInt(parts[1], 10)
+  //   //       const year = parseInt(parts[2], 10)
+  //   //       if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+  //   //         const formattedDate = new Date(year, month - 1, day)
+  //   //         console.log(formattedDate)
+  //   //         if (!isNaN(formattedDate.getTime())) {
+  //   //           const yearStr = String(formattedDate.getFullYear())
+  //   //           const monthStr = String(formattedDate.getMonth() + 1).padStart(2, '0')
+  //   //           const dayStr = String(formattedDate.getDate()).padStart(2, '0')
+  //   //           return `${yearStr}-${monthStr}-${dayStr}`
+  //   //         }
+  //   //       }
+  //   //     }
+  //   //   }
+  //   //   return dateString
+  //   // }
+
+  //   return (
+  //     <>
+  //       <div className="dummy-row-container w-100" style={{ overflow: 'scroll' }}>
+  //         <DataTable
+  //           sortIcon={<i className="fa-solid fa-sort ms-1"></i>}
+  //           fixedHeader
+  //           persistTableHead
+  //           columns={tableHeader}
+  //           data={tableRows}
+  //           customStyles={customStyles}
+  //           sortFunction={customSort}
+  //         />
+  //       </div>
+
+  //     </>
+  //   )
+  // }
+
+  // New function
+
+  // New function ends
+
+  // Function to handle input change after file upload and parsing
+
+  const handleInputChange = (rowIdx, colIdx, target) => {
+    const file = target.files && target.files[0]
+    if (file) {
+      const updatedData = [...extractedData]
+      updatedData[rowIdx].data[colIdx].values = file
+      setExtractedData(updatedData)
+    }
+  }
+
+  const handleDateInputChange = (rowIdx, value) => {
+    setExtractedData(prevData => {
+      const updatedData = [...prevData]
+      const dateValue = convertDateFormat(value)
+      updatedData[rowIdx].data.forEach(column => {
+        if (column.column_name === 'Valid Until') {
+          column.values = dateValue
+        }
+      })
+      return updatedData
+    })
+  }
 
   return (
     <>
@@ -467,25 +761,28 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
                   />
                 </Tooltip>
               ) : (
-                <Tooltip title="Edit Tokuchu">
-                  <i
-                    role={'button'}
-                    className="fa-solid fa-pen-to-square ms-2 theme"
-                    aria-hidden="true"
-                    onClick={() => {
-                      setEditModeData([...tableRows])
-                      setEdit(true)
-                    }}
-                  />
-                </Tooltip>
+                <>
+                  <Tooltip title="Edit Tokuchu">
+                    <i
+                      role={'button'}
+                      className="fa-solid fa-pen-to-square ms-2 theme"
+                      aria-hidden="true"
+                      onClick={() => {
+                        setEditModeData([...tableRows])
+                        setEdit(true)
+                      }}
+                    />
+                  </Tooltip>
+                </>
               )}
-              {/* <i
-                role={'button'}
-                className="fa-solid fa-trash ms-2"
+              <img
+                style={{ width: '0.9rem', marginLeft: '1rem', cursor: 'pointer' }}
+                src={upload_link}
                 onClick={() => {
-                  setShowDeleteModal(true)
+                  setShowUploadModal(true)
+                  settableId(tableObject.id)
                 }}
-              /> */}
+              />
             </div>
           </div>
         )}
@@ -503,7 +800,8 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
         </div>
       </div>
       {(getUserRoles() === 'PMK Administrator' || getUserRoles() === 'Technical Administrator') &&
-        !allRequest && (
+        !allRequest &&
+        !bulkEditable && (
           <div
             className="add_row d-none d-lg-flex"
             style={{ fontSize: '1rem', background: 'none' }}
@@ -527,6 +825,30 @@ const TokuchuTable = ({ sectionName, tableObject, setShowDeleteModal, onRefresh,
             {'Add'}
           </div>
         )}
+      {bulkEditable ? (
+        <div className="add-row d-none d-lg-flex overflow-auto">
+          {extractedData.length > 0 && (
+            <div className="d-flex justify-content-end gap">
+              <button className="btn btn-primary me-2" onClick={handleUploadData}>
+                Upload Data
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setBulkEditable(false)
+                  setExtractedData([])
+                  setExtractedDataChanged([])
+                  onRefresh()
+                  setFileData([])
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null}
+      {console.log(extractedData, bulkEditable)}
       <Modal
         show={deleteSelected !== null && Object.keys(deleteSelected).length > 0}
         centered
