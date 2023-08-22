@@ -372,6 +372,10 @@ export default ({
       }
     })
     tableColumns = tableColumns.filter(column => column.name != 'File')
+    tableColumns.push({
+      name: '',
+      selector: row => row.edit,
+    })
     // removed empty column for file
     // tableColumns.push({
     //   name: '',
