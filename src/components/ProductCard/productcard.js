@@ -143,7 +143,7 @@ const ProductCard = ({
                         try {
                           if (
                             /*inputRef.current.value.trim() !== '' &&*/
-                            textareaRef.current.value.trim() !== '' &&
+                            // textareaRef.current.value.trim() !== '' &&
                             item.id !== undefined &&
                             item.id !== null
                           ) {
