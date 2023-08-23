@@ -331,7 +331,7 @@ const ProfileSettingScreen = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => imageFileInputRef.current.click()}
-                  src={profilePicture}
+                  src={profilePicture + `?token=${getToken()}`}
                   onError={() => setProfilePicture(placeholder)}
                 />
               </div>
