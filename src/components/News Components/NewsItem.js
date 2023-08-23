@@ -99,7 +99,7 @@ const NewsItem = ({
     setSubCategoryID(0)
     if (cat.image_link && cat.image_link != '') {
       if (typeof cat.image_link == 'string') {
-        setCatImg(cat.image_link)
+        setCatImg(cat.image_link + `?token=${getToken()}`)
       } else {
         setCatImg(window.URL.createObjectURL(cat.image_link))
       }
@@ -165,7 +165,7 @@ const NewsItem = ({
     if (data) {
       category.map((cat, index) => {
         if (cat.id == data.category_id) {
-          setCatImg(cat.image_link)
+          setCatImg(cat.image_link + `?token=${getToken()}`)
         }
       })
       setReadState(data.news_read)
@@ -222,6 +222,7 @@ const NewsItem = ({
       category_id: parentCatId,
       isChecked: true,
     }
+    console.log('The new object formed', tempSubCatObject)
     setSubCategory([...subCategory, tempSubCatObject])
     handleSelectSubTopic(tempSubCatObject)
     SetNewSubTopicName('')
@@ -704,7 +705,7 @@ const NewsItem = ({
               >
                 <div className="news-img rounded mx-lg-3">
                   <img
-                    src={catImg + `?token=${getToken()}`}
+                    src={catImg ? catImg : placeholder}
                     onError={_onErrorImage}
                     placeholder={placeholder}
                     style={{ objectFit: 'contain' }}
@@ -1033,10 +1034,13 @@ const NewsItem = ({
                                 SetNewSubTopicName('')
                                 setSubTopicAdd(false)
                                 if (newSubTopicName.length != 0) {
+                                  console.log('New sub topic name', newSubTopicName)
+                                  console.log('Cat ID', categoryID)
+                                  console.log('sub cat', subCategory)
                                   uploadSubCategory(
                                     newSubTopicName,
-                                    categoryID,
-                                    subCategory[subCategory.length - 1].sub_category_name
+                                    categoryID
+                                    // subCategory[subCategory.length - 1].sub_category_name
                                     // data.data.id
                                   )
                                   // AddNewSubCategoryCall()

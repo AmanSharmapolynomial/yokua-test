@@ -210,7 +210,7 @@ const NewsScreen = () => {
                       padding: '4px',
                     }}
                   >
-                    <label for="categories" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                    <label htmlFor="categories" style={{ fontSize: 'small', fontWeight: 'bold' }}>
                       Choose a Category:
                     </label>
                     <select
@@ -261,7 +261,10 @@ const NewsScreen = () => {
                           </>
                         ))}
                     </select>
-                    <label for="sub-categories" style={{ fontSize: 'small', fontWeight: 'bold' }}>
+                    <label
+                      htmlFor="sub-categories"
+                      style={{ fontSize: 'small', fontWeight: 'bold' }}
+                    >
                       Choose a Sub-Category:
                     </label>
                     <select

@@ -87,7 +87,7 @@ const RYGCard = ({ index, item, onClick, onUpdate }) => {
                         className="img-thumbnail border-black"
                         src={
                           preview
-                            ? preview + `?token=${getToken()}`
+                            ? preview
                             : item?.image_link
                             ? item.image_link + `?token=${getToken()}`
                             : upload
