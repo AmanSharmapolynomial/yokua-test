@@ -34,6 +34,7 @@ const EventDetail = () => {
   const [selectedSubProducts, setSelectedSubproducts] = useState([])
   const [componentToLink, setComponentToLink] = useState({})
   const [expandedAccordian, setExpandedAccordian] = useState(-1)
+  const [pageID, setPageId] = useState(-1)
   const sectionTitleRef = React.useRef(null)
   const accordionRef = React.useRef(null)
 
@@ -88,7 +89,14 @@ const EventDetail = () => {
     API.get('ryg_info/training/details/')
       .then(res => {
         if (res.status === 200 && res.data !== undefined) {
-          setProductDetail(res.data)
+          console.log(res.data)
+          try {
+            setProductDetail(res.data.response)
+            setPageId(res.data.page_id)
+          } catch (error) {
+            console.log('This error occuredf', error)
+          }
+          console.log('The res data after setting', res.data)
         }
         setLoading(false)
       })
@@ -212,7 +220,7 @@ const EventDetail = () => {
   const onAddSection = () => {
     setLoading(true)
     API.post('/ryg_info/create_section', {
-      page_id: state.page_id,
+      page_id: pageID,
       section_name: sectionTitleRef.current.value,
       order_index: 1,
     })
