@@ -122,7 +122,9 @@ const ProfileSettingScreen = () => {
     setProfileData(backendData.data)
     setAddress(backendData.data.basic_profile.company_name)
     _setProfilePicture(
-      backendData.data.basic_profile?.avatar ? backendData.data.basic_profile?.avatar : placeholder
+      backendData.data.basic_profile?.avatar
+        ? backendData.data.basic_profile?.avatar + `?token=${getToken()}`
+        : placeholder
     )
     setIsLoading(false)
     setLoading(false)
@@ -331,7 +333,7 @@ const ProfileSettingScreen = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => imageFileInputRef.current.click()}
-                  src={profilePicture + `?token=${getToken()}`}
+                  src={profilePicture}
                   onError={() => setProfilePicture(placeholder)}
                 />
               </div>
