@@ -741,51 +741,53 @@ const TokuchuTable = ({
         </h5>
       )}
       {tableObject &&
-        tableObject !== {} &&
-        (getUserRoles() == 'PMK Administrator' ||
-          getUserRoles() == 'PMK Content Manager' ||
-          getUserRoles() == 'Technical Administrator') &&
-        !allRequest && (
-          <div className="row text-primary d-none d-lg-flex">
-            <div className="ms-auto w-auto my-2">
-              {isEdit ? (
-                <Tooltip title="Save Changes">
+      tableObject !== {} &&
+      (getUserRoles() == 'PMK Administrator' ||
+        getUserRoles() == 'PMK Content Manager' ||
+        getUserRoles() == 'Technical Administrator') &&
+      !allRequest ? (
+        <div className="row text-primary d-none d-lg-flex">
+          <div className="ms-auto w-auto my-2">
+            {isEdit ? (
+              <Tooltip title="Save Changes">
+                <i
+                  role={'button'}
+                  className="fa-solid fa-floppy-disk theme"
+                  onClick={() => {
+                    setEditModeData([...tableRows])
+                    setEdit(false)
+                    setEditSelected(null)
+                  }}
+                />
+              </Tooltip>
+            ) : (
+              <>
+                <Tooltip title="Edit Tokuchu">
                   <i
                     role={'button'}
-                    className="fa-solid fa-floppy-disk theme"
+                    className="fa-solid fa-pen-to-square ms-2 theme"
+                    aria-hidden="true"
                     onClick={() => {
                       setEditModeData([...tableRows])
-                      setEdit(false)
-                      setEditSelected(null)
+                      setEdit(true)
                     }}
                   />
                 </Tooltip>
-              ) : (
-                <>
-                  <Tooltip title="Edit Tokuchu">
-                    <i
-                      role={'button'}
-                      className="fa-solid fa-pen-to-square ms-2 theme"
-                      aria-hidden="true"
-                      onClick={() => {
-                        setEditModeData([...tableRows])
-                        setEdit(true)
-                      }}
-                    />
-                  </Tooltip>
-                </>
-              )}
-              <img
-                style={{ width: '0.9rem', marginLeft: '1rem', cursor: 'pointer' }}
-                src={upload_link}
-                onClick={() => {
-                  setShowUploadModal(true)
-                  settableId(tableObject.id)
-                }}
-              />
-            </div>
+              </>
+            )}
+            <img
+              style={{ width: '0.9rem', marginLeft: '1rem', cursor: 'pointer' }}
+              src={upload_link}
+              onClick={() => {
+                setShowUploadModal(true)
+                settableId(tableObject.id)
+              }}
+            />
           </div>
-        )}
+        </div>
+      ) : (
+        <div style={{ marginBottom: '10px' }}></div> // Empty div when user roles are not satisfied
+      )}
       <div className="row">
         <div className="border w-100 p-0">
           <DataTable
