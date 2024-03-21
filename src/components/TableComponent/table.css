@@ -11,3 +11,18 @@
 .rdt_ExpanderRow{
     text-transform: none !important;
 }
+
+
+.rdt_Table {
+    min-height: 280px !important;
+}
+
+.dropdown-menu {
+    max-height: 230px !important;
+    overflow-y: auto !important;
+}
+
+.rdt_TableCol_Sortable {
+    display: inline-flex !important;
+    overflow: visible !important;
+}

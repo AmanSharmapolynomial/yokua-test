@@ -128,6 +128,15 @@ export default ({
         border: '1px solid black',
       },
     },
+    dropdown: {
+      style: {
+        backgroundColor: 'white', // Background color of the dropdown menu
+        border: '1px solid black', // Border of the dropdown menu
+        boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)', // Box shadow for the dropdown menu
+        zIndex: '9999', // Ensure the dropdown is above other elements
+        position: 'absolute', // Position the dropdown absolutely
+      },
+    },
   }
 
   const inputEditStyle = {
