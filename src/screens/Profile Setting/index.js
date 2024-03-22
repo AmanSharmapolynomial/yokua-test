@@ -286,11 +286,11 @@ const ProfileSettingScreen = () => {
   const nameValidator = name => {
     const nameSplitArray = name.split(' ')
     let validated = true
-    nameSplitArray.map(part => {
-      if (!validator.isAlpha(part)) {
-        validated = false
-      }
-    })
+    // nameSplitArray.map(part => {
+    //   if (!validator.isAlpha(part)) {
+    //     validated = false
+    //   }
+    // })
     return validated
   }
 
@@ -549,7 +549,7 @@ const ProfileSettingScreen = () => {
                   } else {
                     if (editMode1) {
                       toast.error(
-                        'Name should be atleast 5 letters and must contain only letters A-Z or a-z'
+                        'Name should be atleast 5 letters and'
                       )
                       return
                     }
