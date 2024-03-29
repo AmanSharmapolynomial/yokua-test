@@ -11,9 +11,29 @@ import editIcon from '../../assets/Icon awesome-edit.png'
 import RYGBottom from '../../assets/home-bottom.png'
 import GoTo from '../../assets/goto.png'
 import saveIcon from '../../assets/ic_save.png'
-import { Modal } from 'react-bootstrap'
+import { Modal, Table } from 'react-bootstrap'
 import RYGImage from '../../assets/RYG-Information banner.png'
 import Tooltip from '@mui/material/Tooltip'
+import { arrayMove, sortableContainer, sortableElement } from 'react-sortable-hoc'
+import { arrayMoveImmutable } from 'array-move'
+import { toast } from 'react-toastify'
+
+const SortableItem = sortableElement(({ value }) => (
+  <div
+    style={{
+      border: '2px solid #ccc',
+      width: '100%',
+    }}
+    className="p-3 mx-2 my-2"
+  >
+    {value.name}
+  </div>
+))
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return <div className="w-100">{children}</div>
+})
+
 const Home = () => {
   const isAdmin =
     getUserRoles() == 'Technical Administrator' ||
@@ -23,6 +43,8 @@ const Home = () => {
   const navigate = useNavigate()
   const { setLoading } = useLoading()
   const [home, setHome] = React.useState(null)
+  const [productList, setProductList] = React.useState([])
+  const [showModal, setShowModal] = React.useState(false)
   const [isQuickLinkEditable, setIsQuickLinkEditable] = React.useState(false)
   const [isFavEditable, setIsFavEditable] = React.useState(false)
   const [isAddModalVisible, setIsAddModalVisible] = React.useState(-1) // 0 -> Quick Links, 1 -> Fav Links
@@ -30,6 +52,14 @@ const Home = () => {
   const [selectedItem, setSelectedItem] = React.useState(null)
   const inputTitle = React.useRef(null)
   const inputLink = React.useRef(null)
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const newItems = arrayMoveImmutable(productList, oldIndex, newIndex).map((item, index) => {
+      return { ...item, order_id: index + 1 }
+    })
+    console.log('new items', newItems)
+    setProductList(newItems)
+  }
 
   const getHomeDetails = () => {
     setLoading(true)
@@ -39,6 +69,22 @@ const Home = () => {
           setHome(res.data)
         }
         setLoading(false)
+      })
+      .catch(error => {
+        console.log(error)
+        setLoading(false)
+      })
+  }
+
+  const reorderProducts = () => {
+    setLoading(true)
+    API.post('products/change_order', { product_list: productList })
+      .then(res => {
+        console.log('res', res)
+        toast.success('Products reordered successfully')
+        getHomeDetails()
+        setLoading(false)
+        setShowModal(false)
       })
       .catch(error => {
         console.log(error)
@@ -268,7 +314,32 @@ const Home = () => {
             <HomeCardComponent isImage={true} />
           </div>
           <div className="row mt-4">
-            <div className="ryg-header-title">Product Related Information</div>
+            <div className="d-flex justify-content-between w-100 align-items-center">
+              <div className="ryg-header-title">Product Related Information</div>
+              {isAdmin && (
+                <div className="mx-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="26"
+                    height="26"
+                    fill="currentColor"
+                    class="bi bi-list-ol"
+                    style={{ cursor: 'pointer' }}
+                    viewBox="0 0 16 16"
+                    onClick={() => {
+                      setProductList(home?.product_related_info)
+                      setShowModal(true)
+                    }}
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5"
+                    />
+                    <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635z" />
+                  </svg>
+                </div>
+              )}
+            </div>
             {home?.product_related_info.map((item, index) => (
               <HomeCard
                 item={item}
@@ -426,6 +497,74 @@ const Home = () => {
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showModal}
+        centered
+        size="lg"
+        onHide={() => {
+          setShowModal(false)
+        }}
+      >
+        <Modal.Header
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottom: '0',
+          }}
+        >
+          <Modal.Title>Reorder Products</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            textAlign: 'center',
+            borderBottom: '0',
+            fontWeight: '600',
+          }}
+        >
+          <SortableContainer onSortEnd={onSortEnd}>
+            {productList.map((value, index) => (
+              <SortableItem key={`item-${value.name}`} index={index} value={value} />
+            ))}
+          </SortableContainer>
+          <div>
+            <div>
+              <button
+                ref={ref => {
+                  if (ref) {
+                    ref.style.setProperty('background-color', 'white', 'important')
+                    ref.style.setProperty('color', 'var(--bgColor2)', 'important')
+                    ref.style.setProperty('font-size', '0.8rem', 'important')
+                    ref.style.setProperty('text-align', 'center', 'important')
+                  }
+                }}
+                className="btn me-4 font-8 px-1 py-1"
+                onClick={() => {
+                  setShowModal(false)
+                }}
+                style={{ minWidth: '4rem' }}
+              >
+                Cancel
+              </button>
+              <button
+                ref={ref => {
+                  if (ref) {
+                    ref.style.setProperty('text-align', 'center', 'important')
+                  }
+                }}
+                className="btn font-8 px-1 py-1"
+                onClick={() => {
+                  reorderProducts()
+                }}
+                style={{ minWidth: '4rem' }}
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </Modal.Body>
