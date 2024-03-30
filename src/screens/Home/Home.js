@@ -21,17 +21,32 @@ import { toast } from 'react-toastify'
 const SortableItem = sortableElement(({ value }) => (
   <div
     style={{
-      border: '2px solid #ccc',
-      width: '100%',
+      border: '2px solid #f1f1f1',
+      width: '80%',
+      cursor: 'grab',
+      borderRadius: '5px',
+      zIndex: 1000000,
     }}
-    className="p-3 mx-2 my-2"
+    className="sortable-element shadow px-3 py-2 mx-auto my-2 d-flex justify-content-between align-items-center"
   >
-    {value.name}
+    <div className="mx-2">{value.name}</div>
+    <div className="mx-2">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        className="bi bi-grid-3x3-gap"
+        viewBox="0 0 16 16"
+      >
+        <path d="M4 2v2H2V2zm1 12v-2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V7a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m5 10v-2a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V7a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1m0-5V2a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1M9 2v2H7V2zm5 0v2h-2V2zM4 7v2H2V7zm5 0v2H7V7zm5 0h-2v2h2zM4 12v2H2v-2zm5 0v2H7v-2zm5 0v2h-2v-2zM12 1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm-1 6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zm1 4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1z" />
+      </svg>
+    </div>
   </div>
 ))
 
 const SortableContainer = sortableContainer(({ children }) => {
-  return <div className="w-100">{children}</div>
+  return <div className="w-100 text-center">{children}</div>
 })
 
 const Home = () => {
@@ -323,7 +338,7 @@ const Home = () => {
                     width="26"
                     height="26"
                     fill="currentColor"
-                    class="bi bi-list-ol"
+                    className="bi bi-list-ol"
                     style={{ cursor: 'pointer' }}
                     viewBox="0 0 16 16"
                     onClick={() => {
@@ -518,7 +533,10 @@ const Home = () => {
             borderBottom: '0',
           }}
         >
-          <Modal.Title>Reorder Products</Modal.Title>
+          {/* <Modal.Title className="ryg-header-title">Reorder Products</Modal.Title> */}
+          <div className="row">
+            <div className="h4">Reorder Products</div>
+          </div>
         </Modal.Header>
         <Modal.Body
           style={{
@@ -532,7 +550,7 @@ const Home = () => {
               <SortableItem key={`item-${value.name}`} index={index} value={value} />
             ))}
           </SortableContainer>
-          <div>
+          <div className="mt-3">
             <div>
               <button
                 ref={ref => {
