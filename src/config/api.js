@@ -1,6 +1,6 @@
 import { create } from 'axios'
 
-const API = create({ baseURL: 'http://13.71.80.88:5000/' })
+const API = create({ baseURL: 'http://127.0.0.1:8000/' })
 
 API.interceptors.response.use(null, e => {
   if (!window.navigator.onLine) {
