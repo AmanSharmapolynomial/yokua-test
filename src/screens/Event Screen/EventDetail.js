@@ -567,13 +567,13 @@ const EventDetail = () => {
   }
 
   const renderComponents = () =>
-    productDetail.map((item, index) => (
+    productDetail?.map((item, index) => (
       <div className="col-12 mt-3 mt-lg-5">
         <div className="row">
           <span className="text-bold p-0">{item.sectionName}</span>
         </div>
         <div className="row">
-          {item.components.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
+          {item.components?.map((ele, idx, arr) => renderType(ele, idx, arr, item))}
         </div>
         {(getUserRoles() == 'PMK Administrator' ||
           getUserRoles() == 'PMK Content Manager' ||
@@ -711,7 +711,7 @@ const EventDetail = () => {
         {addComponentData?.columnsNum && addComponentData?.columnsNum > 0 && (
           <div className="col-12 font-8">
             <div className="row add-table-row">
-              {columneNames.map((item, index) => (
+              {columneNames?.map((item, index) => (
                 <div
                   className={`${
                     index === 0 ? 'col-4 add-table-col' : 'col add-table-col text-center p-0'
@@ -722,10 +722,10 @@ const EventDetail = () => {
               ))}
             </div>
             {addComponentData?.columnsNum >= 6 ? (
-              [...Array(addComponentData?.columnsNum)].map((e, i) => {
+              [...Array(addComponentData?.columnsNum)]?.map((e, i) => {
                 return (
                   <div className="row add-table-row d-flex align-items-center">
-                    {columneNames.map((item, index) =>
+                    {columneNames?.map((item, index) =>
                       index === 0 ? (
                         <input
                           disabled={tableColumnNames.includes(
@@ -1212,7 +1212,7 @@ const EventDetail = () => {
             style={{ boxShadow: '0 0 20px -5px rgba(0,0,0,0.3)' }}
             ref={accordionRef}
           >
-            {components.map((item, idx) => (
+            {components?.map((item, idx) => (
               <div className="card border border-secondary">
                 <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
                   <div
@@ -1403,7 +1403,7 @@ const EventDetail = () => {
             ref={accordionRef}
           >
             {Array.isArray(subProductList) &&
-              subProductList.map((productList, idx) => {
+              subProductList?.map((productList, idx) => {
                 return (
                   <div className="card border border-secondary">
                     <div className="card-header" id="headingOne" style={{ background: '#fff' }}>
@@ -1434,7 +1434,7 @@ const EventDetail = () => {
                       data-parent="#accordionExample"
                     >
                       <div className="card-body">
-                        {subProductList[idx].sections.map(section => (
+                        {subProductList[idx].sections?.map(section => (
                           <div className="py-1 px-3 d-flex align-items-center">
                             <input
                               checked={selectedSubProducts.indexOf(section.section_id) !== -1}

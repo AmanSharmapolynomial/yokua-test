@@ -1591,7 +1591,13 @@ function AddCategoryModal({
               thumbnail={true}
               style={{ maxWidth: '40%', width: 'auto' }}
               //src={catImg ? catImg : placeholder}
-              src={croppedImage ? croppedImage : catImg ? catImg : placeholder}
+              src={
+                croppedImage
+                  ? croppedImage
+                  : catImg + `?token=${getToken()}`
+                  ? catImg + `?token=${getToken()}`
+                  : placeholder
+              }
               onError={() => setCatImg(placeholder)}
               onClick={() => imageFileInputRef.current.click()}
             />
