@@ -28,3 +28,8 @@
     display: inline-flex !important;
     overflow: visible !important;
 }
+
+.rdt_TableCol_Sortable:hover {
+    cursor: pointer !important;
+    opacity: 1 !important;
+}
