@@ -1592,13 +1592,11 @@ function AddCategoryModal({
               style={{ maxWidth: '40%', width: 'auto' }}
               //src={catImg ? catImg : placeholder}
               src={
-                croppedImage
-                  ? croppedImage
-                  : catImg + `?token=${getToken()}`
-                  ? catImg + `?token=${getToken()}`
-                  : placeholder
+                croppedImage ? croppedImage : catImg ? catImg + `?token=${getToken()}` : placeholder
               }
-              onError={() => setCatImg(placeholder)}
+              onError={error => {
+                setCatImg(placeholder)
+              }}
               onClick={() => imageFileInputRef.current.click()}
             />
           </div>
@@ -1626,7 +1624,7 @@ function AddCategoryModal({
             onClick={() => {
               setCategoryName('')
               setShow(p => false)
-              SetImageFile(null)
+              SetImageFile(catImg ? catImg : placeholder)
               setCroppedImage(null)
               setImageToCrop(null)
               setFinalCroppedImageFile(null)
