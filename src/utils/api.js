@@ -31,7 +31,14 @@ API.interceptors.response.use(
   },
   async error => {
     const originalRequest = error.config
-
+    // first check if the refresh route has given a 401 error, then clear the token and redirect to login
+    if (error.response.status === 401 && originalRequest.url === '/auth/token/refresh/') {
+      removeToken()
+      removeUserEmail()
+      removeUserRole()
+      window.location.href = '/auth/login'
+      return Promise.reject(error)
+    }
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
