@@ -10,20 +10,25 @@ import {
 } from './token'
 import { toast } from 'react-toastify'
 // const API = create({ baseURL: 'https://yokogawa-flow-center.herokuapp.com/' })
-const API = create({ baseURL: 'http://127.0.0.1:8000/' })
+const API = create({ baseURL: 'https://rota.eu/backend/' })
 
 API.interceptors.request.use(
   config => {
     const token = getToken()
+    console.log('Entered')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+    console.log(config)
     return config
   },
   error => {
+    console.log('Error entered')
     return Promise.reject(error)
   }
 )
+let isRefreshing = false // Flag to track if token refresh is in progress
+let refreshSubscribers = [] // Array to hold pending requests while token is being refreshed
 
 API.interceptors.response.use(
   response => {
@@ -31,33 +36,50 @@ API.interceptors.response.use(
   },
   async error => {
     const originalRequest = error.config
-    // first check if the refresh route has given a 401 error, then clear the token and redirect to login
-    if (error.response.status === 401 && originalRequest.url === '/auth/token/refresh/') {
-      removeToken()
-      removeUserEmail()
-      removeUserRole()
-      window.location.href = '/auth/login'
-      return Promise.reject(error)
-    }
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-      try {
-        const rs = await API.post('/auth/token/refresh/', {
-          refresh: getRefreshToken(),
-        })
-        const { access, refresh } = rs.data
-        toast.success('Refreshing website...')
-        setToken(access)
-        setRefreshToken(refresh)
-        return API(originalRequest)
-      } catch (refreshError) {
-        toast.error('Session Expired, Login Again')
-        // console.error('Failed to refresh token:', refreshError);
+    if (error.response.status === 401) {
+      if (originalRequest.url === '/auth/token/refresh/') {
         removeToken()
         removeUserEmail()
         removeUserRole()
         window.location.href = '/auth/login'
-        return Promise.reject(refreshError)
+        return Promise.reject(error)
+      }
+
+      if (!originalRequest._retry) {
+        originalRequest._retry = true
+        if (!isRefreshing) {
+          isRefreshing = true
+          try {
+            const rs = await API.post('/auth/token/refresh/', {
+              refresh: getRefreshToken(),
+            })
+            const { access, refresh } = rs.data
+            setToken(access)
+            setRefreshToken(refresh)
+            toast.success('Refreshing  Website') // Display success message once
+            // Retry the original request after token refresh
+            refreshSubscribers.forEach(cb => cb(access))
+            refreshSubscribers = []
+            return API(originalRequest)
+          } catch (refreshError) {
+            toast.error('Session Expired, Login Again')
+            removeToken()
+            removeUserEmail()
+            removeUserRole()
+            window.location.href = '/auth/login'
+            return Promise.reject(refreshError)
+          } finally {
+            isRefreshing = false
+          }
+        } else {
+          // If token refresh is already in progress, add the request to the array of pending requests
+          return new Promise(resolve => {
+            refreshSubscribers.push(access => {
+              originalRequest.headers.Authorization = `Bearer ${access}`
+              resolve(API(originalRequest))
+            })
+          })
+        }
       }
     }
 
