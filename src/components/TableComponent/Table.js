@@ -332,6 +332,7 @@ export default ({
                   style={{
                     color: 'black',
                     fontWeight: '400',
+                    opacity: 1,
                   }}
                   className="dropdown-item filter-item"
                   onClick={() => {
@@ -346,6 +347,7 @@ export default ({
                   <span
                     style={{
                       color: 'black',
+                      opacity: 1,
                       fontWeight: element === sort ? '600' : '400',
                     }}
                     key={index}
