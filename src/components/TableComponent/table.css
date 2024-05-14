@@ -38,10 +38,10 @@
 }
 
 .fFBlx:hover,
-.fFBlx:focus,
-.fFBlx:focus span,
+.fFBlx,
+.fFBlx span,
 .fFBlx:hover span.__rdt_custom_sort_icon__ *,
-.fFBlx:focus span.__rdt_custom_sort_icon__ {
+.fFBlx span.__rdt_custom_sort_icon__ {
   opacity: 1 !important;
   color: black !important;
 }
