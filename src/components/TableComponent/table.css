@@ -16,32 +16,31 @@
   min-height: 280px !important;
   border-right: 1px solid black !important;
   border-left: 1px solid black !important;
-  color: black !important;
 }
 
 .dropdown-menu {
   max-height: 230px !important;
   overflow-y: auto !important;
-  color: black !important;
+  color:black !important
 }
 
 .rdt_TableCol_Sortable {
   display: inline-flex !important;
   overflow: visible !important;
-  color: black !important;
+  color:black !important
 }
 
 .rdt_TableCol_Sortable {
   cursor: pointer !important;
   opacity: 2 !important;
-  color: black !important;
+  color:black !important
 }
 
-.fFBlx,
-.fFBlx,
-.fFBlx span,
+.fFBlx:hover,
+.fFBlx:focus,
+.fFBlx:focus span,
 .fFBlx:hover span.__rdt_custom_sort_icon__ *,
-.fFBlx span.__rdt_custom_sort_icon__ {
+.fFBlx:focus span.__rdt_custom_sort_icon__ {
   opacity: 1 !important;
   color: black !important;
 }
@@ -57,9 +56,5 @@
   /* Reset all styles to default or null */
   /* all: initial !important; */
   opacity: 1 !important;
-  color: black !important;
-}
-.dropdown-item,
-.filter-item {
   color: black !important;
 }

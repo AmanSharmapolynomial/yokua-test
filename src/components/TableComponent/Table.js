@@ -329,10 +329,10 @@ export default ({
 
               <div className="dropdown-menu">
                 <span
-                  // style={{
-                  //   color: 'rgba(0,0,0,0.87)',
-                  //   fontWeight: '400',
-                  // }}
+                  style={{
+                    color: 'rgba(0,0,0,0.87)',
+                    fontWeight: '400',
+                  }}
                   className="dropdown-item filter-item"
                   onClick={() => {
                     setSortMethod('')
@@ -344,10 +344,10 @@ export default ({
                 </span>
                 {uniqueFilters.map((element, index) => (
                   <span
-                    // style={{
-                    //   color: 'rgba(0,0,0,0.87)',
-                    //   fontWeight: element === sort ? '600' : '400',
-                    // }}
+                    style={{
+                      color: 'rgba(0,0,0,0.87)',
+                      fontWeight: element === sort ? '600' : '400',
+                    }}
                     key={index}
                     className="dropdown-item filter-item"
                     onClick={() => {
