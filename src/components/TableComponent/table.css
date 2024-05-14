@@ -59,3 +59,6 @@
   opacity: 1 !important;
   color: black !important;
 }
+.dropdown-item,.filter-item{
+color:black
+}
