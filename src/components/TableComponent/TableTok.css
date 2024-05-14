@@ -32,6 +32,7 @@ tr {
 .dropdown-menu {
   max-height: 230px !important;
   overflow-y: auto !important;
+  color:black !important
 }
 /* 
 .rdt_TableCol_Sortable {
