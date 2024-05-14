@@ -8,34 +8,41 @@
 .rdt_TableHead,
 .rdt_TableHeadRow,
 .rdt_TableBody,
-.rdt_ExpanderRow{
-    text-transform: none !important;
+.rdt_ExpanderRow {
+  text-transform: none !important;
 }
 
-
 .rdt_Table {
-    min-height: 280px !important;
-    border-right: 1px solid black !important;
-    border-left: 1px solid black !important;
+  min-height: 280px !important;
+  border-right: 1px solid black !important;
+  border-left: 1px solid black !important;
 }
 
 .dropdown-menu {
-    max-height: 230px !important;
-    overflow-y: auto !important;
+  max-height: 230px !important;
+  overflow-y: auto !important;
 }
 
 .rdt_TableCol_Sortable {
-    display: inline-flex !important;
-    overflow: visible !important;
-}
-/* 
-.rdt_TableCol_Sortable:hover {
-    cursor: pointer !important;
-    opacity: 2 !important;
+  display: inline-flex !important;
+  overflow: visible !important;
+} 
+
+/* .rdt_TableCol_Sortable:hover {
+  cursor: pointer !important;
+  opacity: 2 !important;
 } */
 
-
-.fFBlx:hover, .fFBlx:focus, .fFBlx:focus span, .fFBlx:hover span.__rdt_custom_sort_icon__ *, .fFBlx:focus span.__rdt_custom_sort_icon__ {
-    opacity: 1 !important;
-    color: black !important;
-} 
+.fFBlx:hover,
+.fFBlx:focus,
+.fFBlx:focus span,
+.fFBlx:hover span.__rdt_custom_sort_icon__ *,
+.fFBlx:focus span.__rdt_custom_sort_icon__ {
+  opacity: 1 !important;
+  color: black !important;
+}
+.sc-crHmcD,
+.hFlTTV {
+  /* Reset all styles to default or null */
+  all: initial !important;
+}
