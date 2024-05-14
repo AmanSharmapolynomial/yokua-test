@@ -24,7 +24,7 @@
     overflow-y: auto !important;
 }
 
-.rdt_TableCol_Sortable {
+/* .rdt_TableCol_Sortable {
     display: inline-flex !important;
     overflow: visible !important;
 }
@@ -38,4 +38,4 @@
 .fFBlx:hover, .fFBlx:focus, .fFBlx:focus span, .fFBlx:hover span.__rdt_custom_sort_icon__ *, .fFBlx:focus span.__rdt_custom_sort_icon__ {
     opacity: 1 !important;
     color: black !important;
-}
+} */

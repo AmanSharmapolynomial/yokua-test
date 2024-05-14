@@ -92,7 +92,7 @@ const RYGFlowComponent = ({ data, isAdmin = false, ...props }) => {
                       download
                       style={{ textDecoration: 'none' }}
                     >
-                      Download now
+                      Download Now
                     </a>
                     <p
                       className="text-center mt-2"
