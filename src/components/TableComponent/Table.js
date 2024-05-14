@@ -330,7 +330,7 @@ export default ({
               <div className="dropdown-menu">
                 <span
                   style={{
-                    color: 'rgba(0,0,0,0.87)',
+                    color: 'black',
                     fontWeight: '400',
                   }}
                   className="dropdown-item filter-item"
@@ -345,7 +345,7 @@ export default ({
                 {uniqueFilters.map((element, index) => (
                   <span
                     style={{
-                      color: 'rgba(0,0,0,0.87)',
+                      color: 'black',
                       fontWeight: element === sort ? '600' : '400',
                     }}
                     key={index}
