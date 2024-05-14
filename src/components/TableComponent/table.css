@@ -28,10 +28,10 @@
   overflow: visible !important;
 } 
 
-/* .rdt_TableCol_Sortable:hover {
+.rdt_TableCol_Sortable{
   cursor: pointer !important;
   opacity: 2 !important;
-} */
+}
 
 .fFBlx:hover,
 .fFBlx:focus,
@@ -42,7 +42,9 @@
   color: black !important;
 }
 .sc-crHmcD,
-.hFlTTV {
+.hFlTTV:hover {
   /* Reset all styles to default or null */
-  all: initial !important;
+  /* all: initial !important; */
+  opacity: 1 !important;
+  color: black !important;
 }
